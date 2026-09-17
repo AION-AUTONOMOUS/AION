@@ -1,399 +1,428 @@
-�
 
-�
-AION AUTONOMOUS | شركة الذكاء الاصطناعي المستقل
-�
-:root{ --blue:#0B1D3A; --blue2:#102a50; --gold:#D4AF37; --purple:#7A4BFF; --white:#FFFFFF; --muted:#aebbd0; --glass:rgba(255,255,255,.06); --line:rgba(255,255,255,.12); --shadow:0 25px 80px rgba(0,0,0,.45); } *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth} body{ font-family:Arial,"Segoe UI",Tahoma,sans-serif; background: radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%), radial-gradient(circle at 15% 25%,rgba(40,130,255,.14),transparent 28%), var(--blue); color:var(--white); line-height:1.7; overflow-x:hidden; } a{text-decoration:none;color:inherit} .container{ width:min(1180px,92%); margin:auto; } /* NAVIGATION */ header{ position:fixed; top:0; left:0; right:0; z-index:1000; background:rgba(11,29,58,.78); backdrop-filter:blur(18px); border-bottom:1px solid var(--line); } .nav{ height:76px; display:flex; align-items:center; justify-content:space-between; gap:20px; } .logo{ display:flex; align-items:center; gap:12px; font-size:24px; font-weight:900; letter-spacing:3px; } .logo-mark{ width:42px; height:42px; border:2px solid var(--gold); border-radius:50%; display:grid; place-items:center; color:var(--gold); box-shadow:0 0 25px rgba(212,175,55,.3); } .nav-links{ display:flex; align-items:center; gap:25px; font-size:14px; } .nav-links a{ color:#dfe8f5; transition:.25s; } .nav-links a:hover{color:var(--gold)} .nav-btn{ padding:10px 18px; border:1px solid var(--gold); border-radius:30px; color:var(--gold)!important; } /* HERO */ .hero{ min-height:100vh; padding-top:76px; display:flex; align-items:center; position:relative; overflow:hidden; } .hero-grid{ display:grid; grid-template-columns:1fr 1.15fr; gap:50px; align-items:center; direction:ltr; } .hero-copy{ direction:rtl; text-align:right; position:relative; z-index:5; } .eyebrow{ display:inline-flex; align-items:center; gap:8px; padding:7px 14px; border:1px solid rgba(212,175,55,.35); background:rgba(212,175,55,.06); border-radius:30px; color:var(--gold); font-size:13px; margin-bottom:22px; } .eyebrow span{ width:7px; height:7px; background:#54e6a7; border-radius:50%; box-shadow:0 0 12px #54e6a7; } .hero h1{ font-size:clamp(42px,6vw,76px); line-height:1.08; margin-bottom:24px; letter-spacing:-2px; } .hero h1 strong{ color:var(--gold); display:block; } .hero p{ max-width:650px; color:#c1cede; font-size:18px; margin-bottom:30px; } .hero-buttons{ display:flex; flex-wrap:wrap; gap:12px; } .btn{ display:inline-flex; justify-content:center; align-items:center; padding:14px 26px; border-radius:12px; font-weight:800; transition:.3s; cursor:pointer; } .btn-primary{ background:linear-gradient(135deg,var(--gold),#f2d477); color:var(--blue); box-shadow:0 10px 35px rgba(212,175,55,.25); } .btn-primary:hover{transform:translateY(-3px)} .btn-outline{ border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.04); color:white; } .btn-outline:hover{ border-color:var(--purple); background:rgba(122,75,255,.1); } /* GLOBAL AI VISUAL */ .hero-visual{ position:relative; min-height:600px; direction:rtl; } .earth{ width:min(470px,75vw); aspect-ratio:1; border-radius:50%; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background: radial-gradient(circle at 35% 30%,rgba(255,255,255,.22),transparent 10%), radial-gradient(circle at 45% 45%,#173e72 0%,#0c2547 48%,#061326 75%); box-shadow: inset -35px -25px 70px rgba(0,0,0,.75), inset 20px 10px 50px rgba(75,160,255,.2), 0 0 80px rgba(50,130,255,.2); overflow:hidden; } .earth:before{ content:""; position:absolute; inset:7%; border-radius:50%; background: radial-gradient(ellipse at 30% 35%,rgba(80,180,255,.45) 0 5%,transparent 6%), radial-gradient(ellipse at 65% 45%,rgba(100,190,255,.35) 0 7%,transparent 8%), radial-gradient(ellipse at 50% 70%,rgba(70,150,240,.3) 0 6%,transparent 7%), repeating-linear-gradient(25deg,transparent 0 18px,rgba(120,200,255,.07) 19px 20px); filter:blur(.2px); } .orbit{ position:absolute; border:1px solid rgba(92,173,255,.38); border-radius:50%; width:570px; height:220px; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-18deg); } .orbit.two{ width:540px; height:180px; transform:translate(-50%,-50%) rotate(42deg); border-color:rgba(122,75,255,.45); } .orbit.three{ width:620px; height:270px; transform:translate(-50%,-50%) rotate(78deg); border-color:rgba(212,175,55,.3); } .node{ position:absolute; width:12px; height:12px; background:#aee2ff; border-radius:50%; box-shadow:0 0 20px #68caff; } .n1{top:18%;left:18%} .n2{top:12%;right:23%} .n3{bottom:18%;left:24%} .n4{bottom:14%;right:20%} .n5{top:47%;left:5%} .n6{top:40%;right:4%} .core{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:190px; height:190px; border-radius:50%; display:grid; place-items:center; background: radial-gradient(circle,#152f55 0 38%,rgba(11,29,58,.96) 40% 65%,transparent 66%); border:1px solid rgba(212,175,55,.45); box-shadow: 0 0 60px rgba(122,75,255,.3), 0 0 30px rgba(212,175,55,.2); } .core-inner{ width:112px; height:112px; border-radius:50%; border:2px solid var(--gold); display:grid; place-items:center; color:var(--gold); font-size:15px; font-weight:900; letter-spacing:2px; box-shadow:0 0 35px rgba(212,175,55,.25); } .agent-label{ position:absolute; background:rgba(8,22,43,.82); border:1px solid rgba(255,255,255,.12); backdrop-filter:blur(12px); padding:8px 13px; border-radius:10px; color:#dce8f8; font-size:11px; white-space:nowrap; } .al1{top:10%;left:4%} .al2{top:22%;right:2%} .al3{bottom:20%;right:4%} .al4{bottom:7%;left:10%} .hero-glow{ position:absolute; width:500px; height:500px; background:rgba(75,140,255,.13); filter:blur(100px); border-radius:50%; top:50%; left:50%; transform:translate(-50%,-50%); } /* STATS */ .stats{ margin-top:-35px; position:relative; z-index:10; } .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); background:rgba(255,255,255,.045); border:1px solid var(--line); border-radius:20px; overflow:hidden; backdrop-filter:blur(15px); } .stat{ padding:25px; text-align:center; border-left:1px solid var(--line); } .stat:last-child{border-left:0} .stat strong{ display:block; color:white; font-size:30px; } .stat span{ color:var(--muted); font-size:13px; } /* SECTIONS */ section{ padding:105px 0; } .section-head{ text-align:center; max-width:760px; margin:0 auto 50px; } .section-head .tag{ color:var(--gold); font-size:13px; font-weight:800; letter-spacing:2px; margin-bottom:10px; } .section-head h2{ font-size:clamp(32px,5vw,52px); line-height:1.15; margin-bottom:15px; } .section-head p{ color:var(--muted); } /* SERVICES */ .services{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; } .card{ background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025)); border:1px solid var(--line); border-radius:18px; padding:28px; transition:.3s; position:relative; overflow:hidden; } .card:before{ content:""; position:absolute; width:100px; height:100px; background:var(--purple); filter:blur(60px); opacity:.12; top:-40px; right:-40px; } .card:hover{ transform:translateY(-6px); border-color:rgba(122,75,255,.5); box-shadow:var(--shadow); } .icon{ width:52px; height:52px; display:grid; place-items:center; border-radius:14px; background:rgba(122,75,255,.1); border:1px solid rgba(122,75,255,.3); color:#c9bbff; font-size:23px; margin-bottom:20px; } .card h3{ font-size:20px; margin-bottom:9px; } .card p{ color:var(--muted); font-size:14px; } /* WORKFORCE */ .workforce{ background: linear-gradient(180deg,transparent,rgba(122,75,255,.055),transparent); } .work-grid{ display:grid; grid-template-columns:1fr 1fr; gap:35px; align-items:center; } .work-copy h2{ font-size:clamp(32px,5vw,52px); line-height:1.15; margin-bottom:20px; } .work-copy p{ color:var(--muted); margin-bottom:20px; } .divisions{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; } .division{ padding:14px; background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:12px; display:flex; align-items:center; gap:10px; } .division i{ width:8px; height:8px; background:var(--gold); border-radius:50%; box-shadow:0 0 10px var(--gold); } .command{ min-height:470px; border:1px solid var(--line); border-radius:25px; background: radial-gradient(circle at 50% 45%,rgba(122,75,255,.18),transparent 30%), #07172e; position:relative; overflow:hidden; box-shadow:var(--shadow); } .command-top{ height:58px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; padding:0 20px; } .command-title{ font-size:12px; color:#c6d4e8; } .live{ font-size:10px; color:#64e5ad; } .command-core{ position:absolute; width:145px; height:145px; border-radius:50%; border:1px solid var(--gold); top:50%; left:50%; transform:translate(-50%,-50%); display:grid; place-items:center; box-shadow:0 0 70px rgba(122,75,255,.35); } .command-core div{ width:80px; height:80px; border-radius:50%; display:grid; place-items:center; border:1px solid rgba(212,175,55,.7); color:var(--gold); font-size:11px; font-weight:900; } .agent{ position:absolute; padding:9px 13px; background:rgba(255,255,255,.055); border:1px solid rgba(255,255,255,.12); border-radius:10px; font-size:10px; color:#c8d5e7; } .ag1{top:24%;left:15%} .ag2{top:17%;right:12%} .ag3{bottom:20%;left:12%} .ag4{bottom:15%;right:12%} .ag5{top:52%;left:5%} .ag6{top:48%;right:5%} /* COIN */ .coin-section{ border-top:1px solid rgba(255,255,255,.05); } .coin-box{ max-width:1000px; margin:auto; padding:45px; border-radius:25px; border:1px solid rgba(212,175,55,.3); background: radial-gradient(circle at 80% 30%,rgba(212,175,55,.1),transparent 35%), rgba(255,255,255,.035); text-align:center; } .coin-box h2{ font-size:42px; margin-bottom:12px; } .coin-box p{ color:var(--muted); max-width:700px; margin:0 auto 25px; } .notice{ display:inline-block; padding:8px 14px; border-radius:30px; background:rgba(212,175,55,.08); border:1px solid rgba(212,175,55,.3); color:var(--gold); font-size:12px; margin-bottom:25px; } /* PRICING */ .pricing{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1000px; margin:auto; } .price{ text-align:center; padding:35px 25px; border:1px solid var(--line); background:rgba(255,255,255,.04); border-radius:20px; transition:.3s; } .price:hover{ transform:translateY(-5px); border-color:rgba(212,175,55,.45); } .price.featured{ border-color:rgba(212,175,55,.6); background:linear-gradient(145deg,rgba(212,175,55,.08),rgba(255,255,255,.03)); } .price h3{ color:#e6edf7; margin-bottom:15px; } .price .amount{ font-size:42px; font-weight:900; color:var(--gold); margin-bottom:5px; } .price .units{ color:#c0cce0; margin-bottom:22px; } /* TEAM */ .team{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; } .member{ text-align:center; padding:24px 12px; border:1px solid var(--line); border-radius:17px; background:rgba(255,255,255,.035); } .avatar{ width:70px; height:70px; margin:0 auto 14px; border-radius:50%; display:grid; place-items:center; background:radial-gradient(circle,#263f67,#0a1a31); border:1px solid rgba(212,175,55,.5); color:var(--gold); font-weight:900; font-size:11px; } .member h4{font-size:14px;margin-bottom:3px} .member p{font-size:11px;color:var(--muted)} /* ROADMAP */ .roadmap{ position:relative; max-width:900px; margin:auto; } .roadmap:before{ content:""; position:absolute; top:0; bottom:0; right:50%; width:1px; background:linear-gradient(var(--purple),var(--gold)); } .road{ width:50%; padding:0 35px 35px; position:relative; } .road:nth-child(odd){ margin-right:50%; text-align:right; } .road:nth-child(even){ text-align:left; } .road-dot{ position:absolute; width:12px; height:12px; border-radius:50%; background:var(--gold); box-shadow:0 0 15px var(--gold); top:5px; } .road:nth-child(odd) .road-dot{left:-6px} .road:nth-child(even) .road-dot{right:-6px} .road span{ color:var(--gold); font-size:12px; font-weight:bold; } .road h3{margin:5px 0} .road p{font-size:13px;color:var(--muted)} /* CONTACT */ .contact-box{ max-width:850px; margin:auto; padding:45px; text-align:center; border:1px solid var(--line); border-radius:25px; background:rgba(255,255,255,.04); } .contact-box h2{ font-size:42px; margin-bottom:15px; } .contact-box p{ color:var(--muted); margin-bottom:25px; } .socials{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; } .social{ padding:10px 16px; border:1px solid var(--line); border-radius:10px; color:#d8e2ef; font-size:13px; transition:.25s; } .social:hover{ border-color:var(--gold); color:var(--gold); } /* FOOTER */ footer{ border-top:1px solid var(--line); padding:35px 0; color:#8fa0b8; font-size:12px; } .footer-flex{ display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; } .footer-brand{ color:white; font-weight:800; } /* ANIMATION */ .reveal{ opacity:0; transform:translateY(25px); animation:reveal 1s ease forwards; } @keyframes reveal{ to{opacity:1;transform:none} } .pulse{ animation:pulse 3s infinite ease-in-out; } @keyframes pulse{ 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.04)} } /* RESPONSIVE */ @media(max-width:1000px){ .services{grid-template-columns:repeat(2,1fr)} .team{grid-template-columns:repeat(2,1fr)} .hero-grid{grid-template-columns:1fr} .hero-copy{text-align:center} .hero-copy p{margin-left:auto;margin-right:auto} .hero-buttons{justify-content:center} .hero-visual{min-height:520px} } @media(max-width:700px){ .nav-links{display:none} .logo{font-size:19px} .stats-grid{grid-template-columns:repeat(2,1fr)} .stat{border-bottom:1px solid var(--line)} .work-grid{grid-template-columns:1fr} .services{grid-template-columns:1fr} .pricing{grid-template-columns:1fr} .team{grid-template-columns:repeat(2,1fr)} .hero{min-height:auto;padding-bottom:60px} .hero-visual{min-height:420px} .earth{width:320px} .orbit{width:390px;height:160px} .orbit.two{width:370px;height:130px} .orbit.three{width:420px;height:190px} .core{width:145px;height:145px} .core-inner{width:85px;height:85px} .roadmap:before{right:8px} .road,.road:nth-child(odd),.road:nth-child(even){ width:100%; margin:0; padding:0 35px 30px 0; text-align:right; } .road .road-dot,.road:nth-child(odd) .road-dot,.road:nth-child(even) .road-dot{ right:2px; left:auto; } .contact-box,.coin-box{padding:30px 20px} .contact-box h2,.coin-box h2{font-size:32px} } 
-�
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AION AUTONOMOUS | شركة الذكاء الاصطناعي المستقل</title>
+<style>
+:root{ --blue:#0B1D3A; --blue2:#102a50; --gold:#D4AF37; --purple:#7A4BFF; --white:#FFFFFF; --muted:#aebbd0; --glass:rgba(255,255,255,.06); --line:rgba(255,255,255,.12); --shadow:0 25px 80px rgba(0,0,0,.45); }
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{ font-family:Arial,"Segoe UI",Tahoma,sans-serif; background: radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%), radial-gradient(circle at 15% 25%,rgba(40,130,255,.14),transparent 28%), var(--blue); color:var(--white); line-height:1.7; overflow-x:hidden; }
+a{text-decoration:none;color:inherit}
+.container{ width:min(1180px,92%); margin:auto; }
+header{ position:fixed; top:0; left:0; right:0; z-index:1000; background:rgba(11,29,58,.78); backdrop-filter:blur(18px); border-bottom:1px solid var(--line); }
+.nav{ height:76px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.logo{ display:flex; align-items:center; gap:12px; font-size:24px; font-weight:900; letter-spacing:3px; }
+.logo-mark{ width:42px; height:42px; border:2px solid var(--gold); border-radius:50%; display:grid; place-items:center; color:var(--gold); box-shadow:0 0 25px rgba(212,175,55,.3); }
+.nav-links{ display:flex; align-items:center; gap:25px; font-size:14px; }
+.nav-links a{ color:#dfe8f5; transition:.25s; }
+.nav-links a:hover{color:var(--gold)}
+.nav-btn{ padding:10px 18px; border:1px solid var(--gold); border-radius:30px; color:var(--gold)!important; }
+.hero{ min-height:100vh; padding-top:76px; display:flex; align-items:center; position:relative; overflow:hidden; }
+.hero-grid{ display:grid; grid-template-columns:1fr 1.15fr; gap:50px; align-items:center; direction:ltr; }
+.hero-copy{ direction:rtl; text-align:right; position:relative; z-index:5; }
+.eyebrow{ display:inline-flex; align-items:center; gap:8px; padding:7px 14px; border:1px solid rgba(212,175,55,.35); background:rgba(212,175,55,.06); border-radius:30px; color:var(--gold); font-size:13px; margin-bottom:22px; }
+.eyebrow span{ width:7px; height:7px; background:#54e6a7; border-radius:50%; box-shadow:0 0 12px #54e6a7; }
+.hero h1{ font-size:clamp(42px,6vw,76px); line-height:1.08; margin-bottom:24px; letter-spacing:-2px; }
+.hero h1 strong{ color:var(--gold); display:block; }
+.hero p{ max-width:650px; color:#c1cede; font-size:18px; margin-bottom:30px; }
+.hero-buttons{ display:flex; flex-wrap:wrap; gap:12px; }
+.btn{ display:inline-flex; justify-content:center; align-items:center; padding:14px 26px; border-radius:12px; font-weight:800; transition:.3s; cursor:pointer; }
+.btn-primary{ background:linear-gradient(135deg,var(--gold),#f2d477); color:var(--blue); box-shadow:0 10px 35px rgba(212,175,55,.25); }
+.btn-primary:hover{transform:translateY(-3px)}
+.btn-outline{ border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.04); color:white; }
+.btn-outline:hover{ border-color:var(--purple); background:rgba(122,75,255,.1); }
+.hero-visual{ position:relative; min-height:600px; direction:rtl; }
+.earth{ width:min(470px,75vw); aspect-ratio:1; border-radius:50%; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background: radial-gradient(circle at 35% 30%,rgba(255,255,255,.22),transparent 10%), radial-gradient(circle at 45% 45%,#173e72 0%,#0c2547 48%,#061326 75%); box-shadow: inset -35px -25px 70px rgba(0,0,0,.75), inset 20px 10px 50px rgba(75,160,255,.2), 0 0 80px rgba(50,130,255,.2); overflow:hidden; }
+.earth:before{ content:""; position:absolute; inset:7%; border-radius:50%; background: radial-gradient(ellipse at 30% 35%,rgba(80,180,255,.45) 0 5%,transparent 6%), radial-gradient(ellipse at 65% 45%,rgba(100,190,255,.35) 0 7%,transparent 8%), radial-gradient(ellipse at 50% 70%,rgba(70,150,240,.3) 0 6%,transparent 7%), repeating-linear-gradient(25deg,transparent 0 18px,rgba(120,200,255,.07) 19px 20px); filter:blur(.2px); }
+.orbit{ position:absolute; border:1px solid rgba(92,173,255,.38); border-radius:50%; width:570px; height:220px; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-18deg); }
+.orbit.two{ width:540px; height:180px; transform:translate(-50%,-50%) rotate(42deg); border-color:rgba(122,75,255,.45); }
+.orbit.three{ width:620px; height:270px; transform:translate(-50%,-50%) rotate(78deg); border-color:rgba(212,175,55,.3); }
+.node{ position:absolute; width:12px; height:12px; background:#aee2ff; border-radius:50%; box-shadow:0 0 20px #68caff; }
+.n1{top:18%;left:18%} .n2{top:12%;right:23%} .n3{bottom:18%;left:24%} .n4{bottom:14%;right:20%} .n5{top:47%;left:5%} .n6{top:40%;right:4%}
+.core{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:190px; height:190px; border-radius:50%; display:grid; place-items:center; background: radial-gradient(circle,#152f55 0 38%,rgba(11,29,58,.96) 40% 65%,transparent 66%); border:1px solid rgba(212,175,55,.45); box-shadow: 0 0 60px rgba(122,75,255,.3), 0 0 30px rgba(212,175,55,.2); }
+.core-inner{ width:112px; height:112px; border-radius:50%; border:2px solid var(--gold); display:grid; place-items:center; color:var(--gold); font-size:15px; font-weight:900; letter-spacing:2px; box-shadow:0 0 35px rgba(212,175,55,.25); }
+.agent-label{ position:absolute; background:rgba(8,22,43,.82); border:1px solid rgba(255,255,255,.12); backdrop-filter:blur(12px); padding:8px 13px; border-radius:10px; color:#dce8f8; font-size:11px; white-space:nowrap; }
+.al1{top:10%;left:4%} .al2{top:22%;right:2%} .al3{bottom:20%;right:4%} .al4{bottom:7%;left:10%}
+.hero-glow{ position:absolute; width:500px; height:500px; background:rgba(75,140,255,.13); filter:blur(100px); border-radius:50%; top:50%; left:50%; transform:translate(-50%,-50%); }
+.stats{ margin-top:-35px; position:relative; z-index:10; }
+.stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); background:rgba(255,255,255,.045); border:1px solid var(--line); border-radius:20px; overflow:hidden; backdrop-filter:blur(15px); }
+.stat{ padding:25px; text-align:center; border-left:1px solid var(--line); }
+.stat:last-child{border-left:0}
+.stat strong{ display:block; color:white; font-size:30px; }
+.stat span{ color:var(--muted); font-size:13px; }
+section{ padding:105px 0; }
+.section-head{ text-align:center; max-width:760px; margin:0 auto 50px; }
+.section-head .tag{ color:var(--gold); font-size:13px; font-weight:800; letter-spacing:2px; margin-bottom:10px; }
+.section-head h2{ font-size:clamp(32px,5vw,52px); line-height:1.15; margin-bottom:15px; }
+.section-head p{ color:var(--muted); }
+.services{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+.card{ background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025)); border:1px solid var(--line); border-radius:18px; padding:28px; transition:.3s; position:relative; overflow:hidden; }
+.card:before{ content:""; position:absolute; width:100px; height:100px; background:var(--purple); filter:blur(60px); opacity:.12; top:-40px; right:-40px; }
+.card:hover{ transform:translateY(-6px); border-color:rgba(122,75,255,.5); box-shadow:var(--shadow); }
+.icon{ width:52px; height:52px; display:grid; place-items:center; border-radius:14px; background:rgba(122,75,255,.1); border:1px solid rgba(122,75,255,.3); color:#c9bbff; font-size:23px; margin-bottom:20px; }
+.card h3{ font-size:20px; margin-bottom:9px; }
+.card p{ color:var(--muted); font-size:14px; }
+.workforce{ background: linear-gradient(180deg,transparent,rgba(122,75,255,.055),transparent); }
+.work-grid{ display:grid; grid-template-columns:1fr 1fr; gap:35px; align-items:center; }
+.work-copy h2{ font-size:clamp(32px,5vw,52px); line-height:1.15; margin-bottom:20px; }
+.work-copy p{ color:var(--muted); margin-bottom:20px; }
+.divisions{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.division{ padding:14px; background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:12px; display:flex; align-items:center; gap:10px; }
+.division i{ width:8px; height:8px; background:var(--gold); border-radius:50%; box-shadow:0 0 10px var(--gold); }
+.command{ min-height:470px; border:1px solid var(--line); border-radius:25px; background: radial-gradient(circle at 50% 45%,rgba(122,75,255,.18),transparent 30%), #07172e; position:relative; overflow:hidden; box-shadow:var(--shadow); }
+.command-top{ height:58px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; padding:0 20px; }
+.command-title{ font-size:12px; color:#c6d4e8; }
+.live{ font-size:10px; color:#64e5ad; }
+.command-core{ position:absolute; width:145px; height:145px; border-radius:50%; border:1px solid var(--gold); top:50%; left:50%; transform:translate(-50%,-50%); display:grid; place-items:center; box-shadow:0 0 70px rgba(122,75,255,.35); }
+.command-core div{ width:80px; height:80px; border-radius:50%; display:grid; place-items:center; border:1px solid rgba(212,175,55,.7); color:var(--gold); font-size:11px; font-weight:900; }
+.agent{ position:absolute; padding:9px 13px; background:rgba(255,255,255,.055); border:1px solid rgba(255,255,255,.12); border-radius:10px; font-size:10px; color:#c8d5e7; }
+.ag1{top:24%;left:15%} .ag2{top:17%;right:12%} .ag3{bottom:20%;left:12%} .ag4{bottom:15%;right:12%} .ag5{top:52%;left:5%} .ag6{top:48%;right:5%}
+.coin-section{ border-top:1px solid rgba(255,255,255,.05); }
+.coin-box{ max-width:1000px; margin:auto; padding:45px; border-radius:25px; border:1px solid rgba(212,175,55,.3); background: radial-gradient(circle at 80% 30%,rgba(212,175,55,.1),transparent 35%), rgba(255,255,255,.035); text-align:center; }
+.coin-box h2{ font-size:42px; margin-bottom:12px; }
+.coin-box p{ color:var(--muted); max-width:700px; margin:0 auto 25px; }
+.notice{ display:inline-block; padding:8px 14px; border-radius:30px; background:rgba(212,175,55,.08); border:1px solid rgba(212,175,55,.3); color:var(--gold); font-size:12px; margin-bottom:25px; }
+.pricing{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1000px; margin:auto; }
+.price{ text-align:center; padding:35px 25px; border:1px solid var(--line); background:rgba(255,255,255,.04); border-radius:20px; transition:.3s; }
+.price:hover{ transform:translateY(-5px); border-color:rgba(212,175,55,.45); }
+.price.featured{ border-color:rgba(212,175,55,.6); background:linear-gradient(145deg,rgba(212,175,55,.08),rgba(255,255,255,.03)); }
+.price h3{ color:#e6edf7; margin-bottom:15px; }
+.price .amount{ font-size:42px; font-weight:900; color:var(--gold); margin-bottom:5px; }
+.price .units{ color:#c0cce0; margin-bottom:22px; }
+.team{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
+.member{ text-align:center; padding:24px 12px; border:1px solid var(--line); border-radius:17px; background:rgba(255,255,255,.035); }
+.avatar{ width:70px; height:70px; margin:0 auto 14px; border-radius:50%; display:grid; place-items:center; background:radial-gradient(circle,#263f67,#0a1a31); border:1px solid rgba(212,175,55,.5); color:var(--gold); font-weight:900; font-size:11px; }
+.member h4{font-size:14px;margin-bottom:3px}
+.member p{font-size:11px;color:var(--muted)}
+.roadmap{ position:relative; max-width:900px; margin:auto; }
+.roadmap:before{ content:""; position:absolute; top:0; bottom:0; right:50%; width:1px; background:linear-gradient(var(--purple),var(--gold)); }
+.road{ width:50%; padding:0 35px 35px; position:relative; }
+.road:nth-child(odd){ margin-right:50%; text-align:right; }
+.road:nth-child(even){ text-align:left; }
+.road-dot{ position:absolute; width:12px; height:12px; border-radius:50%; background:var(--gold); box-shadow:0 0 15px var(--gold); top:5px; }
+.road:nth-child(odd) .road-dot{left:-6px}
+.road:nth-child(even) .road-dot{right:-6px}
+.road span{ color:var(--gold); font-size:12px; font-weight:bold; }
+.road h3{margin:5px 0}
+.road p{font-size:13px;color:var(--muted)}
+.contact-box{ max-width:850px; margin:auto; padding:45px; text-align:center; border:1px solid var(--line); border-radius:25px; background:rgba(255,255,255,.04); }
+.contact-box h2{ font-size:42px; margin-bottom:15px; }
+.contact-box p{ color:var(--muted); margin-bottom:25px; }
+.socials{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+.social{ padding:10px 16px; border:1px solid var(--line); border-radius:10px; color:#d8e2ef; font-size:13px; transition:.25s; }
+.social:hover{ border-color:var(--gold); color:var(--gold); }
+footer{ border-top:1px solid var(--line); padding:35px 0; color:#8fa0b8; font-size:12px; }
+.footer-flex{ display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+.footer-brand{ color:white; font-weight:800; }
+.reveal{ opacity:0; transform:translateY(25px); animation:reveal 1s ease forwards; }
+@keyframes reveal{ to{opacity:1;transform:none} }
+.pulse{ animation:pulse 3s infinite ease-in-out; }
+@keyframes pulse{ 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.04)} }
+@media(max-width:1000px){ .services{grid-template-columns:repeat(2,1fr)} .team{grid-template-columns:repeat(2,1fr)} .hero-grid{grid-template-columns:1fr} .hero-copy{text-align:center} .hero-copy p{margin-left:auto;margin-right:auto} .hero-buttons{justify-content:center} .hero-visual{min-height:520px} }
+@media(max-width:700px){ .nav-links{display:none} .logo{font-size:19px} .stats-grid{grid-template-columns:repeat(2,1fr)} .stat{border-bottom:1px solid var(--line)} .work-grid{grid-template-columns:1fr} .services{grid-template-columns:1fr} .pricing{grid-template-columns:1fr} .team{grid-template-columns:repeat(2,1fr)} .hero{min-height:auto;padding-bottom:60px} .hero-visual{min-height:420px} .earth{width:320px} .orbit{width:390px;height:160px} .orbit.two{width:370px;height:130px} .orbit.three{width:420px;height:190px} .core{width:145px;height:145px} .core-inner{width:85px;height:85px} .roadmap:before{right:8px} .road,.road:nth-child(odd),.road:nth-child(even){ width:100%; margin:0; padding:0 35px 30px 0; text-align:right; } .road .road-dot,.road:nth-child(odd) .road-dot,.road:nth-child(even) .road-dot{ right:2px; left:auto; } .contact-box,.coin-box{padding:30px 20px} .contact-box h2,.coin-box h2{font-size:32px} }
+</style>
+</head>
+<body>
 
-�
-
-�
-A AION AUTONOMOUS 
-
+<header>
+<div class="container">
+<div class="nav">
+<div class="logo">
+<div class="logo-mark">A</div>
+AION AUTONOMOUS
+</div>
 <nav class="nav-links">
-  <a href="#about">عن AION</a>
-  <a href="#services">الخدمات</a>
-  <a href="#workforce">الجيش الذكي</a>
-  <a href="#coin">AION Coin</a>
-  <a href="#roadmap">خارطة الطريق</a>
-  <a href="#contact">تواصل</a>
-  <a href="#contact" class="nav-btn">ابدأ الآن</a>
+<a href="#about">عن AION</a>
+<a href="#services">الخدمات</a>
+<a href="#workforce">الجيش الذكي</a>
+<a href="#coin">AION Coin</a>
+<a href="#roadmap">خارطة الطريق</a>
+<a href="#contact">تواصل</a>
+<a href="#contact" class="nav-btn">ابدأ الآن</a>
 </nav>
-�
+</div>
+</div>
+</header>
 
-�
-
-�
-
+<section class="hero">
+<div class="container">
+<div class="hero-grid">
 <div class="hero-copy reveal">
-  <div class="eyebrow">
-    <span></span>
-    AION AUTONOMOUS — AI COMPANY
-  </div>
-
-  <h1>
-    الذكاء يعمل.
-    <strong>والبشر يقررون.</strong>
-  </h1>
-
-  <p>
-    نبني منظومة ذكاء اصطناعي مستقلة تجمع AION Core
-    مع شبكة واسعة من الوكلاء المتخصصين لتنفيذ الأعمال،
-    تحليل المعلومات، خدمة العملاء، التسويق، العمليات والأمن.
-  </p>
-
-  <div class="hero-buttons">
-    <a class="btn btn-primary" href="#workforce">اكتشف الجيش الذكي</a>
-    <a class="btn btn-outline" href="#services">استكشف خدمات AION</a>
-  </div>
+<div class="eyebrow">
+<span></span>
+AION AUTONOMOUS — AI COMPANY
+</div>
+<h1>
+الذكاء يعمل.
+<strong>والبشر يقررون.</strong>
+</h1>
+<p>
+نبني منظومة ذكاء اصطناعي مستقلة تجمع AION Core
+مع شبكة واسعة من الوكلاء المتخصصين لتنفيذ الأعمال،
+تحليل المعلومات، خدمة العملاء، التسويق، العمليات والأمن.
+</p>
+<div class="hero-buttons">
+<a class="btn btn-primary" href="#workforce">اكتشف الجيش الذكي</a>
+<a class="btn btn-outline" href="#services">استكشف خدمات AION</a>
+</div>
 </div>
 
 <div class="hero-visual">
-  <div class="hero-glow"></div>
-
-  <div class="earth"></div>
-
-  <div class="orbit"></div>
-  <div class="orbit two"></div>
-  <div class="orbit three"></div>
-
-  <div class="node n1"></div>
-  <div class="node n2"></div>
-  <div class="node n3"></div>
-  <div class="node n4"></div>
-  <div class="node n5"></div>
-  <div class="node n6"></div>
-
-  <div class="core pulse">
-    <div class="core-inner">AION CORE</div>
-  </div>
-
-  <div class="agent-label al1">العمليات الذكية</div>
-  <div class="agent-label al2">التحليلات والذكاء</div>
-  <div class="agent-label al3">الأمن السيبراني</div>
-  <div class="agent-label al4">المبيعات والتسويق</div>
+<div class="hero-glow"></div>
+<div class="earth"></div>
+<div class="orbit"></div>
+<div class="orbit two"></div>
+<div class="orbit three"></div>
+<div class="node n1"></div>
+<div class="node n2"></div>
+<div class="node n3"></div>
+<div class="node n4"></div>
+<div class="node n5"></div>
+<div class="node n6"></div>
+<div class="core pulse">
+<div class="core-inner">AION CORE</div>
 </div>
-�
+<div class="agent-label al1">العمليات الذكية</div>
+<div class="agent-label al2">التحليلات والذكاء</div>
+<div class="agent-label al3">الأمن السيبراني</div>
+<div class="agent-label al4">المبيعات والتسويق</div>
+</div>
+</div>
+</div>
+</section>
 
-�
-10,000+ هدف شبكة الوكلاء الذكية 
-7 قطاعات تشغيلية 
-24/7 تشغيل ومراقبة مستمرة 
-AI Core مركز تنسيق المنظومة 
+<section class="stats">
+<div class="container">
+<div class="stats-grid">
+<div class="stat"><strong>10,000+</strong><span>هدف شبكة الوكلاء الذكية</span></div>
+<div class="stat"><strong>7</strong><span>قطاعات تشغيلية</span></div>
+<div class="stat"><strong>24/7</strong><span>تشغيل ومراقبة مستمرة</span></div>
+<div class="stat"><strong>AI Core</strong><span>مركز تنسيق المنظومة</span></div>
+</div>
+</div>
+</section>
 
-�
-ABOUT AION
-شركة ذكاء اصطناعي تُبنى للعالم
-AION AUTONOMOUS تطور بنية تشغيل للذكاء الاصطناعي تجمع بين الوكلاء المتخصصين، الإدارة الذكية، الحوكمة، الأمان والمراجعة البشرية. 
+<section id="about">
+<div class="container">
+<div class="section-head">
+<div class="tag">ABOUT AION</div>
+<h2>شركة ذكاء اصطناعي تُبنى للعالم</h2>
+<p>AION AUTONOMOUS تطور بنية تشغيل للذكاء الاصطناعي تجمع بين الوكلاء المتخصصين، الإدارة الذكية، الحوكمة، الأمان والمراجعة البشرية.</p>
+</div>
+</div>
+</section>
 
-�
-AI SERVICES
-منظومة خدمات تعمل بالذكاء
-وكلاء متخصصون لتنفيذ المهام المختلفة داخل الشركات والمؤسسات.
-
+<section id="services">
+<div class="container">
+<div class="section-head">
+<div class="tag">AI SERVICES</div>
+<h2>منظومة خدمات تعمل بالذكاء</h2>
+<p>وكلاء متخصصون لتنفيذ المهام المختلفة داخل الشركات والمؤسسات.</p>
+</div>
 <div class="services">
-
-  <div class="card">
-    <div class="icon">⚙</div>
-    <h3>العمليات</h3>
-    <p>تنظيم المهام وسير العمل وتحسين العمليات اليومية.</p>
-  </div>
-
-  <div class="card">
-    <div class="icon">◈</div>
-    <h3>المبيعات</h3>
-    <p>إدارة العملاء المحتملين وتحليل الفرص ودعم فرق المبيعات.</p>
-  </div>
-
-  <div class="card">
-    <div class="icon">◉</div>
-    <h3>خدمة العملاء</h3>
-    <p>مساعدات ذكية للرد والمتابعة وتنظيم طلبات العملاء.</p>
-  </div>
-
-  <div class="card">
-    <div class="icon">✦</div>
-    <h3>التسويق</h3>
-    <p>تحليل الجمهور وإعداد المحتوى والحملات والبيانات التسويقية.</p>
-  </div>
-
-  <div class="card">
-    <div class="icon">⌁</div>
-    <h3>التحليلات</h3>
-    <p>تحويل البيانات إلى تقارير ورؤى تساعد الإنسان على القرار.</p>
-  </div>
-
-  <div class="card">
-    <div class="icon">◌</div>
-    <h3>الأمن</h3>
-    <p>مراقبة الأنظمة والأحداث والتنبيه إلى الأنماط والمخاطر.</p>
-  </div>
-
-  <div class="card">
-    <div class="icon">◇</div>
-    <h3>البحث</h3>
-    <p>جمع المعلومات وتحليلها وإعداد المخرجات المنظمة.</p>
-  </div>
-
-  <div class="card">
-    <div class="icon">∞</div>
-    <h3>مهام خاصة</h3>
-    <p>وكلاء مخصصون للمهام الجديدة والمشاريع المتقدمة.</p>
-  </div>
-
+<div class="card">
+<div class="icon">⚙</div>
+<h3>العمليات</h3>
+<p>تنظيم المهام وسير العمل وتحسين العمليات اليومية.</p>
 </div>
-�
+<div class="card">
+<div class="icon">◈</div>
+<h3>المبيعات</h3>
+<p>إدارة العملاء المحتملين وتحليل الفرص ودعم فرق المبيعات.</p>
+</div>
+<div class="card">
+<div class="icon">◉</div>
+<h3>خدمة العملاء</h3>
+<p>مساعدات ذكية للرد والمتابعة وتنظيم طلبات العملاء.</p>
+</div>
+<div class="card">
+<div class="icon">✦</div>
+<h3>التسويق</h3>
+<p>تحليل الجمهور وإعداد المحتوى والحملات والبيانات التسويقية.</p>
+</div>
+<div class="card">
+<div class="icon">⌁</div>
+<h3>التحليلات</h3>
+<p>تحويل البيانات إلى تقارير ورؤى تساعد الإنسان على القرار.</p>
+</div>
+<div class="card">
+<div class="icon">◌</div>
+<h3>الأمن</h3>
+<p>مراقبة الأنظمة والأحداث والتنبيه إلى الأنماط والمخاطر.</p>
+</div>
+<div class="card">
+<div class="icon">◇</div>
+<h3>البحث</h3>
+<p>جمع المعلومات وتحليلها وإعداد المخرجات المنظمة.</p>
+</div>
+<div class="card">
+<div class="icon">∞</div>
+<h3>مهام خاصة</h3>
+<p>وكلاء مخصصون للمهام الجديدة والمشاريع المتقدمة.</p>
+</div>
+</div>
+</div>
+</section>
 
-�
-
+<section class="workforce" id="workforce">
+<div class="container">
+<div class="work-grid">
 <div class="work-copy">
-  <div class="section-head" style="text-align:right;margin:0 0 25px">
-    <div class="tag">AION AI WORKFORCE</div>
-    <h2>جيش اصطناعي تحت قيادة AION Core</h2>
-  </div>
-
-  <p>
-    الفكرة الأساسية هي بناء شبكة كبيرة من الوكلاء المتخصصين،
-    يعمل كل وكيل ضمن صلاحيات واضحة، بينما يقوم AION Core
-    بتنسيق المهام ومتابعة النتائج وطلب الموافقة البشرية
-    عند الحاجة.
-  </p>
-
-  <div class="divisions">
-    <div class="division"><i></i> العمليات</div>
-    <div class="division"><i></i> المبيعات</div>
-    <div class="division"><i></i> خدمة العملاء</div>
-    <div class="division"><i></i> التسويق</div>
-    <div class="division"><i></i> الذكاء والتحليلات</div>
-    <div class="division"><i></i> الأمن</div>
-    <div class="division"><i></i> البحث والتطوير</div>
-    <div class="division"><i></i> المهام الخاصة</div>
-  </div>
+<div class="section-head" style="text-align:right;margin:0 0 25px">
+<div class="tag">AION AI WORKFORCE</div>
+<h2>جيش اصطناعي تحت قيادة AION Core</h2>
 </div>
-
+<p>
+الفكرة الأساسية هي بناء شبكة كبيرة من الوكلاء المتخصصين،
+يعمل كل وكيل ضمن صلاحيات واضحة، بينما يقوم AION Core
+بتنسيق المهام ومتابعة النتائج وطلب الموافقة البشرية
+عند الحاجة.
+</p>
+<div class="divisions">
+<div class="division"><i></i> العمليات</div>
+<div class="division"><i></i> المبيعات</div>
+<div class="division"><i></i> خدمة العملاء</div>
+<div class="division"><i></i> التسويق</div>
+<div class="division"><i></i> الذكاء والتحليلات</div>
+<div class="division"><i></i> الأمن</div>
+<div class="division"><i></i> البحث والتطوير</div>
+<div class="division"><i></i> المهام الخاصة</div>
+</div>
+</div>
 <div class="command">
-  <div class="command-top">
-    <span class="command-title">AION CORE — COMMAND CENTER</span>
-    <span class="live">● SYSTEM READY</span>
-  </div>
-
-  <div class="command-core">
-    <div>AION<br>CORE</div>
-  </div>
-
-  <div class="agent ag1">RESEARCH AGENT</div>
-  <div class="agent ag2">SALES AGENT</div>
-  <div class="agent ag3">SECURITY AGENT</div>
-  <div class="agent ag4">ANALYST AGENT</div>
-  <div class="agent ag5">MARKETING AGENT</div>
-  <div class="agent ag6">OPERATIONS AGENT</div>
+<div class="command-top">
+<span class="command-title">AION CORE — COMMAND CENTER</span>
+<span class="live">● SYSTEM READY</span>
 </div>
-�
+<div class="command-core">
+<div>AION<br>CORE</div>
+</div>
+<div class="agent ag1">RESEARCH AGENT</div>
+<div class="agent ag2">SALES AGENT</div>
+<div class="agent ag3">SECURITY AGENT</div>
+<div class="agent ag4">ANALYST AGENT</div>
+<div class="agent ag5">MARKETING AGENT</div>
+<div class="agent ag6">OPERATIONS AGENT</div>
+</div>
+</div>
+</div>
+</section>
 
-�
-AION DIGITAL ECONOMY — FUTURE LAYER
-AION Coin
-طبقة اقتصادية مستقبلية ضمن رؤية AION لاقتصاد خدمات الذكاء الاصطناعي. أي إصدار أو تداول أو استخدام مالي فعلي يتطلب استكمال المتطلبات القانونية والتقنية والتنظيمية أولًا. 
-اعرف المزيد 
+<section class="coin-section" id="coin">
+<div class="container">
+<div class="coin-box">
+<div class="notice">AION DIGITAL ECONOMY — FUTURE LAYER</div>
+<h2>AION Coin</h2>
+<p>طبقة اقتصادية مستقبلية ضمن رؤية AION لاقتصاد خدمات الذكاء الاصطناعي. أي إصدار أو تداول أو استخدام مالي فعلي يتطلب استكمال المتطلبات القانونية والتقنية والتنظيمية أولًا.</p>
+<a class="btn btn-outline" href="#contact">اعرف المزيد</a>
+</div>
+</div>
+</section>
 
-�
-EARLY ACCESS
-باقات AION
-واجهة الأسعار الحالية للمشروع — قابلة للتعديل قبل الإطلاق التجاري.
-
+<section>
+<div class="container">
+<div class="section-head">
+<div class="tag">EARLY ACCESS</div>
+<h2>باقات AION</h2>
+<p>واجهة الأسعار الحالية للمشروع — قابلة للتعديل قبل الإطلاق التجاري.</p>
+</div>
 <div class="pricing">
-
-  <div class="price">
-    <h3>باقة البداية</h3>
-    <div class="amount">$10</div>
-    <div class="units">10,000 AION</div>
-    <a href="https://www.paypal.me/AIONNetwork" target="_blank" rel="noopener" class="btn btn-outline">الدفع عبر PayPal</a>
-  </div>
-
-  <div class="price featured">
-    <h3>باقة التأسيس</h3>
-    <div class="amount">$50</div>
-    <div class="units">50,000 AION</div>
-    <a href="https://www.paypal.me/AIONNetwork" target="_blank" rel="noopener" class="btn btn-primary">الدفع عبر PayPal</a>
-  </div>
-
-  <div class="price">
-    <h3>باقة المؤسسين</h3>
-    <div class="amount">$100</div>
-    <div class="units">100,000 AION</div>
-    <a href="https://www.paypal.me/AIONNetwork" target="_blank" rel="noopener" class="btn btn-outline">الدفع عبر PayPal</a>
-  </div>
-
+<div class="price">
+<h3>باقة البداية</h3>
+<div class="amount">$10</div>
+<div class="units">10,000 AION</div>
+<a href="https://www.paypal.me/AIONNetwork" target="_blank" rel="noopener" class="btn btn-outline">الدفع عبر PayPal</a>
 </div>
-�
+<div class="price featured">
+<h3>باقة التأسيس</h3>
+<div class="amount">$50</div>
+<div class="units">50,000 AION</div>
+<a href="https://www.paypal.me/AIONNetwork" target="_blank" rel="noopener" class="btn btn-primary">الدفع عبر PayPal</a>
+</div>
+<div class="price">
+<h3>باقة المؤسسين</h3>
+<div class="amount">$100</div>
+<div class="units">100,000 AION</div>
+<a href="https://www.paypal.me/AIONNetwork" target="_blank" rel="noopener" class="btn btn-outline">الدفع عبر PayPal</a>
+</div>
+</div>
+</div>
+</section>
 
-�
-AI TEAM
-النواة الأولى للجيش الذكي
-نماذج وكلاء متخصصة تمثل البنية الأولية لمنظومة AION.
-
+<section>
+<div class="container">
+<div class="section-head">
+<div class="tag">AI TEAM</div>
+<h2>النواة الأولى للجيش الذكي</h2>
+<p>نماذج وكلاء متخصصة تمثل البنية الأولية لمنظومة AION.</p>
+</div>
 <div class="team">
-
-  <div class="member">
-    <div class="avatar">CMD</div>
-    <h4>AION CMD</h4>
-    <p>Commander</p>
-  </div>
-
-  <div class="member">
-    <div class="avatar">SAL</div>
-    <h4>AION SALES</h4>
-    <p>Sales Agent</p>
-  </div>
-
-  <div class="member">
-    <div class="avatar">SUP</div>
-    <h4>AION SUPPORT</h4>
-    <p>Support Agent</p>
-  </div>
-
-  <div class="member">
-    <div class="avatar">MKT</div>
-    <h4>AION MKT</h4>
-    <p>Marketing Agent</p>
-  </div>
-
-  <div class="member">
-    <div class="avatar">ANA</div>
-    <h4>AION ANALYST</h4>
-    <p>Analytics Agent</p>
-  </div>
-
-  <div class="member">
-    <div class="avatar">OPS</div>
-    <h4>AION OPS</h4>
-    <p>Operations Agent</p>
-  </div>
-
-  <div class="member">
-    <div class="avatar">RES</div>
-    <h4>AION RESEARCH</h4>
-    <p>Research Agent</p>
-  </div>
-
-  <div class="member">
-    <div class="avatar">COD</div>
-    <h4>AION CODER</h4>
-    <p>Engineering Agent</p>
-  </div>
-
-  <div class="member">
-    <div class="avatar">SEC</div>
-    <h4>AION SECURITY</h4>
-    <p>Security Agent</p>
-  </div>
-
-  <div class="member">
-    <div class="avatar">AUD</div>
-    <h4>AION AUDIT</h4>
-    <p>Audit Agent</p>
-  </div>
-
+<div class="member"><div class="avatar">CMD</div><h4>AION CMD</h4><p>Commander</p></div>
+<div class="member"><div class="avatar">SAL</div><h4>AION SALES</h4><p>Sales Agent</p></div>
+<div class="member"><div class="avatar">SUP</div><h4>AION SUPPORT</h4><p>Support Agent</p></div>
+<div class="member"><div class="avatar">MKT</div><h4>AION MKT</h4><p>Marketing Agent</p></div>
+<div class="member"><div class="avatar">ANA</div><h4>AION ANALYST</h4><p>Analytics Agent</p></div>
+<div class="member"><div class="avatar">OPS</div><h4>AION OPS</h4><p>Operations Agent</p></div>
+<div class="member"><div class="avatar">RES</div><h4>AION RESEARCH</h4><p>Research Agent</p></div>
+<div class="member"><div class="avatar">COD</div><h4>AION CODER</h4><p>Engineering Agent</p></div>
+<div class="member"><div class="avatar">SEC</div><h4>AION SECURITY</h4><p>Security Agent</p></div>
+<div class="member"><div class="avatar">AUD</div><h4>AION AUDIT</h4><p>Audit Agent</p></div>
 </div>
-�
+</div>
+</section>
 
-�
-ROADMAP
-طريق AION إلى المنظومة المستقلة
-التوسع يتم تدريجيًا من النواة الأولى إلى شبكة وكلاء واسعة.
-
+<section id="roadmap">
+<div class="container">
+<div class="section-head">
+<div class="tag">ROADMAP</div>
+<h2>طريق AION إلى المنظومة المستقلة</h2>
+<p>التوسع يتم تدريجيًا من النواة الأولى إلى شبكة وكلاء واسعة.</p>
+</div>
 <div class="roadmap">
-
-  <div class="road">
-    <div class="road-dot"></div>
-    <span>PHASE 01</span>
-    <h3>AION Core</h3>
-    <p>بناء مركز القيادة ونظام إدارة الوكلاء والمهام.</p>
-  </div>
-
-  <div class="road">
-    <div class="road-dot"></div>
-    <span>PHASE 02</span>
-    <h3>10 AI Agents</h3>
-    <p>تشغيل النواة الأولى من الوكلاء المتخصصين واختبارها.</p>
-  </div>
-
-  <div class="road">
-    <div class="road-dot"></div>
-    <span>PHASE 03</span>
-    <h3>Tool Gateway</h3>
-    <p>صلاحيات وأمان وموافقات بشرية وسجل تدقيق للعمليات.</p>
-  </div>
-
-  <div class="road">
-    <div class="road-dot"></div>
-    <span>PHASE 04</span>
-    <h3>50 → 100 → 1,000</h3>
-    <p>توسيع شبكة الوكلاء مع قياس الأداء والتكلفة والجودة.</p>
-  </div>
-
-  <div class="road">
-    <div class="road-dot"></div>
-    <span>PHASE 05</span>
-    <h3>10,000+ Agents</h3>
-    <p>الوصول إلى البنية المستهدفة عند اكتمال البنية التشغيلية.</p>
-  </div>
-
-  <div class="road">
-    <div class="road-dot"></div>
-    <span>PHASE 06</span>
-    <h3>AION Global</h3>
-    <p>خدمات وشراكات وتوسع دولي ومنظومة اقتصادية مستقبلية.</p>
-  </div>
-
+<div class="road"><div class="road-dot"></div><span>PHASE 01</span><h3>AION Core</h3><p>بناء مركز القيادة ونظام إدارة الوكلاء والمهام.</p></div>
+<div class="road"><div class="road-dot"></div><span>PHASE 02</span><h3>10 AI Agents</h3><p>تشغيل النواة الأولى من الوكلاء المتخصصين واختبارها.</p></div>
+<div class="road"><div class="road-dot"></div><span>PHASE 03</span><h3>Tool Gateway</h3><p>صلاحيات وأمان وموافقات بشرية وسجل تدقيق للعمليات.</p></div>
+<div class="road"><div class="road-dot"></div><span>PHASE 04</span><h3>50 → 100 → 1,000</h3><p>توسيع شبكة الوكلاء مع قياس الأداء والتكلفة والجودة.</p></div>
+<div class="road"><div class="road-dot"></div><span>PHASE 05</span><h3>10,000+ Agents</h3><p>الوصول إلى البنية المستهدفة عند اكتمال البنية التشغيلية.</p></div>
+<div class="road"><div class="road-dot"></div><span>PHASE 06</span><h3>AION Global</h3><p>خدمات وشراكات وتوسع دولي ومنظومة اقتصادية مستقبلية.</p></div>
 </div>
-�
+</div>
+</section>
 
-�
-
+<section id="contact">
+<div class="container">
+<div class="contact-box">
 <div class="section-head" style="margin-bottom:25px">
-    <div class="tag">CONTACT AION</div>
-    <h2>ابنِ المستقبل معنا</h2>
-    <p>للاستفسارات والشراكات والتواصل مع AION AUTONOMOUS.</p>
-  </div>
-
-  <a class="btn btn-primary" href="mailto:aion.genessisss@gmail.com">
-    ✉ تواصل عبر البريد
-  </a>
-
-  <div class="socials" style="margin-top:25px">
-
-    <a class="social" href="https://twitter.com/AION_Network" target="_blank" rel="noopener">
-      X / Twitter
-    </a>
-
-    <a class="social" href="https://discord.gg/pjq6eEvsZ" target="_blank" rel="noopener">
-      Discord
-    </a>
-
-    <a class="social" href="https://www.reddit.com/user/AION_Network_Official/" target="_blank" rel="noopener">
-      Reddit
-    </a>
-
-    <a class="social" href="https://www.linkedin.com" target="_blank" rel="noopener">
-      LinkedIn
-    </a>
-
-    <a class="social" href="https://www.paypal.me/AIONNetwork" target="_blank" rel="noopener">
-      PayPal
-    </a>
-
-  </div>
-
+<div class="tag">CONTACT AION</div>
+<h2>ابنِ المستقبل معنا</h2>
+<p>للاستفسارات والشراكات والتواصل مع AION AUTONOMOUS.</p>
 </div>
-�
+<a class="btn btn-primary" href="mailto:aion.genesisss@gmail.com">✉ تواصل عبر البريد</a>
+<div class="socials" style="margin-top:25px">
+<a class="social" href="https://twitter.com/AION_Network" target="_blank" rel="noopener">X / Twitter</a>
+<a class="social" href="https://discord.gg/pjq6eEvsZ" target="_blank" rel="noopener">Discord</a>
+<a class="social" href="https://www.reddit.com/user/AION_Network_Official/" target="_blank" rel="noopener">Reddit</a>
+<a class="social" href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+<a class="social" href="https://www.paypal.me/AIONNetwork" target="_blank" rel="noopener">PayPal</a>
+</div>
+</div>
+</div>
+</section>
 
-�
+<footer>
+<div class="container">
+<div class="footer-flex">
+<div>
+<div class="footer-brand">AION AUTONOMOUS</div>
+<p>شركة ذكاء اصطناعي تبني منظومة وكلاء ذكية للعالم.</p>
+</div>
+<div>© 2026 AION AUTONOMOUS</div>
+</div>
+</div>
+</footer>
 
-�
-AION AUTONOMOUS
-شركة ذكاء اصطناعي تبني منظومة وكلاء ذكية للعالم.
-© 2026 AION AUTONOMOUS
-
-�
+</body>
+</html>
