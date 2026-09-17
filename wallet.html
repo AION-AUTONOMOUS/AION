@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AION Wallet | المحفظة الذكية</title>
+<style>
+:root{--blue:#0B1D3A;--gold:#D4AF37;--purple:#7A4BFF;--white:#fff;--muted:#aebbd0;--line:rgba(255,255,255,.12);--glass:rgba(255,255,255,.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 70% 10%,rgba(122,75,255,.18),transparent 35%),radial-gradient(circle at 20% 30%,rgba(40,130,255,.14),transparent 30%),var(--blue);color:var(--white);line-height:1.7;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{width:min(1100px,92%);margin:auto;padding:20px 0}
+header{background:rgba(11,29,58,.85);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);padding:15px 0;position:sticky;top:0;z-index:100}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:20px}
+.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:900;letter-spacing:2px}
+.logo-mark{width:38px;height:38px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold)}
+.nav-links{display:flex;gap:20px;font-size:14px}
+.nav-links a{color:#dfe8f5;transition:.25s}
+.nav-links a:hover{color:var(--gold)}
+.nav-btn{padding:8px 16px;border:1px solid var(--gold);border-radius:30px;color:var(--gold)!important}
+.hero{text-align:center;padding:50px 0 30px}
+.hero h1{font-size:clamp(32px,5vw,54px);margin-bottom:15px;background:linear-gradient(135deg,#D4AF37,#f2d477);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--muted);max-width:600px;margin:0 auto}
+.card{background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:20px;padding:30px;margin:20px auto;max-width:800px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.card h2{color:var(--gold);margin-bottom:20px;font-size:22px;display:flex;align-items:center;gap:10px}
+.connect-box{text-align:center;padding:40px 20px}
+.connect-box p{color:var(--muted);margin-bottom:25px}
+.btn{display:inline-flex;justify-content:center;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;font-weight:800;font-size:16px;cursor:pointer;transition:.3s;border:none;font-family:inherit}
+.btn-primary{background:linear-gradient(135deg,var(--gold),#f2d477);color:var(--blue);box-shadow:0 10px 30px rgba(212,175,55,.25)}
+.btn-primary:hover{transform:translateY(-3px)}
+.btn-outline{border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff}
+.btn-outline:hover{border-color:var(--purple);background:rgba(122,75,255,.1)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.wallet-info{display:none}
+.wallet-info.show{display:block}
+.address-box{background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:12px;padding:15px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.address-box span{color:var(--gold);font-family:monospace;font-size:14px;word-break:break-all}
+.balance-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px}
+.balance-card{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:15px;padding:20px;text-align:center}
+.balance-card .label{color:var(--muted);font-size:13px;margin-bottom:8px}
+.balance-card .value{color:var(--gold);font-size:26px;font-weight:900}
+.balance-card .sub{color:#c0cce0;font-size:12px;margin-top:5px}
+.prices-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:15px}
+.price-item{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:12px;padding:15px;text-align:center}
+.price-item .name{color:#c0cce0;font-size:12px;margin-bottom:5px}
+.price-item .price{color:#fff;font-weight:900;font-size:16px}
+.price-item .change{font-size:12px;margin-top:3px}
+.up{color:#54e6a7}
+.down{color:#ff6b6b}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:20px}
+.info-note{background:rgba(122,75,255,.08);border:1px solid rgba(122,75,255,.3);border-radius:12px;padding:15px;margin-top:20px;color:#d0c8ff;font-size:13px;line-height:1.7}
+footer{text-align:center;padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:40px}
+@media(max-width:700px){.nav-links{display:none}.balance-grid,.actions{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+<div class="nav">
+<div class="logo">
+<div class="logo-mark">A</div>
+AION WALLET
+</div>
+<nav class="nav-links">
+<a href="index.html">الرئيسية</a>
+<a href="index.html#coin">AION Coin</a>
+<a href="index.html#services">الخدمات</a>
+<a href="index.html#contact" class="nav-btn">تواصل</a>
+</nav>
+</div>
+</div>
+</header>
+
+<div class="container">
+
+<div class="hero">
+<h1>المحفظة الذكية</h1>
+<p>محفظة غير حفظية (Non-Custodial) تربط بها محفظتك، تتابع أرصدتك، وتعرف أسعار العملات الرقمية لحظة بلحظة.</p>
+</div>
+
+<div class="card">
+<div id="connectSection" class="connect-box">
+<h2 style="justify-content:center">🔗 ربط المحفظة</h2>
+<p>اربط محفظتك (MetaMask أو أي محفظة متوافقة) للبدء.</p>
+<button class="btn btn-primary" onclick="connectWallet()">ربط المحفظة</button>
+<p id="connectStatus" style="margin-top:20px;color:#c0cce0;font-size:14px"></p>
+</div>
+
+<div id="walletInfo" class="wallet-info">
+<h2>💼 معلومات المحفظة</h2>
+<div class="address-box">
+<span id="walletAddress">-</span>
+<button class="btn btn-outline" onclick="copyAddress()" style="padding:8px 16px;font-size:13px">نسخ</button>
+</div>
+
+<div class="balance-grid">
+<div class="balance-card">
+<div class="label">رصيد ETH</div>
+<div class="value" id="ethBalance">0</div>
+<div class="sub">Ethereum</div>
+</div>
+<div class="balance-card">
+<div class="label">رصيد BNB</div>
+<div class="value" id="bnbBalance">0</div>
+<div class="sub">BNB Chain</div>
+</div>
+</div>
+
+<div class="actions">
+<button class="btn btn-primary" onclick="buyAION()">🛒 شراء AION</button>
+<button class="btn btn-outline" onclick="disconnectWallet()">قطع الاتصال</button>
+</div>
+
+<div class="info-note">
+<strong>ملاحظة:</strong> هذه محفظة غير حفظية (Non-Custodial). نحن لا نحتفظ بأموالك ولا نتحكم بها. المفاتيح الخاصة تبقى في محفظتك أنت فقط.
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📊 أسعار العملات الرقمية</h2>
+<div class="prices-grid" id="pricesGrid">
+<div class="price-item"><div class="name">BTC</div><div class="price" id="btcPrice">...</div></div>
+<div class="price-item"><div class="name">ETH</div><div class="price" id="ethPrice">...</div></div>
+<div class="price-item"><div class="name">BNB</div><div class="price" id="bnbPrice">...</div></div>
+<div class="price-item"><div class="name">USDT</div><div class="price" id="usdtPrice">...</div></div>
+<div class="price-item"><div class="name">SOL</div><div class="price" id="solPrice">...</div></div>
+<div class="price-item"><div class="name">XRP</div><div class="price" id="xrpPrice">...</div></div>
+</div>
+<p style="color:var(--muted);font-size:12px;margin-top:15px;text-align:center">الأسعار محدثة تلقائيًا من CoinGecko كل دقيقة.</p>
+</div>
+
+<div class="card">
+<h2>🎯 خدمات AION</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-top:15px">
+<a href="https://www.paypal.me/AIONNetwork" target="_blank" rel="noopener" class="btn btn-outline" style="padding:20px">🛒 شراء AION</a>
+<a href="index.html#workforce" class="btn btn-outline" style="padding:20px">🤖 الجيش الذكي</a>
+<a href="index.html#services" class="btn btn-outline" style="padding:20px">⚙ خدماتنا</a>
+<a href="index.html#contact" class="btn btn-outline" style="padding:20px">📬 تواصل معنا</a>
+</div>
+</div>
+
+</div>
+
+<footer>
+AION AUTONOMOUS © 2026 — الذكاء الذي لا ينام
+</footer>
+
+<script>
+let userAddress = null;
+
+async function connectWallet() {
+const status = document.getElementById("connectStatus");
+
+if (typeof window.ethereum === "undefined") {
+status.style.color = "#ff6b6b";
+status.textContent = "يرجى تثبيت MetaMask من metamask.io للبدء.";
+return;
+}
+
+try {
+status.textContent = "جاري الاتصال...";
+const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+userAddress = accounts[0];
+document.getElementById("walletAddress").textContent = userAddress;
+document.getElementById("connectSection").style.display = "none";
+document.getElementById("walletInfo").classList.add("show");
+loadBalances();
+} catch (err) {
+status.style.color = "#ff6b6b";
+status.textContent = "تم رفض الاتصال.";
+}
+}
+
+async function loadBalances() {
+if (!userAddress) return;
+try {
+const balanceHex = await window.ethereum.request({
+method: "eth_getBalance",
+params: [userAddress, "latest"]
+});
+const balanceWei = parseInt(balanceHex, 16);
+const balanceEth = balanceWei / 1e18;
+document.getElementById("ethBalance").textContent = balanceEth.toFixed(4);
+} catch (err) {
+document.getElementById("ethBalance").textContent = "خطأ";
+}
+
+try {
+if (window.ethereum.chainId === "0x38") {
+const balanceHex = await window.ethereum.request({
+method: "eth_getBalance",
+params: [userAddress, "latest"]
+});
+const balanceWei = parseInt(balanceHex, 16);
+const balanceBnb = balanceWei / 1e18;
+document.getElementById("bnbBalance").textContent = balanceBnb.toFixed(4);
+} else {
+document.getElementById("bnbBalance").textContent = "—";
+}
+} catch (err) {
+document.getElementById("bnbBalance").textContent = "—";
+}
+}
+
+function copyAddress() {
+if (!userAddress) return;
+navigator.clipboard.writeText(userAddress);
+alert("تم نسخ العنوان");
+}
+
+function disconnectWallet() {
+userAddress = null;
+document.getElementById("walletAddress").textContent = "-";
+document.getElementById("ethBalance").textContent = "0";
+document.getElementById("bnbBalance").textContent = "0";
+document.getElementById("walletInfo").classList.remove("show");
+document.getElementById("connectSection").style.display = "block";
+document.getElementById("connectStatus").textContent = "";
+}
+
+function buyAION() {
+window.open("https://www.paypal.me/AIONNetwork", "_blank");
+}
+
+const CG_API = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,tether,solana,ripple&vs_currencies=usd&include_24hr_change=true";
+
+async function loadPrices() {
+try {
+const res = await fetch(CG_API);
+const data = await res.json();
+
+updatePrice("btcPrice", data.bitcoin);
+updatePrice("ethPrice", data.ethereum);
+updatePrice("bnbPrice", data.binancecoin);
+updatePrice("usdtPrice", data.tether);
+updatePrice("solPrice", data.solana);
+updatePrice("xrpPrice", data.ripple);
+} catch (err) {
+console.log("Price load error:", err);
+}
+}
+
+function updatePrice(id, coin) {
+if (!coin) return;
+const el = document.getElementById(id);
+const price = coin.usd;
+const change = coin.usd_24h_change || 0;
+const arrow = change >= 0 ? "▲" : "▼";
+const cls = change >= 0 ? "up" : "down";
+
+el.innerHTML = '$' + price.toLocaleString() +
+'<div class="change ' + cls + '">' + arrow + ' ' + Math.abs(change).toFixed(2) + '%</div>';
+}
+
+loadPrices();
+setInterval(loadPrices, 60000);
+
+if (typeof window.ethereum !== "undefined") {
+window.ethereum.on("accountsChanged", function(accounts) {
+if (accounts.length === 0) disconnectWallet();
+else {
+userAddress = accounts[0];
+document.getElementById("walletAddress").textContent = userAddress;
+loadBalances();
+}
+});
+}
+</script>
+
+</body>
+</html>
