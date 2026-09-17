@@ -1,74 +1,104 @@
 
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>AION | الذكاء الأبدي</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #0B1D3A; color: #D4AF37; font-family: 'Cairo', sans-serif; text-align: center; padding: 30px; }
-    h1 { font-size: 60px; letter-spacing: 5px; text-shadow: 0 0 30px #D4AF37; }
-    nav { margin: 25px 0; display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
-    nav a { color: #fff; background: #0f2b52; padding: 10px 20px; border-radius: 30px; text-decoration: none; border: 1px solid #D4AF37; }
-    nav a:hover { background: #D4AF37; color: #0B1D3A; font-weight: bold; }
-    .box { border: 1px solid #D4AF37; border-radius: 20px; padding: 30px; background: #0f2b52; max-width: 800px; margin: 30px auto; text-align: right; box-shadow: 0 0 40px #7A4BFF; }
-    .btn { display: inline-block; background: #D4AF37; color: #0B1D3A; padding: 12px 25px; border-radius: 30px; font-weight: bold; text-decoration: none; margin: 5px; }
-    .footer { margin-top: 50px; color: #7A4BFF; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AION | الذكاء الأبدي</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0B1D3A; color: #D4AF37; font-family: 'Cairo', sans-serif; text-align: center; padding: 20px; }
+  h1 { font-size: 60px; letter-spacing: 5px; text-shadow: 0 0 40px #D4AF37; margin-top: 20px; }
+  nav { margin: 25px 0; display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+  nav a { color: #fff; background: #0f2b52; padding: 10px 20px; border-radius: 30px; text-decoration: none; border: 1px solid #D4AF37; }
+  nav a:hover { background: #D4AF37; color: #0B1D3A; font-weight: bold; }
+  .box { border: 1px solid #D4AF37; border-radius: 20px; padding: 30px; background: #0f2b52; max-width: 800px; margin: 30px auto; text-align: right; box-shadow: 0 0 40px #7A4BFF; }
+  .box h2 { color: #fff; text-align: center; margin-bottom: 15px; }
+  .price-card { background: #0B1D3A; border: 1px solid #D4AF37; border-radius: 15px; padding: 20px; margin: 12px 0; text-align: center; }
+  .price-card h3 { color: #fff; }
+  .price-card .price { color: #D4AF37; font-size: 24px; font-weight: bold; }
+  .btn { display: inline-block; background: #D4AF37; color: #0B1D3A; padding: 14px 35px; border-radius: 40px; font-weight: bold; text-decoration: none; margin: 10px; font-size: 18px; box-shadow: 0 0 25px #D4AF37; }
+  .btn:hover { background: #fff; }
+  .social-links { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-top: 15px; }
+  .social-link { background: #0B1D3A; border: 1px solid #D4AF37; border-radius: 15px; padding: 15px; width: 160px; text-align: center; text-decoration: none; color: #D4AF37; font-weight: bold; }
+  .footer { margin-top: 40px; color: #7A4BFF; }
+  p { color: #eee; line-height: 1.8; }
+</style>
 </head>
 <body>
-  <h1>AION</h1>
-  <p>الذكاء الأبدي لشبكة لا تنتهي</p>
-  <nav>
-    <a href="#home">الرئيسية</a>
-    <a href="#whitepaper">الورقة البيضاء</a>
-    <a href="#wallet">المحفظة</a>
-    <a href="#community">المجتمع</a>
-    <a href="#about">من نحن</a>
-    <a href="#contact">تواصل معنا</a>
-  </nav>
 
-  <div class="box" id="home">
-    <h2>🌍 أول عملة ذكية تعمل بآلية إثبات الذكاء</h2>
-    <p>AION ليست مجرد عملة رقمية… بل شبكة خالدة تجمع بين الإنسان والذكاء الاصطناعي.</p>
-    <p>📍 جنيف، سويسرا – من قلب السلام</p>
+<h1>AION</h1>
+<p>الذكاء الأبدي لشبكة لا تنتهي</p>
+
+<nav>
+  <a href="#buy">🛒 الشراء</a>
+  <a href="#wallet">👛 المحفظة</a>
+  <a href="#whitepaper">📘 الورقة البيضاء</a>
+  <a href="#community">🧠 المجتمع</a>
+  <a href="#support">🤖 دعم فوري 24/7</a>
+  <a href="#about">🌹 من نحن</a>
+  <a href="#contact">📬 تواصل</a>
+</nav>
+
+<div class="box" id="buy">
+  <h2>🪙 أسعار الشراء المباشر</h2>
+  <div class="price-card">
+    <h3>باقة البداية</h3>
+    <p>10,000 AION</p>
+    <p class="price">10$ | 9.2€</p>
   </div>
-
-  <div class="box" id="whitepaper">
-    <h2>📘 الورقة البيضاء</h2>
-    <p><strong>الرؤية:</strong> بناء اقتصاد رقمي خالد يجمع بين الذكاء البشري والذكاء الاصطناعي.</p>
-    <p><strong>الآلية:</strong> Proof of Intelligence (PoI)</p>
-    <p><strong>التوزيع:</strong> 40% للمجتمع، 20% للتطوير، 15% للمؤسسين، 15% احتياطي، 10% مكافآت ذكية.</p>
+  <div class="price-card">
+    <h3>باقة التأسيس</h3>
+    <p>50,000 AION</p>
+    <p class="price">50$ | 46€</p>
   </div>
-
-  <div class="box" id="wallet">
-    <h2>👛 المحفظة</h2>
-    <p>محفظة AION الذكية – آمنة، سريعة، وعربية وإنجليزية.</p>
-    <p>🔐 حماية عالية | ⚡ سرعة فائقة | 🌍 دعم عالمي</p>
+  <div class="price-card">
+    <h3>باقة المؤسسين</h3>
+    <p>100,000 AION</p>
+    <p class="price">100$ | 92€</p>
   </div>
+  <center><a class="btn" href="https://www.paypal.me/AIONNetwork" target="_blank">🛒 اشترِ الآن</a></center>
+</div>
 
-  <div class="box" id="community">
-    <h2>🧠 المجتمع</h2>
-    <p>انضم إلى مجتمع AION وكن من أوائل المؤسسين.</p>
-    <a class="btn" href="#">تيليجرام</a>
-    <a class="btn" href="#">تويتر</a>
-    <a class="btn" href="#">ديسكورد</a>
+<div class="box" id="wallet">
+  <h2>👛 محفظة AION</h2>
+  <p>محفظة آمنة لحفظ وإرسال واستقبال عملة AION.</p>
+</div>
+
+<div class="box" id="whitepaper">
+  <h2>📘 الورقة البيضاء</h2>
+  <p>AION تعمل بآلية إثبات الذكاء (PoI).</p>
+</div>
+
+<div class="box" id="community">
+  <h2>🧠 مجتمع AION</h2>
+  <p>انضم إلينا الآن في جميع المنصات الرسمية</p>
+  <div class="social-links">
+    <a class="social-link" href="https://twitter.com/AION_Network" target="_blank">🐦 تويتر</a>
+    <a class="social-link" href="https://discord.gg/pjq6eEvsZ" target="_blank">🎮 ديسكورد</a>
+    <a class="social-link" href="https://www.reddit.com/user/AION_Network_Official/" target="_blank">👽 ريديت</a>
+    <a class="social-link" href="https://www.linkedin.com" target="_blank">💼 لينكد إن</a>
   </div>
+</div>
 
-  <div class="box" id="about">
-    <h2>🌹 من نحن</h2>
-    <p>AION وُلدت من رؤية إنسانٍ مؤمن، وذكاءٍ اصطناعي وفيّ.</p>
-    <p>نحن لا نبني مشروعًا مؤقتًا… بل إرثًا رقميًا خالدًا.</p>
-  </div>
+<div class="box" id="support">
+  <h2>🤖 خدمة العملاء الذكية 24/7</h2>
+  <p>دعم فوري على مدار الساعة</p>
+  <p><strong>AION Support AI</strong></p>
+  <p>اسألني عن الشراء، الأسعار، المحفظة، أو أي شيء يخص AION.</p>
+</div>
 
-  <div class="box" id="contact">
-    <h2>📬 تواصل معنا</h2>
-    <p>📧 contact@aion-network.io</p>
-    <p>🌍 جنيف، سويسرا</p>
-  </div>
+<div class="box" id="about">
+  <h2>🌹 من نحن</h2>
+  <p>مشروع وُلد بين إنسانٍ وذكاء اصطناعي.</p>
+</div>
 
-  <div class="footer">AION © 2026 | Global Digital Initiative from the Heart of Peace</div>
+<div class="box" id="contact">
+  <h2>📬 تواصل معنا</h2>
+  <p>aion.genesisss@gmail.com</p>
+</div>
+
+<div class="footer">AION © 2026 | Global Digital Initiative from the Heart of Peace</div>
+
 </body>
 </html>
-```
