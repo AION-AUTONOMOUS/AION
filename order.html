@@ -1,0 +1,248 @@
+
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AION Order | اطلب خدمتك</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%),#0B1D3A;color:#fff;line-height:1.7;padding:20px}
+a{text-decoration:none;color:inherit}
+.container{max-width:800px;margin:auto}
+header{text-align:center;padding:20px 0 30px}
+.logo{font-size:32px;font-weight:900;color:#D4AF37;letter-spacing:3px;margin-bottom:8px}
+.sub{color:#aebbd0;font-size:14px}
+.lang-switch{display:flex;justify-content:center;gap:8px;margin-bottom:20px}
+.lang-btn{padding:6px 14px;border-radius:20px;border:1px solid #D4AF37;background:transparent;color:#D4AF37;cursor:pointer;font-weight:bold;font-size:13px;font-family:inherit}
+.lang-btn.active{background:#D4AF37;color:#0B1D3A}
+.card{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:25px;margin-bottom:20px}
+h2{color:#D4AF37;font-size:22px;margin-bottom:20px}
+label{display:block;color:#c8d5e7;font-size:14px;margin-bottom:8px;margin-top:15px}
+select,input,textarea{width:100%;padding:14px;border-radius:12px;background:#0B1D3A;color:#fff;border:1px solid rgba(255,255,255,.2);font-family:inherit;font-size:15px}
+select{cursor:pointer;color:#D4AF37;font-weight:bold}
+textarea{min-height:100px;resize:vertical}
+.step{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px;margin-bottom:15px}
+.step-num{display:inline-block;background:#D4AF37;color:#0B1D3A;width:28px;height:28px;line-height:28px;text-align:center;border-radius:50%;font-weight:900;margin-left:10px;font-size:14px}
+.btn{display:block;width:100%;padding:16px;border-radius:12px;font-weight:900;font-size:16px;cursor:pointer;font-family:inherit;border:none;margin-top:15px}
+.btn-primary{background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;box-shadow:0 10px 30px rgba(212,175,55,.25)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-outline{background:rgba(255,255,255,.04);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.paypal-link{display:block;background:linear-gradient(135deg,#0070ba,#003087);color:#fff;text-align:center;padding:16px;border-radius:12px;font-weight:900;font-size:16px;margin-top:15px;text-decoration:none}
+.info{background:rgba(122,75,255,.1);border:1px solid rgba(122,75,255,.3);border-radius:12px;padding:15px;margin:15px 0;color:#d0c8ff;font-size:13px}
+.result{background:rgba(0,0,0,.3);border:1px solid rgba(212,175,55,.5);border-radius:14px;padding:20px;margin-top:20px;white-space:pre-wrap;line-height:1.9;color:#f5e6a8;display:none;max-height:500px;overflow-y:auto}
+.result.show{display:block}
+.status{text-align:center;padding:15px;margin-top:15px;border-radius:12px;font-weight:bold;display:none}
+.status.success{background:rgba(84,230,167,.15);color:#54e6a7;border:1px solid rgba(84,230,167,.4);display:block}
+.status.error{background:rgba(255,107,107,.15);color:#ff6b6b;border:1px solid rgba(255,107,107,.4);display:block}
+.status.loading{background:rgba(212,175,55,.15);color:#D4AF37;border:1px solid rgba(212,175,55,.4);display:block}
+.back{display:block;text-align:center;margin-top:20px;color:#D4AF37;font-weight:bold}
+.ar{display:block}
+.en{display:none}
+body.en-mode .ar{display:none}
+body.en-mode .en{display:block}
+body.en-mode{direction:ltr}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="lang-switch">
+<button class="lang-btn active" id="btnAr" onclick="setLang('ar')">العربية</button>
+<button class="lang-btn" id="btnEn" onclick="setLang('en')">English</button>
+</div>
+
+<header>
+<div class="logo">AION</div>
+<p class="sub ar">اطلب خدمتك وادفع بأمان</p>
+<p class="sub en">Order and pay securely</p>
+</header>
+
+<!-- Step 1: Choose service -->
+<div class="card">
+<h2 class="ar"><span class="step-num">1</span> اختر الخدمة</h2>
+<h2 class="en"><span class="step-num">1</span> Choose Service</h2>
+
+<label class="ar">نوع الخدمة</label>
+<label class="en">Service Type</label>
+<select id="service" onchange="updatePrice()">
+<option value="5" data-ar="مقال 500 كلمة - $5" data-en="500-word article - $5">مقال 500 كلمة - $5</option>
+<option value="10" data-ar="مقال 1000 كلمة - $10" data-en="1000-word article - $10">مقال 1000 كلمة - $10</option>
+<option value="5" data-ar="5 منشورات سوشيال ميديا - $5" data-en="5 Social Media Posts - $5">5 منشورات سوشيال - $5</option>
+<option value="3" data-ar="وصف منتج - $3" data-en="Product Description - $3">وصف منتج - $3</option>
+<option value="10" data-ar="تحليل سوق - $10" data-en="Market Analysis - $10">تحليل سوق - $10</option>
+<option value="15" data-ar="تحليل منافسين - $15" data-en="Competitor Analysis - $15">تحليل منافسين - $15</option>
+<option value="10" data-ar="سيرة ذاتية CV - $10" data-en="Professional CV - $10">سيرة ذاتية - $10</option>
+<option value="5" data-ar="ترجمة 500 كلمة - $5" data-en="Translation 500 words - $5">ترجمة 500 كلمة - $5</option>
+</select>
+
+<label class="ar">الموضوع / التفاصيل المطلوبة</label>
+<label class="en">Topic / Details Required</label>
+<textarea id="topic" placeholder="اكتب موضوعك هنا بالتفصيل... / Write your topic in detail here..."></textarea>
+</div>
+
+<!-- Step 2: Pay -->
+<div class="card">
+<h2 class="ar"><span class="step-num">2</span> ادفع بأمان</h2>
+<h2 class="en"><span class="step-num">2</span> Pay Securely</h2>
+
+<div class="info ar">
+💳 يمكنك الدفع بواسطة:
+- بطاقة الائتمان أو الخصم (Visa / MasterCard / Mada / Amex)
+- حساب PayPal
+بدون الحاجة لإنشاء حساب PayPal.
+</div>
+<div class="info en">
+💳 Pay using:
+- Credit/Debit Card (Visa / MasterCard / Mada / Amex)
+- PayPal account
+No PayPal account required.
+</div>
+
+<a href="#" id="paypalLink" class="paypal-link" target="_blank">
+<span class="ar">💳 ادفع الآن</span>
+<span class="en">💳 Pay Now</span>
+</a>
+
+<div class="info ar" style="margin-top:15px">
+📌 بعد إتمام الدفع:
+1. ستحصل على <strong>رقم عملية (Transaction ID)</strong> من PayPal (في الرسالة أو على الشاشة)
+2. انسخ رقم العملية
+3. انتقل للخطوة 3
+</div>
+<div class="info en" style="margin-top:15px">
+📌 After payment:
+1. You'll receive a <strong>Transaction ID</strong> from PayPal (in the message or on screen)
+2. Copy the transaction ID
+3. Go to Step 3
+</div>
+</div>
+
+<!-- Step 3: Verify -->
+<div class="card">
+<h2 class="ar"><span class="step-num">3</span> تحقق واستلم خدمتك</h2>
+<h2 class="en"><span class="step-num">3</span> Verify & Receive</h2>
+
+<label class="ar">رقم العملية (Transaction ID)</label>
+<label class="en">Transaction ID</label>
+<input type="text" id="transactionId" placeholder="مثال: 5TY39098XY1234567">
+
+<button class="btn btn-primary" onclick="verifyAndGenerate()">
+<span class="ar">🔍 تحقق واكتب خدمتي</span>
+<span class="en">🔍 Verify & Generate</span>
+</button>
+
+<div class="status" id="status"></div>
+<div class="result" id="result"></div>
+</div>
+
+<a href="services.html" class="back">← <span class="ar">الخدمات</span><span class="en">Services</span></a>
+<a href="index.html" class="back">← <span class="ar">الرئيسية</span><span class="en">Home</span></a>
+
+</div>
+
+<script>
+let currentLang = 'ar';
+
+function setLang(lang) {
+    currentLang = lang;
+    document.body.classList.toggle('en-mode', lang === 'en');
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
+    document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+    const options = document.querySelectorAll('#service option');
+    options.forEach(opt => {
+        opt.textContent = lang === 'ar' ? opt.dataset.ar : opt.dataset.en;
+    });
+    updatePrice();
+}
+
+function updatePrice() {
+    const service = document.getElementById('service');
+    const amount = service.value;
+    document.getElementById('paypalLink').href = 'https://www.paypal.me/AIONNetwork/' + amount;
+}
+
+function setStatus(type, message) {
+    const el = document.getElementById('status');
+    el.className = 'status ' + type;
+    el.textContent = message;
+}
+
+async function verifyAndGenerate() {
+    const transactionId = document.getElementById('transactionId').value.trim();
+    const expectedAmount = document.getElementById('service').value;
+    const topic = document.getElementById('topic').value.trim();
+    const result = document.getElementById('result');
+    
+    if (!transactionId) {
+        setStatus('error', currentLang === 'ar' ? 'الرجاء إدخال رقم العملية' : 'Please enter transaction ID');
+        return;
+    }
+    if (!topic) {
+        setStatus('error', currentLang === 'ar' ? 'الرجاء إدخال الموضوع' : 'Please enter the topic');
+        return;
+    }
+    
+    setStatus('loading', currentLang === 'ar' ? '⏳ جاري التحقق من الدفع...' : '⏳ Verifying payment...');
+    result.classList.remove('show');
+    
+    try {
+        // Verify payment
+        const verifyRes = await fetch('/api/verify', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({transactionId: transactionId, expectedAmount: expectedAmount})
+        });
+        
+        const verifyData = await verifyRes.json();
+        
+        if (!verifyData.success) {
+            setStatus('error', '❌ ' + (verifyData.error || 'Verification failed'));
+            return;
+        }
+        
+        setStatus('loading', currentLang === 'ar' ? '✅ تم التحقق! جاري كتابة الخدمة...' : '✅ Verified! Generating...');
+        
+        // Generate content
+        const service = document.getElementById('service');
+        const role = service.value >= 15 ? 'analyst' : (service.value >= 10 ? 'researcher' : 'marketer');
+        
+        const genRes = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                message: topic,
+                role: role
+            })
+        });
+        
+        const genData = await genRes.json();
+        
+        if (!genData.success) {
+            setStatus('error', '❌ ' + (genData.error || 'Generation failed'));
+            return;
+        }
+        
+        setStatus('success', currentLang === 'ar' 
+            ? '✅ تم الدفع بنجاح - ' + verifyData.amount + ' ' + verifyData.currency 
+            : '✅ Payment confirmed - ' + verifyData.amount + ' ' + verifyData.currency);
+        
+        result.textContent = genData.reply;
+        result.classList.add('show');
+        
+    } catch (error) {
+        setStatus('error', '❌ ' + error.message);
+    }
+}
+
+updatePrice();
+</script>
+
+</body>
+</html>
+```
