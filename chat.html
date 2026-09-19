@@ -1,18 +1,20 @@
 
-
-```
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AION Chat | تحدث مع الجيش الذكي</title>
+<title>AION Chat | AR / EN</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%),#0B1D3A;color:#fff;min-height:100vh;padding:20px}
 .container{max-width:800px;margin:auto}
 h1{color:#D4AF37;text-align:center;margin-bottom:10px;font-size:32px}
 .sub{text-align:center;color:#aebbd0;margin-bottom:25px;font-size:14px}
+.lang-switch{display:flex;justify-content:center;gap:10px;margin-bottom:20px}
+.lang-btn{padding:8px 20px;border-radius:20px;border:1px solid #D4AF37;background:transparent;color:#D4AF37;cursor:pointer;font-weight:bold;font-size:14px;font-family:inherit}
+.lang-btn.active{background:#D4AF37;color:#0B1D3A}
 .chat-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:20px;margin-bottom:20px;min-height:400px;max-height:500px;overflow-y:auto}
 .msg{margin-bottom:15px;padding:12px 16px;border-radius:14px;max-width:85%;line-height:1.7;word-wrap:break-word}
 .msg.user{background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.4);margin-right:auto;color:#f5e6a8}
@@ -21,58 +23,94 @@ h1{color:#D4AF37;text-align:center;margin-bottom:10px;font-size:32px}
 .role-select{width:100%;padding:12px;border-radius:10px;background:#0B1D3A;color:#D4AF37;border:1px solid rgba(255,255,255,.2);margin-bottom:12px;font-size:14px;font-family:inherit}
 .input-row{display:flex;gap:10px}
 textarea{flex:1;padding:14px;border-radius:12px;background:#0B1D3A;color:#fff;border:1px solid rgba(255,255,255,.2);font-family:inherit;font-size:15px;resize:none;min-height:55px;max-height:150px}
-button{background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border:none;padding:14px 25px;border-radius:12px;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit}
-button:hover{transform:translateY(-2px)}
-button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+button.send{background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border:none;padding:14px 25px;border-radius:12px;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit}
+button.send:hover{transform:translateY(-2px)}
+button.send:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .loading{text-align:center;color:#D4AF37;padding:10px;font-size:14px;display:none}
 .back{display:block;text-align:center;margin-top:20px;color:#D4AF37;text-decoration:none;font-weight:bold}
+.ar{display:block}
+.en{display:none}
+body.en-mode .ar{display:none}
+body.en-mode .en{display:block}
+body.en-mode{direction:ltr}
 </style>
 </head>
 <body>
+
 <div class="container">
+
 <h1>🤖 AION Chat</h1>
-<p class="sub">تحدث مع الجيش الذكي — اختر وكيلًا واكتب مهمتك</p>
+
+<div class="lang-switch">
+<button class="lang-btn active" id="btnAr" onclick="setLang('ar')">العربية</button>
+<button class="lang-btn" id="btnEn" onclick="setLang('en')">English</button>
+</div>
+
+<p class="sub ar">تحدث مع الجيش الذكي — اختر وكيلًا واكتب مهمتك</p>
+<p class="sub en">Talk to the AI Army — Choose an agent and write your task</p>
 
 <select class="role-select" id="role">
-<option value="researcher">🔍 باحث — Research</option>
-<option value="analyst">📊 محلل — Analysis</option>
-<option value="marketer">📣 مسوق — Marketing</option>
-<option value="sales">💼 مبيعات — Sales</option>
-<option value="coder">💻 مبرمج — Coder</option>
-<option value="auditor">🔎 مدقق — Auditor</option>
-<option value="legal">⚖️ قانوني — Legal</option>
+<option value="researcher" data-ar="🔍 باحث — Research" data-en="🔍 Researcher">🔍 باحث — Research</option>
+<option value="analyst" data-ar="📊 محلل — Analysis" data-en="📊 Analyst">📊 محلل — Analysis</option>
+<option value="marketer" data-ar="📣 مسوق — Marketing" data-en="📣 Marketer">📣 مسوق — Marketing</option>
+<option value="sales" data-ar="💼 مبيعات — Sales" data-en="💼 Sales">💼 مبيعات — Sales</option>
+<option value="coder" data-ar="💻 مبرمج — Coder" data-en="💻 Coder">💻 مبرمج — Coder</option>
+<option value="auditor" data-ar="🔎 مدقق — Auditor" data-en="🔎 Auditor">🔎 مدقق — Auditor</option>
+<option value="legal" data-ar="⚖️ قانوني — Legal" data-en="⚖️ Legal">⚖️ قانوني — Legal</option>
 </select>
 
 <div class="chat-box" id="chatBox">
 <div class="msg ai">
 <span class="role">AION CORE</span>
-مرحبًا! اختر الوكيل الذي تريد، واكتب مهمتك بالعربية. سأوجه طلبك للوكيل المختص.
+<span class="ar">مرحبًا! اختر الوكيل، واكتب مهمتك بالعربية أو الإنجليزية.<br>Welcome! Choose an agent, and write your task in Arabic or English.</span>
 </div>
 </div>
 
-<div class="loading" id="loading">جاري التفكير...</div>
+<div class="loading ar" id="loadingAr">جاري التفكير...</div>
+<div class="loading en" id="loadingEn">Thinking...</div>
 
 <div class="input-row">
-<textarea id="input" placeholder="اكتب رسالتك هنا..."></textarea>
-<button id="sendBtn" onclick="sendMessage()">إرسال</button>
+<textarea id="input" class="ar" placeholder="اكتب رسالتك هنا..."></textarea>
+<textarea id="inputEn" class="en" placeholder="Write your message here..."></textarea>
+<button class="send ar" onclick="sendMessage('ar')" id="sendBtnAr">إرسال</button>
+<button class="send en" onclick="sendMessage('en')" id="sendBtnEn">Send</button>
 </div>
 
-<a href="index.html" class="back">← العودة للموقع الرئيسي</a>
+<a href="index.html" class="back ar">← العودة للموقع الرئيسي</a>
+<a href="index.html" class="back en">← Back to Main Site</a>
 </div>
 
 <script>
-async function sendMessage() {
-    const input = document.getElementById('input');
+let currentLang = 'ar';
+
+function setLang(lang) {
+    currentLang = lang;
+    document.body.classList.toggle('en-mode', lang === 'en');
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    
+    document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
+    document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+    
+    // Update role select options
+    const options = document.querySelectorAll('#role option');
+    options.forEach(opt => {
+        opt.textContent = lang === 'ar' ? opt.dataset.ar : opt.dataset.en;
+    });
+}
+
+async function sendMessage(lang) {
+    const input = lang === 'ar' ? document.getElementById('input') : document.getElementById('inputEn');
     const role = document.getElementById('role').value;
     const chatBox = document.getElementById('chatBox');
-    const loading = document.getElementById('loading');
-    const sendBtn = document.getElementById('sendBtn');
+    const loading = document.getElementById(lang === 'ar' ? 'loadingAr' : 'loadingEn');
+    const sendBtn = document.getElementById(lang === 'ar' ? 'sendBtnAr' : 'sendBtnEn');
     
     const message = input.value.trim();
     if (!message) return;
     
-    // Add user message
-    chatBox.innerHTML += '<div class="msg user"><span class="role">أنت</span>' + escapeHtml(message) + '</div>';
+    const userLabel = lang === 'ar' ? 'أنت' : 'You';
+    chatBox.innerHTML += '<div class="msg user"><span class="role">' + userLabel + '</span>' + escapeHtml(message) + '</div>';
     input.value = '';
     chatBox.scrollTop = chatBox.scrollHeight;
     
@@ -93,12 +131,15 @@ async function sendMessage() {
         if (data.success) {
             chatBox.innerHTML += '<div class="msg ai"><span class="role">' + role.toUpperCase() + '</span>' + escapeHtml(data.reply) + '</div>';
         } else {
-            chatBox.innerHTML += '<div class="msg ai"><span class="role">خطأ</span>حدث خطأ: ' + escapeHtml(data.error || 'Unknown') + '</div>';
+            const errLabel = lang === 'ar' ? 'خطأ' : 'Error';
+            chatBox.innerHTML += '<div class="msg ai"><span class="role">' + errLabel + '</span>' + escapeHtml(data.error || 'Unknown') + '</div>';
         }
     } catch (error) {
         loading.style.display = 'none';
         sendBtn.disabled = false;
-        chatBox.innerHTML += '<div class="msg ai"><span class="role">خطأ</span>تعذر الاتصال: ' + escapeHtml(error.message) + '</div>';
+        const errLabel = lang === 'ar' ? 'خطأ' : 'Error';
+        const connErr = lang === 'ar' ? 'تعذر الاتصال: ' : 'Connection failed: ';
+        chatBox.innerHTML += '<div class="msg ai"><span class="role">' + errLabel + '</span>' + connErr + escapeHtml(error.message) + '</div>';
     }
     
     chatBox.scrollTop = chatBox.scrollHeight;
@@ -110,14 +151,42 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// Send on Enter (Shift+Enter for new line)
 document.getElementById('input').addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
-        sendMessage();
+        sendMessage('ar');
+    }
+});
+
+document.getElementById('inputEn').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage('en');
     }
 });
 </script>
 </body>
 </html>
+```
+
+4. اضغط Commit changes (مرتين)
+
+---
+
+🎯 وأيضًا نعدّل الـ API ليدعم اللغتين:
+
+1. افتح:
+
+https://github.com/AION-AUTONOMOUS/AION/edit/main/api/chat.js
+
+2. ابحث عن:
+
+```
+{ role: 'system', content: 'You are a ' + role + ' agent at AION AUTONOMOUS. Answer in Arabic.' }
+```
+
+3. استبدله بـ:
+
+```
+{ role: 'system', content: 'You are a ' + role + ' agent at AION AUTONOMOUS. Answer in the same language as the user question.' }
 ```
