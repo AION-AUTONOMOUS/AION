@@ -1,6 +1,6 @@
 
 ```javascript
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -13,7 +13,8 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   
-  const { message, role = 'researcher' } = req.body;
+  const message = req.body.message;
+  const role = req.body.role || 'researcher';
   
   if (!message) {
     return res.status(400).json({ error: 'Message is required' });
@@ -35,29 +36,30 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: 'openai/gpt-oss-120b',
         messages: [
-          { role: 'system', content: 'You are a ' + role + ' agent at AION AUTONOMOUS. Answer in Arabic, clearly and professionally.' },
+          { role: 'system', content: 'You are a ' + role + ' agent at AION AUTONOMOUS. Answer in Arabic.' },
           { role: 'user', content: message }
         ],
         max_tokens: 500
       })
     });
     
+    const data = await response.json();
+    
     if (!response.ok) {
-      const error = await response.text();
-      return res.status(response.status).json({ error: 'Groq API error', details: error });
+      return res.status(response.status).json({ error: 'Groq error', details: data });
     }
     
-    const data = await response.json();
     const reply = data.choices[0].message.content;
     
     return res.status(200).json({ 
       success: true, 
-      reply,
+      reply: reply,
       agent: role
     });
     
   } catch (error) {
     return res.status(500).json({ error: 'Server error', details: error.message });
   }
-}
+};
 ```
+
