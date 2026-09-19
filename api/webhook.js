@@ -40,7 +40,7 @@ module.exports = async function handler(req, res) {
       }
     );
 
-    const verificationResult = await verificationResummary = await verificationResponse.json();
+    const verificationResult = await verificationResponse.json();
 
     if (verificationResult.verification_status !== 'SUCCESS') {
       console.error('PayPal signature verification failed');
