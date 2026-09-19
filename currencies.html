@@ -1,5 +1,4 @@
-
-```html
+```
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -8,7 +7,7 @@
 <title>AION Currencies | عملات AION</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%),radial-gradient(circle at 15% 25%,rgba(40,130,255,.14),transparent 28%),#0B1D3A;color:#fff;line-height:1.7;padding:0}
+body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%),#0B1D3A;color:#fff;line-height:1.7;padding:0}
 a{text-decoration:none;color:inherit}
 .container{max-width:1200px;margin:auto;padding:20px}
 header{background:rgba(11,29,58,.85);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.12);padding:15px 0;position:sticky;top:0;z-index:100}
@@ -21,8 +20,6 @@ header{background:rgba(11,29,58,.85);backdrop-filter:blur(18px);border-bottom:1p
 .hero{text-align:center;padding:50px 20px 30px}
 h1{color:#D4AF37;font-size:clamp(32px,5vw,52px);margin-bottom:15px}
 .sub{color:#aebbd0;max-width:700px;margin:0 auto 30px;font-size:17px}
-.search-box{max-width:500px;margin:0 auto 30px}
-input{width:100%;padding:15px;border-radius:12px;background:#0B1D3A;color:#fff;border:1px solid rgba(255,255,255,.2);font-family:inherit;font-size:15px}
 .region{margin-bottom:40px}
 .region h2{color:#D4AF37;font-size:24px;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid rgba(212,175,55,.3)}
 .currencies{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:15px}
@@ -65,45 +62,40 @@ AION
 <div class="hero">
 <h1 class="ar">🌍 عملات AION العالمية</h1>
 <h1 class="en">🌍 AION Global Currencies</h1>
-<p class="sub ar">تعرف على قيمة AION بعملات دول الخليج والعالم العربي والعملات العالمية</p>
+<p class="sub ar">تعرف على قيمة AION بعملات دول الخليج والعالم العربي والعالمية</p>
 <p class="sub en">Discover AION value in Gulf, Arab, and global currencies</p>
 </div>
 
 <div class="info-box">
 <p class="ar"><strong>سعر AION التأسيسي:</strong> 1 AION = 0.001 USD</p>
 <p class="en"><strong>AION Founding Price:</strong> 1 AION = 0.001 USD</p>
-<p class="ar">يتم تحديث أسعار الصرف تلقائيًا من الأسواق العالمية</p>
-<p class="en">Exchange rates are updated automatically from global markets</p>
 <p class="ar" id="updateTime"></p>
+<p class="en" id="updateTimeEn"></p>
 </div>
 
 <div id="loading" class="loading ar">⏳ جاري تحميل أسعار الصرف...</div>
-<div id="loading" class="loading en">⏳ Loading exchange rates...</div>
+<div id="loadingEn" class="loading en">⏳ Loading exchange rates...</div>
 
 <div id="content" style="display:none">
 
-<!-- Gulf Currencies -->
 <div class="region">
 <h2 class="ar">🇸🇦 عملات الخليج</h2>
 <h2 class="en">🇸🇦 Gulf Currencies</h2>
 <div class="currencies" id="gulf"></div>
 </div>
 
-<!-- Arab Currencies -->
 <div class="region">
 <h2 class="ar">🌍 العملات العربية</h2>
 <h2 class="en">🌍 Arab Currencies</h2>
 <div class="currencies" id="arab"></div>
 </div>
 
-<!-- Global Currencies -->
 <div class="region">
 <h2 class="ar">🌐 العملات العالمية</h2>
 <h2 class="en">🌐 Global Currencies</h2>
 <div class="currencies" id="global"></div>
 </div>
 
-<!-- Crypto -->
 <div class="region">
 <h2 class="ar">🪙 العملات الرقمية</h2>
 <h2 class="en">🪙 Cryptocurrencies</h2>
@@ -118,17 +110,17 @@ AION
 <div class="ar">
 AION AUTONOMOUS © 2026
 <br>
-<a href="index.html" style="color:#D4AF37">الرئيسية</a> · 
-<a href="services.html" style="color:#D4AF37">الخدمات</a> · 
-<a href="chat.html" style="color:#D4AF37">الشات</a> · 
+<a href="index.html" style="color:#D4AF37">الرئيسية</a> ·
+<a href="services.html" style="color:#D4AF37">الخدمات</a> ·
+<a href="chat.html" style="color:#D4AF37">الشات</a> ·
 <a href="wallet.html" style="color:#D4AF37">المحفظة</a>
 </div>
 <div class="en">
 AION AUTONOMOUS © 2026
 <br>
-<a href="index.html" style="color:#D4AF37">Home</a> · 
-<a href="services.html" style="color:#D4AF37">Services</a> · 
-<a href="chat.html" style="color:#D4AF37">Chat</a> · 
+<a href="index.html" style="color:#D4AF37">Home</a> ·
+<a href="services.html" style="color:#D4AF37">Services</a> ·
+<a href="chat.html" style="color:#D4AF37">Chat</a> ·
 <a href="wallet.html" style="color:#D4AF37">Wallet</a>
 </div>
 </footer>
@@ -183,49 +175,47 @@ const CURRENCIES = {
 
 async function loadRates() {
     try {
-        const fiatCodes = [...CURRENCIES.gulf, ...CURRENCIES.arab, ...CURRENCIES.global].map(c => c.code);
         const res = await fetch('https://open.er-api.com/v6/latest/USD');
         const data = await res.json();
-        
+
         if (data && data.rates) {
             renderCurrencies(data.rates);
         }
-        
-        // Load crypto
+
         const cryptoRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,tether,solana&vs_currencies=usd');
         const cryptoData = await cryptoRes.json();
-        
         renderCrypto(cryptoData);
-        
+
         document.getElementById('loading').style.display = 'none';
+        document.getElementById('loadingEn').style.display = 'none';
         document.getElementById('content').style.display = 'block';
-        document.getElementById('updateTime').textContent = (document.documentElement.lang === 'ar' ? 'آخر تحديث: ' : 'Last update: ') + new Date().toLocaleString();
+
+        const now = new Date().toLocaleString('ar-SA');
+        document.getElementById('updateTime').textContent = 'آخر تحديث: ' + now;
+        document.getElementById('updateTimeEn').textContent = 'Last update: ' + new Date().toLocaleString('en-US');
     } catch (err) {
-        document.getElementById('loading').textContent = 'خطأ في التحميل / Loading error';
+        document.getElementById('loading').textContent = 'خطأ في التحميل';
+        document.getElementById('loadingEn').textContent = 'Loading error';
     }
 }
 
 function renderCurrencies(rates) {
-    const sections = ['gulf', 'arab', 'global'];
-    
-    sections.forEach(section => {
+    ['gulf', 'arab', 'global'].forEach(section => {
         const container = document.getElementById(section);
         container.innerHTML = '';
-        
+
         CURRENCIES[section].forEach(curr => {
             const rate = rates[curr.code] || 0;
             const aionPrice = AION_PRICE_USD * rate;
             const div = document.createElement('div');
             div.className = 'currency';
-            div.innerHTML = `
-                <div class="currency-code">${curr.flag} ${curr.code}</div>
-                <div class="currency-name ar">${curr.name_ar}</div>
-                <div class="currency-name en">${curr.name_en}</div>
-                <div class="currency-rate">${rate.toFixed(4)}</div>
-                <div class="currency-sub ar">1 USD = ${rate.toFixed(4)} ${curr.code}</div>
-                <div class="currency-sub en">1 USD = ${rate.toFixed(4)} ${curr.code}</div>
-                <div class="aion-price">1 AION = ${aionPrice.toFixed(6)} ${curr.code}</div>
-            `;
+            div.innerHTML = '<div class="currency-code">' + curr.flag + ' ' + curr.code + '</div>' +
+                '<div class="currency-name ar">' + curr.name_ar + '</div>' +
+                '<div class="currency-name en">' + curr.name_en + '</div>' +
+                '<div class="currency-rate">' + rate.toFixed(4) + '</div>' +
+                '<div class="currency-sub ar">1 USD = ' + rate.toFixed(4) + ' ' + curr.code + '</div>' +
+                '<div class="currency-sub en">1 USD = ' + rate.toFixed(4) + ' ' + curr.code + '</div>' +
+                '<div class="aion-price">1 AION = ' + aionPrice.toFixed(6) + ' ' + curr.code + '</div>';
             container.appendChild(div);
         });
     });
@@ -234,7 +224,7 @@ function renderCurrencies(rates) {
 function renderCrypto(data) {
     const container = document.getElementById('crypto');
     container.innerHTML = '';
-    
+
     const cryptoMap = {
         'BTC': 'bitcoin',
         'ETH': 'ethereum',
@@ -242,23 +232,21 @@ function renderCrypto(data) {
         'USDT': 'tether',
         'SOL': 'solana'
     };
-    
+
     CURRENCIES.crypto.forEach(curr => {
         const coinId = cryptoMap[curr.code];
         const price = data[coinId] ? data[coinId].usd : 0;
         const aionInCrypto = price > 0 ? (AION_PRICE_USD / price) : 0;
-        
+
         const div = document.createElement('div');
         div.className = 'currency';
-        div.innerHTML = `
-            <div class="currency-code">${curr.flag} ${curr.code}</div>
-            <div class="currency-name ar">${curr.name_ar}</div>
-            <div class="currency-name en">${curr.name_en}</div>
-            <div class="currency-rate">$${price.toLocaleString()}</div>
-            <div class="currency-sub ar">سعر ${curr.code}</div>
-            <div class="currency-sub en">${curr.code} price</div>
-            <div class="aion-price">1 AION = ${aionInCrypto.toFixed(10)} ${curr.code}</div>
-        `;
+        div.innerHTML = '<div class="currency-code">' + curr.flag + ' ' + curr.code + '</div>' +
+            '<div class="currency-name ar">' + curr.name_ar + '</div>' +
+            '<div class="currency-name en">' + curr.name_en + '</div>' +
+            '<div class="currency-rate">$' + price.toLocaleString() + '</div>' +
+            '<div class="currency-sub ar">سعر ' + curr.code + '</div>' +
+            '<div class="currency-sub en">' + curr.code + ' price</div>' +
+            '<div class="aion-price">1 AION = ' + aionInCrypto.toFixed(10) + ' ' + curr.code + '</div>';
         container.appendChild(div);
     });
 }
@@ -277,3 +265,4 @@ loadRates();
 </body>
 </html>
 ```
+
