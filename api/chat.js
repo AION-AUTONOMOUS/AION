@@ -17,13 +17,13 @@ module.exports = async function handler(req, res) {
   const role = req.body.role || 'researcher';
   
   if (!message) {
-    return res.status(400).json({ error: 'Message is required' });
+    return res.status(400).json({ success: false, error: 'Message is required' });
   }
   
   const apiKey = process.env.GROQ_API_KEY;
   
   if (!apiKey) {
-    return res.status(500).json({ error: 'API key not configured' });
+    return res.status(500).json({ success: false, error: 'API key not configured' });
   }
   
   try {
@@ -36,17 +36,20 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         model: 'openai/gpt-oss-120b',
         messages: [
-          { role: 'system', content: 'You are a ' + role + ' agent at AION AUTONOMOUS. Answer in Arabic.' },
+          { role: 'system', content: 'You are a ' + role + ' agent at AION AUTONOMOUS. Answer clearly and professionally in the same language as the user.' },
           { role: 'user', content: message }
         ],
-        max_tokens: 500
+        max_tokens: 1500
       })
     });
     
     const data = await response.json();
     
     if (!response.ok) {
-      return res.status(response.status).json({ error: 'Groq error', details: data });
+      return res.status(response.status).json({ 
+        success: false, 
+        error: data.error ? data.error.message : 'Groq API error'
+      });
     }
     
     const reply = data.choices[0].message.content;
@@ -58,8 +61,9 @@ module.exports = async function handler(req, res) {
     });
     
   } catch (error) {
-    return res.status(500).json({ error: 'Server error', details: error.message });
+    return res.status(500).json({ 
+      success: false, 
+      error: 'Server error: ' + error.message 
+    });
   }
 };
-```
-
