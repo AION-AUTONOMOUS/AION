@@ -1,21 +1,37 @@
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
+    return res.status(405).json({
+      success: false,
+      error: 'Method Not Allowed'
+    });
   }
 
   const paypalWebhookId = process.env.PAYPAL_WEBHOOK_ID;
   const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
-  const webhookEvent = req.body;
-  const headers = req.headers;
 
   if (!paypalWebhookId || !n8nWebhookUrl) {
-    console.error('Missing environment variables');
-    return res.status(500).json({ error: 'Configuration incomplete' });
+    return res.status(500).json({
+      success: false,
+      error: 'Configuration incomplete'
+    });
   }
 
   try {
+    const webhookEvent = req.body;
+    const headers = req.headers;
+
+    const clientId = process.env.PAYPAL_CLIENT_ID;
+    const secret = process.env.PAYPAL_SECRET;
+
+    if (!clientId || !secret) {
+      return res.status(500).json({
+        success: false,
+        error: 'PayPal credentials are not configured'
+      });
+    }
+
     const auth = Buffer.from(
-      process.env.PAYPAL_CLIENT_ID + ':' + process.env.PAYPAL_SECRET
+      clientId + ':' + secret
     ).toString('base64');
 
     const verificationResponse = await fetch(
@@ -24,7 +40,7 @@ module.exports = async function handler(req, res) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + auth,
+          'Authorization': 'Basic ' + auth
         },
         body: JSON.stringify({
           auth_algo: headers['paypal-auth-algo'],
@@ -33,28 +49,73 @@ module.exports = async function handler(req, res) {
           transmission_sig: headers['paypal-transmission-sig'],
           transmission_time: headers['paypal-transmission-time'],
           webhook_id: paypalWebhookId,
-          webhook_event: webhookEvent,
-        }),
+          webhook_event: webhookEvent
+        })
       }
     );
 
-    const verificationResult = await verificationResponse.json();
+    const verificationResult =
+      await verificationResponse.json();
 
-    if (verificationResult.verification_status !== 'SUCCESS') {
-      console.error('PayPal signature verification failed');
-      return res.status(400).json({ error: 'Invalid signature' });
+    if (
+      !verificationResponse.ok ||
+      verificationResult.verification_status !== 'SUCCESS'
+    ) {
+      console.error(
+        'PayPal signature verification failed:',
+        verificationResult
+      );
+
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid signature'
+      });
     }
 
-    await fetch(n8nWebhookUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(webhookEvent),
+    const forwardResponse = await fetch(
+      n8nWebhookUrl,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(webhookEvent)
+      }
+    );
+
+    if (!forwardResponse.ok) {
+      const forwardText =
+        await forwardResponse.text();
+
+      console.error(
+        'Automation webhook failed:',
+        forwardResponse.status,
+        forwardText
+      );
+
+      return res.status(502).json({
+        success: false,
+        error: 'Automation webhook failed',
+        provider_status: forwardResponse.status
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      status: 'Forwarded to automation'
     });
 
-    return res.status(200).json({ status: 'Forwarded to n8n' });
-
   } catch (error) {
-    console.error('Webhook error:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    console.error(
+      'AION webhook error:',
+      error
+    );
+
+    return res.status(500).json({
+      success: false,
+      error: 'Internal Server Error',
+      details:
+        error?.message || 'Unknown error'
+    });
   }
 };
