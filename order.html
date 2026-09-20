@@ -18,32 +18,41 @@ header{text-align:center;padding:20px 0 30px}
 .lang-btn{padding:6px 14px;border-radius:20px;border:1px solid #D4AF37;background:transparent;color:#D4AF37;cursor:pointer;font-weight:bold;font-size:13px;font-family:inherit}
 .lang-btn.active{background:#D4AF37;color:#0B1D3A}
 .card{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:25px;margin-bottom:20px}
-h2{color:#D4AF37;font-size:22px;margin-bottom:20px}
+h2{color:#D4AF37;font-size:22px;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+h3{color:#D4AF37;font-size:17px;margin:15px 0 8px}
 label{display:block;color:#c8d5e7;font-size:14px;margin-bottom:8px;margin-top:15px}
 select,input,textarea{width:100%;padding:14px;border-radius:12px;background:#0B1D3A;color:#fff;border:1px solid rgba(255,255,255,.2);font-family:inherit;font-size:15px}
 select{cursor:pointer;color:#D4AF37;font-weight:bold}
 textarea{min-height:100px;resize:vertical}
-.step{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px;margin-bottom:15px}
-.step-num{display:inline-block;background:#D4AF37;color:#0B1D3A;width:28px;height:28px;line-height:28px;text-align:center;border-radius:50%;font-weight:900;margin-left:10px;font-size:14px}
+.step-num{display:inline-grid;place-items:center;background:#D4AF37;color:#0B1D3A;width:32px;height:32px;border-radius:50%;font-weight:900;font-size:15px;flex-shrink:0}
+.steps-list{list-style:none;counter-reset:step}
+.steps-list li{padding:12px 15px;background:rgba(0,0,0,.2);border-right:3px solid #D4AF37;border-radius:10px;margin-bottom:10px;color:#d0dceb;font-size:14px;line-height:1.8}
+.steps-list li strong{color:#D4AF37}
 .btn{display:block;width:100%;padding:16px;border-radius:12px;font-weight:900;font-size:16px;cursor:pointer;font-family:inherit;border:none;margin-top:15px}
 .btn-primary{background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;box-shadow:0 10px 30px rgba(212,175,55,.25)}
 .btn-primary:hover{transform:translateY(-2px)}
-.btn-outline{background:rgba(255,255,255,.04);color:#fff;border:1px solid rgba(255,255,255,.2)}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .paypal-link{display:block;background:linear-gradient(135deg,#0070ba,#003087);color:#fff;text-align:center;padding:16px;border-radius:12px;font-weight:900;font-size:16px;margin-top:15px;text-decoration:none}
-.info{background:rgba(122,75,255,.1);border:1px solid rgba(122,75,255,.3);border-radius:12px;padding:15px;margin:15px 0;color:#d0c8ff;font-size:13px}
-.result{background:rgba(0,0,0,.3);border:1px solid rgba(212,175,55,.5);border-radius:14px;padding:20px;margin-top:20px;white-space:pre-wrap;line-height:1.9;color:#f5e6a8;display:none;max-height:500px;overflow-y:auto}
+.paypal-link:hover{transform:translateY(-2px)}
+.info{background:rgba(122,75,255,.1);border:1px solid rgba(122,75,255,.3);border-radius:12px;padding:15px;margin:15px 0;color:#d0c8ff;font-size:13px;line-height:1.8}
+.info.gold{background:rgba(212,175,55,.08);border-color:rgba(212,175,55,.4);color:#f5e6a8}
+.result{background:rgba(0,0,0,.3);border:1px solid rgba(212,175,55,.5);border-radius:14px;padding:20px;margin-top:20px;white-space:pre-wrap;line-height:1.9;color:#f5e6a8;display:none;max-height:500px;overflow-y:auto;text-align:right}
 .result.show{display:block}
+.result h3{color:#D4AF37;margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid rgba(212,175,55,.3)}
 .status{text-align:center;padding:15px;margin-top:15px;border-radius:12px;font-weight:bold;display:none}
 .status.success{background:rgba(84,230,167,.15);color:#54e6a7;border:1px solid rgba(84,230,167,.4);display:block}
 .status.error{background:rgba(255,107,107,.15);color:#ff6b6b;border:1px solid rgba(255,107,107,.4);display:block}
 .status.loading{background:rgba(212,175,55,.15);color:#D4AF37;border:1px solid rgba(212,175,55,.4);display:block}
 .back{display:block;text-align:center;margin-top:20px;color:#D4AF37;font-weight:bold}
+.guide-box{background:linear-gradient(145deg,rgba(84,230,167,.08),rgba(122,75,255,.04));border:1px solid rgba(84,230,167,.35);border-radius:16px;padding:20px;margin-bottom:20px}
+.guide-box h2{color:#54e6a7}
 .ar{display:block}
 .en{display:none}
 body.en-mode .ar{display:none}
 body.en-mode .en{display:block}
 body.en-mode{direction:ltr}
+body.en-mode .steps-list li{border-right:none;border-left:3px solid #D4AF37}
+body.en-mode .result{text-align:left}
 </style>
 </head>
 <body>
@@ -61,6 +70,40 @@ body.en-mode{direction:ltr}
 <p class="sub en">Order and pay securely</p>
 </header>
 
+<!-- Instructions Box -->
+<div class="guide-box">
+<h2 class="ar">📋 كيف تطلب خدمتك؟</h2>
+<h2 class="en">📋 How to Order?</h2>
+
+<ol class="steps-list">
+<li>
+<span class="ar"><strong>الخطوة 1:</strong> اختر الخدمة واكتب موضوعك بالتفصيل في الخانات أدناه.</span>
+<span class="en"><strong>Step 1:</strong> Choose the service and write your topic in detail below.</span>
+</li>
+<li>
+<span class="ar"><strong>الخطوة 2:</strong> اضغط <strong>"ادفع الآن"</strong> — ستفتح صفحة PayPal. اختر <strong>"الدفع بالبطاقة"</strong> أو حساب PayPal. <strong>لا تحتاج تسجيل</strong>، فقط أدخل بيانات بطاقتك.</span>
+<span class="en"><strong>Step 2:</strong> Click <strong>"Pay Now"</strong> — PayPal opens. Choose <strong>"Pay with Card"</strong> or PayPal account. <strong>No registration needed</strong> — just enter your card details.</span>
+</li>
+<li>
+<span class="ar"><strong>الخطوة 3:</strong> بعد الدفع، PayPal يعطيك <strong>رقم عملية (Transaction ID)</strong> — انسخه من الشاشة أو من إيميل PayPal.</span>
+<span class="en"><strong>Step 3:</strong> After payment, PayPal gives you a <strong>Transaction ID</strong> — copy it from the screen or from your PayPal email.</span>
+</li>
+<li>
+<span class="ar"><strong>الخطوة 4:</strong> الصق رقم العملية في الخانة المخصصة، واضغط <strong>"تحقق واكتب خدمتي"</strong>.</span>
+<span class="en"><strong>Step 4:</strong> Paste the Transaction ID in the box, then click <strong>"Verify & Generate"</strong>.</span>
+</li>
+<li>
+<span class="ar"><strong>الخطوة 5:</strong> خلال <strong>30 ثانية</strong>، AI يكتب خدمتك وتظهر على الشاشة مباشرة.</span>
+<span class="en"><strong>Step 5:</strong> Within <strong>30 seconds</strong>, AI writes your service and it appears directly on screen.</span>
+</li>
+</ol>
+
+<div class="info">
+<span class="ar">🔒 <strong>آمن 100%</strong> — نحن لا نحفظ بيانات بطاقتك. PayPal يتولى الدفع بأمان. المبلغ يُخصم بعملة بلدك تلقائيًا.</span>
+<span class="en">🔒 <strong>100% Secure</strong> — We don't store your card data. PayPal handles payment securely. Amount is auto-converted to your local currency.</span>
+</div>
+</div>
+
 <!-- Step 1: Choose service -->
 <div class="card">
 <h2 class="ar"><span class="step-num">1</span> اختر الخدمة</h2>
@@ -69,19 +112,19 @@ body.en-mode{direction:ltr}
 <label class="ar">نوع الخدمة</label>
 <label class="en">Service Type</label>
 <select id="service" onchange="updatePrice()">
-<option value="5" data-ar="مقال 500 كلمة - $5" data-en="500-word article - $5">مقال 500 كلمة - $5</option>
-<option value="10" data-ar="مقال 1000 كلمة - $10" data-en="1000-word article - $10">مقال 1000 كلمة - $10</option>
-<option value="5" data-ar="5 منشورات سوشيال ميديا - $5" data-en="5 Social Media Posts - $5">5 منشورات سوشيال - $5</option>
-<option value="3" data-ar="وصف منتج - $3" data-en="Product Description - $3">وصف منتج - $3</option>
-<option value="10" data-ar="تحليل سوق - $10" data-en="Market Analysis - $10">تحليل سوق - $10</option>
-<option value="15" data-ar="تحليل منافسين - $15" data-en="Competitor Analysis - $15">تحليل منافسين - $15</option>
-<option value="10" data-ar="سيرة ذاتية CV - $10" data-en="Professional CV - $10">سيرة ذاتية - $10</option>
-<option value="5" data-ar="ترجمة 500 كلمة - $5" data-en="Translation 500 words - $5">ترجمة 500 كلمة - $5</option>
+<option value="5">مقال 500 كلمة - $5</option>
+<option value="10">مقال 1000 كلمة - $10</option>
+<option value="5">5 منشورات سوشيال - $5</option>
+<option value="3">وصف منتج - $3</option>
+<option value="10">تحليل سوق - $10</option>
+<option value="15">تحليل منافسين - $15</option>
+<option value="10">سيرة ذاتية - $10</option>
+<option value="5">ترجمة 500 كلمة - $5</option>
 </select>
 
 <label class="ar">الموضوع / التفاصيل المطلوبة</label>
 <label class="en">Topic / Details Required</label>
-<textarea id="topic" placeholder="اكتب موضوعك هنا بالتفصيل... / Write your topic in detail here..."></textarea>
+<textarea id="topic" placeholder="اكتب موضوعك بالتفصيل..."></textarea>
 </div>
 
 <!-- Step 2: Pay -->
@@ -89,36 +132,15 @@ body.en-mode{direction:ltr}
 <h2 class="ar"><span class="step-num">2</span> ادفع بأمان</h2>
 <h2 class="en"><span class="step-num">2</span> Pay Securely</h2>
 
-<div class="info ar">
-💳 يمكنك الدفع بواسطة:
-- بطاقة الائتمان أو الخصم (Visa / MasterCard / Mada / Amex)
-- حساب PayPal
-بدون الحاجة لإنشاء حساب PayPal.
-</div>
-<div class="info en">
-💳 Pay using:
-- Credit/Debit Card (Visa / MasterCard / Mada / Amex)
-- PayPal account
-No PayPal account required.
+<div class="info gold">
+<span class="ar">💳 اضغط "ادفع الآن" — ستفتح صفحة PayPal. اختر <strong>الدفع بالبطاقة</strong> (Visa / MasterCard / Mada) — بدون تسجيل.</span>
+<span class="en">💳 Click "Pay Now" — PayPal opens. Choose <strong>Pay with Card</strong> (Visa / MasterCard) — no registration.</span>
 </div>
 
 <a href="#" id="paypalLink" class="paypal-link" target="_blank">
 <span class="ar">💳 ادفع الآن</span>
 <span class="en">💳 Pay Now</span>
 </a>
-
-<div class="info ar" style="margin-top:15px">
-📌 بعد إتمام الدفع:
-1. ستحصل على <strong>رقم عملية (Transaction ID)</strong> من PayPal (في الرسالة أو على الشاشة)
-2. انسخ رقم العملية
-3. انتقل للخطوة 3
-</div>
-<div class="info en" style="margin-top:15px">
-📌 After payment:
-1. You'll receive a <strong>Transaction ID</strong> from PayPal (in the message or on screen)
-2. Copy the transaction ID
-3. Go to Step 3
-</div>
 </div>
 
 <!-- Step 3: Verify -->
@@ -154,11 +176,6 @@ function setLang(lang) {
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
     document.getElementById('btnEn').classList.toggle('active', lang === 'en');
-    const options = document.querySelectorAll('#service option');
-    options.forEach(opt => {
-        opt.textContent = lang === 'ar' ? opt.dataset.ar : opt.dataset.en;
-    });
-    updatePrice();
 }
 
 function updatePrice() {
@@ -180,7 +197,7 @@ async function verifyAndGenerate() {
     const result = document.getElementById('result');
     
     if (!transactionId) {
-        setStatus('error', currentLang === 'ar' ? 'الرجاء إدخال رقم العملية' : 'Please enter transaction ID');
+        setStatus('error', currentLang === 'ar' ? 'الرجاء إدخال رقم العملية' : 'Please enter Transaction ID');
         return;
     }
     if (!topic) {
@@ -192,7 +209,6 @@ async function verifyAndGenerate() {
     result.classList.remove('show');
     
     try {
-        // Verify payment
         const verifyRes = await fetch('/api/verify', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -208,17 +224,13 @@ async function verifyAndGenerate() {
         
         setStatus('loading', currentLang === 'ar' ? '✅ تم التحقق! جاري كتابة الخدمة...' : '✅ Verified! Generating...');
         
-        // Generate content
         const service = document.getElementById('service');
         const role = service.value >= 15 ? 'analyst' : (service.value >= 10 ? 'researcher' : 'marketer');
         
         const genRes = await fetch('/api/chat', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                message: topic,
-                role: role
-            })
+            body: JSON.stringify({message: topic, role: role})
         });
         
         const genData = await genRes.json();
@@ -232,7 +244,7 @@ async function verifyAndGenerate() {
             ? '✅ تم الدفع بنجاح - ' + verifyData.amount + ' ' + verifyData.currency 
             : '✅ Payment confirmed - ' + verifyData.amount + ' ' + verifyData.currency);
         
-        result.textContent = genData.reply;
+        result.innerHTML = '<h3>📄 خدمتك جاهزة:</h3>' + escapeHtml(genData.reply);
         result.classList.add('show');
         
     } catch (error) {
@@ -240,9 +252,14 @@ async function verifyAndGenerate() {
     }
 }
 
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 updatePrice();
 </script>
 
 </body>
 </html>
-```
