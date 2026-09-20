@@ -1,19 +1,18 @@
 
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AION Chat | AR / EN</title>
+<title>AION Chat | تحدث مع الجيش الذكي</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%),#0B1D3A;color:#fff;min-height:100vh;padding:20px}
 .container{max-width:800px;margin:auto}
 h1{color:#D4AF37;text-align:center;margin-bottom:10px;font-size:32px}
 .sub{text-align:center;color:#aebbd0;margin-bottom:25px;font-size:14px}
-.lang-switch{display:flex;justify-content:center;gap:10px;margin-bottom:20px}
-.lang-btn{padding:8px 20px;border-radius:20px;border:1px solid #D4AF37;background:transparent;color:#D4AF37;cursor:pointer;font-weight:bold;font-size:14px;font-family:inherit}
+.lang-switch{display:flex;justify-content:center;gap:8px;margin-bottom:20px}
+.lang-btn{padding:6px 14px;border-radius:20px;border:1px solid #D4AF37;background:transparent;color:#D4AF37;cursor:pointer;font-weight:bold;font-size:13px;font-family:inherit}
 .lang-btn.active{background:#D4AF37;color:#0B1D3A}
 .chat-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:20px;margin-bottom:20px;min-height:400px;max-height:500px;overflow-y:auto}
 .msg{margin-bottom:15px;padding:12px 16px;border-radius:14px;max-width:85%;line-height:1.7;word-wrap:break-word}
@@ -27,7 +26,6 @@ button.send{background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;bor
 button.send:hover{transform:translateY(-2px)}
 button.send:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .loading{text-align:center;color:#D4AF37;padding:10px;font-size:14px;display:none}
-.back{display:block;text-align:center;margin-top:20px;color:#D4AF37;text-decoration:none;font-weight:bold}
 .ar{display:block}
 .en{display:none}
 body.en-mode .ar{display:none}
@@ -39,30 +37,30 @@ body.en-mode{direction:ltr}
 
 <div class="container">
 
-<h1>🤖 AION Chat</h1>
-
 <div class="lang-switch">
 <button class="lang-btn active" id="btnAr" onclick="setLang('ar')">العربية</button>
 <button class="lang-btn" id="btnEn" onclick="setLang('en')">English</button>
 </div>
 
+<h1>🤖 AION Chat</h1>
 <p class="sub ar">تحدث مع الجيش الذكي — اختر وكيلًا واكتب مهمتك</p>
 <p class="sub en">Talk to the AI Army — Choose an agent and write your task</p>
 
 <select class="role-select" id="role">
-<option value="researcher" data-ar="🔍 باحث — Research" data-en="🔍 Researcher">🔍 باحث — Research</option>
-<option value="analyst" data-ar="📊 محلل — Analysis" data-en="📊 Analyst">📊 محلل — Analysis</option>
-<option value="marketer" data-ar="📣 مسوق — Marketing" data-en="📣 Marketer">📣 مسوق — Marketing</option>
-<option value="sales" data-ar="💼 مبيعات — Sales" data-en="💼 Sales">💼 مبيعات — Sales</option>
-<option value="coder" data-ar="💻 مبرمج — Coder" data-en="💻 Coder">💻 مبرمج — Coder</option>
-<option value="auditor" data-ar="🔎 مدقق — Auditor" data-en="🔎 Auditor">🔎 مدقق — Auditor</option>
-<option value="legal" data-ar="⚖️ قانوني — Legal" data-en="⚖️ Legal">⚖️ قانوني — Legal</option>
+<option value="researcher">🔍 باحث — Researcher</option>
+<option value="analyst">📊 محلل — Analyst</option>
+<option value="marketer">📣 مسوق — Marketer</option>
+<option value="sales">💼 مبيعات — Sales</option>
+<option value="coder">💻 مبرمج — Coder</option>
+<option value="auditor">🔎 مدقق — Auditor</option>
+<option value="legal">⚖️ قانوني — Legal</option>
 </select>
 
 <div class="chat-box" id="chatBox">
 <div class="msg ai">
 <span class="role">AION CORE</span>
-<span class="ar">مرحبًا! اختر الوكيل، واكتب مهمتك بالعربية أو الإنجليزية.<br>Welcome! Choose an agent, and write your task in Arabic or English.</span>
+<span class="ar">مرحبًا! اختر الوكيل، واكتب مهمتك بالعربية أو الإنجليزية.</span>
+<span class="en">Welcome! Choose an agent, and write your task in Arabic or English.</span>
 </div>
 </div>
 
@@ -76,8 +74,6 @@ body.en-mode{direction:ltr}
 <button class="send en" onclick="sendMessage('en')" id="sendBtnEn">Send</button>
 </div>
 
-<a href="index.html" class="back ar">← العودة للموقع الرئيسي</a>
-<a href="index.html" class="back en">← Back to Main Site</a>
 </div>
 
 <script>
@@ -88,15 +84,8 @@ function setLang(lang) {
     document.body.classList.toggle('en-mode', lang === 'en');
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    
     document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
     document.getElementById('btnEn').classList.toggle('active', lang === 'en');
-    
-    // Update role select options
-    const options = document.querySelectorAll('#role option');
-    options.forEach(opt => {
-        opt.textContent = lang === 'ar' ? opt.dataset.ar : opt.dataset.en;
-    });
 }
 
 async function sendMessage(lang) {
@@ -167,26 +156,3 @@ document.getElementById('inputEn').addEventListener('keydown', function(e) {
 </script>
 </body>
 </html>
-```
-
-4. اضغط Commit changes (مرتين)
-
----
-
-🎯 وأيضًا نعدّل الـ API ليدعم اللغتين:
-
-1. افتح:
-
-https://github.com/AION-AUTONOMOUS/AION/edit/main/api/chat.js
-
-2. ابحث عن:
-
-```
-{ role: 'system', content: 'You are a ' + role + ' agent at AION AUTONOMOUS. Answer in Arabic.' }
-```
-
-3. استبدله بـ:
-
-```
-{ role: 'system', content: 'You are a ' + role + ' agent at AION AUTONOMOUS. Answer in the same language as the user question.' }
-```
