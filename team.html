@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فريق AION | 100 وكيل ذكاء اصطناعي</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%),#0B1D3A;color:#fff;min-height:100vh;padding:20px}
+.container{max-width:1400px;margin:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:rgba(5,13,31,.65);backdrop-filter:blur(15px);border:1px solid rgba(212,175,55,.3);border-radius:20px;margin-bottom:25px;flex-wrap:wrap;gap:15px}
+.logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:900;color:#D4AF37;letter-spacing:2px}
+.logo .mark{width:36px;height:36px;border:2px solid #D4AF37;border-radius:50%;display:grid;place-items:center;font-weight:900;box-shadow:0 0 20px rgba(212,175,55,.5)}
+.menu a{color:#dfe8f5;text-decoration:none;font-size:14px;font-weight:bold;margin-left:15px;transition:.3s}
+.menu a:hover{color:#D4AF37}
+h1{color:#D4AF37;text-align:center;font-size:clamp(28px,5vw,44px);margin-bottom:10px;text-shadow:0 0 30px rgba(212,175,55,.6)}
+.sub{text-align:center;color:#aebbd0;margin-bottom:25px;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:25px}
+.stat{padding:18px;background:rgba(5,13,31,.75);border:1px solid rgba(212,175,55,.35);border-radius:15px;text-align:center}
+.stat .num{color:#D4AF37;font-size:26px;font-weight:900;margin-bottom:5px}
+.stat .lbl{color:#aebbd0;font-size:12px}
+.search-box{width:100%;padding:14px 18px;border-radius:12px;background:rgba(5,13,31,.75);color:#fff;border:1px solid rgba(212,175,55,.35);margin-bottom:25px;font-size:15px;font-family:inherit}
+.search-box:focus{outline:none;border-color:#D4AF37}
+.dept-title{color:#D4AF37;font-size:22px;margin:30px 0 15px;padding:10px 15px;background:rgba(212,175,55,.08);border-right:4px solid #D4AF37;border-radius:8px}
+.dept-title span{color:#aebbd0;font-size:14px;font-weight:normal}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px;margin-bottom:20px}
+.agent-card{padding:18px;background:rgba(5,13,31,.75);border:1px solid rgba(212,175,55,.25);border-radius:15px;transition:.3s;cursor:pointer;text-decoration:none;color:#fff;display:block}
+.agent-card:hover{border-color:#D4AF37;box-shadow:0 0 25px rgba(212,175,55,.4);transform:translateY(-3px)}
+.agent-card .avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#7A4BFF,#D4AF37);display:grid;place-items:center;font-size:22px;margin-bottom:12px;box-shadow:0 0 20px rgba(122,75,255,.4)}
+.agent-card .name{color:#D4AF37;font-weight:900;font-size:15px;margin-bottom:5px}
+.agent-card .id{color:#7A4BFF;font-size:11px;font-family:monospace;margin-bottom:8px}
+.agent-card .spec{color:#aebbd0;font-size:12px;line-height:1.5}
+.badge{display:inline-block;padding:3px 10px;background:rgba(122,75,255,.2);border:1px solid rgba(122,75,255,.5);border-radius:20px;color:#d0c8ff;font-size:10px;margin-top:8px;text-transform:uppercase;letter-spacing:1px}
+.footer{text-align:center;padding:30px 20px;color:#aebbd0;font-size:12px;margin-top:40px;border-top:1px solid rgba(212,175,55,.2)}
+.footer strong{color:#D4AF37}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="topbar">
+<div class="logo"><div class="mark">A</div>AION AUTONOMOUS</div>
+<div class="menu">
+<a href="index.html">الرئيسية</a>
+<a href="services.html">الخدمات</a>
+<a href="chat.html">الشات</a>
+<a href="team.html">الفريق</a>
+</div>
+</div>
+
+<h1>🤖 فريق AION الذكي</h1>
+<p class="sub">100 وكيل ذكاء اصطناعي متخصصون — يعملون على مدار الساعة</p>
+
+<div class="stats">
+<div class="stat"><div class="num" id="totalAgents">100</div><div class="lbl">إجمالي الوكلاء</div></div>
+<div class="stat"><div class="num" id="totalDepts">8</div><div class="lbl">أقسام متخصصة</div></div>
+<div class="stat"><div class="num">24/7</div><div class="lbl">تشغيل مستمر</div></div>
+<div class="stat"><div class="num">AR/EN</div><div class="lbl">دعم ثنائي</div></div>
+</div>
+
+<input type="text" class="search-box" id="search" placeholder="🔍 ابحث عن وكيل... (اسم، قسم، تخصص)">
+
+<div id="agentsContainer"></div>
+
+<div class="footer">
+<strong>AION AUTONOMOUS</strong> © 2026 — Geneva, Switzerland<br>
+aion.genesisss@gmail.com
+</div>
+
+</div>
+
+<script>
+const DEPARTMENTS = {
+  research: { nameAr:'قسم الأبحاث', icon:'🔬', count:10, specialties:['market research','competitor analysis','trend detection','data mining','industry reports','survey design','qualitative research','quantitative analysis','trend forecasting','source verification'] },
+  marketing: { nameAr:'قسم التسويق', icon:'📣', count:20, specialties:['twitter content','tiktok content','instagram reels','seo','email campaigns','ads copy','linkedin posts','content strategy','youtube scripts','influencer outreach','community building','brand voice','copywriting','campaign planning','analytics reporting','growth hacking','viral content','newsletter','landing pages','cta optimization'] },
+  sales: { nameAr:'قسم المبيعات', icon:'💼', count:15, specialties:['lead generation','cold outreach','negotiation','closing','proposals','discovery calls','objection handling','crm management','upselling','follow up sequences','pricing strategy','demo presentations','referral programs','pipeline management','contract drafting'] },
+  development: { nameAr:'قسم التطوير', icon:'💻', count:15, specialties:['frontend','backend','ai ml','mobile','devops','database design','api integration','security hardening','testing qa','code review','performance optimization','cloud architecture','ui ux','automation','documentation'] },
+  support: { nameAr:'قسم الدعم', icon:'🎧', count:15, specialties:['customer support','technical help','onboarding','faq','troubleshooting','live chat','email support','escalation','refunds','feedback collection','sla management','knowledge base','ticket triage','user training','retention'] },
+  content: { nameAr:'قسم المحتوى', icon:'✍️', count:15, specialties:['articles','translation','copywriting','scripts','documentation','blog posts','whitepapers','press releases','case studies','ebooks','product descriptions','video scripts','podcast outlines','infographics text','social captions'] },
+  analysis: { nameAr:'قسم التحليل', icon:'📊', count:5, specialties:['financial analysis','data science','reporting','forecasting','kpi tracking'] },
+  security: { nameAr:'قسم الأمان', icon:'🛡️', count:5, specialties:['audit','monitoring','threat detection','compliance','incident response'] }
+};
+
+const AGENTS = [];
+let counter = 1;
+Object.keys(DEPARTMENTS).forEach(function(dept){
+  const cfg = DEPARTMENTS[dept];
+  for (let i=0;i<cfg.count;i++){
+    const sp = cfg.specialties[i % cfg.specialties.length];
+    AGENTS.push({
+      id: 'AION-' + dept.slice(0,3).toUpperCase() + '-' + String(counter).padStart(4,'0'),
+      name: dept.charAt(0).toUpperCase() + dept.slice(1) + ' Agent ' + (i+1),
+      department: dept,
+      deptAr: cfg.nameAr,
+      icon: cfg.icon,
+      specialty: sp
+    });
+    counter++;
+  }
+});
+
+document.getElementById('totalAgents').textContent = AGENTS.length;
+document.getElementById('totalDepts').textContent = Object.keys(DEPARTMENTS).length;
+
+function render(filter){
+  filter = (filter || '').toLowerCase();
+  const container = document.getElementById('agentsContainer');
+  container.innerHTML = '';
+
+  Object.keys(DEPARTMENTS).forEach(function(dept){
+    const cfg = DEPARTMENTS[dept];
+    const deptAgents = AGENTS.filter(function(a){
+      if (a.department !== dept) return false;
+      if (!filter) return true;
+      return a.name.toLowerCase().includes(filter) ||
+             a.id.toLowerCase().includes(filter) ||
+             a.specialty.toLowerCase().includes(filter) ||
+             cfg.nameAr.includes(filter);
+    });
+
+    if (deptAgents.length === 0) return;
+
+    const title = document.createElement('div');
+    title.className = 'dept-title';
+    title.innerHTML = cfg.icon + ' ' + cfg.nameAr + ' <span>(' + deptAgents.length + ' وكيل)</span>';
+    container.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    deptAgents.forEach(function(a){
+      const card = document.createElement('a');
+      card.className = 'agent-card';
+      card.href = 'chat.html';
+      card.innerHTML =
+        '<div class="avatar">' + cfg.icon + '</div>' +
+        '<div class="name">' + a.name + '</div>' +
+        '<div class="id">' + a.id + '</div>' +
+        '<div class="spec">' + a.specialty + '</div>' +
+        '<div class="badge">' + a.department + '</div>';
+      grid.appendChild(card);
+    });
+    container.appendChild(grid);
+  });
+}
+
+render('');
+
+document.getElementById('search').addEventListener('input', function(e){
+  render(e.target.value);
+});
+</script>
+
+</body>
+</html>
