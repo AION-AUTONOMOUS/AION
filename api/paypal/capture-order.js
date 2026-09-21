@@ -7,9 +7,7 @@ export default async function handler(req, res) {
 
   const clientId = process.env.PAYPAL_CLIENT_ID;
   const clientSecret = process.env.PAYPAL_SECRET;
-  const baseUrl = process.env.PAYPAL_ENV === 'live'
-    ? 'https://api-m.paypal.com'
-    : 'https://api-m.sandbox.paypal.com';
+  const baseUrl = 'https://api-m.paypal.com';
 
   try {
     const auth = Buffer.from(clientId + ':' + clientSecret).toString('base64');
