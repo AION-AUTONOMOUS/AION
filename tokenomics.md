@@ -7,7 +7,7 @@
 |------|-------|
 | Name | AION |
 | Symbol | AION |
-| Total Supply | 1,000,000,000 |
+| Total Supply | 10,000,000,000 AION |
 | Smallest Unit | 1 Neuro = 0.00000001 AION |
 | Standard | ERC-20 |
 | Target Network | BNB Smart Chain |
@@ -15,22 +15,23 @@
 
 ## Distribution
 
-| Percentage | Party |
-|------------|-------|
-| 40% | Community - Smart Mining |
-| 20% | Development & Research |
-| 15% | Founders |
-| 15% | Strategic Reserve |
-| 10% | AI Model Training Rewards |
+| Percentage | Party | Amount |
+|------------|-------|--------|
+| 40% | Community - Smart Mining | 4,000,000,000 |
+| 20% | Development & Research | 2,000,000,000 |
+| 15% | Founders | 1,500,000,000 |
+| 15% | Strategic Reserve | 1,500,000,000 |
+| 10% | AI Model Training Rewards | 1,000,000,000 |
+| **TOTAL** | | **10,000,000,000** |
 
 ## Founding Price
 
-| Phase | Price |
-|-------|-------|
-| Founding | 0.001 USD |
-| After 100 buyers | 0.005 USD |
-| After 500 buyers | 0.01 USD |
-| After listing | 0.05 USD |
+| Phase | Price | Market Cap |
+|-------|-------|------------|
+| Founding | 0.01 USD | 100M USD |
+| After 100 buyers | 0.05 USD | 500M USD |
+| After 500 buyers | 0.10 USD | 1B USD |
+| After listing | 0.50 USD | 5B USD |
 
 ## Burn Mechanism
 
