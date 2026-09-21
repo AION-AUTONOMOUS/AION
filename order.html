@@ -24,10 +24,12 @@ select:focus,textarea:focus{outline:none;border-color:#D4AF37}
 .price-display{text-align:center;padding:15px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.4);border-radius:12px;margin-bottom:20px}
 .price-display .amount{color:#D4AF37;font-size:32px;font-weight:900}
 .price-display .label{color:#aebbd0;font-size:13px}
-#paypal-button-container{min-height:60px;margin-top:10px}
-.status{padding:15px;border-radius:12px;text-align:center;margin-top:15px;font-weight:bold;display:none}
-.status.success{background:rgba(0,200,100,.15);border:1px solid rgba(0,200,100,.5);color:#4ade80}
-.status.error{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.5);color:#ff8888}
+.btn-pay{display:block;width:100%;padding:18px;background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border:none;border-radius:12px;font-weight:900;font-size:17px;cursor:pointer;font-family:inherit;margin-bottom:10px;transition:.3s}
+.btn-pay:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(212,175,55,.5)}
+.btn-pay.card{background:#2a2a2a;color:#fff;border:1px solid rgba(255,255,255,.2)}
+.btn-pay.card:hover{background:#3a3a3a}
+.btn-pay:disabled{opacity:.5;cursor:not-allowed}
+.note{text-align:center;color:#aebbd0;font-size:12px;margin-top:10px}
 .footer{text-align:center;padding:30px 20px;color:#aebbd0;font-size:12px;border-top:1px solid rgba(212,175,55,.2);margin-top:30px}
 .footer strong{color:#D4AF37}
 </style>
@@ -52,13 +54,13 @@ select:focus,textarea:focus{outline:none;border-color:#D4AF37}
 <h2>1️⃣ اختر الخدمة</h2>
 <label for="service">الخدمة المطلوبة</label>
 <select id="service" onchange="updatePrice()">
-<option value="article500" data-price="5">مقال 500 كلمة — $5</option>
-<option value="article1000" data-price="10">مقال 1000 كلمة — $10</option>
-<option value="social5" data-price="5">5 منشورات سوشيال — $5</option>
-<option value="translation500" data-price="5">ترجمة 500 كلمة — $5</option>
-<option value="market" data-price="10">تحليل سوق — $10</option>
-<option value="python" data-price="15">Python سكريبت — $15</option>
-<option value="cv" data-price="10">CV احترافي — $10</option>
+<option value="article500" data-price="5" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">مقال 500 كلمة — $5</option>
+<option value="article1000" data-price="10" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">مقال 1000 كلمة — $10</option>
+<option value="social5" data-price="5" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">5 منشورات سوشيال — $5</option>
+<option value="translation500" data-price="5" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">ترجمة 500 كلمة — $5</option>
+<option value="market" data-price="10" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">تحليل سوق — $10</option>
+<option value="python" data-price="15" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">Python سكريبت — $15</option>
+<option value="cv" data-price="10" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">CV احترافي — $10</option>
 </select>
 <label for="details">الموضوع / التفاصيل المطلوبة</label>
 <textarea id="details" rows="4" placeholder="اكتب موضوعك بالتفصيل هنا..."></textarea>
@@ -74,9 +76,8 @@ select:focus,textarea:focus{outline:none;border-color:#D4AF37}
 
 <div class="card">
 <h2>3️⃣ ادفع الآن</h2>
-<p style="color:#aebbd0;font-size:13px;margin-bottom:15px">اختر PayPal أو ادفع بالبطاقة مباشرة — بدون تسجيل</p>
-<div id="paypal-button-container"></div>
-<div class="status" id="status"></div>
+<button class="btn-pay" onclick="payNow()">💳 ادفع الآن بأمان</button>
+<p class="note">سيتم تحويلك إلى صفحة PayPal الآمنة — ادفع بحسابك أو بالبطاقة مباشرة</p>
 </div>
 
 <div class="footer">
@@ -93,87 +94,20 @@ function updatePrice() {
   document.getElementById('priceAmount').textContent = '$' + parseFloat(price).toFixed(2);
 }
 
-function showStatus(message, type) {
-  const el = document.getElementById('status');
-  el.textContent = message;
-  el.className = 'status ' + type;
-  el.style.display = 'block';
-}
+function payNow() {
+  const select = document.getElementById('service');
+  const selected = select.options[select.selectedIndex];
+  const link = selected.dataset.link;
 
-async function initPayPal() {
-  try {
-    const res = await fetch('/api/paypal/client-id');
-    const data = await res.json();
-    if (!data.clientId) {
-      showStatus('خطأ: لم يتم العثور على PayPal Client ID', 'error');
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.src = 'https://www.paypal.com/sdk/js?client-id=' + data.clientId + '&currency=USD&components=buttons&enable-funding=card';
-    script.onload = () => renderButtons();
-    script.onerror = () => showStatus('تعذر تحميل PayPal SDK', 'error');
-    document.body.appendChild(script);
-  } catch (err) {
-    showStatus('خطأ في الاتصال بالخادم', 'error');
+  if (!link || link === '') {
+    alert('الدفع لهذه الخدمة غير متاح حاليًا — تواصل معنا مباشرة');
+    return;
   }
-}
 
-function renderButtons() {
-  paypal.Buttons({
-    style: {
-      layout: 'vertical',
-      color: 'gold',
-      shape: 'rect',
-      label: 'paypal',
-      height: 45
-    },
-
-    createOrder: async () => {
-      const select = document.getElementById('service');
-      const details = document.getElementById('details').value.trim();
-      const amount = select.options[select.selectedIndex].dataset.price;
-      const description = select.options[select.selectedIndex].text;
-
-      const res = await fetch('/api/paypal/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount, currency: 'USD', description, details })
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'فشل إنشاء الطلب');
-      return data.id;
-    },
-
-    onApprove: async (data) => {
-      const res = await fetch('/api/paypal/capture-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId: data.orderID })
-      });
-
-      const captureData = await res.json();
-      if (res.ok && captureData.status === 'COMPLETED') {
-        showStatus('✅ تم الدفع بنجاح! سيتم تجهيز خدمتك خلال 30 دقيقة.', 'success');
-      } else {
-        showStatus('❌ فشل تأكيد الدفع: ' + (captureData.error || 'خطأ غير معروف'), 'error');
-      }
-    },
-
-    onError: (err) => {
-      console.error('PayPal Error:', err);
-      showStatus('❌ حدث خطأ في الدفع. جرب مرة أخرى.', 'error');
-    },
-
-    onCancel: () => {
-      showStatus('⚠️ تم إلغاء الدفع.', 'error');
-    }
-  }).render('#paypal-button-container');
+  window.location.href = link;
 }
 
 updatePrice();
-initPayPal();
 </script>
 </body>
 </html>
