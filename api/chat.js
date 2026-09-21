@@ -21,6 +21,10 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'message required' });
     }
 
+    if (!process.env.GROQ_API_KEY) {
+      return res.status(500).json({ error: 'GROQ_API_KEY missing in Vercel env' });
+    }
+
     const systemPrompt = 'أنت ' + agentName + ' في شركة AION AUTONOMOUS. أجب بالعربية باختصار ودقة.';
 
     const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -39,14 +43,37 @@ module.exports = async function handler(req, res) {
       })
     });
 
-    const data = await groqRes.json();
+    const rawText = await groqRes.text();
+
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch (e) {
+      return res.status(500).json({
+        error: 'Groq returned non-JSON',
+        status: groqRes.status,
+        raw: rawText.slice(0, 500)
+      });
+    }
+
+    if (!groqRes.ok) {
+      return res.status(500).json({
+        error: 'Groq API error',
+        status: groqRes.status,
+        detail: data
+      });
+    }
+
     const reply = data.choices && data.choices[0] && data.choices[0].message
       ? data.choices[0].message.content
-      : 'No reply';
+      : 'No reply from Groq';
 
     return res.status(200).json({ reply: reply });
 
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({
+      error: 'Server exception',
+      message: err.message
+    });
   }
 };
