@@ -5,369 +5,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AION AUTONOMOUS | الذكاء الأبدي</title>
+<title>AION AUTONOMOUS</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:Arial,Tahoma,sans-serif;
-  background:#050d1f;
-  color:#fff;
-  min-height:100vh;
-  overflow-x:hidden;
-  background-image:url('https://i.ibb.co/8ntGBf2B/file-0000000015848211bc9ffd7594e6b306.png');
-  background-size:cover;
-  background-position:center;
-  background-attachment:fixed;
-  background-repeat:no-repeat;
-}
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:linear-gradient(135deg,rgba(5,13,31,.75),rgba(11,29,58,.55));
-  z-index:0;
-}
-.container{
-  position:relative;
-  z-index:1;
-  max-width:1400px;
-  margin:auto;
-  padding:20px;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 25px;
-  background:rgba(5,13,31,.65);
-  backdrop-filter:blur(15px);
-  border:1px solid rgba(212,175,55,.3);
-  border-radius:20px;
-  margin-bottom:25px;
-  flex-wrap:wrap;
-  gap:15px;
-}
-.logo-top{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:16px;
-  font-weight:900;
-  color:#D4AF37;
-  letter-spacing:2px;
-}
-.logo-top .mark{
-  width:36px;height:36px;
-  border:2px solid #D4AF37;
-  border-radius:50%;
-  display:grid;place-items:center;
-  font-weight:900;
-  box-shadow:0 0 20px rgba(212,175,55,.5);
-}
-.menu{
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
-}
-.menu a{
-  color:#dfe8f5;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:bold;
-  transition:.3s;
-}
-.menu a:hover{color:#D4AF37;text-shadow:0 0 10px rgba(212,175,55,.7)}
-.top-actions{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-.icon-btn{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  padding:8px 15px;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(212,175,55,.4);
-  border-radius:20px;
-  color:#D4AF37;
-  font-size:13px;
-  font-weight:bold;
-  text-decoration:none;
-  transition:.3s;
-}
+body{font-family:Arial,Tahoma,sans-serif;background:#050d1f;color:#fff;min-height:100vh;overflow-x:hidden;background-image:url('https://i.ibb.co/8ntGBf2B/file-0000000015848211bc9ffd7594e6b306.png');background-size:cover;background-position:center;background-attachment:fixed;background-repeat:no-repeat}
+body::before{content:"";position:fixed;inset:0;background:linear-gradient(135deg,rgba(5,13,31,.75),rgba(11,29,58,.55));z-index:0;pointer-events:none}
+.container{position:relative;z-index:1;max-width:1400px;margin:auto;padding:20px;min-height:100vh;display:flex;flex-direction:column}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:rgba(5,13,31,.65);backdrop-filter:blur(15px);border:1px solid rgba(212,175,55,.3);border-radius:20px;margin-bottom:25px;flex-wrap:wrap;gap:15px}
+.logo-top{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:900;color:#D4AF37;letter-spacing:2px}
+.logo-top .mark{width:36px;height:36px;border:2px solid #D4AF37;border-radius:50%;display:grid;place-items:center;font-weight:900;box-shadow:0 0 20px rgba(212,175,55,.5)}
+.menu{display:flex;gap:20px;flex-wrap:wrap}
+.menu a{color:#dfe8f5;text-decoration:none;font-size:14px;font-weight:bold;transition:.3s}
+.menu a:hover{color:#D4AF37}
+.top-actions{display:flex;gap:10px;align-items:center}
+.icon-btn{display:flex;align-items:center;gap:6px;padding:8px 15px;background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.4);border-radius:20px;color:#D4AF37;font-size:13px;font-weight:bold;text-decoration:none;transition:.3s}
 .icon-btn:hover{background:#D4AF37;color:#050d1f}
-.hero{
-  text-align:center;
-  padding:40px 20px 30px;
-}
-.hero h1{
-  font-size:clamp(48px,9vw,110px);
-  color:#D4AF37;
-  letter-spacing:8px;
-  font-weight:900;
-  text-shadow:0 0 40px rgba(212,175,55,.9),0 0 100px rgba(122,75,255,.7);
-  margin-bottom:12px;
-  animation:glow 3s ease-in-out infinite alternate;
-}
-@keyframes glow{
-  from{text-shadow:0 0 40px rgba(212,175,55,.9),0 0 100px rgba(122,75,255,.7)}
-  to{text-shadow:0 0 70px rgba(212,175,55,1),0 0 140px rgba(122,75,255,1)}
-}
-.hero .tag-ar{
-  color:#fff;
-  font-size:clamp(16px,2.5vw,24px);
-  font-weight:bold;
-  letter-spacing:2px;
-  margin-bottom:8px;
-  text-shadow:0 0 15px rgba(0,0,0,.9);
-}
-.hero .tag-en{
-  color:#aebbd0;
-  font-size:clamp(11px,1.5vw,14px);
-  letter-spacing:4px;
-  margin-bottom:35px;
-  text-shadow:0 0 10px rgba(0,0,0,.9);
-}
-.columns{
-  display:grid;
-  grid-template-columns:1fr 1.3fr 1fr;
-  gap:25px;
-  align-items:flex-start;
-  margin-bottom:40px;
-}
-.column h3{
-  color:#D4AF37;
-  font-size:20px;
-  text-align:center;
-  margin-bottom:18px;
-  letter-spacing:2px;
-  text-shadow:0 0 15px rgba(212,175,55,.5);
-}
-.column{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-.item{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:14px 16px;
-  background:rgba(5,13,31,.7);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(212,175,55,.35);
-  border-radius:15px;
-  color:#fff;
-  text-decoration:none;
-  transition:.3s;
-  cursor:pointer;
-}
-.item:hover{
-  background:rgba(212,175,55,.15);
-  border-color:#D4AF37;
-  transform:translateX(-5px);
-  box-shadow:0 0 25px rgba(212,175,55,.4);
-}
-.item .ico{
-  width:42px;height:42px;
-  flex-shrink:0;
-  border-radius:12px;
-  background:rgba(122,75,255,.15);
-  border:1px solid rgba(122,75,255,.5);
-  display:grid;place-items:center;
-  font-size:20px;
-  box-shadow:0 0 15px rgba(122,75,255,.4);
-}
+.hero{text-align:center;padding:30px 20px 25px}
+.hero h1{font-size:clamp(48px,9vw,110px);color:#D4AF37;letter-spacing:8px;font-weight:900;text-shadow:0 0 40px rgba(212,175,55,.9),0 0 100px rgba(122,75,255,.7);margin-bottom:12px}
+.hero .tag-ar{color:#fff;font-size:clamp(16px,2.5vw,24px);font-weight:bold;letter-spacing:2px;margin-bottom:8px;text-shadow:0 0 15px rgba(0,0,0,.9)}
+.hero .tag-en{color:#aebbd0;font-size:clamp(11px,1.5vw,14px);letter-spacing:4px;margin-bottom:30px;text-shadow:0 0 10px rgba(0,0,0,.9)}
+.columns{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:25px;align-items:flex-start;margin-bottom:35px}
+.column{display:flex;flex-direction:column;gap:12px}
+.column h3{color:#D4AF37;font-size:20px;text-align:center;margin-bottom:18px;letter-spacing:2px}
+.item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(5,13,31,.7);backdrop-filter:blur(12px);border:1px solid rgba(212,175,55,.35);border-radius:15px;color:#fff;text-decoration:none;transition:.3s;cursor:pointer}
+.item:hover{background:rgba(212,175,55,.15);border-color:#D4AF37;transform:translateX(-5px);box-shadow:0 0 25px rgba(212,175,55,.4)}
+.item .ico{width:42px;height:42px;flex-shrink:0;border-radius:12px;background:rgba(122,75,255,.15);border:1px solid rgba(122,75,255,.5);display:grid;place-items:center;font-size:20px}
 .item .txt{display:flex;flex-direction:column;gap:2px;flex:1}
 .item .txt strong{color:#D4AF37;font-size:14px;font-weight:900}
 .item .txt span{color:#aebbd0;font-size:11px}
-.item.purple{
-  background:linear-gradient(135deg,rgba(122,75,255,.3),rgba(212,175,55,.2));
-  border-color:#7A4BFF;
-  box-shadow:0 0 25px rgba(122,75,255,.5);
-}
-.item.purple .ico{
-  background:rgba(122,75,255,.4);
-  border-color:#7A4BFF;
-}
-.center-col{
-  text-align:center;
-  padding:25px 15px;
-}
-.center-col .core-box{
-  display:inline-block;
-  padding:15px 30px;
-  background:rgba(5,13,31,.75);
-  border:2px solid #D4AF37;
-  border-radius:20px;
-  margin-bottom:20px;
-  box-shadow:0 0 30px rgba(212,175,55,.5);
-}
-.center-col .core-box strong{
-  color:#D4AF37;
-  font-size:18px;
-  letter-spacing:3px;
-}
-.center-col .desc{
-  color:#c8d5e7;
-  font-size:13px;
-  line-height:1.9;
-  margin-bottom:20px;
-  text-shadow:0 0 10px rgba(0,0,0,.9);
-}
-.center-col .btn-hero{
-  display:inline-block;
-  padding:16px 38px;
-  background:linear-gradient(135deg,#D4AF37,#f2d477);
-  color:#050d1f;
-  border-radius:50px;
-  font-weight:900;
-  font-size:16px;
-  text-decoration:none;
-  box-shadow:0 15px 40px rgba(212,175,55,.5);
-  transition:.3s;
-  margin:6px;
-  border:none;
-  cursor:pointer;
-}
-.center-col .btn-hero:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(212,175,55,.8)}
-.center-col .btn-hero.outline{
-  background:rgba(255,255,255,.08);
-  color:#fff;
-  border:2px solid #D4AF37;
-}
+.item.purple{background:linear-gradient(135deg,rgba(122,75,255,.3),rgba(212,175,55,.2));border-color:#7A4BFF;box-shadow:0 0 25px rgba(122,75,255,.5)}
+.item.purple .ico{background:rgba(122,75,255,.4);border-color:#7A4BFF}
+.center-col{text-align:center;padding:25px 15px}
+.center-col .core-box{display:inline-block;padding:15px 30px;background:rgba(5,13,31,.75);border:2px solid #D4AF37;border-radius:20px;margin-bottom:20px;box-shadow:0 0 30px rgba(212,175,55,.5)}
+.center-col .core-box strong{color:#D4AF37;font-size:18px;letter-spacing:3px}
+.center-col .desc{color:#c8d5e7;font-size:13px;line-height:1.9;margin-bottom:20px;text-shadow:0 0 10px rgba(0,0,0,.9)}
+.center-col .btn-hero{display:inline-block;padding:16px 38px;background:linear-gradient(135deg,#D4AF37,#f2d477);color:#050d1f;border-radius:50px;font-weight:900;font-size:16px;text-decoration:none;box-shadow:0 15px 40px rgba(212,175,55,.5);transition:.3s;margin:6px;border:none;cursor:pointer}
+.center-col .btn-hero:hover{transform:translateY(-4px)}
+.center-col .btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #D4AF37}
 .center-col .btn-hero.outline:hover{background:#D4AF37;color:#050d1f}
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-  margin-bottom:30px;
-}
-.stat-card{
-  padding:20px;
-  background:rgba(5,13,31,.75);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(212,175,55,.35);
-  border-radius:18px;
-  text-align:center;
-  transition:.3s;
-}
-.stat-card:hover{
-  border-color:#D4AF37;
-  box-shadow:0 0 25px rgba(212,175,55,.5);
-  transform:translateY(-5px);
-}
-.stat-card .num{
-  color:#D4AF37;
-  font-size:28px;
-  font-weight:900;
-  margin-bottom:5px;
-}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:25px}
+.stat-card{padding:20px;background:rgba(5,13,31,.75);backdrop-filter:blur(12px);border:1px solid rgba(212,175,55,.35);border-radius:18px;text-align:center;transition:.3s}
+.stat-card:hover{border-color:#D4AF37;box-shadow:0 0 25px rgba(212,175,55,.5);transform:translateY(-5px)}
+.stat-card .num{color:#D4AF37;font-size:28px;font-weight:900;margin-bottom:5px}
 .stat-card .lbl{color:#aebbd0;font-size:12px}
-.footer{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:20px 25px;
-  background:rgba(5,13,31,.85);
-  backdrop-filter:blur(15px);
-  border:1px solid rgba(212,175,55,.3);
-  border-radius:20px;
-  flex-wrap:wrap;
-  gap:15px;
-  margin-top:auto;
-}
+.footer{display:flex;justify-content:space-between;align-items:center;padding:20px 25px;background:rgba(5,13,31,.85);backdrop-filter:blur(15px);border:1px solid rgba(212,175,55,.3);border-radius:20px;flex-wrap:wrap;gap:15px;margin-top:auto}
 .footer-social{display:flex;gap:10px;align-items:center;color:#D4AF37;font-size:12px}
-.footer-social a{
-  display:grid;place-items:center;
-  width:36px;height:36px;
-  background:rgba(212,175,55,.1);
-  border:1px solid rgba(212,175,55,.4);
-  border-radius:50%;
-  color:#D4AF37;
-  text-decoration:none;
-  font-size:16px;
-  transition:.3s;
-}
+.footer-social a{display:grid;place-items:center;width:36px;height:36px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.4);border-radius:50%;color:#D4AF37;text-decoration:none;font-size:16px;transition:.3s}
 .footer-social a:hover{background:#D4AF37;color:#050d1f}
 .footer-brand{text-align:center;color:#D4AF37;font-weight:900;letter-spacing:2px}
 .footer-brand small{display:block;color:#aebbd0;font-size:10px;margin-top:4px;letter-spacing:3px}
 .footer-info{text-align:left;color:#aebbd0;font-size:11px;line-height:1.8}
 .footer-info strong{color:#D4AF37}
-@media(max-width:1000px){
-  .columns{grid-template-columns:1fr;gap:20px}
-  .center-col{order:-1}
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .menu{justify-content:center;width:100%}
-  .topbar{justify-content:center;text-align:center}
-  .footer{justify-content:center;text-align:center}
-  .footer-info{text-align:center}
-}
+@media(max-width:1000px){.columns{grid-template-columns:1fr;gap:20px}.center-col{order:-1}.stats{grid-template-columns:repeat(2,1fr)}.menu{justify-content:center;width:100%}.topbar{justify-content:center;text-align:center}.footer{justify-content:center;text-align:center}.footer-info{text-align:center}}
 </style>
 </head>
 <body>
-
 <div class="container">
-
-  <div class="topbar">
-    <div class="logo-top">
-      <div class="mark">A</div>
-      AION AUTONOMOUS
-    </div>
-    <div class="menu">
-      <a href="index.html">الرئيسية</a>
-      <a href="services.html">الخدمات</a>
-      <a href="#workforce">الذكاء الاصطناعي</a>
-      <a href="currencies.html">العملات الرقمية</a>
-      <a href="#about">حول الشركة</a>
-      <a href="#contact">التواصل</a>
-    </div>
-    <div class="top-actions">
-      <a href="#" class="icon-btn">🌐 العربية</a>
-      <a href="chat.html" class="icon-btn">👤 تسجيل الدخول</a>
-    </div>
-  </div>
-
-  <div class="hero">
-    <h1>AION</h1>
-    <p class="tag-ar">الذكاء الأبدي لشبكة لا تنتهي</p>
-    <p class="tag-en">THE ETERNAL INTELLIGENCE FOR AN ENDLESS NETWORK</p>
-  </div>
-
-  <div class="columns">
-
-  </div>
-
-  <div class="stats">
-    <div class="stat-card"><div class="num">99.9%</div><div class="lbl">استقرار النظام</div></div>
-    <div class="stat-card"><div class="num">24/7</div><div class="lbl">تشغيل مستمر</div></div>
-    <div class="stat-card"><div class="num">195</div><div class="lbl">دولة حول العالم</div></div>
-    <div class="stat-card"><div class="num">10,000</div><div class="lbl">وكيل ذكاء اصطناعي</div></div>
-  </div>
-
-  <div class="footer">
-    <div class="footer-social">
-      <span>تابعنا على</span>
-      <a href="https://discord.gg/pjq6eEvsZ" target="_blank">🎮</a>
-      <a href="#" target="_blank">📺</a>
-      <a href="#" target="_blank">✈️</a>
-      <a href="https://twitter.com/AION_Network" target="_blank">𝕏</a>
-    </div>
-    <div class="footer-brand">
-      AION AUTONOMOUS
-      <small>GLOBAL • INTELLIGENT • INDEPENDENT</small>
-    </div>
-    <div class="footer-info">
-      <strong>Geneva, Switzerland</strong><br>
-      aion.genesisss@gmail.com
-    </div>
-  </div>
-
+<div class="topbar">
+<div class="logo-top"><div class="mark">A</div>AION AUTONOMOUS</div>
+<div class="menu">
+<a href="index.html">الرئيسية</a>
+<a href="services.html">الخدمات</a>
+<a href="#workforce">الذكاء الاصطناعي</a>
+<a href="currencies.html">العملات الرقمية</a>
+<a href="#about">حول الشركة</a>
+<a href="#contact">التواصل</a>
+</div>
+<div class="top-actions">
+<a href="#" class="icon-btn">🌐 العربية</a>
+<a href="chat.html" class="icon-btn">👤 تسجيل الدخول</a>
+</div>
 </div>
 
+<div class="hero">
+<h1>AION</h1>
+<p class="tag-ar">الذكاء الأبدي لشبكة لا تنتهي</p>
+<p class="tag-en">THE ETERNAL INTELLIGENCE FOR AN ENDLESS NETWORK</p>
+</div>
+
+<div class="columns">
+<div class="column">
+<h3>منصاتنا</h3>
+<a href="chat.html" class="item"><div class="ico">📊</div><div class="txt"><strong>لوحة التحكم</strong><span>إدارة شاملة لحسابك</span></div></a>
+<a href="wallet.html" class="item"><div class="ico">👛</div><div class="txt"><strong>المحفظة</strong><span>أموالك تحت السيطرة</span></div></a>
+<a href="currencies.html" class="item"><div class="ico">📈</div><div class="txt"><strong>الأسواق</strong><span>تداول بذكاء</span></div></a>
+<a href="currencies.html" class="item"><div class="ico">🔍</div><div class="txt"><strong>التحليلات</strong><span>بيانات تصنع القرار</span></div></a>
+<a href="#contact" class="item"><div class="ico">🎧</div><div class="txt"><strong>الدعم الفني</strong><span>نحن هنا لمساعدتك</span></div></a>
+<a href="#contact" class="item"><div class="ico">📡</div><div class="txt"><strong>قنوات التواصل</strong><span>تابعنا عبر منصاتنا</span></div></a>
+<div class="item purple" style="cursor:default"><div class="ico">🤖</div><div class="txt"><strong>شبكة الوكلاء الذكية</strong><span>10,000 وكيل ذكاء اصطناعي</span></div></div>
+<a href="#workforce" class="item purple" style="justify-content:center"><strong>عرض التفاصيل</strong></a>
+</div>
+
+<div class="center-col">
+<div class="core-box"><strong>🎯 AION CORE</strong></div>
+<p class="desc">نواة الذكاء الاصطناعي التي تنسق 10,000 وكيل متخصص<br>لتقديم خدمات ذكية للعالم بأسره</p>
+<a href="chat.html" class="btn-hero">💬 ابدأ المحادثة الآن</a>
+<a href="order.html" class="btn-hero outline">🛒 اطلب خدمة</a>
+</div>
+
+<div class="column">
+<h3>خدماتنا</h3>
+<a href="chat.html" class="item"><div class="ico">🧠</div><div class="txt"><strong>المساعد الذكي AION Core</strong><span>مساعدك الذكي دائماً</span></div></a>
+<a href="services.html" class="item"><div class="ico">⚙️</div><div class="txt"><strong>خدمات الذكاء الاصطناعي</strong><span>حلول ذكية لمستقبلك</span></div></a>
+<a href="currencies.html" class="item"><div class="ico">🪙</div><div class="txt"><strong>العملات الرقمية - AION</strong><span>الدفع الذكي</span></div></a>
+<a href="services.html" class="item"><div class="ico">💻</div><div class="txt"><strong>البرامج والتطبيقات</strong><span>أدوات المستقبل</span></div></a>
+<a href="#contact" class="item"><div class="ico">💡</div><div class="txt"><strong>الاستشارات التقنية</strong><span>معك في كل خطوة</span></div></a>
+<a href="wallet.html" class="item"><div class="ico">💳</div><div class="txt"><strong>المحفظة الرقمية</strong><span>إدارة أموالك بسهولة</span></div></a>
+<a href="order.html" class="item purple"><div class="ico">⚡</div><div class="txt"><strong>الدفع المباشر</strong><span>اشحن رصيدك الآن</span></div></a>
+</div>
+</div>
+
+<section id="about" style="padding:40px 20px;text-align:center;background:rgba(5,13,31,.75);border-radius:20px;margin-bottom:25px;border:1px solid rgba(212,175,55,.3)">
+<h2 style="color:#D4AF37;font-size:32px;margin-bottom:15px">🌹 عن AION</h2>
+<p style="max-width:800px;margin:auto;color:#c8d5e7;line-height:2;font-size:15px">AION AUTONOMOUS شركة عالمية متخصصة في الذكاء الاصطناعي، مدعومة بوكلاء ذكاء اصطناعي حقيقيين يعملون على مدار الساعة.</p>
+</section>
+
+<section id="workforce" style="padding:40px 20px;text-align:center;background:rgba(5,13,31,.75);border-radius:20px;margin-bottom:25px;border:1px solid rgba(212,175,55,.3)">
+<h2 style="color:#D4AF37;font-size:32px;margin-bottom:15px">🤖 الجيش الذكي</h2>
+<p style="max-width:800px;margin:auto;color:#c8d5e7;line-height:2;font-size:15px">10,000 وكيل ذكاء اصطناعي متخصص في: البحث، التحليل، التسويق، المبيعات، البرمجة، التدقيق، والأمان.</p>
+</section>
+
+<section id="contact" style="padding:40px 20px;text-align:center;background:rgba(5,13,31,.75);border-radius:20px;margin-bottom:25px;border:1px solid rgba(212,175,55,.3)">
+<h2 style="color:#D4AF37;font-size:32px;margin-bottom:15px">📬 تواصل معنا</h2>
+<p style="color:#c8d5e7;font-size:15px;margin-bottom:20px">aion.genesisss@gmail.com</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center">
+<a href="https://twitter.com/AION_Network" target="_blank" class="icon-btn">🐦 تويتر</a>
+<a href="https://discord.gg/pjq6eEvsZ" target="_blank" class="icon-btn">🎮 ديسكورد</a>
+<a href="https://www.reddit.com/user/AION_Network_Official/" target="_blank" class="icon-btn">👽 ريديت</a>
+<a href="https://www.linkedin.com" target="_blank" class="icon-btn">💼 LinkedIn</a>
+</div>
+</section>
+
+<div class="stats">
+<div class="stat-card"><div class="num">99.9%</div><div class="lbl">استقرار النظام</div></div>
+<div class="stat-card"><div class="num">24/7</div><div class="lbl">تشغيل مستمر</div></div>
+<div class="stat-card"><div class="num">195</div><div class="lbl">دولة حول العالم</div></div>
+<div class="stat-card"><div class="num">10,000</div><div class="lbl">وكيل ذكاء اصطناعي</div></div>
+</div>
+
+<div class="footer">
+<div class="footer-social">
+<span>تابعنا على</span>
+<a href="https://discord.gg/pjq6eEvsZ" target="_blank">🎮</a>
+<a href="#" target="_blank">📺</a>
+<a href="#" target="_blank">✈️</a>
+<a href="https://twitter.com/AION_Network" target="_blank">𝕏</a>
+</div>
+<div class="footer-brand">
+AION AUTONOMOUS
+<small>GLOBAL • INTELLIGENT • INDEPENDENT</small>
+</div>
+<div class="footer-info">
+<strong>Geneva, Switzerland</strong><br>
+aion.genesisss@gmail.com
+</div>
+</div>
+</div>
 </body>
 </html>
