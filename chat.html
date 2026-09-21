@@ -54,6 +54,15 @@ body.en-mode{direction:ltr}
 <option value="coder">💻 مبرمج — Coder</option>
 <option value="auditor">🔎 مدقق — Auditor</option>
 <option value="legal">⚖️ قانوني — Legal</option>
+<optgroup label="────── الأقسام الكاملة ──────">
+<option value="research">🏢 قسم الأبحاث — 10 وكلاء</option>
+<option value="marketing">🏢 قسم التسويق — 20 وكيل</option>
+<option value="development">🏢 قسم التطوير — 15 وكيل</option>
+<option value="support">🏢 قسم الدعم — 15 وكيل</option>
+<option value="content">🏢 قسم المحتوى — 15 وكيل</option>
+<option value="analysis">🏢 قسم التحليل — 5 وكلاء</option>
+<option value="security">🏢 قسم الأمان — 5 وكلاء</option>
+</optgroup>
 </select>
 
 <div class="chat-box" id="chatBox">
@@ -118,7 +127,8 @@ async function sendMessage(lang) {
         sendBtn.disabled = false;
         
         if (data.success) {
-            chatBox.innerHTML += '<div class="msg ai"><span class="role">' + role.toUpperCase() + '</span>' + escapeHtml(data.reply) + '</div>';
+            const agentLabel = data.agent ? (data.agent.name + ' • ' + data.agent.id) : role.toUpperCase();
+            chatBox.innerHTML += '<div class="msg ai"><span class="role">' + escapeHtml(agentLabel) + '</span>' + escapeHtml(data.reply) + '</div>';
         } else {
             const errLabel = lang === 'ar' ? 'خطأ' : 'Error';
             chatBox.innerHTML += '<div class="msg ai"><span class="role">' + errLabel + '</span>' + escapeHtml(data.error || 'Unknown') + '</div>';
