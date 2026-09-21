@@ -16,6 +16,8 @@ body::before{content:"";position:fixed;inset:0;background:linear-gradient(135deg
 .menu{display:flex;gap:20px;flex-wrap:wrap}
 .menu a{color:#dfe8f5;text-decoration:none;font-size:14px;font-weight:bold;transition:.3s}
 .menu a:hover{color:#D4AF37}
+.menu a.coin-link{color:#D4AF37;position:relative}
+.menu a.coin-link::after{content:"🔥";font-size:10px;margin-right:3px}
 .top-actions{display:flex;gap:10px;align-items:center}
 .icon-btn{display:flex;align-items:center;gap:6px;padding:8px 15px;background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.4);border-radius:20px;color:#D4AF37;font-size:13px;font-weight:bold;text-decoration:none;transition:.3s}
 .icon-btn:hover{background:#D4AF37;color:#050d1f}
@@ -34,6 +36,8 @@ body::before{content:"";position:fixed;inset:0;background:linear-gradient(135deg
 .item .txt span{color:#aebbd0;font-size:11px}
 .item.purple{background:linear-gradient(135deg,rgba(122,75,255,.3),rgba(212,175,55,.2));border-color:#7A4BFF;box-shadow:0 0 25px rgba(122,75,255,.5)}
 .item.purple .ico{background:rgba(122,75,255,.4);border-color:#7A4BFF}
+.item.gold{background:linear-gradient(135deg,rgba(212,175,55,.35),rgba(242,212,119,.2));border-color:#D4AF37;box-shadow:0 0 25px rgba(212,175,55,.5)}
+.item.gold .ico{background:rgba(212,175,55,.3);border-color:#D4AF37}
 .center-col{text-align:center;padding:25px 15px}
 .center-col .core-box{display:inline-block;padding:15px 30px;background:rgba(5,13,31,.75);border:2px solid #D4AF37;border-radius:20px;margin-bottom:20px;box-shadow:0 0 30px rgba(212,175,55,.5)}
 .center-col .core-box strong{color:#D4AF37;font-size:18px;letter-spacing:3px}
@@ -41,7 +45,6 @@ body::before{content:"";position:fixed;inset:0;background:linear-gradient(135deg
 .center-col .btn-hero{display:inline-block;padding:16px 38px;background:linear-gradient(135deg,#D4AF37,#f2d477);color:#050d1f;border-radius:50px;font-weight:900;font-size:16px;text-decoration:none;box-shadow:0 15px 40px rgba(212,175,55,.5);transition:.3s;margin:6px;border:none;cursor:pointer}
 .center-col .btn-hero:hover{transform:translateY(-4px)}
 .center-col .btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #D4AF37}
-.center-col .btn-hero.outline:hover{background:#D4AF37;color:#050d1f}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:25px}
 .stat-card{padding:20px;background:rgba(5,13,31,.75);backdrop-filter:blur(12px);border:1px solid rgba(212,175,55,.35);border-radius:18px;text-align:center;transition:.3s}
 .stat-card:hover{border-color:#D4AF37;box-shadow:0 0 25px rgba(212,175,55,.5);transform:translateY(-5px)}
@@ -64,11 +67,11 @@ body::before{content:"";position:fixed;inset:0;background:linear-gradient(135deg
 <div class="logo-top"><div class="mark">A</div>AION AUTONOMOUS</div>
 <div class="menu">
 <a href="index.html">الرئيسية</a>
+<a href="coin.html" class="coin-link">AION Coin</a>
 <a href="services.html">الخدمات</a>
 <a href="pricing.html">الأسعار</a>
 <a href="team.html">الفريق</a>
 <a href="chat.html">الشات</a>
-<a href="currencies.html">العملات</a>
 </div>
 <div class="top-actions">
 <a href="chat.html" class="icon-btn">👤 تسجيل الدخول</a>
@@ -86,8 +89,8 @@ body::before{content:"";position:fixed;inset:0;background:linear-gradient(135deg
 <h3>منصاتنا</h3>
 <a href="chat.html" class="item"><div class="ico">📊</div><div class="txt"><strong>لوحة التحكم</strong><span>إدارة شاملة لحسابك</span></div></a>
 <a href="wallet.html" class="item"><div class="ico">👛</div><div class="txt"><strong>المحفظة</strong><span>أموالك تحت السيطرة</span></div></a>
+<a href="coin.html" class="item gold"><div class="ico">🪙</div><div class="txt"><strong>AION Coin</strong><span>10 مليار — اطلق قريبًا</span></div></a>
 <a href="currencies.html" class="item"><div class="ico">📈</div><div class="txt"><strong>الأسواق</strong><span>تداول بذكاء</span></div></a>
-<a href="currencies.html" class="item"><div class="ico">🔍</div><div class="txt"><strong>التحليلات</strong><span>بيانات تصنع القرار</span></div></a>
 <a href="order.html" class="item"><div class="ico">🎧</div><div class="txt"><strong>الدعم الفني</strong><span>نحن هنا لمساعدتك</span></div></a>
 <a href="#contact" class="item"><div class="ico">📡</div><div class="txt"><strong>قنوات التواصل</strong><span>تابعنا عبر منصاتنا</span></div></a>
 <a href="team.html" class="item purple"><div class="ico">🤖</div><div class="txt"><strong>شبكة الوكلاء الذكية</strong><span>100 وكيل AI متخصص</span></div></a>
@@ -97,14 +100,14 @@ body::before{content:"";position:fixed;inset:0;background:linear-gradient(135deg
 <div class="core-box"><strong>🎯 AION CORE</strong></div>
 <p class="desc">نواة الذكاء الاصطناعي التي تنسق 100 وكيل متخصص<br>لتقديم خدمات ذكية للعالم بأسره</p>
 <a href="chat.html" class="btn-hero">💬 ابدأ المحادثة الآن</a>
-<a href="pricing.html" class="btn-hero outline">💰 شاهد الأسعار</a>
+<a href="coin.html" class="btn-hero outline">🪙 AION Coin</a>
 </div>
 
 <div class="column">
 <h3>خدماتنا</h3>
 <a href="chat.html" class="item"><div class="ico">🧠</div><div class="txt"><strong>المساعد الذكي AION Core</strong><span>مساعدك الذكي دائماً</span></div></a>
 <a href="services.html" class="item"><div class="ico">⚙️</div><div class="txt"><strong>خدمات الذكاء الاصطناعي</strong><span>حلول ذكية لمستقبلك</span></div></a>
-<a href="currencies.html" class="item"><div class="ico">🪙</div><div class="txt"><strong>العملات الرقمية - AION</strong><span>10 مليار AION</span></div></a>
+<a href="coin.html" class="item gold"><div class="ico">🪙</div><div class="txt"><strong>العملات الرقمية - AION</strong><span>احجز مكانك مسبقًا</span></div></a>
 <a href="services.html" class="item"><div class="ico">💻</div><div class="txt"><strong>البرامج والتطبيقات</strong><span>أدوات المستقبل</span></div></a>
 <a href="pricing.html" class="item"><div class="ico">💡</div><div class="txt"><strong>الباقات والأسعار</strong><span>ابدأ من $3</span></div></a>
 <a href="wallet.html" class="item"><div class="ico">💳</div><div class="txt"><strong>المحفظة الرقمية</strong><span>إدارة أموالك بسهولة</span></div></a>
@@ -125,11 +128,11 @@ body::before{content:"";position:fixed;inset:0;background:linear-gradient(135deg
 </div>
 </section>
 
-<section id="coin" style="padding:40px 20px;text-align:center;background:rgba(5,13,31,.75);border-radius:20px;margin-bottom:25px;border:1px solid rgba(212,175,55,.3)">
+<section id="coin" style="padding:40px 20px;text-align:center;background:linear-gradient(135deg,rgba(212,175,55,.15),rgba(122,75,255,.1));border:2px solid #D4AF37;border-radius:20px;margin-bottom:25px;box-shadow:0 0 40px rgba(212,175,55,.3)">
 <h2 style="color:#D4AF37;font-size:32px;margin-bottom:15px">🪙 AION Coin</h2>
-<p style="max-width:800px;margin:auto;color:#c8d5e7;line-height:2;font-size:15px">10,000,000,000 AION — أول عملة ذكية تعمل بآلية Proof of Intelligence. السعر التأسيسي: $0.01.</p>
-<div style="margin-top:20px">
-<a href="currencies.html" class="btn-hero outline" style="padding:15px 35px;display:inline-block;background:rgba(255,255,255,.08);color:#fff;border:2px solid #D4AF37;border-radius:50px;text-decoration:none;font-weight:900">🌍 شاهد السعر بجميع العملات</a>
+<p style="max-width:800px;margin:auto;color:#c8d5e7;line-height:2;font-size:15px;margin-bottom:20px">10,000,000,000 AION — أول عملة ذكية تعمل بآلية Proof of Intelligence. السعر التأسيسي: $0.01. اطلق رسميًا قريبًا.</p>
+<div>
+<a href="coin.html" class="btn-hero" style="display:inline-block;padding:15px 35px;background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border-radius:50px;text-decoration:none;font-weight:900;box-shadow:0 15px 40px rgba(212,175,55,.5);margin:5px">🎯 احجز مكانك الآن</a>
 </div>
 </section>
 
@@ -146,7 +149,7 @@ body::before{content:"";position:fixed;inset:0;background:linear-gradient(135deg
 
 <div class="stats">
 <div class="stat-card"><div class="num">100</div><div class="lbl">وكيل AI</div></div>
-<div class="stat-card"><div class="num">8</div><div class="lbl">أقسام متخصصة</div></div>
+<div class="stat-card"><div class="num">10B</div><div class="lbl">AION Coin</div></div>
 <div class="stat-card"><div class="num">28</div><div class="lbl">خدمة احترافية</div></div>
 <div class="stat-card"><div class="num">AR/EN</div><div class="lbl">دعم ثنائي اللغة</div></div>
 </div>
