@@ -39,11 +39,6 @@ module.exports = async function handler(req, res) {
       })
     });
 
-    if (!groqRes.ok) {
-      const errText = await groqRes.text();
-      return res.status(500).json({ error: 'Groq error', detail: errText });
-    }
-
     const data = await groqRes.json();
     const reply = data.choices && data.choices[0] && data.choices[0].message
       ? data.choices[0].message.content
