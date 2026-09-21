@@ -1,6 +1,4 @@
 
-const { AGENTS } = require('./agents-data.js');
-
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -17,23 +15,13 @@ module.exports = async function handler(req, res) {
   try {
     const body = req.body || {};
     const message = body.message;
-    const agentId = body.agent;
+    const agentName = body.agent || 'AION Assistant';
 
     if (!message) {
       return res.status(400).json({ error: 'message required' });
     }
 
-    let agent = AGENTS.find(a => a.id === agentId);
-
-    if (!agent && agentId) {
-      agent = AGENTS.find(a => a.department === agentId);
-    }
-
-    if (!agent) {
-      agent = AGENTS[0];
-    }
-
-    const systemPrompt = agent.prompt + ' اسمك: ' + agent.name + ' — تخصصك: ' + agent.specialty + '.';
+    const systemPrompt = 'أنت ' + agentName + ' في شركة AION AUTONOMOUS. أجب بالعربية باختصار ودقة.';
 
     const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -61,16 +49,7 @@ module.exports = async function handler(req, res) {
       ? data.choices[0].message.content
       : 'No reply';
 
-    return res.status(200).json({
-      reply: reply,
-      agent: {
-        id: agent.id,
-        name: agent.name,
-        department: agent.department,
-        specialty: agent.specialty
-      },
-      total_agents: AGENTS.length
-    });
+    return res.status(200).json({ reply: reply });
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
