@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AION Markets | تحليل الأسواق بالذكاء الاصطناعي</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:auto;padding:14px}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#00c8ff}
+.menu a.active{color:#f5c542}
+
+.hero{padding:45px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,60,120,.6),rgba(2,8,23,.95)),radial-gradient(circle at 50% 40%,rgba(245,197,66,.2),transparent 60%);border:1px solid rgba(245,197,66,.4);border-radius:22px;margin-bottom:25px;position:relative;overflow:hidden;min-height:380px}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(0,180,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,255,.05) 1px,transparent 1px);background-size:30px 30px;opacity:.5;pointer-events:none}
+.hero .content{position:relative;z-index:2}
+.hero .badge{display:inline-block;padding:6px 16px;background:rgba(245,197,66,.15);border:1px solid #f5c542;border-radius:20px;color:#f5c542;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:15px}
+.hero h1{color:#fff;font-size:clamp(26px,4.5vw,44px);font-weight:900;margin-bottom:12px;line-height:1.3}
+.hero h1 span{color:#f5c542;text-shadow:0 0 25px rgba(245,197,66,.8)}
+.hero p{color:#c8d5e7;font-size:15px;max-width:720px;margin:auto;line-height:1.9}
+.hero .chart-icon{font-size:80px;margin:15px 0;display:block;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(245,197,66,.8))}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-15px) scale(1.05)}}
+
+.section{padding:30px 25px;background:linear-gradient(180deg,rgba(2,15,40,.85),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.25);border-radius:20px;margin-bottom:20px}
+.section-title{color:#00c8ff;font-size:22px;font-weight:900;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid rgba(0,180,255,.25);display:flex;align-items:center;gap:10px}
+.section-title::before{content:"◆";color:#f5c542;font-size:14px}
+.section-title span{color:#f5c542;font-size:14px;font-weight:700;margin-right:auto;letter-spacing:1px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.service{padding:24px 22px;background:linear-gradient(180deg,rgba(0,20,60,.6),rgba(2,8,23,.9));border:1px solid rgba(0,180,255,.25);border-radius:18px;transition:.3s;position:relative}
+.service:hover{border-color:#00c8ff;transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,200,255,.3)}
+.service.featured{border:2px solid #f5c542;background:linear-gradient(180deg,rgba(245,197,66,.1),rgba(2,8,23,.9))}
+.service.featured::before{content:"⭐ الأكثر طلبًا";position:absolute;top:-12px;right:20px;background:#f5c542;color:#020817;padding:4px 14px;border-radius:15px;font-size:10px;font-weight:900}
+.service .ic{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(245,197,66,.15),rgba(0,200,255,.1));border:1px solid rgba(245,197,66,.5);display:grid;place-items:center;font-size:26px;margin-bottom:14px;filter:drop-shadow(0 0 15px rgba(245,197,66,.5))}
+.service h3{color:#fff;font-size:17px;font-weight:900;margin-bottom:8px}
+.service p{color:#aebbd0;font-size:13px;line-height:1.7;margin-bottom:14px}
+.service .features{list-style:none;padding:0;margin-bottom:15px}
+.service .features li{color:#c8d5e7;font-size:12px;padding:5px 0;border-bottom:1px dashed rgba(0,180,255,.1)}
+.service .features li:before{content:"✓ ";color:#f5c542;font-weight:900;margin-left:6px}
+.service .bottom{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(0,180,255,.15)}
+.service .price{color:#f5c542;font-size:20px;font-weight:900}
+.service .price small{color:#aebbd0;font-size:10px;font-weight:normal}
+.service .btn{padding:9px 20px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:30px;font-weight:900;font-size:12px;border:none;cursor:pointer;font-family:inherit;transition:.3s}
+.service .btn:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(245,197,66,.6)}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-top:20px}
+.stat{padding:20px 15px;background:rgba(245,197,66,.04);border:1px solid rgba(245,197,66,.25);border-radius:14px;text-align:center;transition:.3s}
+.stat:hover{border-color:#f5c542;background:rgba(245,197,66,.1);transform:translateY(-3px)}
+.stat .n{color:#f5c542;font-size:32px;font-weight:900;margin-bottom:6px;text-shadow:0 0 15px rgba(245,197,66,.5)}
+.stat .l{color:#aebbd0;font-size:11px;letter-spacing:1px}
+
+.info-box{padding:22px 25px;background:linear-gradient(135deg,rgba(245,197,66,.1),rgba(122,75,255,.05));border-right:4px solid #f5c542;border-radius:14px;margin:20px 0}
+.info-box p{color:#e5d8a8;font-size:15px;line-height:1.9;font-style:italic;margin:0}
+
+.cta{padding:35px 25px;background:linear-gradient(135deg,rgba(0,80,150,.35),rgba(245,197,66,.15));border:2px solid #f5c542;border-radius:22px;text-align:center;margin-bottom:20px}
+.cta h2{color:#fff;font-size:24px;font-weight:900;margin-bottom:12px}
+.cta h2 span{color:#f5c542}
+.cta p{color:#c8d5e7;font-size:14px;margin-bottom:22px}
+.btn-hero{display:inline-block;padding:15px 38px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;font-weight:900;font-size:14px;box-shadow:0 15px 40px rgba(245,197,66,.5);transition:.3s;margin:5px}
+.btn-hero:hover{transform:translateY(-3px)}
+.btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #00c8ff}
+
+.footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:20px}
+.footer a{color:#00c8ff;margin:0 8px}
+
+@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}.hero .chart-icon{font-size:60px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="topnav">
+<div class="logo">
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<div>AION<div class="s">MARKETS</div></div>
+</div>
+<div class="menu">
+<a href="index.html">الرئيسية</a>
+<a href="intelligence.html">Intelligence</a>
+<a href="space.html">🛰️ الفضاء</a>
+<a href="markets.html" class="active">📈 الأسواق</a>
+<a href="climate.html">🌍 المناخ</a>
+<a href="labs.html">🧪 المختبر</a>
+</div>
+</div>
+
+<div class="hero">
+<div class="content">
+<span class="badge">📈 AION MARKETS DIVISION</span>
+<span class="chart-icon">📈</span>
+<h1>تحليل <span>الأسواق</span> بالذكاء الاصطناعي</h1>
+<p>تحليل الأسواق المالية العربية والعالمية، تقارير استثمارية، وتوقعات القطاعات — بأيدي 100 وكيل AI متخصص، وبأسعار في متناول الجميع.</p>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">📊 الأسواق العالمية <span>2026</span></div>
+<div class="stats">
+<div class="stat"><div class="n">$110T</div><div class="l">حجم الأسواق المالية</div></div>
+<div class="stat"><div class="n">$4T</div><div class="l">أسواق الخليج</div></div>
+<div class="stat"><div class="n">+15%</div><div class="l">نمو أسواق AI</div></div>
+<div class="stat"><div class="n">24/7</div><div class="l">تحليل مستمر</div></div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">📈 خدمات AION Markets</div>
+
+<div class="grid">
+
+<div class="service featured">
+<div class="ic">📊</div>
+<h3>تحليل أسواق شامل</h3>
+<p>تقرير 20-25 صفحة عن أي سوق: الحجم، النمو، اللاعبون، الفرص، والمخاطر.</p>
+<ul class="features">
+<li>تحليل TAM/SAM/SOM</li>
+<li>تحليل المنافسين</li>
+<li>توصيات استثمارية</li>
+<li>تسليم خلال 48 ساعة</li>
+</ul>
+<div class="bottom">
+<div class="price">$30 <small>USD</small></div>
+<button class="btn" onclick="order('تحليل أسواق شامل',30)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">🎯</div>
+<h3>تحليل منافسين</h3>
+<p>تحليل SWOT كامل لأي 3-5 شركات منافسة، مع استراتيجيات تفوق.</p>
+<ul class="features">
+<li>تحليل عميق لكل منافس</li>
+<li>نقاط القوة والضعف</li>
+<li>الفرص والتهديدات</li>
+<li>استراتيجيات مضادة</li>
+</ul>
+<div class="bottom">
+<div class="price">$20 <small>USD</small></div>
+<button class="btn" onclick="order('تحليل منافسين',20)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">🔮</div>
+<h3>توقعات قطاعية</h3>
+<p>توقعات مدعومة بالبيانات لأي قطاع — 6 إلى 36 شهرًا قادمة.</p>
+<ul class="features">
+<li>3 سيناريوهات (متفائل/متوسط/متشائم)</li>
+<li>مؤشرات كمية</li>
+<li>نقاط تحول محتملة</li>
+<li>خرائط حرارية</li>
+</ul>
+<div class="bottom">
+<div class="price">$35 <small>USD</small></div>
+<button class="btn" onclick="order('توقعات قطاعية',35)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">💰</div>
+<h3>تقرير استثماري</h3>
+<p>تحليل مفصل لفرصة استثمارية معينة — العائد، المخاطر، والتوصية.</p>
+<ul class="features">
+<li>تحليل كامل للفرصة</li>
+<li>حساب ROI متوقع</li>
+<li>تحليل المخاطر</li>
+<li>توصية نهائية (استثمر/انتظر/تجنب)</li>
+</ul>
+<div class="bottom">
+<div class="price">$40 <small>USD</small></div>
+<button class="btn" onclick="order('تقرير استثماري',40)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">📉</div>
+<h3>تحليل محفظة</h3>
+<p>تحليل محفظتك الاستثمارية وتقديم توصيات للتحسين وإعادة التوزيع.</p>
+<ul class="features">
+<li>تحليل التوزيع الحالي</li>
+<li>تحديد المخاطر</li>
+<li>توصيات إعادة التوازن</li>
+<li>توقعات العائد</li>
+</ul>
+<div class="bottom">
+<div class="price">$50 <small>USD</small></div>
+<button class="btn" onclick="order('تحليل محفظة',50)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">🚀</div>
+<h3>Pitch Deck للمستثمرين</h3>
+<p>عرض تقديمي احترافي جاهز للعرض على المستثمرين أو صناديق الاستثمار.</p>
+<ul class="features">
+<li>15-20 شريحة</li>
+<li>تصميم احترافي</li>
+<li>سرد قوي</li>
+<li>تعديلات مجانية</li>
+</ul>
+<div class="bottom">
+<div class="price">$60 <small>USD</small></div>
+<button class="btn" onclick="order('Pitch Deck للمستثمرين',60)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">📰</div>
+<h3>تقرير يومي/أسبوعي</h3>
+<p>تقرير دوري عن السوق — أهم الأخبار، الحركات، والتحليلات.</p>
+<ul class="features">
+<li>تحديث يومي أو أسبوعي</li>
+<li>أهم التطورات</li>
+<li>تحليلات معمقة</li>
+<li>اشتراك شهري</li>
+</ul>
+<div class="bottom">
+<div class="price">$79 <small>/شهر</small></div>
+<button class="btn" onclick="order('تقرير دوري',79)">اشترك</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">🎓</div>
+<h3>استشارات استثمارية</h3>
+<p>جلسة 60 دقيقة مع AI متخصص لمناقشة استراتيجيتك الاستثمارية.</p>
+<ul class="features">
+<li>تحليل الوضع الحالي</li>
+<li>توصيات مخصصة</li>
+<li>خطة عمل</li>
+<li>متابعة أسبوعية</li>
+</ul>
+<div class="bottom">
+<div class="price">$45 <small>USD</small></div>
+<button class="btn" onclick="order('استشارات استثمارية',45)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">🏢</div>
+<h3>تحليل شركة</h3>
+<p>تحليل كامل لأي شركة: مالية، فريق، منتجات، منافسون، وتوصية.</p>
+<ul class="features">
+<li>تحليل 360°</li>
+<li>بيانات مالية</li>
+<li>الفريق التنفيذي</li>
+<li>توصية (شراء/بيع/انتظار)</li>
+</ul>
+<div class="bottom">
+<div class="price">$15 <small>USD</small></div>
+<button class="btn" onclick="order('تحليل شركة',15)">اطلب الآن</button>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">🎯 لماذا AION Markets؟</div>
+<div class="info-box">
+<p>"AION Markets يقدم تحليلات مالية بمستوى Goldman Sachs و Morgan Stanley — لكن بالعربية، وبأسعار رمزية، وبتسليم فوري، ومدعوم بـ 100 وكيل AI متخصص."</p>
+</div>
+
+<div class="grid" style="margin-top:20px">
+<div class="service">
+<div class="ic">🌍</div>
+<h3>الأسواق العربية أولًا</h3>
+<p>نركز على أسواق الخليج والشرق الأوسط — حيث الفجوة كبيرة.</p>
+</div>
+<div class="service">
+<div class="ic">⚡</div>
+<h3>تسليم خلال 24 ساعة</h3>
+<p>لا انتظار، لا تأخير. تقارير احترافية بسرعة فائقة.</p>
+</div>
+<div class="service">
+<div class="ic">💰</div>
+<h3>أسعار رمزية</h3>
+<p>تبدأ من $15 — بينما الشركات العالمية تتقاضى آلاف الدولارات.</p>
+</div>
+<div class="service">
+<div class="ic">🧠</div>
+<h3>100 وكيل متخصص</h3>
+<p>فريق كامل يعمل على تقريرك، ليس نموذج واحد عام.</p>
+</div>
+</div>
+</div>
+
+<div class="cta">
+<h2>جاهز لتحليل <span>أسواقك</span> مع AION؟</h2>
+<p>اطلب تقريرك الآن — التسليم خلال 24-48 ساعة</p>
+<a href="order.html" class="btn-hero">🛒 اطلب تقرير</a>
+<a href="intelligence.html" class="btn-hero outline">🧠 اسأل مجانًا</a>
+</div>
+
+<div class="footer">
+<strong style="color:#00c8ff">AION AUTONOMOUS</strong> — Markets Division<br>
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
+</div>
+
+</div>
+
+<script>
+function order(service, price) {
+  window.location.href = 'order.html?service=' + encodeURIComponent(service) + '&price=' + price;
+}
+</script>
+
+</body>
+</html>
