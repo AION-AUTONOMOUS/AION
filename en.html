@@ -1,0 +1,438 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AION AUTONOMOUS | The Eternal Intelligence</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,Helvetica,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1500px;margin:auto;padding:12px}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:12px;flex-wrap:wrap;gap:15px;box-shadow:0 0 40px rgba(0,150,255,.15)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-logo{width:42px;height:42px}
+.brand-logo svg{width:100%;height:100%;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.brand-text{display:flex;flex-direction:column;line-height:1}
+.brand-text .n{font-size:22px;font-weight:900;color:#fff;letter-spacing:4px}
+.brand-text .s{font-size:8px;color:#00c8ff;letter-spacing:5px;margin-top:3px}
+.nav-links{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.nav-links a{font-size:13px;color:#c8d5e7;font-weight:600;transition:.3s;position:relative;padding:4px 0}
+.nav-links a:hover{color:#00c8ff}
+.nav-links a:hover::after{content:"";position:absolute;bottom:-4px;left:0;right:0;height:2px;background:#00c8ff;box-shadow:0 0 12px #00c8ff}
+.nav-links a.intel{color:#f5c542}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.btn-start{padding:11px 26px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:30px;font-weight:900;font-size:13px;border:none;cursor:pointer;transition:.3s;box-shadow:0 0 25px rgba(245,197,66,.5);font-family:inherit}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 0 35px rgba(245,197,66,.9)}
+.lang-btn{padding:8px 14px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:12px;font-weight:bold;cursor:pointer;font-family:inherit;text-decoration:none}
+.lang-btn:hover{background:rgba(0,200,255,.25)}
+
+.hero{position:relative;border-radius:20px;padding:30px 18px;margin-bottom:15px;overflow:hidden;min-height:640px;background:linear-gradient(180deg,rgba(0,80,150,.35),rgba(2,8,23,.9)),radial-gradient(circle at 50% 50%,rgba(0,150,255,.4),rgba(0,30,80,.3) 40%,rgba(2,8,23,.95));border:1px solid rgba(0,180,255,.3)}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#00c8ff,transparent),radial-gradient(2px 2px at 60% 70%,#f5c542,transparent),radial-gradient(2px 2px at 80% 20%,#00c8ff,transparent),radial-gradient(1px 1px at 40% 80%,#a78bfa,transparent),radial-gradient(2px 2px at 90% 50%,#00c8ff,transparent);background-size:200% 200%;animation:stars 20s linear infinite;opacity:.7;pointer-events:none}
+@keyframes stars{0%{background-position:0 0}100%{background-position:100% 100%}}
+.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:270px 1fr 270px;gap:18px;align-items:start}
+
+.side-panel{background:linear-gradient(180deg,rgba(2,15,40,.92),rgba(2,8,23,.88));backdrop-filter:blur(18px);border:1px solid rgba(0,180,255,.35);border-radius:16px;padding:16px;box-shadow:0 0 30px rgba(0,150,255,.2)}
+.side-panel h3{color:#00c8ff;font-size:15px;margin-bottom:14px;display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:1px solid rgba(0,180,255,.25);font-weight:900}
+.side-panel h3::before{content:"⚙";font-size:14px;color:#f5c542}
+.serv-list{display:flex;flex-direction:column;gap:8px}
+.serv-item{display:flex;align-items:center;gap:11px;padding:10px 11px;background:rgba(0,180,255,.04);border:1px solid rgba(0,180,255,.15);border-radius:11px;font-size:12px;transition:.3s}
+.serv-item:hover{background:rgba(0,180,255,.12);border-color:#00c8ff;transform:translateX(3px)}
+.serv-item .ico{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:15px;background:rgba(0,180,255,.15);border:1px solid rgba(0,180,255,.4);flex-shrink:0}
+.serv-item .txt{color:#dfe8f5;font-weight:700;flex:1}
+.serv-item .arrow{color:#00c8ff;font-size:18px}
+
+.hero-center{text-align:center;padding:10px 0}
+.hero-biglogo{display:inline-block;margin-bottom:12px;animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 25px rgba(0,200,255,.9))}50%{filter:drop-shadow(0 0 45px rgba(245,197,66,.9))}}
+.hero-biglogo svg{width:110px;height:auto}
+.hero h1{font-size:clamp(24px,3.2vw,38px);color:#fff;font-weight:900;line-height:1.35;margin-bottom:10px;text-shadow:0 2px 30px rgba(0,0,0,.9)}
+.hero h1 span{color:#f5c542;text-shadow:0 0 25px rgba(245,197,66,.8)}
+.hero .tagline{color:#c8d5e7;font-size:14px;margin-bottom:18px;text-shadow:0 2px 15px rgba(0,0,0,.9);max-width:550px;margin-left:auto;margin-right:auto;line-height:1.7}
+.hero-globe{position:relative;width:100%;max-width:320px;margin:12px auto;aspect-ratio:1}
+.hero-globe .rings{position:absolute;inset:0}
+.hero-globe .r1{position:absolute;inset:5%;border-radius:50%;border:2px solid rgba(0,180,255,.4);animation:rot 25s linear infinite}
+.hero-globe .r2{position:absolute;inset:18%;border-radius:50%;border:1px dashed rgba(0,180,255,.55);animation:rot 35s linear infinite reverse}
+.hero-globe .r3{position:absolute;inset:30%;border-radius:50%;border:2px solid rgba(0,180,255,.3);animation:rot 15s linear infinite}
+@keyframes rot{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.hero-globe .core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:105px;height:105px;border-radius:50%;background:radial-gradient(circle,#f5c542,#e6a800);display:grid;place-items:center;box-shadow:0 0 50px rgba(245,197,66,.9),0 0 100px rgba(0,200,255,.6);animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 50px rgba(245,197,66,.9),0 0 100px rgba(0,200,255,.6)}50%{box-shadow:0 0 70px rgba(245,197,66,1),0 0 150px rgba(0,200,255,.8)}}
+.hero-globe .core svg{width:58px}
+.hero-globe .label{position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);text-align:center;z-index:3}
+.hero-globe .label .t{font-size:13px;font-weight:900;color:#f5c542;letter-spacing:3px;text-shadow:0 0 15px rgba(245,197,66,.9)}
+.hero-globe .label .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:3px;text-shadow:0 0 10px rgba(0,200,255,.9)}
+.hero-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.hbtn{padding:13px 22px;border-radius:40px;font-weight:900;font-size:13px;border:none;cursor:pointer;transition:.3s;font-family:inherit;display:inline-flex;align-items:center;gap:7px}
+.hbtn.purple{background:linear-gradient(135deg,#7A4BFF,#a78bfa);color:#fff;box-shadow:0 0 25px rgba(122,75,255,.6)}
+.hbtn.blue{background:linear-gradient(135deg,#0099ff,#0077cc);color:#fff;box-shadow:0 0 25px rgba(0,153,255,.6)}
+.hbtn.gold{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;box-shadow:0 0 25px rgba(245,197,66,.7)}
+.hbtn:hover{transform:translateY(-4px)}
+
+.stat-item{padding:12px 11px;background:linear-gradient(135deg,rgba(0,180,255,.06),rgba(0,100,200,.03));border:1px solid rgba(0,180,255,.25);border-radius:11px;margin-bottom:9px;display:flex;align-items:center;gap:11px;transition:.3s}
+.stat-item:hover{border-color:#00c8ff;background:rgba(0,180,255,.12)}
+.stat-item .ico{width:40px;height:40px;border-radius:10px;background:rgba(0,180,255,.18);border:1px solid rgba(0,180,255,.5);display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.stat-item .txt{display:flex;flex-direction:column;gap:2px}
+.stat-item .n{color:#f5c542;font-size:17px;font-weight:900;line-height:1}
+.stat-item .l{color:#aebbd0;font-size:10px}
+.coin-card{margin-top:14px;padding:16px 14px;background:linear-gradient(135deg,rgba(245,197,66,.18),rgba(230,168,0,.06));border:1px solid #f5c542;border-radius:13px;text-align:center;box-shadow:0 0 25px rgba(245,197,66,.3)}
+.coin-card .title{color:#f5c542;font-size:14px;font-weight:900;margin-bottom:4px}
+.coin-card .sub{color:#aebbd0;font-size:10px;margin-bottom:11px}
+.coin-btn{display:block;padding:10px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:30px;font-weight:900;font-size:12px;border:none;cursor:pointer;font-family:inherit;width:100%;transition:.3s}
+.coin-btn:hover{box-shadow:0 0 25px rgba(245,197,66,.8)}
+
+.band{background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.8),rgba(2,8,23,.95));border:1px solid rgba(0,180,255,.25);border-radius:16px;padding:22px 18px;margin-bottom:15px;text-align:center}
+.band-tag{color:#00c8ff;font-size:11px;letter-spacing:4px;margin-bottom:8px;font-weight:900}
+.band h2{color:#fff;font-size:clamp(18px,2.2vw,24px);font-weight:900;margin-bottom:4px}
+.band h2 span{color:#f5c542}
+.band .en{color:#6b7c94;font-size:9px;letter-spacing:3px;margin-bottom:18px}
+.features{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.feat{padding:12px 8px;background:rgba(0,180,255,.04);border:1px solid rgba(0,180,255,.15);border-radius:12px;text-align:center;transition:.3s}
+.feat:hover{border-color:#00c8ff;background:rgba(0,180,255,.1);transform:translateY(-3px)}
+.feat .ic{font-size:24px;margin-bottom:6px;display:block;filter:drop-shadow(0 0 8px rgba(0,200,255,.7))}
+.feat .t{color:#fff;font-size:11px;font-weight:900;margin-bottom:3px}
+.feat .d{color:#6b7c94;font-size:9px}
+
+.intel-section{margin-bottom:20px;padding:30px 20px;background:linear-gradient(180deg,rgba(0,80,150,.25),rgba(2,8,23,.9));border:2px solid #00c8ff;border-radius:20px;position:relative;overflow:hidden}
+.intel-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:25px;align-items:center}
+.intel-left h2{color:#fff;font-size:clamp(22px,3vw,32px);font-weight:900;margin-bottom:12px;line-height:1.3}
+.intel-left h2 span{color:#00c8ff;text-shadow:0 0 20px rgba(0,200,255,.7)}
+.intel-left .badge{display:inline-block;padding:5px 14px;background:rgba(245,197,66,.15);border:1px solid #f5c542;border-radius:20px;color:#f5c542;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:12px}
+.intel-left p{color:#c8d5e7;font-size:14px;line-height:1.9;margin-bottom:20px}
+.intel-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.intel-feat{padding:10px 12px;background:rgba(0,180,255,.06);border:1px solid rgba(0,180,255,.25);border-radius:10px;font-size:12px;color:#c8d5e7;font-weight:600}
+.intel-feat::before{content:"✓ ";color:#00c8ff;font-weight:900;margin-right:5px}
+.intel-btn{display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border-radius:50px;font-weight:900;font-size:14px;box-shadow:0 15px 40px rgba(0,200,255,.5);transition:.3s}
+.intel-btn:hover{transform:translateY(-3px)}
+.intel-right{padding:25px;background:rgba(2,8,23,.7);backdrop-filter:blur(15px);border:1px solid rgba(0,200,255,.3);border-radius:18px}
+.intel-demo-title{color:#00c8ff;font-size:13px;font-weight:900;margin-bottom:12px}
+.intel-demo-q{padding:12px;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.25);border-radius:10px;color:#dfe8f5;font-size:12px;margin-bottom:10px;line-height:1.6}
+.intel-demo-a{padding:12px;background:rgba(245,197,66,.08);border-left:3px solid #f5c542;border-radius:10px;color:#e5d8a8;font-size:11px;line-height:1.7;font-style:italic}
+
+.services-section{margin-bottom:20px}
+.services-section h2{text-align:center;color:#fff;font-size:24px;font-weight:900;margin-bottom:6px}
+.services-section h2 span{color:#00c8ff}
+.services-section .desc{text-align:center;color:#aebbd0;font-size:12px;margin-bottom:20px}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.service-card{padding:22px 14px;background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.22);border-radius:14px;text-align:center;transition:.3s}
+.service-card:hover{border-color:#00c8ff;transform:translateY(-5px);box-shadow:0 15px 40px rgba(0,180,255,.3)}
+.service-card .ic{width:48px;height:48px;margin:0 auto 12px;border-radius:12px;background:rgba(0,180,255,.15);border:1px solid rgba(0,180,255,.45);display:grid;place-items:center;font-size:22px}
+.service-card h4{color:#fff;font-size:13px;font-weight:900;margin-bottom:5px}
+.service-card p{color:#6b7c94;font-size:10px;line-height:1.5}
+.service-card.space .ic{background:rgba(0,200,255,.15);border-color:rgba(0,200,255,.5)}
+.service-card.markets .ic{background:rgba(245,197,66,.15);border-color:rgba(245,197,66,.5)}
+.service-card.climate .ic{background:rgba(74,222,128,.15);border-color:rgba(74,222,128,.5)}
+.service-card.labs .ic{background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.5)}
+
+.roadmap-section{margin-bottom:20px;padding:25px 18px;background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.25);border-radius:16px}
+.roadmap-section h2{text-align:center;color:#fff;font-size:24px;font-weight:900;margin-bottom:6px}
+.roadmap-section h2 span{color:#00c8ff}
+.roadmap-section .desc{text-align:center;color:#aebbd0;font-size:12px;margin-bottom:25px}
+.roadmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px}
+.step{padding:20px 15px;background:rgba(0,180,255,.04);border:1px solid rgba(0,180,255,.2);border-radius:14px;text-align:center;transition:.3s}
+.step:hover{border-color:#f5c542;background:rgba(245,197,66,.08);transform:translateY(-4px)}
+.step .num{display:inline-block;padding:5px 12px;background:rgba(245,197,66,.15);border:1px solid #f5c542;border-radius:20px;color:#f5c542;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:12px}
+.step h4{color:#00c8ff;font-size:14px;font-weight:900;margin-bottom:6px}
+.step p{color:#aebbd0;font-size:11px;line-height:1.5}
+
+.footer{text-align:center;padding:30px 15px;color:#6b7c94;font-size:12px;border-top:1px solid rgba(0,180,255,.15);margin-top:20px;background:linear-gradient(180deg,transparent,rgba(0,30,70,.3));border-radius:16px}
+.footer .brand-line{color:#00c8ff;font-weight:900;letter-spacing:3px;margin-bottom:8px;font-size:14px}
+.footer .motto{color:#aebbd0;font-size:12px;margin-bottom:10px}
+.footer strong{color:#f5c542}
+.footer a{color:#00c8ff;margin:0 8px}
+
+.floating-chat{position:fixed;bottom:25px;right:25px;z-index:9999;display:flex;align-items:center;gap:12px;padding:12px 20px 12px 12px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);border-radius:50px;box-shadow:0 10px 40px rgba(0,200,255,.5),0 0 0 0 rgba(0,200,255,.7);animation:floatPulse 2.5s infinite;transition:.3s;color:#fff}
+.floating-chat:hover{transform:translateY(-4px) scale(1.03)}
+.chat-bubble{width:44px;height:44px;border-radius:50%;background:#020817;display:grid;place-items:center;font-size:22px;flex-shrink:0}
+.chat-text{color:#fff;font-weight:900;font-size:14px;white-space:nowrap}
+.chat-pulse{position:absolute;top:8px;left:8px;width:12px;height:12px;background:#4ade80;border-radius:50%;box-shadow:0 0 15px #4ade80;animation:dotPulse 1.5s infinite}
+@keyframes floatPulse{0%,100%{box-shadow:0 10px 40px rgba(0,200,255,.5),0 0 0 0 rgba(0,200,255,.7)}50%{box-shadow:0 10px 40px rgba(0,200,255,.5),0 0 0 20px rgba(0,200,255,0)}}
+@keyframes dotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+
+@media(max-width:1000px){
+.hero-inner{grid-template-columns:1fr;gap:12px}
+.hero-center{order:-1}
+.features{grid-template-columns:repeat(2,1fr)}
+.nav-links{justify-content:center;width:100%;order:3;gap:14px}
+.topnav{justify-content:center}
+.nav-cta{order:2}
+.hero{min-height:auto;padding:25px 14px}
+.intel-inner{grid-template-columns:1fr}
+.intel-features{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+.features{grid-template-columns:1fr}
+.services-grid{grid-template-columns:repeat(2,1fr)}
+.roadmap{grid-template-columns:1fr}
+.floating-chat{bottom:15px;right:15px;padding:10px 16px 10px 10px}
+.chat-text{font-size:12px}
+.chat-bubble{width:38px;height:38px;font-size:18px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="topnav">
+<div class="brand">
+<div class="brand-logo">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#00c8ff"/>
+<stop offset="100%" stop-color="#7A4BFF"/>
+</linearGradient></defs>
+<path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g1)"/>
+<circle cx="50" cy="58" r="7" fill="#f5c542"/>
+</svg>
+</div>
+<div class="brand-text">
+<div class="n">AION</div>
+<div class="s">AUTONOMOUS</div>
+</div>
+</div>
+<div class="nav-links">
+<a href="en.html">Home</a>
+<a href="intelligence.html" class="intel">🧠 Intelligence</a>
+<a href="space.html">🛰️ Space</a>
+<a href="markets.html">📈 Markets</a>
+<a href="climate.html">🌍 Climate</a>
+<a href="labs.html">🧪 Labs</a>
+<a href="reports.html">📄 Reports</a>
+<a href="pricing.html">Pricing</a>
+<a href="team.html">Team</a>
+<a href="coin.html">AION Coin</a>
+</div>
+<div class="nav-cta">
+<a href="index.html" class="lang-btn">AR 🌐</a>
+<a href="chat.html" class="btn-start">Start Now →</a>
+</div>
+</div>
+
+<div class="hero">
+<div class="hero-inner">
+
+<div class="side-panel">
+<h3>Our AI Services</h3>
+<div class="serv-list">
+<a href="intelligence.html" class="serv-item"><div class="ico">🧠</div><span class="txt">AION Intelligence</span><span class="arrow">›</span></a>
+<a href="space.html" class="serv-item"><div class="ico">🛰️</div><span class="txt">AION Space</span><span class="arrow">›</span></a>
+<a href="markets.html" class="serv-item"><div class="ico">📈</div><span class="txt">AION Markets</span><span class="arrow">›</span></a>
+<a href="climate.html" class="serv-item"><div class="ico">🌍</div><span class="txt">AION Climate</span><span class="arrow">›</span></a>
+<a href="labs.html" class="serv-item"><div class="ico">🧪</div><span class="txt">AION Labs</span><span class="arrow">›</span></a>
+<a href="reports.html" class="serv-item"><div class="ico">📄</div><span class="txt">Reports</span><span class="arrow">›</span></a>
+<a href="services.html" class="serv-item"><div class="ico">⚙️</div><span class="txt">All Services</span><span class="arrow">›</span></a>
+</div>
+</div>
+
+<div class="hero-center">
+<div class="hero-biglogo">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#00c8ff"/>
+<stop offset="100%" stop-color="#7A4BFF"/>
+</linearGradient></defs>
+<path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g2)"/>
+<circle cx="50" cy="58" r="7" fill="#f5c542"/>
+</svg>
+</div>
+<h1>Multi-Division <span>AI Platform</span></h1>
+<p class="tagline">5 specialized divisions — Intelligence, Space, Markets, Climate, Labs. Powered by 100 AI agents, 24/7.</p>
+
+<div class="hero-globe">
+<div class="rings">
+<div class="r1"></div>
+<div class="r2"></div>
+<div class="r3"></div>
+</div>
+<div class="core">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<path d="M50 10 L88 88 L72 88 L50 40 L28 88 L12 88 Z" fill="#020817"/>
+<circle cx="50" cy="58" r="6" fill="#020817"/>
+</svg>
+</div>
+<div class="label">
+<div class="t">AION CORE</div>
+<div class="s">COMMAND INTELLIGENCE</div>
+</div>
+</div>
+
+<div class="hero-buttons">
+<a href="intelligence.html" class="hbtn purple">🧠 AION Intelligence</a>
+<a href="chat.html" class="hbtn blue">💬 Talk to AI</a>
+<a href="coin.html" class="hbtn gold">🚀 AION Coin</a>
+</div>
+</div>
+
+<div class="side-panel">
+<h3>AION Power Now</h3>
+<div class="stat-item"><div class="ico">🤖</div><div class="txt"><div class="n">100</div><div class="l">AI agents working now</div></div></div>
+<div class="stat-item"><div class="ico">⏰</div><div class="txt"><div class="n">24/7</div><div class="l">Continuous operation</div></div></div>
+<div class="stat-item"><div class="ico">🏢</div><div class="txt"><div class="n">5</div><div class="l">Specialized divisions</div></div></div>
+
+<div class="coin-card">
+<div class="title">🪙 AION Coin</div>
+<div class="sub">The project's digital currency</div>
+<a href="coin.html" class="coin-btn">Buy Now →</a>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="band">
+<div class="band-tag">AION AUTONOMOUS</div>
+<h2>We turn your ideas into <span>reality</span> — fast, efficient, intelligent</h2>
+<div class="en">MORE AGENTS. MORE POWER. A SMARTER TOMORROW.</div>
+
+<div class="features">
+<div class="feat"><span class="ic">♾️</span><div class="t">Always On</div><div class="d">Never stops</div></div>
+<div class="feat"><span class="ic">🧠</span><div class="t">Smart AI</div><div class="d">Learns & evolves</div></div>
+<div class="feat"><span class="ic">🛡️</span><div class="t">Secure</div><div class="d">Data protection</div></div>
+<div class="feat"><span class="ic">🌐</span><div class="t">Global</div><div class="d">Connected network</div></div>
+<div class="feat"><span class="ic">⚡</span><div class="t">Fast</div><div class="d">Rapid delivery</div></div>
+</div>
+</div>
+
+<div class="intel-section">
+<div class="intel-inner">
+
+<div class="intel-left">
+<span class="badge">🧠 AION INTELLIGENCE — NEW</span>
+<h2>Business Intelligence in <span>Arabic</span> — a world first</h2>
+<p>Ask any question about any company, market, or competitor — get a McKinsey-level analysis in seconds.</p>
+
+<div class="intel-features">
+<div class="intel-feat">Arabic search</div>
+<div class="intel-feat">Instant analysis</div>
+<div class="intel-feat">100 specialists</div>
+<div class="intel-feat">Free to start</div>
+</div>
+
+<a href="intelligence.html" class="intel-btn">🧠 Try AION Intelligence now</a>
+</div>
+
+<div class="intel-right">
+<div class="intel-demo-title">📌 Real example:</div>
+<div class="intel-demo-q">
+<strong>Question:</strong> "Analyze OpenAI as a business model"
+</div>
+<div class="intel-demo-a">
+10-page analysis: business model, funding, competitors, risks, 2025-2028 projections, strategic investor recommendations...
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="services-section">
+<h2>Discover <span>AION's 5 Divisions</span></h2>
+<p class="desc">5 specialized divisions — each supported by expert AI agents</p>
+
+<div class="services-grid">
+<a href="intelligence.html" class="service-card">
+<div class="ic">🧠</div>
+<h4>AION Intelligence</h4>
+<p>Arabic business intelligence</p>
+</a>
+<a href="space.html" class="service-card space">
+<div class="ic">🛰️</div>
+<h4>AION Space</h4>
+<p>Space & satellite analysis</p>
+</a>
+<a href="markets.html" class="service-card markets">
+<div class="ic">📈</div>
+<h4>AION Markets</h4>
+<p>Markets & investment</p>
+</a>
+<a href="climate.html" class="service-card climate">
+<div class="ic">🌍</div>
+<h4>AION Climate</h4>
+<p>Climate & sustainability</p>
+</a>
+<a href="labs.html" class="service-card labs">
+<div class="ic">🧪</div>
+<h4>AION Labs</h4>
+<p>Custom AI models</p>
+</a>
+<a href="reports.html" class="service-card">
+<div class="ic">📄</div>
+<h4>Professional Reports</h4>
+<p>World-class reports</p>
+</a>
+<a href="services.html" class="service-card">
+<div class="ic">&lt;/&gt;</div>
+<h4>App Development</h4>
+<p>Complete digital solutions</p>
+</a>
+<a href="services.html" class="service-card">
+<div class="ic">📣</div>
+<h4>Digital Marketing</h4>
+<p>Smart content & campaigns</p>
+</a>
+<a href="services.html" class="service-card">
+<div class="ic">💼</div>
+<h4>Business & Sales</h4>
+<p>Solutions to grow your business</p>
+</a>
+<a href="order.html" class="service-card">
+<div class="ic">🎧</div>
+<h4>Tech Support</h4>
+<p>Service around the clock</p>
+</a>
+</div>
+</div>
+
+<div class="roadmap-section">
+<h2>AION <span>Roadmap</span></h2>
+<p class="desc">From idea to global — 5 clear phases</p>
+
+<div class="roadmap">
+<div class="step">
+<div class="num">01</div>
+<h4>Platform</h4>
+<p>Building the foundation</p>
+</div>
+<div class="step">
+<div class="num">02</div>
+<h4>Smart Army</h4>
+<p>AI agents network</p>
+</div>
+<div class="step">
+<div class="num">03</div>
+<h4>5 Divisions</h4>
+<p>Intelligence • Space • Markets • Climate • Labs</p>
+</div>
+<div class="step">
+<div class="num">04</div>
+<h4>AION Coin</h4>
+<p>Digital economy launch</p>
+</div>
+<div class="step">
+<div class="num">05</div>
+<h4>Global Expansion</h4>
+<p>Reaching world markets</p>
+</div>
+</div>
+</div>
+
+<div class="footer" id="contact">
+<div class="brand-line">AION AUTONOMOUS</div>
+<div class="motto">The eternal intelligence for an endless network</div>
+<strong>Geneva, Switzerland</strong><br>
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">𝕏 Twitter</a> |
+<a href="https://discord.gg/pjq6eEvsZ">Discord</a> |
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
+</div>
+
+</div>
+
+<a href="chat.html" class="floating-chat" title="Talk to AION AI">
+<div class="chat-bubble">💬</div>
+<div class="chat-text">Talk to AI</div>
+<div class="chat-pulse"></div>
+</a>
+
+</body>
+</html>
