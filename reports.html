@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التقارير | AION Reports</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:auto;padding:14px}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#00c8ff}
+.menu a.active{color:#f5c542}
+
+/* HERO */
+.hero{padding:40px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,80,150,.3),rgba(2,8,23,.9));border:1px solid rgba(0,180,255,.35);border-radius:22px;margin-bottom:25px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#00c8ff,transparent),radial-gradient(2px 2px at 60% 70%,#f5c542,transparent),radial-gradient(1px 1px at 40% 80%,#a78bfa,transparent);opacity:.6;pointer-events:none}
+.hero .content{position:relative;z-index:2}
+.hero .badge{display:inline-block;padding:6px 16px;background:rgba(245,197,66,.15);border:1px solid #f5c542;border-radius:20px;color:#f5c542;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:15px}
+.hero h1{color:#fff;font-size:clamp(26px,4.5vw,42px);font-weight:900;margin-bottom:12px;line-height:1.3}
+.hero h1 span{color:#00c8ff;text-shadow:0 0 25px rgba(0,200,255,.7)}
+.hero p{color:#c8d5e7;font-size:15px;max-width:700px;margin:auto;line-height:1.8}
+
+/* TABS */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:25px}
+.tab{padding:12px 24px;background:rgba(0,180,255,.06);border:1px solid rgba(0,180,255,.3);border-radius:30px;color:#c8d5e7;font-size:13px;font-weight:700;cursor:pointer;transition:.3s;font-family:inherit}
+.tab:hover{background:rgba(0,180,255,.15);color:#00c8ff}
+.tab.active{background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border-color:transparent;box-shadow:0 0 25px rgba(0,200,255,.5)}
+
+/* REPORTS GRID */
+.reports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;margin-bottom:30px}
+.report-card{padding:25px 22px;background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.25);border-radius:18px;transition:.3s;position:relative}
+.report-card:hover{border-color:#00c8ff;transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,200,255,.3)}
+.report-card.featured{border:2px solid #f5c542;background:linear-gradient(180deg,rgba(245,197,66,.1),rgba(2,8,23,.9))}
+.report-card.featured::before{content:"⭐ الأكثر طلبًا";position:absolute;top:-12px;right:20px;background:#f5c542;color:#020817;padding:4px 14px;border-radius:15px;font-size:10px;font-weight:900}
+.report-card .icon{width:54px;height:54px;border-radius:14px;background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.5);display:grid;place-items:center;font-size:24px;margin-bottom:14px}
+.report-card.featured .icon{background:rgba(245,197,66,.18);border-color:#f5c542}
+.report-card h3{color:#fff;font-size:17px;font-weight:900;margin-bottom:8px}
+.report-card p{color:#aebbd0;font-size:13px;line-height:1.7;margin-bottom:14px}
+.report-card .meta{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(0,180,255,.15)}
+.report-card .price{color:#f5c542;font-size:20px;font-weight:900}
+.report-card .price small{color:#aebbd0;font-size:11px;font-weight:normal}
+.report-card .btn{padding:9px 20px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border-radius:30px;font-weight:900;font-size:12px;border:none;cursor:pointer;font-family:inherit;transition:.3s}
+.report-card .btn:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(0,200,255,.6)}
+
+/* SAMPLE SECTION */
+.sample-section{padding:30px 25px;background:linear-gradient(180deg,rgba(0,80,150,.2),rgba(2,8,23,.9));border:1px solid rgba(0,180,255,.3);border-radius:20px;margin-bottom:25px}
+.sample-section h2{color:#00c8ff;font-size:22px;font-weight:900;margin-bottom:8px;text-align:center}
+.sample-section .sub{color:#aebbd0;font-size:13px;text-align:center;margin-bottom:22px}
+.sample-box{padding:20px;background:rgba(2,8,23,.7);border:1px solid rgba(0,180,255,.2);border-radius:14px;margin-bottom:15px}
+.sample-box .label{color:#f5c542;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:8px}
+.sample-box .content{color:#c8d5e7;font-size:13px;line-height:1.8}
+.sample-box .content strong{color:#00c8ff}
+.sample-box ul{list-style:none;padding:0;margin-top:10px}
+.sample-box ul li{padding:5px 0;color:#c8d5e7;font-size:13px;border-bottom:1px dashed rgba(0,180,255,.1)}
+.sample-box ul li:before{content:"→ ";color:#00c8ff;font-weight:900;margin-left:6px}
+
+/* CTA */
+.cta{padding:35px 25px;background:linear-gradient(135deg,rgba(0,80,150,.3),rgba(122,75,255,.15));border:2px solid #00c8ff;border-radius:22px;text-align:center;margin-bottom:20px}
+.cta h2{color:#fff;font-size:24px;font-weight:900;margin-bottom:12px}
+.cta h2 span{color:#f5c542}
+.cta p{color:#c8d5e7;font-size:14px;margin-bottom:22px}
+.btn-hero{display:inline-block;padding:15px 38px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;font-weight:900;font-size:14px;text-decoration:none;box-shadow:0 15px 40px rgba(245,197,66,.5);transition:.3s;margin:5px}
+.btn-hero:hover{transform:translateY(-3px)}
+.btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #00c8ff}
+
+.footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:20px}
+.footer a{color:#00c8ff;margin:0 8px}
+
+@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}.reports-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="topnav">
+<div class="logo">
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<div>AION<div class="s">REPORTS</div></div>
+</div>
+<div class="menu">
+<a href="index.html">الرئيسية</a>
+<a href="intelligence.html">Intelligence</a>
+<a href="reports.html" class="active">التقارير</a>
+<a href="pricing.html">الأسعار</a>
+<a href="chat.html">الشات</a>
+</div>
+</div>
+
+<div class="hero">
+<div class="content">
+<span class="badge">📊 AION REPORTS</span>
+<h1>تقارير احترافية بـ <span>الذكاء الاصطناعي</span></h1>
+<p>تقارير بمستوى McKinsey و BCG — لكن بأسعار رمزية، وتسليم خلال 30 دقيقة. مدعومة بـ 100 وكيل AI متخصص.</p>
+</div>
+</div>
+
+<div class="tabs">
+<button class="tab active">📈 تحليل السوق</button>
+<button class="tab">🎯 المنافسون</button>
+<button class="tab">💼 خطط الأعمال</button>
+<button class="tab">🔮 التوقعات</button>
+<button class="tab">🕵️ دليل الشركات</button>
+</div>
+
+<div class="reports-grid">
+
+<div class="report-card featured">
+<div class="icon">📊</div>
+<h3>تحليل سوق شامل</h3>
+<p>تقرير 15-20 صفحة عن أي سوق عالمي: الحجم، النمو، اللاعبون الرئيسيون، والفرص الاستثمارية.</p>
+<div class="meta">
+<div class="price">$25 <small>USD</small></div>
+<button class="btn" onclick="orderReport('تحليل سوق شامل', 25)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="report-card">
+<div class="icon">🎯</div>
+<h3>تحليل المنافسين</h3>
+<p>تحليل SWOT لأي 3-5 منافسين + استراتيجيات مضادة + خارطة تنافسية واضحة.</p>
+<div class="meta">
+<div class="price">$15 <small>USD</small></div>
+<button class="btn" onclick="orderReport('تحليل المنافسين', 15)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="report-card">
+<div class="icon">💼</div>
+<h3>Business Plan</h3>
+<p>خطة عمل كاملة (20-25 صفحة) جاهزة للمستثمرين — تشمل النموذج المالي والعرض التقديمي.</p>
+<div class="meta">
+<div class="price">$50 <small>USD</small></div>
+<button class="btn" onclick="orderReport('Business Plan', 50)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="report-card">
+<div class="icon">📈</div>
+<h3>توقعات السوق 2026-2028</h3>
+<p>توقعات مدعومة بالبيانات لقطاعك، مع سيناريوهات متعددة (متفائل/متوسط/متشائم).</p>
+<div class="meta">
+<div class="price">$20 <small>USD</small></div>
+<button class="btn" onclick="orderReport('توقعات السوق', 20)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="report-card">
+<div class="icon">🔍</div>
+<h3>دراسة جدوى</h3>
+<p>تحليل كامل لفكرتك قبل الاستثمار: الفكرة، الميزانية، نقطة التعادل، والمخاطر.</p>
+<div class="meta">
+<div class="price">$30 <small>USD</small></div>
+<button class="btn" onclick="orderReport('دراسة جدوى', 30)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="report-card">
+<div class="icon">🕵️</div>
+<h3>دليل الشركات</h3>
+<p>ملف كامل عن أي شركة عالمية: البيانات المالية، الفريق، السجل، والتحليل الاستراتيجي.</p>
+<div class="meta">
+<div class="price">$8 <small>USD</small></div>
+<button class="btn" onclick="orderReport('دليل شركة', 8)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="report-card">
+<div class="icon">🚀</div>
+<h3>Pitch Deck للمستثمرين</h3>
+<p>عرض تقديمي احترافي (10-15 شريحة) جاهز للعرض على المستثمرين الجادين.</p>
+<div class="meta">
+<div class="price">$35 <small>USD</small></div>
+<button class="btn" onclick="orderReport('Pitch Deck', 35)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="report-card">
+<div class="icon">💰</div>
+<h3>تقرير استثماري</h3>
+<p>تحليل مفصل لفرصة استثمارية معينة — العائد، المخاطر، والتوصية النهائية.</p>
+<div class="meta">
+<div class="price">$40 <small>USD</small></div>
+<button class="btn" onclick="orderReport('تقرير استثماري', 40)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="report-card">
+<div class="icon">🎓</div>
+<h3>بحث أكاديمي</h3>
+<p>بحث علمي محكّم في أي مجال — مع المصادر والمراجع وطريقة البحث الأكاديمية.</p>
+<div class="meta">
+<div class="price">$45 <small>USD</small></div>
+<button class="btn" onclick="orderReport('بحث أكاديمي', 45)">اطلب الآن</button>
+</div>
+</div>
+
+</div>
+
+<!-- SAMPLE -->
+<div class="sample-section">
+<h2>📄 نموذج من تقرير حقيقي</h2>
+<p class="sub">مقتطف من تحليل سوق الذكاء الاصطناعي في الشرق الأوسط 2026</p>
+
+<div class="sample-box">
+<div class="label">📌 الملخص التنفيذي</div>
+<div class="content">
+من المتوقع أن يصل حجم سوق الذكاء الاصطناعي في الشرق الأوسط إلى <strong>$75 مليار</strong> بحلول 2028، بمعدل نمو سنوي مركب <strong>18%</strong>. السعودية والإمارات تقودان النمو بحصة <strong>62%</strong> من إجمالي الاستثمارات.
+</div>
+</div>
+
+<div class="sample-box">
+<div class="label">📊 المؤشرات الرئيسية</div>
+<ul>
+<li>حجم السوق الحالي: <strong>$42 مليار</strong> (2026)</li>
+<li>النمو السنوي المركب: <strong>18%</strong></li>
+<li>الاستثمارات في الشركات الناشئة: <strong>$12 مليار</strong></li>
+<li>عدد الشركات الناشئة: <strong>3,500+</strong></li>
+<li>الوظائف المتوقعة: <strong>500,000+</strong></li>
+</ul>
+</div>
+
+<div class="sample-box">
+<div class="label">🎯 التوصية الاستراتيجية</div>
+<div class="content">
+التركيز على <strong>حلول AI باللغة العربية</strong> — هناك فجوة ضخمة في السوق. 95% من الحلول الحالية بالإنجليزية، بينما 60% من مستخدمي الشرق الأوسط يفضلون العربية. هذه فرصة ذهبية للمشاريع المتخصصة.
+</div>
+</div>
+
+</div>
+
+<!-- CTA -->
+<div class="cta">
+<h2>جاهز لتحصل على <span>تقريرك الاحترافي</span>؟</h2>
+<p>اطلب تقريرك الآن — التسليم خلال 30 دقيقة، مع تعديلات مجانية</p>
+<a href="order.html" class="btn-hero">🛒 اطلب تقريرك</a>
+<a href="intelligence.html" class="btn-hero outline">🧠 جرّب Intelligence مجانًا</a>
+</div>
+
+<div class="footer">
+<strong style="color:#00c8ff">AION AUTONOMOUS</strong> — Reports Division<br>
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
+</div>
+
+</div>
+
+<script>
+function orderReport(name, price) {
+  const url = 'order.html?service=' + encodeURIComponent(name) + '&price=' + price;
+  window.location.href = url;
+}
+
+// Tabs (visual only for now)
+document.querySelectorAll('.tab').forEach(function(tab){
+  tab.addEventListener('click', function(){
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+    tab.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
