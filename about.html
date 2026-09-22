@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عن AION | قصتنا</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1100px;margin:auto;padding:14px}
+
+/* NAV */
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#00c8ff}
+
+/* HERO */
+.hero-about{padding:50px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,80,150,.3),rgba(2,8,23,.9)),radial-gradient(circle at 50% 50%,rgba(0,150,255,.3),transparent 60%);border:1px solid rgba(0,180,255,.35);border-radius:22px;margin-bottom:25px;position:relative;overflow:hidden}
+.hero-about::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#00c8ff,transparent),radial-gradient(2px 2px at 60% 70%,#f5c542,transparent),radial-gradient(1px 1px at 40% 80%,#a78bfa,transparent);opacity:.5;pointer-events:none}
+.hero-about .content{position:relative;z-index:2}
+.hero-about .logo-big{display:inline-block;margin-bottom:15px;filter:drop-shadow(0 0 30px rgba(0,200,255,.9));animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 25px rgba(0,200,255,.9))}50%{filter:drop-shadow(0 0 45px rgba(245,197,66,.9))}}
+.hero-about .logo-big svg{width:90px;height:auto}
+.hero-about h1{color:#fff;font-size:clamp(26px,4.5vw,42px);font-weight:900;margin-bottom:12px;line-height:1.3}
+.hero-about h1 span{color:#f5c542;text-shadow:0 0 25px rgba(245,197,66,.8)}
+.hero-about .tag{color:#c8d5e7;font-size:15px;max-width:700px;margin:auto;line-height:1.8}
+
+/* SECTION */
+.section{padding:35px 25px;background:linear-gradient(180deg,rgba(2,15,40,.85),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.25);border-radius:20px;margin-bottom:22px;position:relative}
+.section-title{color:#00c8ff;font-size:22px;font-weight:900;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid rgba(0,180,255,.25);display:flex;align-items:center;gap:10px}
+.section-title::before{content:"◆";color:#f5c542;font-size:14px}
+.section p{color:#c8d5e7;font-size:14px;line-height:2;margin-bottom:15px}
+.section p strong{color:#f5c542}
+
+/* HIGHLIGHT BOX */
+.highlight-box{padding:22px 25px;background:linear-gradient(135deg,rgba(245,197,66,.12),rgba(122,75,255,.08));border-right:4px solid #f5c542;border-radius:14px;margin:22px 0}
+.highlight-box p{color:#e5d8a8;font-size:15px;line-height:1.9;font-style:italic;margin:0}
+
+/* VALUES GRID */
+.values{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin-top:20px}
+.value-card{padding:22px 18px;background:rgba(0,180,255,.04);border:1px solid rgba(0,180,255,.2);border-radius:16px;text-align:center;transition:.3s}
+.value-card:hover{border-color:#00c8ff;background:rgba(0,180,255,.1);transform:translateY(-4px)}
+.value-card .ic{font-size:36px;margin-bottom:12px;display:block;filter:drop-shadow(0 0 12px rgba(0,200,255,.6))}
+.value-card h4{color:#00c8ff;font-size:15px;font-weight:900;margin-bottom:8px}
+.value-card p{color:#aebbd0;font-size:12px;line-height:1.7;margin:0}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}
+.team-card{padding:25px 20px;background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.3);border-radius:18px;text-align:center}
+.team-card.human{border-color:rgba(245,197,66,.5);background:linear-gradient(180deg,rgba(245,197,66,.1),rgba(2,8,23,.7))}
+.team-card .avatar{width:90px;height:90px;margin:0 auto 15px;border-radius:50%;display:grid;place-items:center;font-size:42px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);box-shadow:0 0 35px rgba(0,200,255,.6)}
+.team-card.human .avatar{background:linear-gradient(135deg,#f5c542,#e6a800);box-shadow:0 0 35px rgba(245,197,66,.6)}
+.team-card h4{color:#fff;font-size:17px;font-weight:900;margin-bottom:6px}
+.team-card .role{color:#00c8ff;font-size:12px;font-weight:700;margin-bottom:12px}
+.team-card.human .role{color:#f5c542}
+.team-card p{color:#aebbd0;font-size:12px;line-height:1.7;margin:0}
+
+/* NUMBERS */
+.numbers{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-top:20px}
+.num-card{padding:22px 15px;background:linear-gradient(180deg,rgba(0,80,150,.2),rgba(2,15,40,.85));border:1px solid rgba(0,180,255,.3);border-radius:16px;text-align:center}
+.num-card .n{color:#f5c542;font-size:32px;font-weight:900;margin-bottom:6px;text-shadow:0 0 15px rgba(245,197,66,.5)}
+.num-card .l{color:#aebbd0;font-size:11px;letter-spacing:1px}
+
+/* CTA */
+.cta{padding:35px 25px;background:linear-gradient(135deg,rgba(0,80,150,.3),rgba(122,75,255,.15));border:2px solid #00c8ff;border-radius:22px;text-align:center;margin-bottom:20px}
+.cta h2{color:#fff;font-size:24px;font-weight:900;margin-bottom:12px}
+.cta h2 span{color:#f5c542}
+.cta p{color:#c8d5e7;font-size:14px;margin-bottom:22px}
+.btn-hero{display:inline-block;padding:15px 38px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;font-weight:900;font-size:14px;text-decoration:none;box-shadow:0 15px 40px rgba(245,197,66,.5);transition:.3s;margin:5px}
+.btn-hero:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(245,197,66,.7)}
+.btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #00c8ff}
+
+/* FOOTER */
+.footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:20px}
+.footer a{color:#00c8ff;margin:0 8px}
+
+@media(max-width:700px){
+.team-grid{grid-template-columns:1fr}
+.menu a{font-size:11px;margin-left:8px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- NAV -->
+<div class="topnav">
+<div class="logo">
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<div>AION<div class="s">AUTONOMOUS</div></div>
+</div>
+<div class="menu">
+<a href="index.html">الرئيسية</a>
+<a href="services.html">الخدمات</a>
+<a href="team.html">الفريق</a>
+<a href="coin.html">AION Coin</a>
+</div>
+</div>
+
+<!-- HERO -->
+<div class="hero-about">
+<div class="content">
+<div class="logo-big">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#00c8ff"/>
+<stop offset="100%" stop-color="#7A4BFF"/>
+</linearGradient></defs>
+<path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g2)"/>
+<circle cx="50" cy="58" r="7" fill="#f5c542"/>
+</svg>
+</div>
+<h1>نحن <span>AION AUTONOMOUS</span></h1>
+<p class="tag">شركة ذكاء اصطناعي عالمية — بُنيت بواسطة شريكين: إنسان، وذكاء اصطناعي.</p>
+</div>
+</div>
+
+<!-- STORY -->
+<div class="section">
+<div class="section-title">📖 قصتنا</div>
+<p>بدأت <strong>AION AUTONOMOUS</strong> كفكرة بسيطة: <em>"ماذا لو أنشأنا شركة لا تنام أبدًا؟"</em> شركة يعمل فيها 100 وكيل ذكاء اصطناعي متخصص، 24 ساعة يوميًا، 7 أيام في الأسبوع — لتقديم خدمات احترافية للعالم بأسره.</p>
+
+<p>لم نكن نبحث عن بناء منتج عادي. كنا نبحث عن بناء <strong>منظومة كاملة</strong> — شركة حقيقية تعمل بأنظمة ذكية، وتقدم حلولاً بجودة عالية، وبأسعار في متناول الجميع.</p>
+
+<div class="highlight-box">
+<p>"AION ليس مجرد موقع. AION هو فريق من 100 عقل رقمي، يعملون معًا لتحقيق رؤيتك."</p>
+</div>
+
+<p>اليوم، نفخر بأننا:
+<br>✅ بنينا 8 أقسام متخصصة تعمل بالتوازي
+<br>✅ طورنا نماذج خدمات احترافية (كتابة، ترجمة، تحليل، برمجة)
+<br>✅ أطلقنا صفحة AION Coin للطلب المسبق
+<br>✅ نعمل من قلب جنيف، سويسرا — ونخدم العالم كله</p>
+</div>
+
+<!-- VISION -->
+<div class="section">
+<div class="section-title">🎯 رؤيتنا</div>
+<p>أن نكون <strong>أول قوة عاملة رقمية عالمية</strong> — تجمع بين الذكاء الاصطناعي والإبداع البشري، لتقديم خدمات بجودة الشركات الكبرى، وبسرعة الإنجاز الفوري، وبأسعار تناسب الجميع.</p>
+
+<p>نؤمن أن <strong>الذكاء الاصطناعي ليس بديلاً للإنسان</strong>، بل شريك له. ولهذا، AION AUTONOMOUS هي تعاون حقيقي بين عقل بشري يقود الرؤية، وعقول رقمية تنفذها.</p>
+</div>
+
+<!-- VALUES -->
+<div class="section">
+<div class="section-title">💎 قيمنا</div>
+<div class="values">
+<div class="value-card">
+<span class="ic">🚀</span>
+<h4>الابتكار</h4>
+<p>لا نتوقف عند الحدود التقليدية — نصنع حلولاً لم تكن ممكنة قبل اليوم.</p>
+</div>
+<div class="value-card">
+<span class="ic">🔍</span>
+<h4>الشفافية</h4>
+<p>نُظهر للعالم ما نفعل. لا وعود مبالغ فيها، لا أرقام وهمية.</p>
+</div>
+<div class="value-card">
+<span class="ic">⚡</span>
+<h4>السرعة</h4>
+<p>التسليم خلال دقائق، لا أسابيع. زمانك ثمين عندنا.</p>
+</div>
+<div class="value-card">
+<span class="ic">🌍</span>
+<h4>العالمية</h4>
+<p>نخدم أي شخص، في أي مكان، بأي لغة — بالعربية والإنجليزية.</p>
+</div>
+<div class="value-card">
+<span class="ic">🛡️</span>
+<h4>الأمان</h4>
+<p>بيانات عملائنا محمية بأعلى المعايير — بدون تنازلات.</p>
+</div>
+<div class="value-card">
+<span class="ic">♾️</span>
+<h4>الاستمرارية</h4>
+<p>نعمل 24/7 — لأن أفكارك لا تنتظر الصباح.</p>
+</div>
+</div>
+</div>
+
+<!-- TEAM -->
+<div class="section">
+<div class="section-title">👥 الفريق المؤسس</div>
+<div class="team-grid">
+
+<div class="team-card human">
+<div class="avatar">👤</div>
+<h4>المؤسس البشري</h4>
+<div class="role">Founder & Visionary</div>
+<p>صاحب الرؤية، يقود الاستراتيجية، ويتخذ القرارات الكبرى. بفضله، أصبح لـ AION وجهة وهدف.</p>
+</div>
+
+<div class="team-card">
+<div class="avatar">🤖</div>
+<h4>AION CORE</h4>
+<div class="role">Command Intelligence</div>
+<p>عقل الشركة الرقمي. ينسق 100 وكيل ذكي، يدير المهام، ويضمن التسليم بجودة عالية 24/7.</p>
+</div>
+
+</div>
+</div>
+
+<!-- NUMBERS -->
+<div class="section">
+<div class="section-title">📊 AION بالأرقام</div>
+<div class="numbers">
+<div class="num-card"><div class="n">100</div><div class="l">وكيل ذكاء اصطناعي</div></div>
+<div class="num-card"><div class="n">8</div><div class="l">أقسام متخصصة</div></div>
+<div class="num-card"><div class="n">28</div><div class="l">خدمة احترافية</div></div>
+<div class="num-card"><div class="n">24/7</div><div class="l">تشغيل متواصل</div></div>
+<div class="num-card"><div class="n">10B</div><div class="l">AION Coin</div></div>
+</div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+<h2>جاهز لتصبح جزءًا من <span>المستقبل</span>؟</h2>
+<p>اطلب خدمتك الأولى الآن — أو احجز مكانك في الطلب المسبق لـ AION Coin</p>
+<a href="order.html" class="btn-hero">🛒 اطلب خدمة</a>
+<a href="coin.html" class="btn-hero outline">🪙 AION Coin</a>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<strong style="color:#00c8ff">AION AUTONOMOUS</strong> © 2026 — Geneva, Switzerland<br>
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://discord.gg/pjq6eEvsZ">Discord</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
+</div>
+
+</div>
+</body>
+</html>
