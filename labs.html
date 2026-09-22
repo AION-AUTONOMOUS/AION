@@ -1,0 +1,332 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AION Labs | مختبر تطوير الذكاء الاصطناعي</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:auto;padding:14px}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#00c8ff}
+.menu a.active{color:#a78bfa}
+
+.hero{padding:45px 25px;text-align:center;background:linear-gradient(180deg,rgba(60,30,120,.6),rgba(2,8,23,.95)),radial-gradient(circle at 50% 40%,rgba(167,139,250,.3),transparent 60%);border:1px solid rgba(167,139,250,.4);border-radius:22px;margin-bottom:25px;position:relative;overflow:hidden;min-height:380px}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 15% 20%,#a78bfa,transparent),radial-gradient(2px 2px at 45% 60%,#00c8ff,transparent),radial-gradient(1px 1px at 70% 30%,#a78bfa,transparent),radial-gradient(2px 2px at 85% 75%,#00c8ff,transparent),radial-gradient(1px 1px at 25% 85%,#a78bfa,transparent);opacity:.7;animation:twinkle 4s ease-in-out infinite;pointer-events:none}
+@keyframes twinkle{0%,100%{opacity:.7}50%{opacity:.35}}
+.hero .content{position:relative;z-index:2}
+.hero .badge{display:inline-block;padding:6px 16px;background:rgba(167,139,250,.15);border:1px solid #a78bfa;border-radius:20px;color:#a78bfa;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:15px}
+.hero h1{color:#fff;font-size:clamp(26px,4.5vw,44px);font-weight:900;margin-bottom:12px;line-height:1.3}
+.hero h1 span{color:#a78bfa;text-shadow:0 0 25px rgba(167,139,250,.8)}
+.hero p{color:#c8d5e7;font-size:15px;max-width:720px;margin:auto;line-height:1.9}
+.hero .lab-icon{font-size:80px;margin:15px 0;display:block;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(167,139,250,.8))}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-15px) rotate(5deg)}}
+
+.section{padding:30px 25px;background:linear-gradient(180deg,rgba(2,15,40,.85),rgba(2,8,23,.7));border:1px solid rgba(167,139,250,.25);border-radius:20px;margin-bottom:20px}
+.section-title{color:#a78bfa;font-size:22px;font-weight:900;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid rgba(167,139,250,.25);display:flex;align-items:center;gap:10px}
+.section-title::before{content:"◆";color:#f5c542;font-size:14px}
+.section-title span{color:#f5c542;font-size:14px;font-weight:700;margin-right:auto;letter-spacing:1px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.service{padding:24px 22px;background:linear-gradient(180deg,rgba(30,15,60,.5),rgba(2,8,23,.9));border:1px solid rgba(167,139,250,.25);border-radius:18px;transition:.3s;position:relative}
+.service:hover{border-color:#a78bfa;transform:translateY(-5px);box-shadow:0 20px 50px rgba(167,139,250,.3)}
+.service.featured{border:2px solid #a78bfa;background:linear-gradient(180deg,rgba(167,139,250,.1),rgba(2,8,23,.9))}
+.service.featured::before{content:"⭐ الأكثر طلبًا";position:absolute;top:-12px;right:20px;background:#a78bfa;color:#020817;padding:4px 14px;border-radius:15px;font-size:10px;font-weight:900}
+.service .ic{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(167,139,250,.15),rgba(0,200,255,.1));border:1px solid rgba(167,139,250,.5);display:grid;place-items:center;font-size:26px;margin-bottom:14px;filter:drop-shadow(0 0 15px rgba(167,139,250,.5))}
+.service h3{color:#fff;font-size:17px;font-weight:900;margin-bottom:8px}
+.service p{color:#aebbd0;font-size:13px;line-height:1.7;margin-bottom:14px}
+.service .features{list-style:none;padding:0;margin-bottom:15px}
+.service .features li{color:#c8d5e7;font-size:12px;padding:5px 0;border-bottom:1px dashed rgba(167,139,250,.1)}
+.service .features li:before{content:"✓ ";color:#a78bfa;font-weight:900;margin-left:6px}
+.service .bottom{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(167,139,250,.15)}
+.service .price{color:#a78bfa;font-size:20px;font-weight:900}
+.service .price small{color:#aebbd0;font-size:10px;font-weight:normal}
+.service .btn{padding:9px 20px;background:linear-gradient(135deg,#a78bfa,#7A4BFF);color:#fff;border-radius:30px;font-weight:900;font-size:12px;border:none;cursor:pointer;font-family:inherit;transition:.3s}
+.service .btn:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(167,139,250,.6)}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-top:20px}
+.stat{padding:20px 15px;background:rgba(167,139,250,.04);border:1px solid rgba(167,139,250,.25);border-radius:14px;text-align:center;transition:.3s}
+.stat:hover{border-color:#a78bfa;background:rgba(167,139,250,.1);transform:translateY(-3px)}
+.stat .n{color:#a78bfa;font-size:32px;font-weight:900;margin-bottom:6px;text-shadow:0 0 15px rgba(167,139,250,.5)}
+.stat .l{color:#aebbd0;font-size:11px;letter-spacing:1px}
+
+.info-box{padding:22px 25px;background:linear-gradient(135deg,rgba(167,139,250,.1),rgba(0,200,255,.05));border-right:4px solid #a78bfa;border-radius:14px;margin:20px 0}
+.info-box p{color:#cdbdf5;font-size:15px;line-height:1.9;font-style:italic;margin:0}
+
+.tech-stack{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:15px}
+.tech{padding:14px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);border-radius:12px;text-align:center;font-size:12px;color:#c8d5e7;font-weight:700;transition:.3s}
+.tech:hover{border-color:#a78bfa;background:rgba(167,139,250,.12);transform:translateY(-3px)}
+
+.cta{padding:35px 25px;background:linear-gradient(135deg,rgba(60,30,120,.35),rgba(167,139,250,.15));border:2px solid #a78bfa;border-radius:22px;text-align:center;margin-bottom:20px}
+.cta h2{color:#fff;font-size:24px;font-weight:900;margin-bottom:12px}
+.cta h2 span{color:#a78bfa}
+.cta p{color:#c8d5e7;font-size:14px;margin-bottom:22px}
+.btn-hero{display:inline-block;padding:15px 38px;background:linear-gradient(135deg,#a78bfa,#7A4BFF);color:#fff;border-radius:50px;font-weight:900;font-size:14px;box-shadow:0 15px 40px rgba(167,139,250,.5);transition:.3s;margin:5px}
+.btn-hero:hover{transform:translateY(-3px)}
+.btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #a78bfa}
+
+.footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(167,139,250,.15);margin-top:20px}
+.footer a{color:#a78bfa;margin:0 8px}
+
+@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}.hero .lab-icon{font-size:60px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="topnav">
+<div class="logo">
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<div>AION<div class="s">LABS</div></div>
+</div>
+<div class="menu">
+<a href="index.html">الرئيسية</a>
+<a href="intelligence.html">Intelligence</a>
+<a href="space.html">🛰️ الفضاء</a>
+<a href="markets.html">📈 الأسواق</a>
+<a href="climate.html">🌍 المناخ</a>
+<a href="labs.html" class="active">🧪 المختبر</a>
+</div>
+</div>
+
+<div class="hero">
+<div class="content">
+<span class="badge">🧪 AION LABS</span>
+<span class="lab-icon">⚗️</span>
+<h1>مختبر تطوير <span>الذكاء الاصطناعي</span></h1>
+<p>نبني نماذج AI مخصصة، أدوات ذكية بالعربية، وحلول تقنية متقدمة. من الفكرة إلى النشر — خلال أيام، ليس شهور. مدعوم بـ 100 وكيل AI متخصص.</p>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">🧪 خدمات AION Labs</div>
+
+<div class="grid">
+
+<div class="service featured">
+<div class="ic">🧠</div>
+<h3>تطوير نموذج AI مخصص</h3>
+<p>نبني لك نموذج AI مدرّب على بياناتك الخاصة — للاستخدام الداخلي أو التجاري.</p>
+<ul class="features">
+<li>تدريب على بياناتك</li>
+<li>Fine-tuning احترافي</li>
+<li>واجهة استخدام خاصة</li>
+<li>نشر على السحابة</li>
+</ul>
+<div class="bottom">
+<div class="price">$299 <small>USD</small></div>
+<button class="btn" onclick="order('تطوير نموذج AI مخصص',299)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">🤖</div>
+<h3>بناء وكلاء AI</h3>
+<p>نبني لك وكلاء AI مخصصين لأعمالك — مثل وكلاء AION لكن بأسمك.</p>
+<ul class="features">
+<li>1-10 وكلاء</li>
+<li>مهام مخصصة</li>
+<li>شخصيات متعددة</li>
+<li>واجهة شات</li>
+</ul>
+<div class="bottom">
+<div class="price">$199 <small>USD</small></div>
+<button class="btn" onclick="order('بناء وكلاء AI',199)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">🔌</div>
+<h3>تكامل API ذكي</h3>
+<p>اربط تطبيقك بأقوى نماذج AI العالمية (GPT، Claude، Llama).</p>
+<ul class="features">
+<li>تكامل سريع</li>
+<li>API موحّد</li>
+<li>معالجة الأخطاء</li>
+<li>مراقبة الأداء</li>
+</ul>
+<div class="bottom">
+<div class="price">$99 <small>USD</small></div>
+<button class="btn" onclick="order('تكامل API ذكي',99)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">📱</div>
+<h3>تطبيق AI كامل</h3>
+<p>نبني لك تطبيق جوال (iOS/Android) مدعوم بالذكاء الاصطناعي.</p>
+<ul class="features">
+<li>تصميم عصري</li>
+<li>تكامل AI</li>
+<li>نشر على المتاجر</li>
+<li>دعم 3 أشهر</li>
+</ul>
+<div class="bottom">
+<div class="price">$599 <small>USD</small></div>
+<button class="btn" onclick="order('تطبيق AI كامل',599)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">⚙️</div>
+<h3>أتمتة سير العمل</h3>
+<p>أتمتة العمليات المتكررة في شركتك باستخدام AI.</p>
+<ul class="features">
+<li>تحليل العمليات</li>
+<li>بناء Workflows</li>
+<li>تكامل مع أدواتك</li>
+<li>تقارير شهرية</li>
+</ul>
+<div class="bottom">
+<div class="price">$149 <small>USD</small></div>
+<button class="btn" onclick="order('أتمتة سير العمل',149)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">🔬</div>
+<h3>بحث وتطوير AI</h3>
+<p>فريق بحثي كامل لاستكشاف فرص AI في قطاعك.</p>
+<ul class="features">
+<li>دراسة جدوى</li>
+<li>نماذج أولية (Prototypes)</li>
+<li>توصيات تنفيذية</li>
+<li>تقرير تفصيلي</li>
+</ul>
+<div class="bottom">
+<div class="price">$199 <small>USD</small></div>
+<button class="btn" onclick="order('بحث وتطوير AI',199)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">🎓</div>
+<h3>تدريب فرق العمل على AI</h3>
+<p>دورة تدريبية مخصصة لفريقك — من المستوى المبتدئ إلى المتقدم.</p>
+<ul class="features">
+<li>محاضرات مباشرة</li>
+<li>ورش عملية</li>
+<li>شهادة إتمام</li>
+<li>متابعة شهر</li>
+</ul>
+<div class="bottom">
+<div class="price">$299 <small>USD</small></div>
+<button class="btn" onclick="order('تدريب فرق العمل',299)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">🛡️</div>
+<h3>تدقيق أمان AI</h3>
+<p>مراجعة شاملة لأمان أنظمة AI في شركتك — اكتشاف الثغرات وتوصيات الإصلاح.</p>
+<ul class="features">
+<li>فحص شامل</li>
+<li>تقرير أمني</li>
+<li>توصيات الإصلاح</li>
+<li>متابعة 30 يومًا</li>
+</ul>
+<div class="bottom">
+<div class="price">$249 <small>USD</small></div>
+<button class="btn" onclick="order('تدقيق أمان AI',249)">اطلب الآن</button>
+</div>
+</div>
+
+<div class="service">
+<div class="ic">🚀</div>
+<h3>استشارات استراتيجية AI</h3>
+<p>خطة كاملة لتبني AI في شركتك — من الاستراتيجية إلى التنفيذ.</p>
+<ul class="features">
+<li>تحليل الوضع الحالي</li>
+<li>خارطة طريق</li>
+<li>توصيات الحلول</li>
+<li>متابعة 3 أشهر</li>
+</ul>
+<div class="bottom">
+<div class="price">$399 <small>USD</small></div>
+<button class="btn" onclick="order('استشارات استراتيجية',399)">اطلب الآن</button>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">⚡ التقنيات التي نستخدمها</div>
+<div class="tech-stack">
+<div class="tech">Groq API</div>
+<div class="tech">OpenAI GPT-4</div>
+<div class="tech">Claude API</div>
+<div class="tech">Llama 3</div>
+<div class="tech">Python</div>
+<div class="tech">Node.js</div>
+<div class="tech">React</div>
+<div class="tech">BNB Chain</div>
+<div class="tech">Solidity</div>
+<div class="tech">Vercel</div>
+<div class="tech">Supabase</div>
+<div class="tech">Docker</div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">🎯 لماذا AION Labs؟</div>
+<div class="info-box">
+<p>"AION Labs تجمع بين خبرة 100 وكيل AI متخصص والتقنيات الأحدث عالميًا — لنقدم حلول AI بسرعة تفوق الشركات التقليدية 10 مرات، وبأسعار أقل 80%."</p>
+</div>
+
+<div class="grid" style="margin-top:20px">
+<div class="service">
+<div class="ic">⚡</div>
+<h3>سرعة تنفيذ غير مسبوقة</h3>
+<p>المشاريع التي تحتاج أشهرًا — نسلّمها في أسابيع.</p>
+</div>
+<div class="service">
+<div class="ic">💎</div>
+<h3>جودة عالمية</h3>
+<p>نستخدم نفس التقنيات التي تستخدمها OpenAI و Anthropic.</p>
+</div>
+<div class="service">
+<div class="ic">🇸🇦</div>
+<h3>عربي أولًا</h3>
+<p>حلولنا مبنية للعربية منذ البداية، ليس ترجمة.</p>
+</div>
+<div class="service">
+<div class="ic">💰</div>
+<h3>أسعار تنافسية</h3>
+<p>أقل 80% من شركات التطوير التقليدية.</p>
+</div>
+</div>
+</div>
+
+<div class="cta">
+<h2>جاهز لتبني <span>الذكاء الاصطناعي</span> في شركتك؟</h2>
+<p>ابدأ الآن — فريق AION Labs جاهز لخدمتك</p>
+<a href="order.html" class="btn-hero">🛒 اطلب خدمة</a>
+<a href="chat.html" class="btn-hero outline">💬 استشر مجانًا</a>
+</div>
+
+<div class="footer">
+<strong style="color:#a78bfa">AION AUTONOMOUS</strong> — Labs Division<br>
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
+</div>
+
+</div>
+
+<script>
+function order(service, price) {
+  window.location.href = 'order.html?service=' + encodeURIComponent(service) + '&price=' + price;
+}
+</script>
+
+</body>
+</html>
