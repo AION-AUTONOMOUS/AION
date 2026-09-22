@@ -4,271 +4,325 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AION Wallet | المحفظة الذكية</title>
+<title>محفظة AION | Wallet</title>
 <style>
-:root{--blue:#0B1D3A;--gold:#D4AF37;--purple:#7A4BFF;--white:#fff;--muted:#aebbd0;--line:rgba(255,255,255,.12);--glass:rgba(255,255,255,.06)}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 70% 10%,rgba(122,75,255,.18),transparent 35%),radial-gradient(circle at 20% 30%,rgba(40,130,255,.14),transparent 30%),var(--blue);color:var(--white);line-height:1.7;min-height:100vh;overflow-x:hidden}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
-.container{width:min(1100px,92%);margin:auto;padding:20px 0}
-header{background:rgba(11,29,58,.85);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);padding:15px 0;position:sticky;top:0;z-index:100}
-.nav{display:flex;justify-content:space-between;align-items:center;gap:20px}
-.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:900;letter-spacing:2px}
-.logo-mark{width:38px;height:38px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold)}
-.nav-links{display:flex;gap:20px;font-size:14px}
-.nav-links a{color:#dfe8f5;transition:.25s}
-.nav-links a:hover{color:var(--gold)}
-.nav-btn{padding:8px 16px;border:1px solid var(--gold);border-radius:30px;color:var(--gold)!important}
-.hero{text-align:center;padding:50px 0 30px}
-.hero h1{font-size:clamp(32px,5vw,54px);margin-bottom:15px;background:linear-gradient(135deg,#D4AF37,#f2d477);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{color:var(--muted);max-width:600px;margin:0 auto}
-.card{background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:20px;padding:30px;margin:20px auto;max-width:800px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
-.card h2{color:var(--gold);margin-bottom:20px;font-size:22px;display:flex;align-items:center;gap:10px}
-.connect-box{text-align:center;padding:40px 20px}
-.connect-box p{color:var(--muted);margin-bottom:25px}
-.btn{display:inline-flex;justify-content:center;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;font-weight:800;font-size:16px;cursor:pointer;transition:.3s;border:none;font-family:inherit}
-.btn-primary{background:linear-gradient(135deg,var(--gold),#f2d477);color:var(--blue);box-shadow:0 10px 30px rgba(212,175,55,.25)}
-.btn-primary:hover{transform:translateY(-3px)}
-.btn-outline{border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff}
-.btn-outline:hover{border-color:var(--purple);background:rgba(122,75,255,.1)}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.wallet-info{display:none}
-.wallet-info.show{display:block}
-.address-box{background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:12px;padding:15px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
-.address-box span{color:var(--gold);font-family:monospace;font-size:14px;word-break:break-all}
-.balance-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px}
-.balance-card{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:15px;padding:20px;text-align:center}
-.balance-card .label{color:var(--muted);font-size:13px;margin-bottom:8px}
-.balance-card .value{color:var(--gold);font-size:26px;font-weight:900}
-.balance-card .sub{color:#c0cce0;font-size:12px;margin-top:5px}
-.prices-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:15px}
-.price-item{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:12px;padding:15px;text-align:center}
-.price-item .name{color:#c0cce0;font-size:12px;margin-bottom:5px}
-.price-item .price{color:#fff;font-weight:900;font-size:16px}
-.price-item .change{font-size:12px;margin-top:3px}
-.up{color:#54e6a7}
-.down{color:#ff6b6b}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:20px}
-.info-note{background:rgba(122,75,255,.08);border:1px solid rgba(122,75,255,.3);border-radius:12px;padding:15px;margin-top:20px;color:#d0c8ff;font-size:13px;line-height:1.7}
-footer{text-align:center;padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:40px}
-@media(max-width:700px){.nav-links{display:none}.balance-grid,.actions{grid-template-columns:1fr}}
+.container{max-width:900px;margin:auto;padding:14px}
+
+/* NAV */
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#00c8ff}
+
+h1{text-align:center;color:#00c8ff;font-size:clamp(24px,4vw,34px);margin-bottom:6px;text-shadow:0 0 25px rgba(0,200,255,.6)}
+.sub{text-align:center;color:#aebbd0;font-size:13px;margin-bottom:25px}
+
+/* CONNECT CARD */
+.connect-card{padding:35px 25px;background:linear-gradient(180deg,rgba(0,80,150,.25),rgba(2,15,40,.9));border:1px solid rgba(0,180,255,.4);border-radius:20px;text-align:center;margin-bottom:20px;box-shadow:0 0 40px rgba(0,150,255,.2)}
+.connect-card .icon{font-size:64px;margin-bottom:15px;display:block;filter:drop-shadow(0 0 20px rgba(0,200,255,.7))}
+.connect-card h2{color:#fff;font-size:22px;margin-bottom:10px;font-weight:900}
+.connect-card p{color:#aebbd0;font-size:13px;margin-bottom:25px;line-height:1.7}
+.btn-connect{padding:16px 45px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;border:none;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit;transition:.3s;box-shadow:0 15px 40px rgba(245,197,66,.5)}
+.btn-connect:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(245,197,66,.8)}
+.btn-connect:disabled{opacity:.5;cursor:wait}
+
+/* WALLET INFO */
+.wallet-info{padding:22px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.85));border:1px solid rgba(0,180,255,.35);border-radius:20px;margin-bottom:20px;display:none}
+.wallet-info.active{display:block}
+.wallet-info .row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid rgba(0,180,255,.15)}
+.wallet-info .row:last-child{border-bottom:none}
+.wallet-info .label{color:#aebbd0;font-size:13px;font-weight:600}
+.wallet-info .value{color:#f5c542;font-size:13px;font-weight:900;font-family:monospace;word-break:break-all;text-align:left;max-width:60%}
+.wallet-info .value.small{font-size:11px}
+.wallet-info .addr{color:#00c8ff}
+.wallet-info .balance{color:#fff;font-size:18px}
+
+/* BALANCE CARDS */
+.balances{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px;display:none}
+.balances.active{display:grid}
+.bal-card{padding:22px 18px;background:linear-gradient(180deg,rgba(0,80,150,.2),rgba(2,15,40,.9));border:1px solid rgba(0,180,255,.35);border-radius:18px;text-align:center}
+.bal-card.gold{background:linear-gradient(180deg,rgba(245,197,66,.15),rgba(2,15,40,.9));border-color:rgba(245,197,66,.5)}
+.bal-card .coin{font-size:34px;margin-bottom:8px;display:block}
+.bal-card .name{color:#aebbd0;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:6px}
+.bal-card .amount{color:#00c8ff;font-size:24px;font-weight:900;margin-bottom:3px}
+.bal-card.gold .amount{color:#f5c542}
+.bal-card .usd{color:#6b7c94;font-size:11px}
+
+/* TOKEN INFO */
+.token-card{padding:20px;background:linear-gradient(180deg,rgba(122,75,255,.15),rgba(2,15,40,.9));border:1px solid rgba(122,75,255,.4);border-radius:18px;margin-bottom:20px}
+.token-card h3{color:#a78bfa;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.token-card .info-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(122,75,255,.15);font-size:13px}
+.token-card .info-row:last-child{border:none}
+.token-card .k{color:#aebbd0}
+.token-card .v{color:#fff;font-weight:700}
+.token-card .v.gold{color:#f5c542}
+
+/* STATUS */
+.status{padding:14px;border-radius:12px;text-align:center;margin-top:15px;font-size:13px;font-weight:700;display:none}
+.status.success{background:rgba(0,200,100,.15);border:1px solid rgba(0,200,100,.5);color:#4ade80;display:block}
+.status.error{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.5);color:#ff8888;display:block}
+.status.info{background:rgba(0,180,255,.15);border:1px solid rgba(0,180,255,.5);color:#00c8ff;display:block}
+
+/* ACTIONS */
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;display:none}
+.actions.active{display:grid}
+.action-btn{padding:16px;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.35);border-radius:14px;color:#fff;font-weight:900;font-size:13px;cursor:pointer;font-family:inherit;transition:.3s;display:flex;flex-direction:column;align-items:center;gap:6px}
+.action-btn .ic{font-size:22px}
+.action-btn:hover{background:rgba(0,180,255,.2);border-color:#00c8ff;transform:translateY(-3px)}
+
+/* NOT CONNECTED VIEW */
+.not-connected{padding:60px 20px;text-align:center;background:rgba(2,15,40,.6);border:1px dashed rgba(0,180,255,.3);border-radius:20px;color:#6b7c94;font-size:13px;margin-bottom:20px}
+
+/* FOOTER */
+.footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:30px}
+.footer a{color:#00c8ff;margin:0 8px}
+
+@media(max-width:600px){
+.balances{grid-template-columns:1fr}
+.actions{grid-template-columns:1fr}
+.menu a{font-size:11px;margin-left:8px}
+}
 </style>
 </head>
 <body>
-
-<header>
 <div class="container">
-<div class="nav">
+
+<!-- NAV -->
+<div class="topnav">
 <div class="logo">
-<div class="logo-mark">A</div>
-AION WALLET
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<div>AION<div class="s">AUTONOMOUS</div></div>
 </div>
-<nav class="nav-links">
+<div class="menu">
 <a href="index.html">الرئيسية</a>
-<a href="index.html#coin">AION Coin</a>
-<a href="index.html#services">الخدمات</a>
-<a href="index.html#contact" class="nav-btn">تواصل</a>
-</nav>
-</div>
-</div>
-</header>
-
-<div class="container">
-
-<div class="hero">
-<h1>المحفظة الذكية</h1>
-<p>محفظة غير حفظية (Non-Custodial) تربط بها محفظتك، تتابع أرصدتك، وتعرف أسعار العملات الرقمية لحظة بلحظة.</p>
-</div>
-
-<div class="card">
-<div id="connectSection" class="connect-box">
-<h2 style="justify-content:center">🔗 ربط المحفظة</h2>
-<p>اربط محفظتك (MetaMask أو أي محفظة متوافقة) للبدء.</p>
-<button class="btn btn-primary" onclick="connectWallet()">ربط المحفظة</button>
-<p id="connectStatus" style="margin-top:20px;color:#c0cce0;font-size:14px"></p>
-</div>
-
-<div id="walletInfo" class="wallet-info">
-<h2>💼 معلومات المحفظة</h2>
-<div class="address-box">
-<span id="walletAddress">-</span>
-<button class="btn btn-outline" onclick="copyAddress()" style="padding:8px 16px;font-size:13px">نسخ</button>
-</div>
-
-<div class="balance-grid">
-<div class="balance-card">
-<div class="label">رصيد ETH</div>
-<div class="value" id="ethBalance">0</div>
-<div class="sub">Ethereum</div>
-</div>
-<div class="balance-card">
-<div class="label">رصيد BNB</div>
-<div class="value" id="bnbBalance">0</div>
-<div class="sub">BNB Chain</div>
+<a href="coin.html">AION Coin</a>
+<a href="chat.html">الشات</a>
 </div>
 </div>
 
-<div class="actions">
-<button class="btn btn-primary" onclick="buyAION()">🛒 شراء AION</button>
-<button class="btn btn-outline" onclick="disconnectWallet()">قطع الاتصال</button>
+<h1>👛 محفظة AION</h1>
+<p class="sub">اربط محفظتك لعرض رصيدك وإدارة AION Coin</p>
+
+<!-- CONNECT -->
+<div class="connect-card" id="connectCard">
+<span class="icon">🔐</span>
+<h2>اربط محفظتك</h2>
+<p>اضغط الزر أدناه للاتصال بـ MetaMask<br>واختر شبكة BNB Smart Chain</p>
+<button class="btn-connect" id="connectBtn" onclick="connectWallet()">🔗 ربط المحفظة</button>
+<div class="status" id="statusBox"></div>
 </div>
 
-<div class="info-note">
-<strong>ملاحظة:</strong> هذه محفظة غير حفظية (Non-Custodial). نحن لا نحتفظ بأموالك ولا نتحكم بها. المفاتيح الخاصة تبقى في محفظتك أنت فقط.
+<!-- WALLET INFO -->
+<div class="wallet-info" id="walletInfo">
+<div class="row">
+<span class="label">العنوان</span>
+<span class="value small addr" id="walletAddr">-</span>
 </div>
+<div class="row">
+<span class="label">الشبكة</span>
+<span class="value" id="walletNetwork">-</span>
 </div>
-</div>
-
-<div class="card">
-<h2>📊 أسعار العملات الرقمية</h2>
-<div class="prices-grid" id="pricesGrid">
-<div class="price-item"><div class="name">BTC</div><div class="price" id="btcPrice">...</div></div>
-<div class="price-item"><div class="name">ETH</div><div class="price" id="ethPrice">...</div></div>
-<div class="price-item"><div class="name">BNB</div><div class="price" id="bnbPrice">...</div></div>
-<div class="price-item"><div class="name">USDT</div><div class="price" id="usdtPrice">...</div></div>
-<div class="price-item"><div class="name">SOL</div><div class="price" id="solPrice">...</div></div>
-<div class="price-item"><div class="name">XRP</div><div class="price" id="xrpPrice">...</div></div>
-</div>
-<p style="color:var(--muted);font-size:12px;margin-top:15px;text-align:center">الأسعار محدثة تلقائيًا من CoinGecko كل دقيقة.</p>
-</div>
-
-<div class="card">
-<h2>🎯 خدمات AION</h2>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-top:15px">
-<a href="https://www.paypal.me/AIONNetwork" target="_blank" rel="noopener" class="btn btn-outline" style="padding:20px">🛒 شراء AION</a>
-<a href="index.html#workforce" class="btn btn-outline" style="padding:20px">🤖 الجيش الذكي</a>
-<a href="index.html#services" class="btn btn-outline" style="padding:20px">⚙ خدماتنا</a>
-<a href="index.html#contact" class="btn btn-outline" style="padding:20px">📬 تواصل معنا</a>
+<div class="row">
+<span class="label">الحالة</span>
+<span class="value" style="color:#4ade80">✅ متصل</span>
 </div>
 </div>
 
+<!-- BALANCES -->
+<div class="balances" id="balances">
+<div class="bal-card">
+<span class="coin">💎</span>
+<div class="name">BNB</div>
+<div class="amount" id="bnbBalance">0.00</div>
+<div class="usd">Binance Coin</div>
+</div>
+<div class="bal-card gold">
+<span class="coin">🪙</span>
+<div class="name">AION</div>
+<div class="amount" id="aionBalance">0</div>
+<div class="usd">AION Coin</div>
+</div>
 </div>
 
-<footer>
-AION AUTONOMOUS © 2026 — الذكاء الذي لا ينام
-</footer>
+<!-- ACTIONS -->
+<div class="actions" id="actions">
+<button class="action-btn" onclick="alert('قريباً: استلام AION')">
+<span class="ic">📥</span>استلام
+</button>
+<button class="action-btn" onclick="alert('قريباً: إرسال AION')">
+<span class="ic">📤</span>إرسال
+</button>
+<button class="action-btn" onclick="openBscScan()">
+<span class="ic">🔍</span>مستكشف
+</button>
+</div>
+
+<!-- TOKEN INFO -->
+<div class="token-card">
+<h3>🪙 AION Coin — معلومات</h3>
+<div class="info-row"><span class="k">اسم العملة</span><span class="v gold">AION Coin</span></div>
+<div class="info-row"><span class="k">الرمز</span><span class="v">AION</span></div>
+<div class="info-row"><span class="k">الإجمالي</span><span class="v">10,000,000,000</span></div>
+<div class="info-row"><span class="k">الشبكة</span><span class="v">BNB Smart Chain</span></div>
+<div class="info-row"><span class="k">المعيار</span><span class="v">BEP-20</span></div>
+<div class="info-row"><span class="k">حالة النشر</span><span class="v" style="color:#f5c542">⏳ قريبًا</span></div>
+<div class="info-row"><span class="k">عقد العملة</span><span class="v small" id="tokenAddr" style="font-family:monospace;font-size:11px">سيُضاف بعد النشر</span></div>
+</div>
+
+<!-- NOT CONNECTED VIEW -->
+<div class="not-connected" id="notConnected">
+💡 عند ربط المحفظة، سيظهر رصيدك تلقائيًا هنا.
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<strong style="color:#00c8ff">AION AUTONOMOUS</strong> © 2026<br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
+<a href="mailto:aion.genesisss@gmail.com">Contact</a>
+</div>
+
+</div>
 
 <script>
-let userAddress = null;
+const BNB_CHAIN_ID = '0x38';
+const BNB_CHAIN_PARAMS = {
+  chainId: '0x38',
+  chainName: 'BNB Smart Chain',
+  nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+  rpcUrls: ['https://bsc-dataseed.binance.org/'],
+  blockExplorerUrls: ['https://bscscan.com/']
+};
+
+// AION Token address — placeholder (added after deployment)
+const AION_TOKEN_ADDRESS = '';
+
+let currentAccount = null;
+
+function showStatus(msg, type) {
+  const el = document.getElementById('statusBox');
+  el.textContent = msg;
+  el.className = 'status ' + type;
+}
 
 async function connectWallet() {
-const status = document.getElementById("connectStatus");
+  const btn = document.getElementById('connectBtn');
+  
+  if (typeof window.ethereum === 'undefined') {
+    showStatus('⚠️ لم يتم العثور على MetaMask. افتح الصفحة من داخل تطبيق MetaMask.', 'error');
+    return;
+  }
 
-if (typeof window.ethereum === "undefined") {
-status.style.color = "#ff6b6b";
-status.textContent = "يرجى تثبيت MetaMask من metamask.io للبدء.";
-return;
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري الاتصال...';
+
+  try {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    currentAccount = accounts[0];
+
+    // Try switch to BNB Chain
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: BNB_CHAIN_ID }]
+      });
+    } catch (switchErr) {
+      if (switchErr.code === 4902) {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [BNB_CHAIN_PARAMS]
+        });
+      }
+    }
+
+    await updateUI();
+    showStatus('✅ تم ربط المحفظة بنجاح!', 'success');
+
+    setTimeout(() => {
+      document.getElementById('connectCard').style.display = 'none';
+      document.getElementById('notConnected').style.display = 'none';
+    }, 1000);
+
+  } catch (err) {
+    showStatus('❌ فشل الاتصال: ' + err.message, 'error');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '🔗 ربط المحفظة';
 }
 
-try {
-status.textContent = "جاري الاتصال...";
-const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-userAddress = accounts[0];
-document.getElementById("walletAddress").textContent = userAddress;
-document.getElementById("connectSection").style.display = "none";
-document.getElementById("walletInfo").classList.add("show");
-loadBalances();
-} catch (err) {
-status.style.color = "#ff6b6b";
-status.textContent = "تم رفض الاتصال.";
-}
+async function updateUI() {
+  if (!currentAccount) return;
+
+  document.getElementById('walletInfo').classList.add('active');
+  document.getElementById('balances').classList.add('active');
+  document.getElementById('actions').classList.add('active');
+
+  document.getElementById('walletAddr').textContent = currentAccount.slice(0,10) + '...' + currentAccount.slice(-8);
+  document.getElementById('walletNetwork').textContent = 'BNB Smart Chain';
+
+  // Get BNB balance
+  try {
+    const balHex = await window.ethereum.request({
+      method: 'eth_getBalance',
+      params: [currentAccount, 'latest']
+    });
+    const balWei = parseInt(balHex, 16);
+    const bnbBalance = (balWei / 1e18).toFixed(4);
+    document.getElementById('bnbBalance').textContent = bnbBalance;
+  } catch (e) {
+    document.getElementById('bnbBalance').textContent = '0.00';
+  }
+
+  // Get AION balance (if token deployed)
+  if (AION_TOKEN_ADDRESS) {
+    try {
+      const data = '0x70a08231' + currentAccount.slice(2).padStart(64, '0');
+      const aionBalHex = await window.ethereum.request({
+        method: 'eth_call',
+        params: [{ to: AION_TOKEN_ADDRESS, data }, 'latest']
+      });
+      const aionWei = parseInt(aionBalHex, 16);
+      document.getElementById('aionBalance').textContent = (aionWei / 1e18).toLocaleString();
+    } catch (e) {
+      document.getElementById('aionBalance').textContent = '0';
+    }
+  } else {
+    document.getElementById('aionBalance').textContent = '—';
+  }
 }
 
-async function loadBalances() {
-if (!userAddress) return;
-try {
-const balanceHex = await window.ethereum.request({
-method: "eth_getBalance",
-params: [userAddress, "latest"]
-});
-const balanceWei = parseInt(balanceHex, 16);
-const balanceEth = balanceWei / 1e18;
-document.getElementById("ethBalance").textContent = balanceEth.toFixed(4);
-} catch (err) {
-document.getElementById("ethBalance").textContent = "خطأ";
+function openBscScan() {
+  if (currentAccount) {
+    window.open('https://bscscan.com/address/' + currentAccount, '_blank');
+  }
 }
 
-try {
-if (window.ethereum.chainId === "0x38") {
-const balanceHex = await window.ethereum.request({
-method: "eth_getBalance",
-params: [userAddress, "latest"]
-});
-const balanceWei = parseInt(balanceHex, 16);
-const balanceBnb = balanceWei / 1e18;
-document.getElementById("bnbBalance").textContent = balanceBnb.toFixed(4);
-} else {
-document.getElementById("bnbBalance").textContent = "—";
-}
-} catch (err) {
-document.getElementById("bnbBalance").textContent = "—";
-}
-}
+// Auto-detect if already connected
+if (typeof window.ethereum !== 'undefined') {
+  window.ethereum.request({ method: 'eth_accounts' }).then(accounts => {
+    if (accounts.length > 0) {
+      currentAccount = accounts[0];
+      updateUI();
+      document.getElementById('connectCard').style.display = 'none';
+      document.getElementById('notConnected').style.display = 'none';
+    }
+  });
 
-function copyAddress() {
-if (!userAddress) return;
-navigator.clipboard.writeText(userAddress);
-alert("تم نسخ العنوان");
-}
-
-function disconnectWallet() {
-userAddress = null;
-document.getElementById("walletAddress").textContent = "-";
-document.getElementById("ethBalance").textContent = "0";
-document.getElementById("bnbBalance").textContent = "0";
-document.getElementById("walletInfo").classList.remove("show");
-document.getElementById("connectSection").style.display = "block";
-document.getElementById("connectStatus").textContent = "";
-}
-
-function buyAION() {
-window.open("https://www.paypal.me/AIONNetwork", "_blank");
-}
-
-const CG_API = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,tether,solana,ripple&vs_currencies=usd&include_24hr_change=true";
-
-async function loadPrices() {
-try {
-const res = await fetch(CG_API);
-const data = await res.json();
-
-updatePrice("btcPrice", data.bitcoin);
-updatePrice("ethPrice", data.ethereum);
-updatePrice("bnbPrice", data.binancecoin);
-updatePrice("usdtPrice", data.tether);
-updatePrice("solPrice", data.solana);
-updatePrice("xrpPrice", data.ripple);
-} catch (err) {
-console.log("Price load error:", err);
-}
-}
-
-function updatePrice(id, coin) {
-if (!coin) return;
-const el = document.getElementById(id);
-const price = coin.usd;
-const change = coin.usd_24h_change || 0;
-const arrow = change >= 0 ? "▲" : "▼";
-const cls = change >= 0 ? "up" : "down";
-
-el.innerHTML = '$' + price.toLocaleString() +
-'<div class="change ' + cls + '">' + arrow + ' ' + Math.abs(change).toFixed(2) + '%</div>';
-}
-
-loadPrices();
-setInterval(loadPrices, 60000);
-
-if (typeof window.ethereum !== "undefined") {
-window.ethereum.on("accountsChanged", function(accounts) {
-if (accounts.length === 0) disconnectWallet();
-else {
-userAddress = accounts[0];
-document.getElementById("walletAddress").textContent = userAddress;
-loadBalances();
-}
-});
+  window.ethereum.on('accountsChanged', accounts => {
+    if (accounts.length === 0) {
+      location.reload();
+    } else {
+      currentAccount = accounts[0];
+      updateUI();
+    }
+  });
 }
 </script>
-
 </body>
 </html>
