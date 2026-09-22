@@ -1,0 +1,43 @@
+
+{
+  "name": "AION Academy — منصة التعليم الذكية",
+  "short_name": "AION",
+  "description": "منصة تعليمية عالمية بالذكاء الاصطناعي — 5 مسارات، 38 لغة، AI Tutor شخصي",
+  "start_url": "/academy.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020817",
+  "theme_color": "#00c8ff",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/fR73W9NX/ff38913b-96e5-48b9-b590-c4764eab6502.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "https://i.postimg.cc/fR73W9NX/ff38913b-96e5-48b9-b590-c4764eab6502.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "AI Tutor",
+      "short_name": "Tutor",
+      "url": "/chat.html",
+      "icons": [{"src": "https://i.postimg.cc/fR73W9NX/ff38913b-96e5-48b9-b590-c4764eab6502.jpg", "sizes": "192x192"}]
+    },
+    {
+      "name": "المسارات",
+      "short_name": "Courses",
+      "url": "/academy.html",
+      "icons": [{"src": "https://i.postimg.cc/fR73W9NX/ff38913b-96e5-48b9-b590-c4764eab6502.jpg", "sizes": "192x192"}]
+    }
+  ]
+}
