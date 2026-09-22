@@ -7,47 +7,58 @@
 <title>فريق AION | 100 وكيل ذكاء اصطناعي</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%),#0B1D3A;color:#fff;min-height:100vh;padding:20px}
-.container{max-width:1400px;margin:auto}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:rgba(5,13,31,.65);backdrop-filter:blur(15px);border:1px solid rgba(212,175,55,.3);border-radius:20px;margin-bottom:25px;flex-wrap:wrap;gap:15px}
-.logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:900;color:#D4AF37;letter-spacing:2px}
-.logo .mark{width:36px;height:36px;border:2px solid #D4AF37;border-radius:50%;display:grid;place-items:center;font-weight:900;box-shadow:0 0 20px rgba(212,175,55,.5)}
-.menu a{color:#dfe8f5;text-decoration:none;font-size:14px;font-weight:bold;margin-left:15px;transition:.3s}
-.menu a:hover{color:#D4AF37}
-h1{color:#D4AF37;text-align:center;font-size:clamp(28px,5vw,44px);margin-bottom:10px;text-shadow:0 0 30px rgba(212,175,55,.6)}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1400px;margin:auto;padding:14px}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#00c8ff}
+.menu a.active{color:#f5c542}
+.lang-btn{padding:6px 12px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;margin-left:12px;display:inline-block}
+
+h1{color:#00c8ff;text-align:center;font-size:clamp(26px,4.5vw,42px);margin-bottom:10px;text-shadow:0 0 30px rgba(0,200,255,.6)}
 .sub{text-align:center;color:#aebbd0;margin-bottom:25px;font-size:14px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:25px}
-.stat{padding:18px;background:rgba(5,13,31,.75);border:1px solid rgba(212,175,55,.35);border-radius:15px;text-align:center}
-.stat .num{color:#D4AF37;font-size:26px;font-weight:900;margin-bottom:5px}
+.stat{padding:18px;background:rgba(0,180,255,.04);border:1px solid rgba(0,180,255,.25);border-radius:15px;text-align:center}
+.stat .num{color:#f5c542;font-size:26px;font-weight:900;margin-bottom:5px;text-shadow:0 0 15px rgba(245,197,66,.5)}
 .stat .lbl{color:#aebbd0;font-size:12px}
-.search-box{width:100%;padding:14px 18px;border-radius:12px;background:rgba(5,13,31,.75);color:#fff;border:1px solid rgba(212,175,55,.35);margin-bottom:25px;font-size:15px;font-family:inherit}
-.search-box:focus{outline:none;border-color:#D4AF37}
-.dept-title{color:#D4AF37;font-size:22px;margin:30px 0 15px;padding:10px 15px;background:rgba(212,175,55,.08);border-right:4px solid #D4AF37;border-radius:8px}
+.search-box{width:100%;padding:14px 18px;border-radius:12px;background:rgba(2,15,40,.9);color:#fff;border:1px solid rgba(0,200,255,.35);margin-bottom:25px;font-size:15px;font-family:inherit}
+.search-box:focus{outline:none;border-color:#f5c542;box-shadow:0 0 20px rgba(245,197,66,.4)}
+.search-box::placeholder{color:#6b7c94}
+.dept-title{color:#00c8ff;font-size:22px;margin:30px 0 15px;padding:10px 15px;background:rgba(0,180,255,.08);border-right:4px solid #00c8ff;border-radius:8px}
 .dept-title span{color:#aebbd0;font-size:14px;font-weight:normal}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px;margin-bottom:20px}
-.agent-card{padding:18px;background:rgba(5,13,31,.75);border:1px solid rgba(212,175,55,.25);border-radius:15px;transition:.3s;cursor:pointer;text-decoration:none;color:#fff;display:block}
-.agent-card:hover{border-color:#D4AF37;box-shadow:0 0 25px rgba(212,175,55,.4);transform:translateY(-3px)}
-.agent-card .avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#7A4BFF,#D4AF37);display:grid;place-items:center;font-size:22px;margin-bottom:12px;box-shadow:0 0 20px rgba(122,75,255,.4)}
-.agent-card .name{color:#D4AF37;font-weight:900;font-size:15px;margin-bottom:5px}
+.agent-card{padding:18px;background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.25);border-radius:15px;transition:.3s;cursor:pointer;text-decoration:none;color:#fff;display:block}
+.agent-card:hover{border-color:#00c8ff;box-shadow:0 0 25px rgba(0,200,255,.4);transform:translateY(-3px)}
+.agent-card .avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#7A4BFF,#f5c542);display:grid;place-items:center;font-size:22px;margin-bottom:12px;box-shadow:0 0 20px rgba(122,75,255,.4)}
+.agent-card .name{color:#f5c542;font-weight:900;font-size:15px;margin-bottom:5px}
 .agent-card .id{color:#7A4BFF;font-size:11px;font-family:monospace;margin-bottom:8px}
 .agent-card .spec{color:#aebbd0;font-size:12px;line-height:1.5}
 .badge{display:inline-block;padding:3px 10px;background:rgba(122,75,255,.2);border:1px solid rgba(122,75,255,.5);border-radius:20px;color:#d0c8ff;font-size:10px;margin-top:8px;text-transform:uppercase;letter-spacing:1px}
-.footer{text-align:center;padding:30px 20px;color:#aebbd0;font-size:12px;margin-top:40px;border-top:1px solid rgba(212,175,55,.2)}
-.footer strong{color:#D4AF37}
-@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+.footer{text-align:center;padding:30px 20px;color:#6b7c94;font-size:12px;margin-top:40px;border-top:1px solid rgba(0,180,255,.15)}
+.footer strong{color:#00c8ff}
+.footer a{color:#00c8ff;margin:0 8px}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.menu a{font-size:11px;margin-left:8px}}
 </style>
 </head>
 <body>
 
 <div class="container">
 
-<div class="topbar">
-<div class="logo"><div class="mark">A</div>AION AUTONOMOUS</div>
+<div class="topnav">
+<div class="logo"><svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<div>AION<div class="s">TEAM</div></div>
+</div>
 <div class="menu">
 <a href="index.html">الرئيسية</a>
-<a href="services.html">الخدمات</a>
+<a href="intelligence.html">Intelligence</a>
+<a href="pricing.html">الأسعار</a>
 <a href="chat.html">الشات</a>
-<a href="team.html">الفريق</a>
+<a href="en.html" class="lang-btn">EN 🌐</a>
 </div>
 </div>
 
@@ -67,7 +78,9 @@ h1{color:#D4AF37;text-align:center;font-size:clamp(28px,5vw,44px);margin-bottom:
 
 <div class="footer">
 <strong>AION AUTONOMOUS</strong> © 2026 — Geneva, Switzerland<br>
-aion.genesisss@gmail.com
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
 </div>
 
 </div>
@@ -152,6 +165,8 @@ document.getElementById('search').addEventListener('input', function(e){
   render(e.target.value);
 });
 </script>
+
+<script src="lang.js"></script>
 
 </body>
 </html>
