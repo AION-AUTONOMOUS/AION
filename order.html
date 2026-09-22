@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -7,107 +6,252 @@
 <title>اطلب خدمتك | AION AUTONOMOUS</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%),#0B1D3A;color:#fff;min-height:100vh;padding:20px}
-.container{max-width:700px;margin:auto}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:rgba(5,13,31,.65);backdrop-filter:blur(15px);border:1px solid rgba(212,175,55,.3);border-radius:20px;margin-bottom:25px;flex-wrap:wrap;gap:15px}
-.logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:900;color:#D4AF37;letter-spacing:2px}
-.logo .mark{width:36px;height:36px;border:2px solid #D4AF37;border-radius:50%;display:grid;place-items:center;font-weight:900;box-shadow:0 0 20px rgba(212,175,55,.5)}
-.menu a{color:#dfe8f5;text-decoration:none;font-size:14px;font-weight:bold;margin-left:15px;transition:.3s}
-.menu a:hover{color:#D4AF37}
-h1{color:#D4AF37;text-align:center;font-size:clamp(26px,5vw,40px);margin-bottom:10px;text-shadow:0 0 30px rgba(212,175,55,.6)}
-.sub{text-align:center;color:#aebbd0;margin-bottom:30px;font-size:14px}
-.card{background:rgba(5,13,31,.75);border:1px solid rgba(212,175,55,.3);border-radius:20px;padding:25px;margin-bottom:20px}
-.card h2{color:#D4AF37;font-size:20px;margin-bottom:15px}
-label{display:block;color:#dfe8f5;font-size:14px;font-weight:bold;margin-bottom:8px}
-select,textarea{width:100%;padding:14px;border-radius:12px;background:#0B1D3A;color:#fff;border:1px solid rgba(255,255,255,.2);font-family:inherit;font-size:15px;margin-bottom:15px}
-select:focus,textarea:focus{outline:none;border-color:#D4AF37}
-.price-display{text-align:center;padding:15px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.4);border-radius:12px;margin-bottom:20px}
-.price-display .amount{color:#D4AF37;font-size:32px;font-weight:900}
-.price-display .label{color:#aebbd0;font-size:13px}
-.btn-pay{display:block;width:100%;padding:18px;background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border:none;border-radius:12px;font-weight:900;font-size:17px;cursor:pointer;font-family:inherit;margin-bottom:10px;transition:.3s}
-.btn-pay:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(212,175,55,.5)}
-.btn-pay.card{background:#2a2a2a;color:#fff;border:1px solid rgba(255,255,255,.2)}
-.btn-pay.card:hover{background:#3a3a3a}
-.btn-pay:disabled{opacity:.5;cursor:not-allowed}
-.note{text-align:center;color:#aebbd0;font-size:12px;margin-top:10px}
-.footer{text-align:center;padding:30px 20px;color:#aebbd0;font-size:12px;border-top:1px solid rgba(212,175,55,.2);margin-top:30px}
-.footer strong{color:#D4AF37}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:auto;padding:14px}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#00c8ff}
+.lang-btn{padding:6px 12px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;margin-left:12px;display:inline-block}
+
+h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:8px;text-shadow:0 0 25px rgba(0,200,255,.6)}
+.sub{text-align:center;color:#aebbd0;margin-bottom:25px;font-size:13px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px;margin-bottom:30px}
+.card{position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.85));border:1px solid rgba(0,180,255,.3);transition:.4s;cursor:pointer;display:flex;flex-direction:column;min-height:230px}
+.card:hover{transform:translateY(-6px);border-color:#00c8ff;box-shadow:0 20px 50px rgba(0,200,255,.4)}
+.card-top{padding:22px 20px 15px;flex:1}
+.card-icon{font-size:38px;margin-bottom:12px;display:block;filter:drop-shadow(0 0 15px rgba(0,200,255,.6))}
+.card h3{color:#fff;font-size:16px;font-weight:900;margin-bottom:6px}
+.card .desc{color:#aebbd0;font-size:11px;line-height:1.6;margin-bottom:12px}
+.card .price-tag{display:inline-block;padding:5px 14px;background:rgba(245,197,66,.15);border:1px solid #f5c542;border-radius:20px;color:#f5c542;font-size:14px;font-weight:900}
+.card-bottom{padding:0 20px 20px}
+.pay-btn{display:block;width:100%;padding:13px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border:none;border-radius:12px;font-weight:900;font-size:13px;cursor:pointer;font-family:inherit;transition:.3s;text-align:center}
+.pay-btn:hover{transform:scale(1.03);box-shadow:0 10px 30px rgba(245,197,66,.6)}
+.featured{border:2px solid #f5c542;background:linear-gradient(135deg,rgba(245,197,66,.1),rgba(2,8,23,.9))}
+.featured::before{content:"⭐ الأكثر طلبًا";position:absolute;top:10px;left:12px;background:#f5c542;color:#020817;padding:4px 12px;border-radius:20px;font-size:9px;font-weight:900;letter-spacing:1px;z-index:3}
+
+.cta{text-align:center;padding:30px 20px;background:linear-gradient(135deg,rgba(0,80,150,.3),rgba(122,75,255,.15));border:2px solid #00c8ff;border-radius:22px;margin-bottom:20px}
+.cta h2{color:#fff;font-size:22px;font-weight:900;margin-bottom:10px}
+.cta p{color:#c8d5e7;margin-bottom:18px;font-size:13px}
+.btn-hero{display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;font-weight:900;font-size:13px;text-decoration:none;box-shadow:0 15px 40px rgba(245,197,66,.5);transition:.3s;margin:5px}
+.btn-hero:hover{transform:translateY(-3px)}
+
+.footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:20px}
+.footer strong{color:#00c8ff}
+.footer a{color:#00c8ff;margin:0 8px}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;place-items:center;z-index:9999;padding:20px;backdrop-filter:blur(5px)}
+.modal.active{display:grid}
+.modal-box{background:linear-gradient(135deg,#0B1D3A,#050d1f);border:2px solid #f5c542;border-radius:22px;padding:30px;max-width:420px;width:100%;text-align:center;box-shadow:0 0 60px rgba(245,197,66,.5)}
+.modal-box h3{color:#f5c542;font-size:22px;margin-bottom:12px}
+.modal-box .price{color:#fff;font-size:42px;font-weight:900;margin:15px 0}
+.modal-box .desc{color:#aebbd0;font-size:13px;margin-bottom:22px;line-height:1.7}
+.modal-box .btn{display:block;width:100%;padding:16px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border:none;border-radius:14px;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit;margin-bottom:10px;text-decoration:none;text-align:center}
+.modal-box .btn.outline{background:transparent;color:#f5c542;border:2px solid #f5c542}
+.modal-box .close-btn{background:none;border:none;color:#aebbd0;cursor:pointer;font-size:13px;font-family:inherit;margin-top:8px;padding:8px}
+
+@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="container">
 
-<div class="topbar">
-<div class="logo"><div class="mark">A</div>AION AUTONOMOUS</div>
+<div class="topnav">
+<div class="logo">
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<div>AION<div class="s">ORDER</div></div>
+</div>
 <div class="menu">
 <a href="index.html">الرئيسية</a>
 <a href="pricing.html">الأسعار</a>
-<a href="services.html">الخدمات</a>
+<a href="portfolio.html">أعمالنا</a>
 <a href="chat.html">الشات</a>
+<a href="en.html" class="lang-btn">EN 🌐</a>
 </div>
 </div>
 
-<h1>🛒 اطلب خدمتك</h1>
-<p class="sub">اختر الخدمة، ادفع بأمان عبر PayPal أو البطاقة</p>
+<h1>🛒 اختر خدمتك</h1>
+<p class="sub">اضغط على الخدمة → ادفع بأمان عبر PayPal أو البطاقة</p>
 
-<div class="card">
-<h2>1️⃣ اختر الخدمة</h2>
-<label for="service">الخدمة المطلوبة</label>
-<select id="service" onchange="updatePrice()">
-<option value="article500" data-price="5" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">مقال 500 كلمة — $5</option>
-<option value="article1000" data-price="10" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">مقال 1000 كلمة — $10</option>
-<option value="social5" data-price="5" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">5 منشورات سوشيال — $5</option>
-<option value="translation500" data-price="5" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">ترجمة 500 كلمة — $5</option>
-<option value="market" data-price="10" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">تحليل سوق — $10</option>
-<option value="python" data-price="15" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">Python سكريبت — $15</option>
-<option value="cv" data-price="10" data-link="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J">CV احترافي — $10</option>
-</select>
-<label for="details">الموضوع / التفاصيل المطلوبة</label>
-<textarea id="details" rows="4" placeholder="اكتب موضوعك بالتفصيل هنا..."></textarea>
+<div class="grid">
+
+<div class="card featured" onclick="openPay('مقال 500 كلمة',5,'محتوى احترافي 500 كلمة — عربي أو إنجليزي')">
+<div class="card-top">
+<span class="card-icon">✍️</span>
+<h3>مقال 500 كلمة</h3>
+<p class="desc">محتوى احترافي بالعربية أو الإنجليزية</p>
+<span class="price-tag">$5</span>
+</div>
+<div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
 
-<div class="card">
-<h2>2️⃣ السعر</h2>
-<div class="price-display">
-<div class="amount" id="priceAmount">$5.00</div>
-<div class="label">دولار أمريكي — USD</div>
+<div class="card" onclick="openPay('مقال 1000 كلمة',10,'مقال شامل 1000 كلمة — بحث + كتابة + تحرير')">
+<div class="card-top">
+<span class="card-icon">📝</span>
+<h3>مقال 1000 كلمة</h3>
+<p class="desc">بحث عميق + كتابة احترافية</p>
+<span class="price-tag">$10</span>
 </div>
+<div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
 
-<div class="card">
-<h2>3️⃣ ادفع الآن</h2>
-<button class="btn-pay" onclick="payNow()">💳 ادفع الآن بأمان</button>
-<p class="note">سيتم تحويلك إلى صفحة PayPal الآمنة — ادفع بحسابك أو بالبطاقة مباشرة</p>
+<div class="card" onclick="openPay('5 منشورات سوشيال',5,'5 منشورات جاهزة للنشر — كل المنصات')">
+<div class="card-top">
+<span class="card-icon">📱</span>
+<h3>5 منشورات سوشيال</h3>
+<p class="desc">تويتر، لينكدإن، إنستغرام</p>
+<span class="price-tag">$5</span>
+</div>
+<div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
+</div>
+
+<div class="card" onclick="openPay('ترجمة 500 كلمة',5,'ترجمة احترافية عربي ↔ إنجليزي')">
+<div class="card-top">
+<span class="card-icon">🌍</span>
+<h3>ترجمة 500 كلمة</h3>
+<p class="desc">عربي ↔ إنجليزي — دقة عالية</p>
+<span class="price-tag">$5</span>
+</div>
+<div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
+</div>
+
+<div class="card" onclick="openPay('تحليل سوق',30,'تحليل سوق شامل — منافسون + توصيات')">
+<div class="card-top">
+<span class="card-icon">📊</span>
+<h3>تحليل سوق</h3>
+<p class="desc">تحليل شامل + منافسون + توصيات</p>
+<span class="price-tag">$30</span>
+</div>
+<div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
+</div>
+
+<div class="card" onclick="openPay('تحليل منافسين',20,'تحليل 3-5 منافسين + SWOT')">
+<div class="card-top">
+<span class="card-icon">🎯</span>
+<h3>تحليل منافسين</h3>
+<p class="desc">3-5 منافسين + تحليل SWOT</p>
+<span class="price-tag">$20</span>
+</div>
+<div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
+</div>
+
+<div class="card" onclick="openPay('Business Plan',50,'خطة عمل كاملة جاهزة للمستثمرين')">
+<div class="card-top">
+<span class="card-icon">💼</span>
+<h3>Business Plan</h3>
+<p class="desc">خطة عمل كاملة (20-25 صفحة)</p>
+<span class="price-tag">$50</span>
+</div>
+<div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
+</div>
+
+<div class="card" onclick="openPay('CV احترافي',10,'سيرة ذاتية بتصميم عصري')">
+<div class="card-top">
+<span class="card-icon">📄</span>
+<h3>CV احترافي</h3>
+<p class="desc">تصميم عصري + محتوى مقنع</p>
+<span class="price-tag">$10</span>
+</div>
+<div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
+</div>
+
+<div class="card" onclick="openPay('سكريبت Python',15,'سكريبت مخصص + شرح مفصّل')">
+<div class="card-top">
+<span class="card-icon">💻</span>
+<h3>سكريبت Python</h3>
+<p class="desc">سكريبت مخصص + شرح</p>
+<span class="price-tag">$15</span>
+</div>
+<div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
+</div>
+
+<div class="card" onclick="openPay('تحليل شركة',15,'تحليل 360° لأي شركة')">
+<div class="card-top">
+<span class="card-icon">🕵️</span>
+<h3>تحليل شركة</h3>
+<p class="desc">تحليل 360° + توصية</p>
+<span class="price-tag">$15</span>
+</div>
+<div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
+</div>
+
+<div class="card" onclick="openPay('Pitch Deck',60,'عرض تقديمي للمستثمرين')">
+<div class="card-top">
+<span class="card-icon">🚀</span>
+<h3>Pitch Deck</h3>
+<p class="desc">10-15 شريحة جاهزة للمستثمرين</p>
+<span class="price-tag">$60</span>
+</div>
+<div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
+</div>
+
+<div class="card" onclick="openPay('دراسة جدوى',30,'دراسة جدوى شاملة لأي فكرة')">
+<div class="card-top">
+<span class="card-icon">📋</span>
+<h3>دراسة جدوى</h3>
+<p class="desc">تحليل شامل + الميزانية + المخاطر</p>
+<span class="price-tag">$30</span>
+</div>
+<div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
+</div>
+
+</div>
+
+<div class="cta">
+<h2>🤖 لم تجد ما تبحث عنه؟</h2>
+<p>تحدث مع وكلائنا الذكيين مباشرة، واطلب خدمة مخصصة</p>
+<a href="chat.html" class="btn-hero">💬 ابدأ محادثة مجانية</a>
 </div>
 
 <div class="footer">
 <strong>AION AUTONOMOUS</strong> © 2026 — Geneva, Switzerland<br>
-aion.genesisss@gmail.com
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
 </div>
 
+</div>
+
+<div class="modal" id="payModal">
+<div class="modal-box">
+<button class="close-btn" onclick="closeModal()" style="float:left;font-size:20px">✕</button>
+<h3 id="mTitle">مقال 500 كلمة</h3>
+<div class="price" id="mPrice">$5</div>
+<p class="desc" id="mDesc">محتوى احترافي</p>
+<a href="#" id="mPayLink" class="btn" target="_blank">💳 ادفع عبر PayPal</a>
+<a href="chat.html" class="btn outline">💬 استفسر أولًا</a>
+<button class="close-btn" onclick="closeModal()">إلغاء</button>
+</div>
 </div>
 
 <script>
-function updatePrice() {
-  const select = document.getElementById('service');
-  const price = select.options[select.selectedIndex].dataset.price;
-  document.getElementById('priceAmount').textContent = '$' + parseFloat(price).toFixed(2);
+const PAYPAL_LINK = 'https://www.paypal.com/ncp/payment/QSNNFE77HUN5J';
+
+function openPay(title, price, desc) {
+  document.getElementById('mTitle').textContent = title;
+  document.getElementById('mPrice').textContent = '$' + price;
+  document.getElementById('mDesc').textContent = desc;
+  document.getElementById('mPayLink').href = PAYPAL_LINK;
+  document.getElementById('payModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
-function payNow() {
-  const select = document.getElementById('service');
-  const selected = select.options[select.selectedIndex];
-  const link = selected.dataset.link;
-
-  if (!link || link === '') {
-    alert('الدفع لهذه الخدمة غير متاح حاليًا — تواصل معنا مباشرة');
-    return;
-  }
-
-  window.location.href = link;
+function closeModal() {
+  document.getElementById('payModal').classList.remove('active');
+  document.body.style.overflow = '';
 }
 
-updatePrice();
+document.getElementById('payModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
 </script>
+
+<script src="lang.js"></script>
+
 </body>
 </html>
