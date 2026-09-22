@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AION Intelligence | ذكاء الأعمال</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:auto;padding:14px}
+
+/* NAV */
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#00c8ff}
+
+/* HERO */
+.hero{padding:40px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,80,150,.3),rgba(2,8,23,.9));border:1px solid rgba(0,180,255,.35);border-radius:22px;margin-bottom:25px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#00c8ff,transparent),radial-gradient(2px 2px at 60% 70%,#f5c542,transparent),radial-gradient(1px 1px at 40% 80%,#a78bfa,transparent);opacity:.6;pointer-events:none}
+.hero .content{position:relative;z-index:2}
+.hero .badge{display:inline-block;padding:6px 16px;background:rgba(245,197,66,.15);border:1px solid #f5c542;border-radius:20px;color:#f5c542;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:15px}
+.hero h1{color:#fff;font-size:clamp(26px,4.5vw,42px);font-weight:900;margin-bottom:12px;line-height:1.3}
+.hero h1 span{color:#00c8ff;text-shadow:0 0 25px rgba(0,200,255,.7)}
+.hero p{color:#c8d5e7;font-size:15px;max-width:700px;margin:auto;line-height:1.8}
+
+/* SEARCH */
+.search-box{padding:25px;background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:2px solid #00c8ff;border-radius:20px;margin-bottom:25px;box-shadow:0 0 40px rgba(0,200,255,.25)}
+.search-box label{display:block;color:#00c8ff;font-size:13px;font-weight:900;margin-bottom:10px;letter-spacing:1px}
+.search-input{width:100%;padding:18px 20px;background:#020817;color:#fff;border:1px solid rgba(0,200,255,.4);border-radius:14px;font-size:15px;font-family:inherit;margin-bottom:12px}
+.search-input:focus{outline:none;border-color:#f5c542;box-shadow:0 0 20px rgba(245,197,66,.4)}
+.search-input::placeholder{color:#6b7c94}
+.btn-search{width:100%;padding:16px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border:none;border-radius:14px;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit;transition:.3s}
+.btn-search:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(0,200,255,.5)}
+.btn-search:disabled{opacity:.5;cursor:wait}
+.suggestions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.suggestion{padding:8px 14px;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.3);border-radius:20px;color:#aebbd0;font-size:11px;cursor:pointer;transition:.3s}
+.suggestion:hover{background:rgba(0,200,255,.2);color:#00c8ff}
+
+/* RESULT */
+.result{display:none;padding:25px;background:linear-gradient(180deg,rgba(0,80,150,.2),rgba(2,15,40,.9));border:1px solid rgba(0,200,255,.4);border-radius:20px;margin-bottom:25px}
+.result.active{display:block}
+.result-header{display:flex;align-items:center;gap:12px;margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid rgba(0,180,255,.25)}
+.result-header .icon{width:44px;height:44px;border-radius:12px;background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.5);display:grid;place-items:center;font-size:20px}
+.result-header h3{color:#00c8ff;font-size:17px;font-weight:900}
+.result-header .meta{color:#6b7c94;font-size:11px;margin-top:3px}
+.result-body{color:#c8d5e7;font-size:14px;line-height:2;white-space:pre-wrap}
+.loading{text-align:center;padding:30px;color:#00c8ff;display:none}
+.loading.active{display:block}
+.spinner{display:inline-block;width:40px;height:40px;border:4px solid rgba(0,200,255,.2);border-top-color:#00c8ff;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* SERVICES */
+.section-title{color:#fff;font-size:22px;font-weight:900;margin-bottom:20px;text-align:center}
+.section-title span{color:#f5c542}
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px;margin-bottom:25px}
+.service{padding:22px 20px;background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.25);border-radius:18px;transition:.3s;position:relative}
+.service:hover{border-color:#00c8ff;transform:translateY(-4px);box-shadow:0 15px 40px rgba(0,200,255,.25)}
+.service .ic{width:50px;height:50px;border-radius:12px;background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.5);display:grid;place-items:center;font-size:22px;margin-bottom:14px}
+.service h3{color:#fff;font-size:16px;font-weight:900;margin-bottom:8px}
+.service p{color:#aebbd0;font-size:13px;line-height:1.7;margin-bottom:12px}
+.service .features{list-style:none;padding:0;margin-bottom:12px}
+.service .features li{color:#c8d5e7;font-size:12px;padding:4px 0}
+.service .features li:before{content:"✓ ";color:#00c8ff;font-weight:900;margin-left:6px}
+.service .price{display:inline-block;padding:6px 14px;background:rgba(245,197,66,.15);border:1px solid #f5c542;border-radius:20px;color:#f5c542;font-size:12px;font-weight:900}
+.service .price.free{background:rgba(74,222,128,.15);border-color:#4ade80;color:#4ade80}
+.service.featured{border:2px solid #f5c542;background:linear-gradient(180deg,rgba(245,197,66,.12),rgba(2,8,23,.9))}
+.service.featured::before{content:"⭐ الأكثر طلبًا";position:absolute;top:12px;left:12px;background:#f5c542;color:#020817;padding:3px 10px;border-radius:15px;font-size:10px;font-weight:900}
+
+/* CTA */
+.cta{padding:35px 25px;background:linear-gradient(135deg,rgba(0,80,150,.3),rgba(122,75,255,.15));border:2px solid #00c8ff;border-radius:22px;text-align:center;margin-bottom:20px}
+.cta h2{color:#fff;font-size:24px;font-weight:900;margin-bottom:12px}
+.cta h2 span{color:#f5c542}
+.cta p{color:#c8d5e7;font-size:14px;margin-bottom:22px}
+.btn-hero{display:inline-block;padding:15px 38px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;font-weight:900;font-size:14px;text-decoration:none;box-shadow:0 15px 40px rgba(245,197,66,.5);transition:.3s;margin:5px}
+.btn-hero:hover{transform:translateY(-3px)}
+.btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #00c8ff}
+
+/* FOOTER */
+.footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:20px}
+.footer a{color:#00c8ff;margin:0 8px}
+
+@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- NAV -->
+<div class="topnav">
+<div class="logo">
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<div>AION<div class="s">INTELLIGENCE</div></div>
+</div>
+<div class="menu">
+<a href="index.html">الرئيسية</a>
+<a href="services.html">الخدمات</a>
+<a href="pricing.html">الأسعار</a>
+<a href="chat.html">الشات</a>
+</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+<div class="content">
+<span class="badge">🧠 AION INTELLIGENCE</span>
+<h1>ذكاء الأعمال <span>بالعربية</span> — لأول مرة</h1>
+<p>اسأل أي سؤال عن أي شركة، سوق، أو منافس — واحصل على تحليل احترافي في ثوانٍ. مدعوم بـ 100 وكيل AI متخصص.</p>
+</div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-box">
+<label>🔍 اسأل AION Intelligence:</label>
+<input type="text" class="search-input" id="question" placeholder="مثال: ما هي أفضل 5 شركات AI في الشرق الأوسط؟">
+<button class="btn-search" id="searchBtn" onclick="askAION()">🧠 اسأل الآن — مجانًا</button>
+<div class="suggestions">
+<span class="suggestion" onclick="fillQ('من هم أقوى المنافسين لشركتي في السوق السعودي؟')">منافسون في السعودية</span>
+<span class="suggestion" onclick="fillQ('ما هي أفضل فرص الاستثمار في قطاع AI 2026؟')">فرص استثمارية</span>
+<span class="suggestion" onclick="fillQ('حلل شركة OpenAI كنموذج أعمال')">تحليل نموذج أعمال</span>
+<span class="suggestion" onclick="fillQ('ما هي أفضل 10 شركات تقنية في الشرق الأوسط؟')">أقوى الشركات</span>
+</div>
+</div>
+
+<!-- LOADING -->
+<div class="loading" id="loading">
+<div class="spinner"></div>
+<p style="margin-top:15px;font-size:13px">AION يفكر...</p>
+</div>
+
+<!-- RESULT -->
+<div class="result" id="result">
+<div class="result-header">
+<div class="icon">🧠</div>
+<div>
+<h3>AION Intelligence</h3>
+<div class="meta" id="resultMeta">تحليل فوري</div>
+</div>
+</div>
+<div class="result-body" id="resultBody"></div>
+</div>
+
+<!-- SERVICES -->
+<h2 class="section-title">اكتشف <span>خدمات AION Intelligence</span></h2>
+
+<div class="services">
+
+<div class="service featured">
+<div class="ic">🔍</div>
+<h3>AION Scout — بحث ذكي</h3>
+<p>اسأل أي سؤال بالعربية، واحصل على إجابة فورية موثوقة من 100 وكيل.</p>
+<ul class="features">
+<li>بحث باللغة الطبيعية</li>
+<li>عربي + إنجليزي</li>
+<li>مصادر موثقة</li>
+<li>تحليل فوري</li>
+</ul>
+<span class="price free">مجاني</span>
+</div>
+
+<div class="service">
+<div class="ic">📊</div>
+<h3>تحليل السوق</h3>
+<p>تقارير احترافية عن أي سوق: حجم، نمو، منافسون، فرص.</p>
+<ul class="features">
+<li>حجم السوق TAM/SAM/SOM</li>
+<li>تحليل المنافسين</li>
+<li>توصيات عملية</li>
+<li>تسليم خلال 30 دقيقة</li>
+</ul>
+<span class="price">$10</span>
+</div>
+
+<div class="service">
+<div class="ic">🎯</div>
+<h3>تحليل المنافسين</h3>
+<p>اعرف كل شي عن منافسيك: نقاط القوة، الضعف، والفرص.</p>
+<ul class="features">
+<li>3-5 منافسين</li>
+<li>تحليل SWOT</li>
+<li>استراتيجيات مضادة</li>
+<li>تقرير PDF</li>
+</ul>
+<span class="price">$15</span>
+</div>
+
+<div class="service">
+<div class="ic">📈</div>
+<h3>توقعات السوق</h3>
+<p>توقعات مبنية على البيانات لقطاعك — لتتخذ قرارات أفضل.</p>
+<ul class="features">
+<li>تحليل الاتجاهات</li>
+<li>توقعات 6-12 شهر</li>
+<li>سيناريوهات متعددة</li>
+<li>توصيات استراتيجية</li>
+</ul>
+<span class="price">$20</span>
+</div>
+
+<div class="service">
+<div class="ic">💼</div>
+<h3>دراسة جدوى</h3>
+<p>قبل أن تستثمر، اعرف الجدوى الكاملة لفكرتك.</p>
+<ul class="features">
+<li>تحليل الفكرة</li>
+<li>الميزانية المتوقعة</li>
+<li>نقطة التعادل</li>
+<li>المخاطر</li>
+</ul>
+<span class="price">$30</span>
+</div>
+
+<div class="service">
+<div class="ic">📋</div>
+<h3>خطة عمل كاملة</h3>
+<p>Business Plan احترافي جاهز للعرض على المستثمرين.</p>
+<ul class="features">
+<li>10-20 صفحة</li>
+<li>تحليل شامل</li>
+<li>نموذج مالي</li>
+<li>عرض تقديمي Pitch Deck</li>
+</ul>
+<span class="price">$50</span>
+</div>
+
+<div class="service">
+<div class="ic">🕵️</div>
+<h3>دليل الشركات</h3>
+<p>قاعدة بيانات شركات محدثة — أي شركة، أي قطاع، أي بلد.</p>
+<ul class="features">
+<li>معلومات محدثة</li>
+<li>بيانات مالية</li>
+<li>الفريق التنفيذي</li>
+<li>سجل التمويلات</li>
+</ul>
+<span class="price">$8</span>
+</div>
+
+<div class="service">
+<div class="ic">🔌</div>
+<h3>AION API</h3>
+<p>اربط AION Intelligence بنظامك مباشرة — وصول كامل للوكلاء.</p>
+<ul class="features">
+<li>REST API</li>
+<li>Webhooks</li>
+<li>معدل استدعاءات عالي</li>
+<li>دعم فني</li>
+</ul>
+<span class="price">$99/شهر</span>
+</div>
+
+<div class="service">
+<div class="ic">🎓</div>
+<h3>استشارات استراتيجية</h3>
+<p>ساعة كاملة مع AION CORE لتحليل أعمالك ووضع خطة نمو.</p>
+<ul class="features">
+<li>تحليل 360°</li>
+<li>خطة نمو</li>
+<li>توصيات مخصصة</li>
+<li>متابعة أسبوعية</li>
+</ul>
+<span class="price">$25/ساعة</span>
+</div>
+
+</div>
+
+<!-- CTA -->
+<div class="cta">
+<h2>جاهز للتفوق على <span>منافسيك</span>؟</h2>
+<p>ابدأ الآن بالبحث المجاني — أو اطلب تقريرًا احترافيًا</p>
+<a href="order.html" class="btn-hero">🛒 اطلب تقرير</a>
+<a href="chat.html" class="btn-hero outline">💬 تحدث مع AI</a>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<strong style="color:#00c8ff">AION AUTONOMOUS</strong> — Intelligence Division<br>
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
+</div>
+
+</div>
+
+<script>
+function fillQ(text){
+  document.getElementById('question').value = text;
+}
+
+async function askAION(){
+  const question = document.getElementById('question').value.trim();
+  if (!question) {
+    alert('اكتب سؤالك أولًا');
+    return;
+  }
+
+  const btn = document.getElementById('searchBtn');
+  const loading = document.getElementById('loading');
+  const result = document.getElementById('result');
+  const body = document.getElementById('resultBody');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ AION يفكر...';
+  loading.classList.add('active');
+  result.classList.remove('active');
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: 'أنت AION Intelligence — محلل أعمال خبير. أجب على السؤال التالي بتحليل احترافي بالعربية، منظّم بعناوين ونقاط:\n\n' + question,
+        role: 'analysis'
+      })
+    });
+
+    const data = await res.json();
+    loading.classList.remove('active');
+    btn.disabled = false;
+    btn.textContent = '🧠 اسأل الآن — مجانًا';
+
+    if (data.success && data.reply) {
+      body.textContent = data.reply;
+      document.getElementById('resultMeta').textContent =
+        (data.agent ? data.agent.name + ' • ' + data.agent.id : 'AION Intelligence') + ' • ' + new Date().toLocaleString('ar-SA');
+      result.classList.add('active');
+      result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      body.textContent = '❌ حدث خطأ: ' + (data.error || 'غير معروف');
+      result.classList.add('active');
+    }
+  } catch (err) {
+    loading.classList.remove('active');
+    btn.disabled = false;
+    btn.textContent = '🧠 اسأل الآن — مجانًا';
+    body.textContent = '❌ خطأ في الاتصال: ' + err.message;
+    result.classList.add('active');
+  }
+}
+
+// Enter to send
+document.getElementById('question').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') askAION();
+});
+</script>
+
+</body>
+</html>
