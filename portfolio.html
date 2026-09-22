@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,63 +7,76 @@
 <title>أعمالنا | AION AUTONOMOUS</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%),#0B1D3A;color:#fff;min-height:100vh;padding:20px}
-.container{max-width:1100px;margin:auto}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:rgba(5,13,31,.65);backdrop-filter:blur(15px);border:1px solid rgba(212,175,55,.3);border-radius:20px;margin-bottom:25px;flex-wrap:wrap;gap:15px}
-.logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:900;color:#D4AF37;letter-spacing:2px}
-.logo .mark{width:36px;height:36px;border:2px solid #D4AF37;border-radius:50%;display:grid;place-items:center;font-weight:900;box-shadow:0 0 20px rgba(212,175,55,.5)}
-.menu a{color:#dfe8f5;text-decoration:none;font-size:14px;font-weight:bold;margin-left:15px;transition:.3s}
-.menu a:hover{color:#D4AF37}
-h1{color:#D4AF37;text-align:center;font-size:clamp(28px,5vw,44px);margin-bottom:10px;text-shadow:0 0 30px rgba(212,175,55,.6)}
-.sub{text-align:center;color:#aebbd0;margin-bottom:35px;font-size:14px}
-.work{background:rgba(5,13,31,.75);border:1px solid rgba(212,175,55,.3);border-radius:20px;padding:30px;margin-bottom:25px;transition:.3s}
-.work:hover{border-color:#D4AF37;box-shadow:0 0 30px rgba(212,175,55,.3)}
-.work-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(212,175,55,.2)}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1100px;margin:auto;padding:14px}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#00c8ff}
+.lang-btn{padding:6px 12px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;margin-left:12px;display:inline-block}
+
+h1{color:#00c8ff;text-align:center;font-size:clamp(26px,4.5vw,42px);margin-bottom:8px;text-shadow:0 0 30px rgba(0,200,255,.6)}
+.sub{text-align:center;color:#aebbd0;margin-bottom:30px;font-size:14px}
+
+.work{background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.3);border-radius:20px;padding:28px;margin-bottom:25px;transition:.3s}
+.work:hover{border-color:#00c8ff;box-shadow:0 0 30px rgba(0,200,255,.3)}
+.work-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(0,180,255,.2)}
 .work-title{display:flex;align-items:center;gap:15px}
-.work-title .icon{width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,#7A4BFF,#D4AF37);display:grid;place-items:center;font-size:24px;box-shadow:0 0 20px rgba(122,75,255,.5)}
-.work-title h2{color:#D4AF37;font-size:22px;margin-bottom:3px}
+.work-title .icon{width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,#7A4BFF,#f5c542);display:grid;place-items:center;font-size:24px;box-shadow:0 0 20px rgba(122,75,255,.5)}
+.work-title h2{color:#f5c542;font-size:20px;margin-bottom:3px}
 .work-title .meta{color:#aebbd0;font-size:12px}
 .work-badge{display:inline-block;padding:6px 14px;background:rgba(122,75,255,.2);border:1px solid rgba(122,75,255,.5);border-radius:20px;color:#d0c8ff;font-size:11px;font-weight:bold}
 .work-body{color:#c8d5e7;font-size:14px;line-height:1.9}
-.work-body h3{color:#D4AF37;font-size:16px;margin:18px 0 10px}
+.work-body h3{color:#00c8ff;font-size:16px;margin:18px 0 10px}
 .work-body p{margin-bottom:12px}
 .work-body ul{padding-right:20px;margin-bottom:15px}
 .work-body ul li{margin-bottom:8px;color:#c8d5e7}
-.work-body strong{color:#D4AF37}
-.highlight{background:rgba(212,175,55,.08);border-right:3px solid #D4AF37;padding:12px 15px;border-radius:8px;margin:15px 0;font-style:italic;color:#e5d8a8}
-.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid rgba(212,175,55,.2)}
+.work-body strong{color:#f5c542}
+.highlight{background:rgba(245,197,66,.08);border-right:3px solid #f5c542;padding:12px 15px;border-radius:8px;margin:15px 0;font-style:italic;color:#e5d8a8}
+.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid rgba(0,180,255,.2)}
 .result-box{text-align:center;padding:12px;background:rgba(122,75,255,.1);border:1px solid rgba(122,75,255,.3);border-radius:12px}
-.result-box .num{color:#D4AF37;font-size:22px;font-weight:900;margin-bottom:4px}
+.result-box .num{color:#f5c542;font-size:22px;font-weight:900;margin-bottom:4px}
 .result-box .lbl{color:#aebbd0;font-size:11px}
-.cta{text-align:center;padding:40px 20px;background:linear-gradient(135deg,rgba(212,175,55,.15),rgba(122,75,255,.1));border:2px solid #D4AF37;border-radius:20px;margin-top:30px}
-.cta h2{color:#D4AF37;font-size:26px;margin-bottom:15px}
+
+.cta{text-align:center;padding:35px 20px;background:linear-gradient(135deg,rgba(0,80,150,.3),rgba(122,75,255,.15));border:2px solid #00c8ff;border-radius:22px;margin-top:30px}
+.cta h2{color:#fff;font-size:24px;margin-bottom:15px}
+.cta h2 span{color:#f5c542}
 .cta p{color:#c8d5e7;margin-bottom:20px;font-size:14px}
-.btn-hero{display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border-radius:50px;font-weight:900;font-size:16px;text-decoration:none;box-shadow:0 15px 40px rgba(212,175,55,.5);transition:.3s;margin:6px}
-.btn-hero:hover{transform:translateY(-4px)}
-.btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #D4AF37}
-.footer{text-align:center;padding:30px 20px;color:#aebbd0;font-size:12px;border-top:1px solid rgba(212,175,55,.2);margin-top:40px}
-.footer strong{color:#D4AF37}
-@media(max-width:600px){.menu a{font-size:12px;margin-left:8px}.work-header{flex-direction:column;align-items:flex-start}}
+.btn-hero{display:inline-block;padding:15px 38px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;font-weight:900;font-size:14px;box-shadow:0 15px 40px rgba(245,197,66,.5);transition:.3s;margin:5px}
+.btn-hero:hover{transform:translateY(-3px)}
+.btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #00c8ff}
+
+.footer{text-align:center;padding:30px 20px;color:#6b7c94;font-size:12px;border-top:1px solid rgba(0,180,255,.15);margin-top:40px}
+.footer strong{color:#00c8ff}
+.footer a{color:#00c8ff;margin:0 8px}
+
+@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}.work-header{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
 <div class="container">
 
-<div class="topbar">
-<div class="logo"><div class="mark">A</div>AION AUTONOMOUS</div>
+<div class="topnav">
+<div class="logo">
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<div>AION<div class="s">PORTFOLIO</div></div>
+</div>
 <div class="menu">
 <a href="index.html">الرئيسية</a>
 <a href="services.html">الخدمات</a>
 <a href="pricing.html">الأسعار</a>
-<a href="team.html">الفريق</a>
-<a href="chat.html">الشات</a>
+<a href="order.html">اطلب</a>
+<a href="en.html" class="lang-btn">EN 🌐</a>
 </div>
 </div>
 
 <h1>📁 أعمالنا</h1>
 <p class="sub">نماذج حقيقية من خدمات AION — بأيدي 100 وكيل ذكاء اصطناعي</p>
 
-<!-- ============= نموذج 1: مقال ============= -->
 <div class="work">
 <div class="work-header">
 <div class="work-title">
@@ -102,7 +116,6 @@ h1{color:#D4AF37;text-align:center;font-size:clamp(28px,5vw,44px);margin-bottom:
 </div>
 </div>
 
-<!-- ============= نموذج 2: ترجمة ============= -->
 <div class="work">
 <div class="work-header">
 <div class="work-title">
@@ -140,7 +153,6 @@ h1{color:#D4AF37;text-align:center;font-size:clamp(28px,5vw,44px);margin-bottom:
 </div>
 </div>
 
-<!-- ============= نموذج 3: تحليل سوق ============= -->
 <div class="work">
 <div class="work-header">
 <div class="work-title">
@@ -189,11 +201,10 @@ h1{color:#D4AF37;text-align:center;font-size:clamp(28px,5vw,44px);margin-bottom:
 <div class="results">
 <div class="result-box"><div class="num">$75B</div><div class="lbl">حجم السوق</div></div>
 <div class="result-box"><div class="num">18%</div><div class="lbl">نمو سنوي</div></div>
-<div class="result-box"><div class="num">$10</div><div class="lbl">السعر</div></div>
+<div class="result-box"><div class="num">$30</div><div class="lbl">السعر</div></div>
 </div>
 </div>
 
-<!-- ============= CTA ============= -->
 <div class="cta">
 <h2>🎯 أعجبك ما رأيت؟</h2>
 <p>هذه نماذج حقيقية. اطلب خدمتك الآن — التسليم خلال 30 دقيقة</p>
@@ -203,9 +214,14 @@ h1{color:#D4AF37;text-align:center;font-size:clamp(28px,5vw,44px);margin-bottom:
 
 <div class="footer">
 <strong>AION AUTONOMOUS</strong> © 2026 — Geneva, Switzerland<br>
-aion.genesisss@gmail.com
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
 </div>
 
 </div>
+
+<script src="lang.js"></script>
+
 </body>
 </html>
