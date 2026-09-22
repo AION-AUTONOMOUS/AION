@@ -1,4 +1,5 @@
-// AION — Global Language Selector
+
+// AION — Global Language Selector (Fixed)
 (function () {
   "use strict";
 
@@ -63,6 +64,7 @@
         box-shadow: 0 0 35px rgba(0, 150, 255, .3);
         display: none;
         font-family: Tahoma, Arial, sans-serif;
+        max-height: 500px;
       }
 
       #aion-language-box.open {
@@ -112,24 +114,62 @@
         font-weight: bold;
       }
 
-      .goog-te-banner-frame {
+      /* ===== HIDE GOOGLE TRANSLATE BANNER COMPLETELY ===== */
+      .skiptranslate,
+      .goog-te-banner-frame,
+      iframe.goog-te-banner-frame,
+      iframe.skiptranslate,
+      body > .skiptranslate,
+      .goog-te-balloon-frame,
+      #goog-gt-tt,
+      .goog-tooltip,
+      .goog-tooltip:hover,
+      .goog-te-spinner-pos,
+      .VIpgJd-ZVi9od-ORHb-OEVmcd,
+      .VIpgJd-ZVi9od-l4eHX-hSRGPd,
+      .VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+      .VIpgJd-ZVi9od-aZ2wEe-OiiCO,
+      .VIpgJd-ZVi9od-xl07Ob-OEVmcd,
+      .VIpgJd-ZVi9od-SmfZ-OEVmcd {
         display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        width: 0 !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
       }
 
-      body {
+      body,
+      html {
         top: 0 !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        position: static !important;
       }
 
       .goog-logo-link,
-      .goog-te-gadget span {
+      .goog-te-gadget span,
+      .goog-te-gadget img,
+      .goog-te-gadget > span > a {
         display: none !important;
       }
 
       .goog-te-gadget {
         font-size: 0 !important;
+        color: transparent !important;
+        height: 0 !important;
       }
 
       .goog-te-combo {
+        display: none !important;
+      }
+
+      .goog-text-highlight {
+        background: none !important;
+        box-shadow: none !important;
+      }
+
+      iframe[name="google_translate_frame"] {
         display: none !important;
       }
 
@@ -143,6 +183,38 @@
     `;
 
     document.head.appendChild(style);
+  }
+
+  function forceHideBanner() {
+    // Force hide banner via JS - runs multiple times to catch late loading
+    var checkHide = function () {
+      var banners = document.querySelectorAll(
+        '.skiptranslate, .goog-te-banner-frame, iframe.skiptranslate, .VIpgJd-ZVi9od-ORHb-OEVmcd, .goog-te-balloon-frame, #goog-gt-tt'
+      );
+      banners.forEach(function (el) {
+        el.style.display = 'none';
+        el.style.visibility = 'hidden';
+        el.style.height = '0';
+        el.style.width = '0';
+      });
+
+      if (document.body) {
+        document.body.style.top = '0';
+        document.body.style.marginTop = '0';
+        document.body.style.position = 'static';
+      }
+      if (document.documentElement) {
+        document.documentElement.style.marginTop = '0';
+        document.documentElement.style.top = '0';
+      }
+    };
+
+    checkHide();
+    setTimeout(checkHide, 500);
+    setTimeout(checkHide, 1500);
+    setTimeout(checkHide, 3000);
+    setTimeout(checkHide, 5000);
+    setInterval(checkHide, 1000);
   }
 
   function createLanguageBox() {
@@ -160,7 +232,6 @@
 
     languages.forEach(function (language) {
       var button = document.createElement("button");
-
       button.type = "button";
       button.textContent = language[1];
 
@@ -203,7 +274,7 @@
 
     var hiddenContainer = document.createElement("div");
     hiddenContainer.id = "google_translate_element";
-    hiddenContainer.style.display = "none";
+    hiddenContainer.style.cssText = 'display:none !important; position:absolute; left:-9999px; top:-9999px;';
     document.body.appendChild(hiddenContainer);
 
     window.googleTranslateElementInit = function () {
@@ -218,6 +289,8 @@
         },
         "google_translate_element"
       );
+
+      forceHideBanner();
     };
 
     var script = document.createElement("script");
@@ -251,9 +324,11 @@
     createLanguageBox();
     createGoogleTranslate();
     connectButton();
+    forceHideBanner();
 
     setTimeout(connectButton, 1500);
     setTimeout(connectButton, 3500);
+    setTimeout(forceHideBanner, 2000);
   }
 
   if (document.readyState === "loading") {
