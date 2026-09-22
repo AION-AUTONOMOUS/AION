@@ -11,7 +11,6 @@ body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#ff
 a{text-decoration:none;color:inherit}
 .container{max-width:1500px;margin:auto;padding:12px}
 
-/* NAV */
 .topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:12px;flex-wrap:wrap;gap:15px;box-shadow:0 0 40px rgba(0,150,255,.15)}
 .brand{display:flex;align-items:center;gap:10px}
 .brand-logo{width:42px;height:42px}
@@ -19,18 +18,18 @@ a{text-decoration:none;color:inherit}
 .brand-text{display:flex;flex-direction:column;line-height:1}
 .brand-text .n{font-size:22px;font-weight:900;color:#fff;letter-spacing:4px}
 .brand-text .s{font-size:8px;color:#00c8ff;letter-spacing:5px;margin-top:3px}
-.nav-links{display:flex;gap:20px;flex-wrap:wrap;align-items:center}
+.nav-links{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
 .nav-links a{font-size:13px;color:#c8d5e7;font-weight:600;transition:.3s;position:relative;padding:4px 0}
 .nav-links a:hover{color:#00c8ff}
 .nav-links a:hover::after{content:"";position:absolute;bottom:-4px;right:0;left:0;height:2px;background:#00c8ff;box-shadow:0 0 12px #00c8ff}
+.nav-links a.intel{color:#f5c542}
 .nav-cta{display:flex;gap:10px;align-items:center}
 .btn-start{padding:11px 26px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:30px;font-weight:900;font-size:13px;border:none;cursor:pointer;transition:.3s;box-shadow:0 0 25px rgba(245,197,66,.5);font-family:inherit}
 .btn-start:hover{transform:translateY(-2px);box-shadow:0 0 35px rgba(245,197,66,.9)}
 .lang-btn{padding:8px 14px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:12px;font-weight:bold;cursor:pointer;font-family:inherit}
 
-/* HERO */
 .hero{position:relative;border-radius:20px;padding:30px 18px;margin-bottom:15px;overflow:hidden;min-height:640px;background:linear-gradient(180deg,rgba(0,80,150,.35),rgba(2,8,23,.9)),radial-gradient(circle at 50% 50%,rgba(0,150,255,.4),rgba(0,30,80,.3) 40%,rgba(2,8,23,.95));border:1px solid rgba(0,180,255,.3)}
-.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#00c8ff,transparent),radial-gradient(2px 2px at 60% 70%,#f5c542,transparent),radial-gradient(2px 2px at 80% 20%,#00c8ff,transparent),radial-gradient(1px 1px at 40% 80%,#a78bfa,transparent),radial-gradient(2px 2px at 90% 50%,#00c8ff,transparent),radial-gradient(1px 1px at 15% 60%,#f5c542,transparent);background-size:200% 200%;animation:stars 20s linear infinite;opacity:.7;pointer-events:none}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#00c8ff,transparent),radial-gradient(2px 2px at 60% 70%,#f5c542,transparent),radial-gradient(2px 2px at 80% 20%,#00c8ff,transparent),radial-gradient(1px 1px at 40% 80%,#a78bfa,transparent),radial-gradient(2px 2px at 90% 50%,#00c8ff,transparent);background-size:200% 200%;animation:stars 20s linear infinite;opacity:.7;pointer-events:none}
 @keyframes stars{0%{background-position:0 0}100%{background-position:100% 100%}}
 .hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:270px 1fr 270px;gap:18px;align-items:start}
 
@@ -94,6 +93,25 @@ a{text-decoration:none;color:inherit}
 .feat .t{color:#fff;font-size:11px;font-weight:900;margin-bottom:3px}
 .feat .d{color:#6b7c94;font-size:9px}
 
+/* INTELLIGENCE SECTION */
+.intel-section{margin-bottom:20px;padding:30px 20px;background:linear-gradient(180deg,rgba(0,80,150,.25),rgba(2,8,23,.9));border:2px solid #00c8ff;border-radius:20px;position:relative;overflow:hidden}
+.intel-section::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 30%,rgba(0,200,255,.15),transparent 40%),radial-gradient(circle at 80% 70%,rgba(245,197,66,.1),transparent 40%);pointer-events:none}
+.intel-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:25px;align-items:center}
+.intel-left h2{color:#fff;font-size:clamp(22px,3vw,32px);font-weight:900;margin-bottom:12px;line-height:1.3}
+.intel-left h2 span{color:#00c8ff;text-shadow:0 0 20px rgba(0,200,255,.7)}
+.intel-left .badge{display:inline-block;padding:5px 14px;background:rgba(245,197,66,.15);border:1px solid #f5c542;border-radius:20px;color:#f5c542;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:12px}
+.intel-left p{color:#c8d5e7;font-size:14px;line-height:1.9;margin-bottom:20px}
+.intel-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.intel-feat{padding:10px 12px;background:rgba(0,180,255,.06);border:1px solid rgba(0,180,255,.25);border-radius:10px;font-size:12px;color:#c8d5e7;font-weight:600}
+.intel-feat::before{content:"✓ ";color:#00c8ff;font-weight:900;margin-left:5px}
+.intel-btn{display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border-radius:50px;font-weight:900;font-size:14px;box-shadow:0 15px 40px rgba(0,200,255,.5);transition:.3s}
+.intel-btn:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(0,200,255,.8)}
+.intel-right{padding:25px;background:rgba(2,8,23,.7);backdrop-filter:blur(15px);border:1px solid rgba(0,200,255,.3);border-radius:18px}
+.intel-demo-title{color:#00c8ff;font-size:13px;font-weight:900;margin-bottom:12px;letter-spacing:1px}
+.intel-demo-q{padding:12px;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.25);border-radius:10px;color:#dfe8f5;font-size:12px;margin-bottom:10px;line-height:1.6}
+.intel-demo-a{padding:12px;background:rgba(245,197,66,.08);border-right:3px solid #f5c542;border-radius:10px;color:#e5d8a8;font-size:11px;line-height:1.7;font-style:italic}
+
+/* SERVICES */
 .services-section{margin-bottom:20px}
 .services-section h2{text-align:center;color:#fff;font-size:24px;font-weight:900;margin-bottom:6px}
 .services-section h2 span{color:#00c8ff}
@@ -122,15 +140,13 @@ a{text-decoration:none;color:inherit}
 .footer strong{color:#f5c542}
 .footer a{color:#00c8ff;margin:0 8px}
 
-/* FLOATING CHAT */
-.floating-chat{position:fixed;bottom:25px;left:25px;z-index:9999;display:flex;align-items:center;gap:12px;padding:12px 20px 12px 12px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);border-radius:50px;text-decoration:none;box-shadow:0 10px 40px rgba(0,200,255,.5),0 0 0 0 rgba(0,200,255,.7);animation:floatPulse 2.5s infinite;transition:.3s;color:#fff}
-.floating-chat:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 15px 50px rgba(0,200,255,.8)}
+.floating-chat{position:fixed;bottom:25px;left:25px;z-index:9999;display:flex;align-items:center;gap:12px;padding:12px 20px 12px 12px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);border-radius:50px;box-shadow:0 10px 40px rgba(0,200,255,.5),0 0 0 0 rgba(0,200,255,.7);animation:floatPulse 2.5s infinite;transition:.3s;color:#fff}
+.floating-chat:hover{transform:translateY(-4px) scale(1.03)}
 .chat-bubble{width:44px;height:44px;border-radius:50%;background:#020817;display:grid;place-items:center;font-size:22px;flex-shrink:0}
 .chat-text{color:#fff;font-weight:900;font-size:14px;white-space:nowrap}
 .chat-pulse{position:absolute;top:8px;right:8px;width:12px;height:12px;background:#4ade80;border-radius:50%;box-shadow:0 0 15px #4ade80;animation:dotPulse 1.5s infinite}
 @keyframes floatPulse{0%,100%{box-shadow:0 10px 40px rgba(0,200,255,.5),0 0 0 0 rgba(0,200,255,.7)}50%{box-shadow:0 10px 40px rgba(0,200,255,.5),0 0 0 20px rgba(0,200,255,0)}}
 @keyframes dotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
-@media(max-width:600px){.floating-chat{bottom:15px;left:15px;padding:10px 16px 10px 10px}.chat-text{font-size:12px}.chat-bubble{width:38px;height:38px;font-size:18px}}
 
 @media(max-width:1000px){
 .hero-inner{grid-template-columns:1fr;gap:12px}
@@ -140,19 +156,22 @@ a{text-decoration:none;color:inherit}
 .topnav{justify-content:center}
 .nav-cta{order:2}
 .hero{min-height:auto;padding:25px 14px}
+.intel-inner{grid-template-columns:1fr}
+.intel-features{grid-template-columns:1fr}
 }
 @media(max-width:600px){
 .features{grid-template-columns:1fr}
 .services-grid{grid-template-columns:repeat(2,1fr)}
 .roadmap{grid-template-columns:1fr}
+.floating-chat{bottom:15px;left:15px;padding:10px 16px 10px 10px}
+.chat-text{font-size:12px}
+.chat-bubble{width:38px;height:38px;font-size:18px}
 }
 </style>
 </head>
 <body>
-
 <div class="container">
 
-<!-- NAV -->
 <div class="topnav">
 <div class="brand">
 <div class="brand-logo">
@@ -173,14 +192,14 @@ a{text-decoration:none;color:inherit}
 <div class="nav-links">
 <a href="index.html">عن AION</a>
 <a href="services.html">الخدمات</a>
+<a href="intelligence.html" class="intel">🧠 Intelligence</a>
+<a href="reports.html">التقارير</a>
 <a href="pricing.html">الأسعار</a>
 <a href="portfolio.html">أعمالنا</a>
 <a href="team.html">الجيش الذكي</a>
 <a href="coin.html">AION Coin</a>
 <a href="wallet.html">المحفظة</a>
-<a href="chat.html">الشات</a>
 <a href="about.html">من نحن</a>
-<a href="#contact">تواصل</a>
 </div>
 <div class="nav-cta">
 <button class="lang-btn">AR 🌐</button>
@@ -188,13 +207,13 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 
-<!-- HERO -->
 <div class="hero">
 <div class="hero-inner">
 
 <div class="side-panel">
 <h3>خدماتنا الذكية</h3>
 <div class="serv-list">
+<a href="intelligence.html" class="serv-item"><div class="ico">🧠</div><span class="txt">AION Intelligence</span><span class="arrow">‹</span></a>
 <a href="services.html" class="serv-item"><div class="ico">&lt;/&gt;</div><span class="txt">البرمجة والتطوير</span><span class="arrow">‹</span></a>
 <a href="services.html" class="serv-item"><div class="ico">📣</div><span class="txt">التسويق الرقمي</span><span class="arrow">‹</span></a>
 <a href="services.html" class="serv-item"><div class="ico">📊</div><span class="txt">التحليل والبيانات</span><span class="arrow">‹</span></a>
@@ -238,9 +257,9 @@ a{text-decoration:none;color:inherit}
 </div>
 
 <div class="hero-buttons">
-<a href="chat.html" class="hbtn purple">💬 تحدث مع AION CORE</a>
-<a href="order.html" class="hbtn blue">🛒 اطلب خدمة</a>
-<a href="coin.html" class="hbtn gold">🚀 ابدأ الآن</a>
+<a href="intelligence.html" class="hbtn purple">🧠 AION Intelligence</a>
+<a href="chat.html" class="hbtn blue">💬 تحدث مع AI</a>
+<a href="coin.html" class="hbtn gold">🚀 AION Coin</a>
 </div>
 </div>
 
@@ -260,7 +279,6 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 
-<!-- BAND -->
 <div class="band">
 <div class="band-tag">AION AUTONOMOUS</div>
 <h2>نحول أفكارك إلى <span>واقع</span> .. بسرعة، بكفاءة، وذكاء</h2>
@@ -275,12 +293,48 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 
-<!-- SERVICES -->
+<!-- AION INTELLIGENCE SECTION -->
+<div class="intel-section">
+<div class="intel-inner">
+
+<div class="intel-left">
+<span class="badge">🧠 AION INTELLIGENCE — جديد</span>
+<h2>ذكاء الأعمال <span>بالعربية</span> — لأول مرة في العالم</h2>
+<p>اسأل أي سؤال عن أي شركة، سوق، أو منافس — واحصل على تحليل احترافي بمستوى McKinsey، في ثوانٍ. مدعوم بـ 100 وكيل AI متخصص.</p>
+
+<div class="intel-features">
+<div class="intel-feat">بحث بالعربية</div>
+<div class="intel-feat">تحليل فوري</div>
+<div class="intel-feat">100 وكيل متخصص</div>
+<div class="intel-feat">مجاني للبدء</div>
+</div>
+
+<a href="intelligence.html" class="intel-btn">🧠 جرّب AION Intelligence الآن</a>
+</div>
+
+<div class="intel-right">
+<div class="intel-demo-title">📌 مثال حقيقي:</div>
+<div class="intel-demo-q">
+<strong>السؤال:</strong> "حلل شركة OpenAI كنموذج أعمال"
+</div>
+<div class="intel-demo-a">
+تحليل 10 صفحات: نموذج الأعمال، التمويل، المنافسون، المخاطر، التوقعات 2025-2028، توصيات استراتيجية للمستثمرين...
+</div>
+</div>
+
+</div>
+</div>
+
 <div class="services-section">
 <h2>اكتشف <span>خدمات AION</span></h2>
 <p class="desc">حلول ذكاء اصطناعي للأعمال والتطوير والتحليل والتسويق</p>
 
 <div class="services-grid">
+<a href="intelligence.html" class="service-card">
+<div class="ic">🧠</div>
+<h4>AION Intelligence</h4>
+<p>ذكاء أعمال بالعربية</p>
+</a>
 <a href="services.html" class="service-card">
 <div class="ic">&lt;/&gt;</div>
 <h4>تطوير التطبيقات</h4>
@@ -306,15 +360,9 @@ a{text-decoration:none;color:inherit}
 <h4>الدعم الفني</h4>
 <p>خدمة على مدار الساعة</p>
 </a>
-<a href="services.html" class="service-card">
-<div class="ic">🔬</div>
-<h4>البحث والابتكار</h4>
-<p>تقنيات وأفكار جديدة</p>
-</a>
 </div>
 </div>
 
-<!-- ROADMAP -->
 <div class="roadmap-section">
 <h2>خارطة طريق <span>AION</span></h2>
 <p class="desc">من الفكرة إلى العالمية — 5 مراحل واضحة</p>
@@ -348,7 +396,6 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 
-<!-- FOOTER -->
 <div class="footer" id="contact">
 <div class="brand-line">AION AUTONOMOUS</div>
 <div class="motto">الذكاء الأبدي لشبكة لا تنتهي</div>
@@ -362,7 +409,6 @@ aion.genesisss@gmail.com<br><br>
 
 </div>
 
-<!-- FLOATING CHAT BUTTON -->
 <a href="chat.html" class="floating-chat" title="تحدث مع AION AI">
 <div class="chat-bubble">💬</div>
 <div class="chat-text">تحدث مع AI</div>
