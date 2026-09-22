@@ -18,7 +18,7 @@ a{text-decoration:none;color:inherit}
 .brand-text{display:flex;flex-direction:column;line-height:1}
 .brand-text .n{font-size:22px;font-weight:900;color:#fff;letter-spacing:4px}
 .brand-text .s{font-size:8px;color:#00c8ff;letter-spacing:5px;margin-top:3px}
-.nav-links{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.nav-links{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
 .nav-links a{font-size:13px;color:#c8d5e7;font-weight:600;transition:.3s;position:relative;padding:4px 0}
 .nav-links a:hover{color:#00c8ff}
 .nav-links a:hover::after{content:"";position:absolute;bottom:-4px;right:0;left:0;height:2px;background:#00c8ff;box-shadow:0 0 12px #00c8ff}
@@ -93,9 +93,7 @@ a{text-decoration:none;color:inherit}
 .feat .t{color:#fff;font-size:11px;font-weight:900;margin-bottom:3px}
 .feat .d{color:#6b7c94;font-size:9px}
 
-/* INTELLIGENCE SECTION */
 .intel-section{margin-bottom:20px;padding:30px 20px;background:linear-gradient(180deg,rgba(0,80,150,.25),rgba(2,8,23,.9));border:2px solid #00c8ff;border-radius:20px;position:relative;overflow:hidden}
-.intel-section::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 30%,rgba(0,200,255,.15),transparent 40%),radial-gradient(circle at 80% 70%,rgba(245,197,66,.1),transparent 40%);pointer-events:none}
 .intel-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:25px;align-items:center}
 .intel-left h2{color:#fff;font-size:clamp(22px,3vw,32px);font-weight:900;margin-bottom:12px;line-height:1.3}
 .intel-left h2 span{color:#00c8ff;text-shadow:0 0 20px rgba(0,200,255,.7)}
@@ -105,23 +103,26 @@ a{text-decoration:none;color:inherit}
 .intel-feat{padding:10px 12px;background:rgba(0,180,255,.06);border:1px solid rgba(0,180,255,.25);border-radius:10px;font-size:12px;color:#c8d5e7;font-weight:600}
 .intel-feat::before{content:"✓ ";color:#00c8ff;font-weight:900;margin-left:5px}
 .intel-btn{display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border-radius:50px;font-weight:900;font-size:14px;box-shadow:0 15px 40px rgba(0,200,255,.5);transition:.3s}
-.intel-btn:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(0,200,255,.8)}
+.intel-btn:hover{transform:translateY(-3px)}
 .intel-right{padding:25px;background:rgba(2,8,23,.7);backdrop-filter:blur(15px);border:1px solid rgba(0,200,255,.3);border-radius:18px}
-.intel-demo-title{color:#00c8ff;font-size:13px;font-weight:900;margin-bottom:12px;letter-spacing:1px}
+.intel-demo-title{color:#00c8ff;font-size:13px;font-weight:900;margin-bottom:12px}
 .intel-demo-q{padding:12px;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.25);border-radius:10px;color:#dfe8f5;font-size:12px;margin-bottom:10px;line-height:1.6}
 .intel-demo-a{padding:12px;background:rgba(245,197,66,.08);border-right:3px solid #f5c542;border-radius:10px;color:#e5d8a8;font-size:11px;line-height:1.7;font-style:italic}
 
-/* SERVICES */
 .services-section{margin-bottom:20px}
 .services-section h2{text-align:center;color:#fff;font-size:24px;font-weight:900;margin-bottom:6px}
 .services-section h2 span{color:#00c8ff}
 .services-section .desc{text-align:center;color:#aebbd0;font-size:12px;margin-bottom:20px}
-.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
-.service-card{padding:20px 12px;background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.22);border-radius:14px;text-align:center;transition:.3s}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.service-card{padding:22px 14px;background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.22);border-radius:14px;text-align:center;transition:.3s}
 .service-card:hover{border-color:#00c8ff;transform:translateY(-5px);box-shadow:0 15px 40px rgba(0,180,255,.3)}
-.service-card .ic{width:44px;height:44px;margin:0 auto 10px;border-radius:11px;background:rgba(0,180,255,.15);border:1px solid rgba(0,180,255,.45);display:grid;place-items:center;font-size:20px}
-.service-card h4{color:#fff;font-size:12px;font-weight:900;margin-bottom:5px}
+.service-card .ic{width:48px;height:48px;margin:0 auto 12px;border-radius:12px;background:rgba(0,180,255,.15);border:1px solid rgba(0,180,255,.45);display:grid;place-items:center;font-size:22px}
+.service-card h4{color:#fff;font-size:13px;font-weight:900;margin-bottom:5px}
 .service-card p{color:#6b7c94;font-size:10px;line-height:1.5}
+.service-card.space .ic{background:rgba(0,200,255,.15);border-color:rgba(0,200,255,.5)}
+.service-card.markets .ic{background:rgba(245,197,66,.15);border-color:rgba(245,197,66,.5)}
+.service-card.climate .ic{background:rgba(74,222,128,.15);border-color:rgba(74,222,128,.5)}
+.service-card.labs .ic{background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.5)}
 
 .roadmap-section{margin-bottom:20px;padding:25px 18px;background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.25);border-radius:16px}
 .roadmap-section h2{text-align:center;color:#fff;font-size:24px;font-weight:900;margin-bottom:6px}
@@ -191,15 +192,15 @@ a{text-decoration:none;color:inherit}
 </div>
 <div class="nav-links">
 <a href="index.html">عن AION</a>
-<a href="services.html">الخدمات</a>
 <a href="intelligence.html" class="intel">🧠 Intelligence</a>
-<a href="reports.html">التقارير</a>
+<a href="space.html">🛰️ Space</a>
+<a href="markets.html">📈 Markets</a>
+<a href="climate.html">🌍 Climate</a>
+<a href="labs.html">🧪 Labs</a>
+<a href="reports.html">📄 التقارير</a>
 <a href="pricing.html">الأسعار</a>
-<a href="portfolio.html">أعمالنا</a>
-<a href="team.html">الجيش الذكي</a>
+<a href="team.html">الفريق</a>
 <a href="coin.html">AION Coin</a>
-<a href="wallet.html">المحفظة</a>
-<a href="about.html">من نحن</a>
 </div>
 <div class="nav-cta">
 <button class="lang-btn">AR 🌐</button>
@@ -214,13 +215,12 @@ a{text-decoration:none;color:inherit}
 <h3>خدماتنا الذكية</h3>
 <div class="serv-list">
 <a href="intelligence.html" class="serv-item"><div class="ico">🧠</div><span class="txt">AION Intelligence</span><span class="arrow">‹</span></a>
-<a href="services.html" class="serv-item"><div class="ico">&lt;/&gt;</div><span class="txt">البرمجة والتطوير</span><span class="arrow">‹</span></a>
-<a href="services.html" class="serv-item"><div class="ico">📣</div><span class="txt">التسويق الرقمي</span><span class="arrow">‹</span></a>
-<a href="services.html" class="serv-item"><div class="ico">📊</div><span class="txt">التحليل والبيانات</span><span class="arrow">‹</span></a>
-<a href="services.html" class="serv-item"><div class="ico">💼</div><span class="txt">المبيعات والأعمال</span><span class="arrow">‹</span></a>
-<a href="order.html" class="serv-item"><div class="ico">🎧</div><span class="txt">الدعم الفني</span><span class="arrow">‹</span></a>
-<a href="services.html" class="serv-item"><div class="ico">🛡️</div><span class="txt">الأمن السيبراني</span><span class="arrow">‹</span></a>
-<a href="services.html" class="serv-item"><div class="ico">🔬</div><span class="txt">البحث والابتكار</span><span class="arrow">‹</span></a>
+<a href="space.html" class="serv-item"><div class="ico">🛰️</div><span class="txt">AION Space</span><span class="arrow">‹</span></a>
+<a href="markets.html" class="serv-item"><div class="ico">📈</div><span class="txt">AION Markets</span><span class="arrow">‹</span></a>
+<a href="climate.html" class="serv-item"><div class="ico">🌍</div><span class="txt">AION Climate</span><span class="arrow">‹</span></a>
+<a href="labs.html" class="serv-item"><div class="ico">🧪</div><span class="txt">AION Labs</span><span class="arrow">‹</span></a>
+<a href="reports.html" class="serv-item"><div class="ico">📄</div><span class="txt">التقارير</span><span class="arrow">‹</span></a>
+<a href="services.html" class="serv-item"><div class="ico">⚙️</div><span class="txt">كل الخدمات</span><span class="arrow">‹</span></a>
 </div>
 </div>
 
@@ -235,8 +235,8 @@ a{text-decoration:none;color:inherit}
 <circle cx="50" cy="58" r="7" fill="#f5c542"/>
 </svg>
 </div>
-<h1>أكبر شركة <span>ذكاء اصطناعي</span> مستقلة في العالم</h1>
-<p class="tagline">10,000 وكيل ذكي .. يعملون معًا تحت قيادة AION CORE لتحويل الأفكار إلى حلول حقيقية</p>
+<h1>منصة <span>ذكاء اصطناعي</span> متعددة الأقسام</h1>
+<p class="tagline">5 أقسام متخصصة — Intelligence، Space، Markets، Climate، Labs. مدعومة بـ 100 وكيل AI متخصص، 24/7.</p>
 
 <div class="hero-globe">
 <div class="rings">
@@ -265,9 +265,9 @@ a{text-decoration:none;color:inherit}
 
 <div class="side-panel">
 <h3>قوة AION الآن</h3>
-<div class="stat-item"><div class="ico">🤖</div><div class="txt"><div class="n">10,000+</div><div class="l">هدف وكلاء الذكاء الاصطناعي</div></div></div>
+<div class="stat-item"><div class="ico">🤖</div><div class="txt"><div class="n">100</div><div class="l">وكيل AI يعمل الآن</div></div></div>
 <div class="stat-item"><div class="ico">⏰</div><div class="txt"><div class="n">24/7</div><div class="l">تشغيل متواصل</div></div></div>
-<div class="stat-item"><div class="ico">🌐</div><div class="txt"><div class="n">عالمي</div><div class="l">شبكة ذكاء اصطناعي</div></div></div>
+<div class="stat-item"><div class="ico">🏢</div><div class="txt"><div class="n">5</div><div class="l">أقسام متخصصة</div></div></div>
 
 <div class="coin-card">
 <div class="title">🪙 AION Coin</div>
@@ -293,14 +293,13 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 
-<!-- AION INTELLIGENCE SECTION -->
 <div class="intel-section">
 <div class="intel-inner">
 
 <div class="intel-left">
 <span class="badge">🧠 AION INTELLIGENCE — جديد</span>
 <h2>ذكاء الأعمال <span>بالعربية</span> — لأول مرة في العالم</h2>
-<p>اسأل أي سؤال عن أي شركة، سوق، أو منافس — واحصل على تحليل احترافي بمستوى McKinsey، في ثوانٍ. مدعوم بـ 100 وكيل AI متخصص.</p>
+<p>اسأل أي سؤال عن أي شركة، سوق، أو منافس — واحصل على تحليل احترافي بمستوى McKinsey، في ثوانٍ.</p>
 
 <div class="intel-features">
 <div class="intel-feat">بحث بالعربية</div>
@@ -318,7 +317,7 @@ a{text-decoration:none;color:inherit}
 <strong>السؤال:</strong> "حلل شركة OpenAI كنموذج أعمال"
 </div>
 <div class="intel-demo-a">
-تحليل 10 صفحات: نموذج الأعمال، التمويل، المنافسون، المخاطر، التوقعات 2025-2028، توصيات استراتيجية للمستثمرين...
+تحليل 10 صفحات: نموذج الأعمال، التمويل، المنافسون، المخاطر، التوقعات 2025-2028، توصيات استراتيجية...
 </div>
 </div>
 
@@ -326,14 +325,39 @@ a{text-decoration:none;color:inherit}
 </div>
 
 <div class="services-section">
-<h2>اكتشف <span>خدمات AION</span></h2>
-<p class="desc">حلول ذكاء اصطناعي للأعمال والتطوير والتحليل والتسويق</p>
+<h2>اكتشف <span>5 أقسام AION</span></h2>
+<p class="desc">5 أقسام متخصصة — كل قسم مدعوم بوكلاء AI خبراء</p>
 
 <div class="services-grid">
 <a href="intelligence.html" class="service-card">
 <div class="ic">🧠</div>
 <h4>AION Intelligence</h4>
 <p>ذكاء أعمال بالعربية</p>
+</a>
+<a href="space.html" class="service-card space">
+<div class="ic">🛰️</div>
+<h4>AION Space</h4>
+<p>تحليل الفضاء والأقمار</p>
+</a>
+<a href="markets.html" class="service-card markets">
+<div class="ic">📈</div>
+<h4>AION Markets</h4>
+<p>تحليل الأسواق والاستثمار</p>
+</a>
+<a href="climate.html" class="service-card climate">
+<div class="ic">🌍</div>
+<h4>AION Climate</h4>
+<p>تحليل المناخ والاستدامة</p>
+</a>
+<a href="labs.html" class="service-card labs">
+<div class="ic">🧪</div>
+<h4>AION Labs</h4>
+<p>تطوير نماذج AI مخصصة</p>
+</a>
+<a href="reports.html" class="service-card">
+<div class="ic">📄</div>
+<h4>التقارير الاحترافية</h4>
+<p>تقارير بمستوى عالمي</p>
 </a>
 <a href="services.html" class="service-card">
 <div class="ic">&lt;/&gt;</div>
@@ -344,11 +368,6 @@ a{text-decoration:none;color:inherit}
 <div class="ic">📣</div>
 <h4>التسويق الرقمي</h4>
 <p>محتوى وحملات ذكية</p>
-</a>
-<a href="services.html" class="service-card">
-<div class="ic">📊</div>
-<h4>تحليل البيانات</h4>
-<p>دعم القرار بالبيانات</p>
 </a>
 <a href="services.html" class="service-card">
 <div class="ic">💼</div>
@@ -380,18 +399,18 @@ a{text-decoration:none;color:inherit}
 </div>
 <div class="step">
 <div class="num">03</div>
+<h4>5 أقسام</h4>
+<p>Intelligence • Space • Markets • Climate • Labs</p>
+</div>
+<div class="step">
+<div class="num">04</div>
 <h4>AION Coin</h4>
 <p>إطلاق النظام الاقتصادي</p>
 </div>
 <div class="step">
-<div class="num">04</div>
-<h4>التوسع</h4>
-<p>الوصول للأسواق العالمية</p>
-</div>
-<div class="step">
 <div class="num">05</div>
-<h4>AION CORE</h4>
-<p>تطور مستمر بلا نهاية</p>
+<h4>التوسع العالمي</h4>
+<p>الوصول للأسواق العالمية</p>
 </div>
 </div>
 </div>
@@ -403,8 +422,7 @@ a{text-decoration:none;color:inherit}
 aion.genesisss@gmail.com<br><br>
 <a href="https://twitter.com/AIONNetworozes">𝕏 Twitter</a> |
 <a href="https://discord.gg/pjq6eEvsZ">Discord</a> |
-<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a> |
-<span style="color:#f5c542">AION CORE</span>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
 </div>
 
 </div>
