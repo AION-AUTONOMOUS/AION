@@ -11,7 +11,6 @@
 body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
 .container{max-width:1400px;margin:auto;padding:14px}
-
 .topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
 .logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
 .logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
@@ -20,22 +19,19 @@ a{text-decoration:none;color:inherit}
 .menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;transition:.3s}
 .menu a:hover{color:#00c8ff}
 .lang-btn{padding:6px 12px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;cursor:pointer;display:inline-block;font-family:inherit}
-
 .hero{padding:40px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,80,150,.35),rgba(2,8,23,.95));border:1px solid rgba(0,180,255,.35);border-radius:22px;margin-bottom:25px;position:relative;overflow:hidden}
 .hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#00c8ff,transparent),radial-gradient(2px 2px at 60% 70%,#f5c542,transparent),radial-gradient(1px 1px at 40% 80%,#a78bfa,transparent);opacity:.6;pointer-events:none}
 .hero .content{position:relative;z-index:2}
 .hero h1{color:#fff;font-size:clamp(26px,4.5vw,44px);font-weight:900;margin-bottom:12px;line-height:1.3}
 .hero h1 span{color:#f5c542;text-shadow:0 0 25px rgba(245,197,66,.8)}
 .hero p{color:#c8d5e7;font-size:15px;max-width:720px;margin:auto;line-height:1.8}
-
-/* CURRENCY SELECTOR */
 .currency-bar{display:flex;justify-content:center;align-items:center;gap:12px;padding:15px;background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.35);border-radius:16px;margin-bottom:22px;flex-wrap:wrap}
 .currency-bar label{color:#00c8ff;font-size:13px;font-weight:900}
-.currency-bar select{padding:10px 15px;background:#020817;color:#fff;border:1px solid rgba(0,200,255,.4);border-radius:12px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;min-width:220px}
+.currency-bar select{padding:10px 15px;background:#020817;color:#fff;border:1px solid rgba(0,200,255,.4);border-radius:12px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;min-width:240px}
 .currency-bar select:focus{outline:none;border-color:#f5c542}
-
+.auto-badge{padding:4px 10px;background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.5);border-radius:15px;color:#4ade80;font-size:10px;font-weight:900}
 .choice{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:30px}
-.choice-card{padding:32px 22px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.85));border:2px solid rgba(0,180,255,.3);border-radius:22px;text-align:center;cursor:pointer;transition:.4s;position:relative;overflow:hidden}
+.choice-card{padding:32px 22px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.85));border:2px solid rgba(0,180,255,.3);border-radius:22px;text-align:center;cursor:pointer;transition:.4s}
 .choice-card:hover{transform:translateY(-8px)}
 .choice-card.teacher{border-color:rgba(0,200,255,.5)}
 .choice-card.teacher:hover{box-shadow:0 25px 60px rgba(0,200,255,.5)}
@@ -52,19 +48,16 @@ a{text-decoration:none;color:inherit}
 .choice-card.student h2{color:#f5c542}
 .choice-card.student-f h2{color:#4ade80}
 .choice-card p{color:#aebbd0;font-size:13px;line-height:1.6;margin-bottom:12px}
-.choice-card .btn-enter{display:inline-block;padding:10px 25px;border-radius:40px;font-weight:900;font-size:13px;transition:.3s}
+.choice-card .btn-enter{display:inline-block;padding:10px 25px;border-radius:40px;font-weight:900;font-size:13px}
 .choice-card.teacher .btn-enter{background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff}
 .choice-card.teacher-f .btn-enter{background:linear-gradient(135deg,#a78bfa,#7A4BFF);color:#fff}
 .choice-card.student .btn-enter{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}
 .choice-card.student-f .btn-enter{background:linear-gradient(135deg,#4ade80,#22c55e);color:#020817}
-
 .view{display:none}
 .view.active{display:block}
-
 .section-title{color:#fff;font-size:24px;font-weight:900;margin:25px 0 20px;text-align:center}
 .section-title span{color:#00c8ff}
 .section-title.gold span{color:#f5c542}
-
 .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:15px;margin-bottom:25px}
 .service-card{padding:22px 20px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.75));border:1px solid rgba(0,180,255,.3);border-radius:18px;transition:.3s;cursor:pointer;position:relative;display:flex;flex-direction:column;min-height:240px}
 .service-card:hover{transform:translateY(-5px);border-color:#00c8ff;box-shadow:0 20px 45px rgba(0,200,255,.35)}
@@ -79,10 +72,8 @@ a{text-decoration:none;color:inherit}
 .service-card .buy-btn{padding:9px 16px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border:none;border-radius:30px;font-weight:900;font-size:12px;cursor:pointer;font-family:inherit;transition:.3s}
 .service-card.gold .buy-btn{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}
 .service-card .buy-btn:hover{transform:scale(1.05)}
-
 .back-btn{display:inline-block;padding:10px 22px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:13px;font-weight:900;cursor:pointer;margin-bottom:20px;font-family:inherit}
 .back-btn:hover{background:rgba(0,200,255,.25)}
-
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;place-items:center;z-index:9999;padding:20px;backdrop-filter:blur(8px);overflow-y:auto}
 .modal.active{display:grid}
 .modal-box{background:linear-gradient(135deg,#0B1D3A,#020817);border:2px solid #00c8ff;border-radius:22px;padding:28px;max-width:520px;width:100%;box-shadow:0 0 60px rgba(0,200,255,.5);position:relative;max-height:90vh;overflow-y:auto}
@@ -91,15 +82,12 @@ a{text-decoration:none;color:inherit}
 .modal-box .m-desc{color:#aebbd0;font-size:13px;text-align:center;margin-bottom:15px;line-height:1.7}
 .modal-box .m-price{color:#fff;font-size:34px;font-weight:900;text-align:center;margin:15px 0;line-height:1.2}
 .modal-box .m-price .usd-note{display:block;color:#aebbd0;font-size:14px;font-weight:normal;margin-top:6px}
-
 .modal-box label{display:block;color:#00c8ff;font-size:12px;font-weight:900;margin-bottom:6px;margin-top:12px}
 .modal-box select,.modal-box input[type="text"]{width:100%;padding:11px;background:#020817;color:#fff;border:1px solid rgba(0,200,255,.4);border-radius:10px;font-family:inherit;font-size:13px;cursor:pointer}
 .modal-box select:focus,.modal-box input:focus{outline:none;border-color:#f5c542}
 .modal-box textarea{width:100%;padding:12px;background:#020817;color:#fff;border:1px solid rgba(0,200,255,.4);border-radius:12px;font-family:inherit;font-size:13px;resize:vertical;min-height:70px}
 .modal-box textarea:focus{outline:none;border-color:#f5c542}
-
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
 .pdf-area{margin-top:14px;padding:16px;background:rgba(0,200,255,.05);border:2px dashed rgba(0,200,255,.4);border-radius:12px;text-align:center;cursor:pointer;transition:.3s}
 .pdf-area:hover{background:rgba(0,200,255,.1);border-color:#00c8ff}
 .pdf-area input{display:none}
@@ -109,14 +97,11 @@ a{text-decoration:none;color:inherit}
 .pdf-status{margin-top:8px;font-size:11px;color:#4ade80;display:none}
 .pdf-status.show{display:block}
 .pdf-status.error{color:#ff8888}
-
 #paypal-button-container{min-height:50px;margin-top:12px}
 .m-status{padding:12px;border-radius:12px;text-align:center;margin-top:12px;font-size:13px;font-weight:700;display:none}
 .m-status.success{background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.5);color:#4ade80;display:block}
 .m-status.error{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.5);color:#ff8888;display:block}
-
-.currency-note{padding:12px;background:rgba(245,197,66,.08);border:1px solid rgba(245,197,66,.4);border-radius:10px;margin-top:10px;font-size:11px;color:#e5d8a8;text-align:center;line-height:1.6}
-
+.currency-note{padding:12px;background:rgba(245,197,66,.08);border:1px solid rgba(245,197,66,.4);border-radius:10px;margin-top:10px;font-size:11px;color:#e5d8a8;text-align:center;line-height:1.6;display:none}
 .delivery{padding:20px;background:rgba(0,200,255,.05);border:1px solid rgba(0,200,255,.3);border-radius:14px;margin-top:15px;display:none}
 .delivery.active{display:block}
 .delivery .d-head{color:#00c8ff;font-size:13px;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:8px}
@@ -125,14 +110,11 @@ a{text-decoration:none;color:inherit}
 .delivery .d-actions button{flex:1;padding:10px;border-radius:10px;border:none;font-family:inherit;font-weight:900;font-size:12px;cursor:pointer}
 .delivery .d-copy{background:rgba(0,200,255,.2);color:#00c8ff;border:1px solid #00c8ff}
 .delivery .d-close{background:rgba(255,255,255,.1);color:#fff}
-
 .spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(0,200,255,.2);border-top-color:#00c8ff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-left:8px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:30px}
 .footer strong{color:#00c8ff}
 .footer a{color:#00c8ff;margin:0 8px}
-
 @media(max-width:600px){
 .choice{grid-template-columns:1fr}
 .services-grid{grid-template-columns:1fr}
@@ -163,12 +145,12 @@ a{text-decoration:none;color:inherit}
 <div class="hero">
 <div class="content">
 <h1>تطبيق <span>المعلم والطالب</span></h1>
-<p>مدعوم بالذكاء الاصطناعي — كل المناهج — أسعار بعملتك المحلية</p>
+<p>مدعوم بالذكاء الاصطناعي — كل المناهج — أسعار بعملتك المحلية تلقائيًا</p>
 </div>
 </div>
 
 <div class="currency-bar">
-<label>💱 اختر بلدك (السعر يتحول تلقائيًا):</label>
+<label>💱 عملتك:</label>
 <select id="currencySelect" onchange="changeCurrency()">
 <option value="SA">🇸🇦 السعودية — ريال</option>
 <option value="EG">🇪🇬 مصر — جنيه</option>
@@ -209,6 +191,7 @@ a{text-decoration:none;color:inherit}
 <option value="KE">🇰🇪 كينيا — شلن</option>
 <option value="ZA">🇿🇦 جنوب أفريقيا — راند</option>
 </select>
+<span class="auto-badge" id="autoBadge">✨ تلقائي</span>
 </div>
 
 <div class="choice">
@@ -245,7 +228,6 @@ a{text-decoration:none;color:inherit}
 <!-- TEACHER VIEW -->
 <div class="view" id="teacherView">
 <button class="back-btn" onclick="showView('mainView')">← رجوع</button>
-
 <div class="hero">
 <div class="content">
 <h1>👨‍🏫 <span>أدوات المعلم والمعلمة</span></h1>
@@ -342,7 +324,6 @@ a{text-decoration:none;color:inherit}
 <!-- STUDENT VIEW -->
 <div class="view" id="studentView">
 <button class="back-btn" onclick="showView('mainView')">← رجوع</button>
-
 <div class="hero">
 <div class="content">
 <h1>👨‍🎓 <span>أدوات الطالب والطالبة</span></h1>
@@ -485,7 +466,6 @@ a{text-decoration:none;color:inherit}
 <option value="أخرى">أخرى</option>
 </select>
 </div>
-
 <div>
 <label for="selTerm">📅 الفصل:</label>
 <select id="selTerm">
@@ -534,80 +514,66 @@ aion.genesisss@gmail.com<br><br>
 </div>
 
 <script>
-// ===== CURRENCY SYSTEM =====
-// Rates: 1 USD = X local currency
 const CURRENCIES = {
-  SA: { name: 'ريال سعودي', symbol: 'ر.س', code: 'SAR', rate: 3.75 },
-  EG: { name: 'جنيه مصري', symbol: 'ج.م', code: 'EGP', rate: 49 },
-  AE: { name: 'درهم إماراتي', symbol: 'د.إ', code: 'AED', rate: 3.67 },
-  KW: { name: 'دينار كويتي', symbol: 'د.ك', code: 'KWD', rate: 0.31 },
-  QA: { name: 'ريال قطري', symbol: 'ر.ق', code: 'QAR', rate: 3.64 },
-  BH: { name: 'دينار بحريني', symbol: 'د.ب', code: 'BHD', rate: 0.38 },
-  OM: { name: 'ريال عماني', symbol: 'ر.ع', code: 'OMR', rate: 0.38 },
-  JO: { name: 'دينار أردني', symbol: 'د.أ', code: 'JOD', rate: 0.71 },
-  PS: { name: 'شيكل', symbol: '₪', code: 'ILS', rate: 3.7 },
-  LB: { name: 'ليرة لبنانية', symbol: 'ل.ل', code: 'LBP', rate: 89500 },
-  SY: { name: 'ليرة سورية', symbol: 'ل.س', code: 'SYP', rate: 13000 },
-  IQ: { name: 'دينار عراقي', symbol: 'د.ع', code: 'IQD', rate: 1310 },
-  YE: { name: 'ريال يمني', symbol: 'ر.ي', code: 'YER', rate: 250 },
-  SD: { name: 'جنيه سوداني', symbol: 'ج.س', code: 'SDG', rate: 601 },
-  LY: { name: 'دينار ليبي', symbol: 'د.ل', code: 'LYD', rate: 4.85 },
-  TN: { name: 'دينار تونسي', symbol: 'د.ت', code: 'TND', rate: 3.15 },
-  DZ: { name: 'دينار جزائري', symbol: 'د.ج', code: 'DZD', rate: 134 },
-  MA: { name: 'درهم مغربي', symbol: 'د.م', code: 'MAD', rate: 10 },
-  MR: { name: 'أوقية موريتانية', symbol: 'أ.م', code: 'MRU', rate: 40 },
-  SO: { name: 'شلن صومالي', symbol: 'Sh', code: 'SOS', rate: 571 },
-  TR: { name: 'ليرة تركية', symbol: '₺', code: 'TRY', rate: 34 },
-  US: { name: 'دولار أمريكي', symbol: '$', code: 'USD', rate: 1 },
-  GB: { name: 'جنيه إسترليني', symbol: '£', code: 'GBP', rate: 0.79 },
-  FR: { name: 'يورو', symbol: '€', code: 'EUR', rate: 0.92 },
-  DE: { name: 'يورو', symbol: '€', code: 'EUR', rate: 0.92 },
-  ES: { name: 'يورو', symbol: '€', code: 'EUR', rate: 0.92 },
-  IT: { name: 'يورو', symbol: '€', code: 'EUR', rate: 0.92 },
-  PK: { name: 'روبية باكستانية', symbol: '₨', code: 'PKR', rate: 278 },
-  IN: { name: 'روبية هندية', symbol: '₹', code: 'INR', rate: 84 },
-  ID: { name: 'روبية إندونيسية', symbol: 'Rp', code: 'IDR', rate: 15900 },
-  MY: { name: 'رينغيت ماليزي', symbol: 'RM', code: 'MYR', rate: 4.4 },
-  PH: { name: 'بيزو فلبيني', symbol: '₱', code: 'PHP', rate: 58 },
-  BD: { name: 'تاكا بنغلاديشية', symbol: '৳', code: 'BDT', rate: 120 },
-  IR: { name: 'ريال إيراني', symbol: '﷼', code: 'IRR', rate: 42000 },
-  AF: { name: 'أفغاني', symbol: '؋', code: 'AFN', rate: 68 },
-  NG: { name: 'نيرة نيجيرية', symbol: '₦', code: 'NGN', rate: 1650 },
-  KE: { name: 'شلن كيني', symbol: 'KSh', code: 'KES', rate: 129 },
-  ZA: { name: 'راند جنوب أفريقي', symbol: 'R', code: 'ZAR', rate: 18 }
+  SA:{name:'ريال سعودي',symbol:'ر.س',code:'SAR',rate:3.75},
+  EG:{name:'جنيه مصري',symbol:'ج.م',code:'EGP',rate:49},
+  AE:{name:'درهم إماراتي',symbol:'د.إ',code:'AED',rate:3.67},
+  KW:{name:'دينار كويتي',symbol:'د.ك',code:'KWD',rate:0.31},
+  QA:{name:'ريال قطري',symbol:'ر.ق',code:'QAR',rate:3.64},
+  BH:{name:'دينار بحريني',symbol:'د.ب',code:'BHD',rate:0.38},
+  OM:{name:'ريال عماني',symbol:'ر.ع',code:'OMR',rate:0.38},
+  JO:{name:'دينار أردني',symbol:'د.أ',code:'JOD',rate:0.71},
+  PS:{name:'شيكل',symbol:'₪',code:'ILS',rate:3.7},
+  LB:{name:'ليرة لبنانية',symbol:'ل.ل',code:'LBP',rate:89500},
+  SY:{name:'ليرة سورية',symbol:'ل.س',code:'SYP',rate:13000},
+  IQ:{name:'دينار عراقي',symbol:'د.ع',code:'IQD',rate:1310},
+  YE:{name:'ريال يمني',symbol:'ر.ي',code:'YER',rate:250},
+  SD:{name:'جنيه سوداني',symbol:'ج.س',code:'SDG',rate:601},
+  LY:{name:'دينار ليبي',symbol:'د.ل',code:'LYD',rate:4.85},
+  TN:{name:'دينار تونسي',symbol:'د.ت',code:'TND',rate:3.15},
+  DZ:{name:'دينار جزائري',symbol:'د.ج',code:'DZD',rate:134},
+  MA:{name:'درهم مغربي',symbol:'د.م',code:'MAD',rate:10},
+  MR:{name:'أوقية موريتانية',symbol:'أ.م',code:'MRU',rate:40},
+  SO:{name:'شلن صومالي',symbol:'Sh',code:'SOS',rate:571},
+  TR:{name:'ليرة تركية',symbol:'₺',code:'TRY',rate:34},
+  US:{name:'دولار أمريكي',symbol:'$',code:'USD',rate:1},
+  GB:{name:'جنيه إسترليني',symbol:'£',code:'GBP',rate:0.79},
+  FR:{name:'يورو',symbol:'€',code:'EUR',rate:0.92},
+  DE:{name:'يورو',symbol:'€',code:'EUR',rate:0.92},
+  ES:{name:'يورو',symbol:'€',code:'EUR',rate:0.92},
+  IT:{name:'يورو',symbol:'€',code:'EUR',rate:0.92},
+  PK:{name:'روبية باكستانية',symbol:'₨',code:'PKR',rate:278},
+  IN:{name:'روبية هندية',symbol:'₹',code:'INR',rate:84},
+  ID:{name:'روبية إندونيسية',symbol:'Rp',code:'IDR',rate:15900},
+  MY:{name:'رينغيت ماليزي',symbol:'RM',code:'MYR',rate:4.4},
+  PH:{name:'بيزو فلبيني',symbol:'₱',code:'PHP',rate:58},
+  BD:{name:'تاكا بنغلاديشية',symbol:'৳',code:'BDT',rate:120},
+  IR:{name:'ريال إيراني',symbol:'﷼',code:'IRR',rate:42000},
+  AF:{name:'أفغاني',symbol:'؋',code:'AFN',rate:68},
+  NG:{name:'نيرة نيجيرية',symbol:'₦',code:'NGN',rate:1650},
+  KE:{name:'شلن كيني',symbol:'KSh',code:'KES',rate:129},
+  ZA:{name:'راند جنوب أفريقي',symbol:'R',code:'ZAR',rate:18}
 };
-
-// PayPal supported currencies
-const PAYPAL_SUPPORTED = ['USD','EUR','GBP','ILS','TRY','AUD','CAD','CHF','CZK','DKK','HKD','HUF','JPY','MXN','NOK','NZD','PHP','PLN','SEK','SGD','THB','TWD'];
 
 let currentCurrency = 'SA';
 
 function changeCurrency() {
   currentCurrency = document.getElementById('currencySelect').value;
   updateAllPrices();
+  const badge = document.getElementById('autoBadge');
+  if (badge) badge.style.display = 'none';
 }
 
 function formatPrice(usd) {
   const curr = CURRENCIES[currentCurrency];
-  if (!curr) return '$' + usd + ' USD';
-
+  if (!curr) return {local:'$'+usd, usd:'$'+usd+' USD', code:'USD'};
   const local = usd * curr.rate;
   let formatted;
-  if (local >= 1000) {
-    formatted = Math.round(local).toLocaleString('en-US');
-  } else if (local >= 100) {
-    formatted = Math.round(local);
-  } else if (local >= 10) {
-    formatted = local.toFixed(1);
-  } else {
-    formatted = local.toFixed(2);
-  }
-
-  return {
-    local: formatted + ' ' + curr.symbol,
-    usd: '$' + usd + ' USD',
-    code: curr.code
-  };
+  if (local >= 1000) formatted = Math.round(local).toLocaleString('en-US');
+  else if (local >= 100) formatted = Math.round(local);
+  else if (local >= 10) formatted = local.toFixed(1);
+  else formatted = local.toFixed(2);
+  return {local: formatted+' '+curr.symbol, usd:'$'+usd+' USD', code:curr.code};
 }
 
 function updateAllPrices() {
@@ -616,6 +582,46 @@ function updateAllPrices() {
     const p = formatPrice(usd);
     el.innerHTML = p.local + '<small>' + p.usd + '</small>';
   });
+}
+
+// ===== AUTO-DETECT COUNTRY =====
+async function detectCountry() {
+  const lang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+  const langMap = {
+    'ar-sa':'SA','ar-eg':'EG','ar-ae':'AE','ar-kw':'KW','ar-qa':'QA',
+    'ar-bh':'BH','ar-om':'OM','ar-jo':'JO','ar-ps':'PS','ar-lb':'LB',
+    'ar-sy':'SY','ar-iq':'IQ','ar-ye':'YE','ar-sd':'SD','ar-ly':'LY',
+    'ar-tn':'TN','ar-dz':'DZ','ar-ma':'MA','ar-mr':'MR','ar-so':'SO',
+    'tr-tr':'TR','en-us':'US','en-gb':'GB','fr-fr':'FR','de-de':'DE',
+    'es-es':'ES','it-it':'IT','ur-pk':'PK','hi-in':'IN','id-id':'ID',
+    'ms-my':'MY','en-ph':'PH','bn-bd':'BD','fa-ir':'IR','ps-af':'AF',
+    'en-ng':'NG','sw-ke':'KE','en-za':'ZA'
+  };
+
+  let detected = langMap[lang];
+
+  if (!detected) {
+    try {
+      const res = await fetch('https://ipapi.co/json/');
+      const data = await res.json();
+      detected = data.country_code;
+    } catch(e) {
+      const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
+      if (tz.includes('riyadh')) detected = 'SA';
+      else if (tz.includes('cairo')) detected = 'EG';
+      else if (tz.includes('dubai')) detected = 'AE';
+      else if (tz.includes('kuwait')) detected = 'KW';
+      else if (tz.includes('qatar')) detected = 'QA';
+      else if (tz.includes('casablanca')) detected = 'MA';
+      else detected = 'US';
+    }
+  }
+
+  if (detected && CURRENCIES[detected]) {
+    currentCurrency = detected;
+    document.getElementById('currencySelect').value = detected;
+    updateAllPrices();
+  }
 }
 
 // ===== PDF =====
@@ -632,30 +638,28 @@ async function handlePDF(event) {
     document.getElementById('pdfStatus').className = 'pdf-status show error';
     return;
   }
-  if (file.size > 20 * 1024 * 1024) {
+  if (file.size > 20*1024*1024) {
     document.getElementById('pdfStatus').textContent = '❌ الملف كبير (الحد 20MB)';
     document.getElementById('pdfStatus').className = 'pdf-status show error';
     return;
   }
-
-  document.getElementById('pdfText').textContent = '⏳ جاري قراءة الملف...';
+  document.getElementById('pdfText').textContent = '⏳ جاري القراءة...';
   document.getElementById('pdfStatus').className = 'pdf-status';
-
   try {
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
     let fullText = '';
     const maxPages = Math.min(pdf.numPages, 30);
-    for (let i = 1; i <= maxPages; i++) {
+    for (let i=1; i<=maxPages; i++) {
       const page = await pdf.getPage(i);
-      const textContent = await page.getTextContent();
-      fullText += '\n--- صفحة ' + i + ' ---\n' + textContent.items.map(item => item.str).join(' ');
+      const tc = await page.getTextContent();
+      fullText += '\n--- صفحة '+i+' ---\n' + tc.items.map(it=>it.str).join(' ');
     }
     pdfTextContent = fullText.slice(0, 15000);
     document.getElementById('pdfText').textContent = '✅ ' + file.name;
-    document.getElementById('pdfStatus').textContent = '✅ قرأنا ' + maxPages + ' من ' + pdf.numPages + ' صفحة';
+    document.getElementById('pdfStatus').textContent = '✅ قرأنا '+maxPages+' من '+pdf.numPages+' صفحة';
     document.getElementById('pdfStatus').className = 'pdf-status show';
-  } catch (err) {
+  } catch(err) {
     document.getElementById('pdfText').textContent = '❌ فشل';
     document.getElementById('pdfStatus').textContent = '❌ ' + err.message;
     document.getElementById('pdfStatus').className = 'pdf-status show error';
@@ -670,16 +674,14 @@ function showView(id) {
   window.scrollTo(0, 0);
 }
 
-let currentService = { title: '', price: 0, desc: '' };
+let currentService = { title:'', price:0, desc:'' };
 
 function openPay(title, price, desc) {
   currentService = { title, price, desc };
   document.getElementById('mTitle').textContent = title;
   document.getElementById('mDesc').textContent = desc;
-
   const p = formatPrice(price);
   document.getElementById('mPrice').innerHTML = p.local + '<span class="usd-note">= ' + p.usd + '</span>';
-
   document.getElementById('mDetails').value = '';
   document.getElementById('pdfFile').value = '';
   document.getElementById('pdfText').textContent = 'اضغط لرفع ملف PDF';
@@ -691,11 +693,10 @@ function openPay(title, price, desc) {
   document.getElementById('payModal').classList.add('active');
   document.body.style.overflow = 'hidden';
 
-  // Currency note
   const curr = CURRENCIES[currentCurrency];
   const note = document.getElementById('currencyNote');
   if (curr && curr.code !== 'USD') {
-    note.textContent = '💡 السعر بالـ ' + curr.name + '. الدفع يتم بالدولار الأمريكي ($' + price + ') عبر PayPal — سيتم الخصم تلقائيًا بعملة بلدك.';
+    note.textContent = '💡 السعر بالـ '+curr.name+'. الدفع بالدولار ($'+price+') عبر PayPal — سيُخصم تلقائيًا بعملتك.';
     note.style.display = 'block';
   } else {
     note.style.display = 'none';
@@ -720,25 +721,23 @@ function showStatus(msg, type) {
   el.style.display = 'block';
 }
 
-// ===== PAYPAL =====
 async function loadPayPal() {
   const container = document.getElementById('paypal-button-container');
   container.innerHTML = '';
-
   if (typeof paypal === 'undefined') {
     try {
       const res = await fetch('/api/paypal/client-id');
       const data = await res.json();
-      if (!data.clientId) { showStatus('خطأ: PayPal Client ID مفقود', 'error'); return; }
-      await new Promise((resolve, reject) => {
+      if (!data.clientId) { showStatus('خطأ: PayPal Client ID مفقود','error'); return; }
+      await new Promise((resolve,reject) => {
         const s = document.createElement('script');
         s.src = 'https://www.paypal.com/sdk/js?client-id=' + data.clientId + '&currency=USD&components=buttons&enable-funding=card';
         s.onload = resolve;
         s.onerror = reject;
         document.body.appendChild(s);
       });
-    } catch (e) {
-      showStatus('خطأ في تحميل PayPal', 'error');
+    } catch(e) {
+      showStatus('خطأ في تحميل PayPal','error');
       return;
     }
   }
@@ -760,79 +759,75 @@ function buildPrompt() {
   prompt += '📅 الفصل: ' + term + '\n';
   if (details) prompt += '📝 تفاصيل: ' + details + '\n';
   if (pdfTextContent) {
-    prompt += '\n📎 النص من الكتاب/الملزمة:\n"""\n' + pdfTextContent + '\n"""\n';
-    prompt += '⚠️ طابق المحتوى مع الكتاب بدقة.\n';
+    prompt += '\n📎 النص من الكتاب:\n"""\n' + pdfTextContent + '\n"""\n';
+    prompt += '⚠️ طابق المحتوى مع الكتاب.\n';
   }
-  prompt += '\nاكتب ' + currentService.title + ' احترافي كامل، منظّم. نفّذ الآن.';
+  prompt += '\nاكتب '+currentService.title+' احترافي كامل، منظّم. نفّذ الآن.';
   return prompt;
 }
 
 function renderPayPalButtons() {
   const container = document.getElementById('paypal-button-container');
   container.innerHTML = '';
-
   paypal.Buttons({
-    style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal', height: 45 },
+    style:{ layout:'vertical', color:'gold', shape:'rect', label:'paypal', height:45 },
     createOrder: async () => {
       const prompt = buildPrompt();
       const res = await fetch('/api/paypal/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
           amount: currentService.price,
           currency: 'USD',
           description: currentService.title,
-          details: prompt.slice(0, 200)
+          details: prompt.slice(0,200)
         })
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'fail');
+      if (!res.ok) throw new Error(data.error||'fail');
       return data.id;
     },
     onApprove: async (data) => {
       const res = await fetch('/api/paypal/capture-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId: data.orderID })
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({orderId:data.orderID})
       });
       const result = await res.json();
-      if (res.ok && result.status === 'COMPLETED') {
-        showStatus('✅ تم الدفع! جاري إنشاء الخدمة...', 'success');
+      if (res.ok && result.status==='COMPLETED') {
+        showStatus('✅ تم الدفع! جاري الإنشاء...','success');
         deliverService();
       } else {
-        showStatus('❌ فشل تأكيد الدفع', 'error');
+        showStatus('❌ فشل التأكيد','error');
       }
     },
-    onError: (err) => { console.error(err); showStatus('❌ خطأ في الدفع', 'error'); },
-    onCancel: () => showStatus('⚠️ تم إلغاء الدفع', 'error')
+    onError: (err) => { console.error(err); showStatus('❌ خطأ في الدفع','error'); },
+    onCancel: () => showStatus('⚠️ تم الإلغاء','error')
   }).render('#paypal-button-container');
 }
 
 async function deliverService() {
   const deliveryEl = document.getElementById('delivery');
   const bodyEl = document.getElementById('dBody');
-
   deliveryEl.classList.add('active');
   document.getElementById('dHeadText').textContent = '⏳ AI يعمل...';
-  bodyEl.innerHTML = '<div style="text-align:center;padding:20px">AION AI جاري إنشاء الخدمة<span class="spinner"></span></div>';
-
+  bodyEl.innerHTML = '<div style="text-align:center;padding:20px">AION AI جاري الإنشاء<span class="spinner"></span></div>';
   const prompt = buildPrompt();
-
   try {
     const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: prompt, role: 'content' })
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({message:prompt, role:'content'})
     });
     const data = await res.json();
     if (data.success && data.reply) {
-      document.getElementById('dHeadText').textContent = '✅ ' + currentService.title + ' — جاهز!';
+      document.getElementById('dHeadText').textContent = '✅ '+currentService.title+' — جاهز!';
       bodyEl.textContent = data.reply;
     } else {
       document.getElementById('dHeadText').textContent = '⚠️ خطأ';
-      bodyEl.textContent = 'حدث خطأ: ' + (data.error || 'حاول مرة أخرى');
+      bodyEl.textContent = 'حدث خطأ: ' + (data.error||'حاول مرة أخرى');
     }
-  } catch (err) {
+  } catch(err) {
     document.getElementById('dHeadText').textContent = '⚠️ خطأ';
     bodyEl.textContent = 'حدث خطأ: ' + err.message;
   }
@@ -850,6 +845,7 @@ function copyDelivery() {
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   updateAllPrices();
+  detectCountry();
 });
 </script>
 
