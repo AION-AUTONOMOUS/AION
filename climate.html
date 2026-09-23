@@ -1,46 +1,36 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AION Climate | تحليل المناخ بالذكاء الاصطناعي</title>
+<title>AION Climate | تحليل المناخ</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
 .container{max-width:1200px;margin:auto;padding:14px}
-
 .topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
 .logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
-.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
-.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.logo svg{width:34px;height:34px}
+.logo .s{font-size:8px;color:#4ade80;letter-spacing:4px;margin-top:2px}
 .menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
-.menu a:hover{color:#00c8ff}
+.menu a:hover{color:#4ade80}
 .menu a.active{color:#4ade80}
-
-.hero{padding:45px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,80,40,.6),rgba(2,8,23,.95)),radial-gradient(circle at 50% 40%,rgba(74,222,128,.25),transparent 60%);border:1px solid rgba(74,222,128,.4);border-radius:22px;margin-bottom:25px;position:relative;overflow:hidden;min-height:380px}
-.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 15% 20%,#4ade80,transparent),radial-gradient(2px 2px at 45% 60%,#fff,transparent),radial-gradient(1px 1px at 70% 30%,#4ade80,transparent),radial-gradient(2px 2px at 85% 75%,#fff,transparent),radial-gradient(1px 1px at 25% 85%,#4ade80,transparent);opacity:.6;animation:twinkle 4s ease-in-out infinite;pointer-events:none}
-@keyframes twinkle{0%,100%{opacity:.6}50%{opacity:.3}}
-.hero .content{position:relative;z-index:2}
+.lang-btn{padding:6px 12px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.4);border-radius:20px;color:#4ade80;font-size:11px;font-weight:bold;cursor:pointer;display:inline-block;font-family:inherit;margin-left:12px}
+.hero{padding:45px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,60,30,.6),rgba(2,8,23,.95));border:1px solid rgba(74,222,128,.4);border-radius:22px;margin-bottom:25px;min-height:380px}
 .hero .badge{display:inline-block;padding:6px 16px;background:rgba(74,222,128,.15);border:1px solid #4ade80;border-radius:20px;color:#4ade80;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:15px}
 .hero h1{color:#fff;font-size:clamp(26px,4.5vw,44px);font-weight:900;margin-bottom:12px;line-height:1.3}
-.hero h1 span{color:#4ade80;text-shadow:0 0 25px rgba(74,222,128,.8)}
+.hero h1 span{color:#4ade80}
 .hero p{color:#c8d5e7;font-size:15px;max-width:720px;margin:auto;line-height:1.9}
-.hero .earth-icon{font-size:80px;margin:15px 0;display:block;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(74,222,128,.8))}
-@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-15px) rotate(10deg)}}
-
-.section{padding:30px 25px;background:linear-gradient(180deg,rgba(2,15,40,.85),rgba(2,8,23,.7));border:1px solid rgba(74,222,128,.25);border-radius:20px;margin-bottom:20px}
+.hero .earth-icon{font-size:80px;margin:15px 0;display:block}
+.section{padding:30px 25px;background:rgba(2,15,40,.85);border:1px solid rgba(74,222,128,.25);border-radius:20px;margin-bottom:20px}
 .section-title{color:#4ade80;font-size:22px;font-weight:900;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid rgba(74,222,128,.25);display:flex;align-items:center;gap:10px}
-.section-title::before{content:"◆";color:#f5c542;font-size:14px}
-.section-title span{color:#f5c542;font-size:14px;font-weight:700;margin-right:auto;letter-spacing:1px}
-
+.section-title span{color:#aebbd0;font-size:14px;font-weight:700;margin-right:auto}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
-.service{padding:24px 22px;background:linear-gradient(180deg,rgba(0,40,20,.5),rgba(2,8,23,.9));border:1px solid rgba(74,222,128,.25);border-radius:18px;transition:.3s;position:relative}
+.service{padding:24px 22px;background:rgba(2,15,40,.9);border:1px solid rgba(74,222,128,.25);border-radius:18px;transition:.3s}
 .service:hover{border-color:#4ade80;transform:translateY(-5px);box-shadow:0 20px 50px rgba(74,222,128,.3)}
-.service.featured{border:2px solid #4ade80;background:linear-gradient(180deg,rgba(74,222,128,.1),rgba(2,8,23,.9))}
-.service.featured::before{content:"⭐ الأكثر طلبًا";position:absolute;top:-12px;right:20px;background:#4ade80;color:#020817;padding:4px 14px;border-radius:15px;font-size:10px;font-weight:900}
-.service .ic{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(74,222,128,.15),rgba(0,200,255,.1));border:1px solid rgba(74,222,128,.5);display:grid;place-items:center;font-size:26px;margin-bottom:14px;filter:drop-shadow(0 0 15px rgba(74,222,128,.5))}
+.service.featured{border:2px solid #4ade80;background:rgba(74,222,128,.08)}
+.service .ic{width:56px;height:56px;border-radius:14px;background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.5);display:grid;place-items:center;font-size:26px;margin-bottom:14px}
 .service h3{color:#fff;font-size:17px;font-weight:900;margin-bottom:8px}
 .service p{color:#aebbd0;font-size:13px;line-height:1.7;margin-bottom:14px}
 .service .features{list-style:none;padding:0;margin-bottom:15px}
@@ -48,31 +38,22 @@ a{text-decoration:none;color:inherit}
 .service .features li:before{content:"✓ ";color:#4ade80;font-weight:900;margin-left:6px}
 .service .bottom{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(74,222,128,.15)}
 .service .price{color:#4ade80;font-size:20px;font-weight:900}
-.service .price small{color:#aebbd0;font-size:10px;font-weight:normal}
-.service .btn{padding:9px 20px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#020817;border-radius:30px;font-weight:900;font-size:12px;border:none;cursor:pointer;font-family:inherit;transition:.3s}
-.service .btn:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(74,222,128,.6)}
-
+.service .btn{padding:9px 20px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#020817;border-radius:30px;font-weight:900;font-size:12px;border:none;cursor:pointer;font-family:inherit}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-top:20px}
-.stat{padding:20px 15px;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.25);border-radius:14px;text-align:center;transition:.3s}
-.stat:hover{border-color:#4ade80;background:rgba(74,222,128,.1);transform:translateY(-3px)}
-.stat .n{color:#4ade80;font-size:32px;font-weight:900;margin-bottom:6px;text-shadow:0 0 15px rgba(74,222,128,.5)}
-.stat .l{color:#aebbd0;font-size:11px;letter-spacing:1px}
-
-.info-box{padding:22px 25px;background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(0,200,255,.05));border-right:4px solid #4ade80;border-radius:14px;margin:20px 0}
+.stat{padding:20px 15px;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.25);border-radius:14px;text-align:center}
+.stat .n{color:#4ade80;font-size:32px;font-weight:900;margin-bottom:6px}
+.stat .l{color:#aebbd0;font-size:11px}
+.info-box{padding:22px 25px;background:rgba(74,222,128,.08);border-right:4px solid #4ade80;border-radius:14px;margin:20px 0}
 .info-box p{color:#a8e5b8;font-size:15px;line-height:1.9;font-style:italic;margin:0}
-
-.cta{padding:35px 25px;background:linear-gradient(135deg,rgba(0,80,40,.35),rgba(74,222,128,.15));border:2px solid #4ade80;border-radius:22px;text-align:center;margin-bottom:20px}
+.cta{padding:35px 25px;background:linear-gradient(135deg,rgba(0,60,30,.5),rgba(74,222,128,.15));border:2px solid #4ade80;border-radius:22px;text-align:center;margin-bottom:20px}
 .cta h2{color:#fff;font-size:24px;font-weight:900;margin-bottom:12px}
 .cta h2 span{color:#4ade80}
 .cta p{color:#c8d5e7;font-size:14px;margin-bottom:22px}
-.btn-hero{display:inline-block;padding:15px 38px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#020817;border-radius:50px;font-weight:900;font-size:14px;box-shadow:0 15px 40px rgba(74,222,128,.5);transition:.3s;margin:5px}
-.btn-hero:hover{transform:translateY(-3px)}
+.btn-hero{display:inline-block;padding:15px 38px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#020817;border-radius:50px;font-weight:900;font-size:14px;margin:5px}
 .btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #4ade80}
-
 .footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(74,222,128,.15);margin-top:20px}
 .footer a{color:#4ade80;margin:0 8px}
-
-@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}.hero .earth-icon{font-size:60px}}
+@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}}
 </style>
 </head>
 <body>
@@ -80,30 +61,31 @@ a{text-decoration:none;color:inherit}
 
 <div class="topnav">
 <div class="logo">
-<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#22c55e"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#020817"/></svg>
 <div>AION<div class="s">CLIMATE</div></div>
 </div>
 <div class="menu">
 <a href="index.html">الرئيسية</a>
 <a href="intelligence.html">Intelligence</a>
-<a href="space.html">🛰️ الفضاء</a>
-<a href="markets.html">📈 الأسواق</a>
-<a href="climate.html" class="active">🌍 المناخ</a>
-<a href="labs.html">🧪 المختبر</a>
+<a href="space.html">Space</a>
+<a href="markets.html">Markets</a>
+<a href="climate.html" class="active">Climate</a>
+<a href="labs.html">Labs</a>
+<a href="teacher.html">المعلم</a>
+<a href="academy.html">Academy</a>
+<span class="lang-btn">اللغات</span>
 </div>
 </div>
 
 <div class="hero">
-<div class="content">
-<span class="badge">🌍 AION CLIMATE DIVISION</span>
+<span class="badge">AION CLIMATE DIVISION</span>
 <span class="earth-icon">🌍</span>
 <h1>تحليل <span>المناخ</span> بالذكاء الاصطناعي</h1>
-<p>تحليل بيانات المناخ، تقارير ESG للشركات، ومراقبة التغير المناخي — بأيدي 100 وكيل AI متخصص. نساعد الشركات والدول على فهم وتيرة التغير المناخي واتخاذ قرارات مستدامة.</p>
-</div>
+<p>تحليل بيانات المناخ، تقارير ESG للشركات، ومراقبة التغير المناخي — بأيدي 100 وكيل AI متخصص.</p>
 </div>
 
 <div class="section">
-<div class="section-title">🌡️ المناخ بالأرقام <span>2026</span></div>
+<div class="section-title">المناخ بالأرقام <span>2026</span></div>
 <div class="stats">
 <div class="stat"><div class="n">+1.5°C</div><div class="l">ارتفاع الحرارة</div></div>
 <div class="stat"><div class="n">$50T</div><div class="l">استثمارات ESG عالميًا</div></div>
@@ -113,8 +95,7 @@ a{text-decoration:none;color:inherit}
 </div>
 
 <div class="section">
-<div class="section-title">🌍 خدمات AION Climate</div>
-
+<div class="section-title">خدمات AION Climate</div>
 <div class="grid">
 
 <div class="service featured">
@@ -127,10 +108,7 @@ a{text-decoration:none;color:inherit}
 <li>توقعات مستقبلية</li>
 <li>توصيات سياسات</li>
 </ul>
-<div class="bottom">
-<div class="price">$35 <small>USD</small></div>
-<button class="btn" onclick="order('تحليل المناخ الشامل',35)">اطلب الآن</button>
-</div>
+<div class="bottom"><div class="price">$35</div><button class="btn" onclick="order('Climate Analysis',35)">اطلب</button></div>
 </div>
 
 <div class="service">
@@ -143,10 +121,7 @@ a{text-decoration:none;color:inherit}
 <li>مؤشرات الأداء</li>
 <li>توصيات تحسين</li>
 </ul>
-<div class="bottom">
-<div class="price">$40 <small>USD</small></div>
-<button class="btn" onclick="order('تقارير ESG',40)">اطلب الآن</button>
-</div>
+<div class="bottom"><div class="price">$40</div><button class="btn" onclick="order('ESG Report',40)">اطلب</button></div>
 </div>
 
 <div class="service">
@@ -159,10 +134,7 @@ a{text-decoration:none;color:inherit}
 <li>تكاليف التكيف</li>
 <li>توصيات تخفيف</li>
 </ul>
-<div class="bottom">
-<div class="price">$50 <small>USD</small></div>
-<button class="btn" onclick="order('تحليل مخاطر المناخ',50)">اطلب الآن</button>
-</div>
+<div class="bottom"><div class="price">$50</div><button class="btn" onclick="order('Climate Risk',50)">اطلب</button></div>
 </div>
 
 <div class="service">
@@ -175,10 +147,7 @@ a{text-decoration:none;color:inherit}
 <li>العائد المتوقع</li>
 <li>التكاليف والجدوى</li>
 </ul>
-<div class="bottom">
-<div class="price">$45 <small>USD</small></div>
-<button class="btn" onclick="order('تحليل الطاقة المتجددة',45)">اطلب الآن</button>
-</div>
+<div class="bottom"><div class="price">$45</div><button class="btn" onclick="order('Renewable Energy',45)">اطلب</button></div>
 </div>
 
 <div class="service">
@@ -191,10 +160,7 @@ a{text-decoration:none;color:inherit}
 <li>استهلاك المياه</li>
 <li>توصيات ذكية</li>
 </ul>
-<div class="bottom">
-<div class="price">$30 <small>USD</small></div>
-<button class="btn" onclick="order('تحليل الزراعة الذكية',30)">اطلب الآن</button>
-</div>
+<div class="bottom"><div class="price">$30</div><button class="btn" onclick="order('Smart Agriculture',30)">اطلب</button></div>
 </div>
 
 <div class="service">
@@ -207,10 +173,7 @@ a{text-decoration:none;color:inherit}
 <li>فرص تداول</li>
 <li>تحليل المخاطر</li>
 </ul>
-<div class="bottom">
-<div class="price">$40 <small>USD</small></div>
-<button class="btn" onclick="order('تحليل أسواق الكربون',40)">اطلب الآن</button>
-</div>
+<div class="bottom"><div class="price">$40</div><button class="btn" onclick="order('Carbon Markets',40)">اطلب</button></div>
 </div>
 
 <div class="service">
@@ -223,26 +186,7 @@ a{text-decoration:none;color:inherit}
 <li>تحديثات السياسات</li>
 <li>دعم عبر الشات</li>
 </ul>
-<div class="bottom">
-<div class="price">$69 <small>/شهر</small></div>
-<button class="btn" onclick="order('تقرير المناخ الشهري',69)">اشترك</button>
-</div>
-</div>
-
-<div class="service">
-<div class="ic">🎓</div>
-<h3>استشارات مناخية</h3>
-<p>جلسة 60 دقيقة مع AI متخصص لتحليل استراتيجيتك المناخية.</p>
-<ul class="features">
-<li>تحليل الوضع</li>
-<li>توصيات استراتيجية</li>
-<li>خطة عمل</li>
-<li>متابعة شهرية</li>
-</ul>
-<div class="bottom">
-<div class="price">$50 <small>USD</small></div>
-<button class="btn" onclick="order('استشارات مناخية',50)">اطلب الآن</button>
-</div>
+<div class="bottom"><div class="price">$69/شهر</div><button class="btn" onclick="order('Climate Report',69)">اشترك</button></div>
 </div>
 
 <div class="service">
@@ -255,50 +199,37 @@ a{text-decoration:none;color:inherit}
 <li>خطة تنفيذية</li>
 <li>تقرير سنوي</li>
 </ul>
-<div class="bottom">
-<div class="price">$120 <small>USD</small></div>
-<button class="btn" onclick="order('خطط الاستدامة',120)">اطلب الآن</button>
+<div class="bottom"><div class="price">$120</div><button class="btn" onclick="order('Sustainability Plan',120)">اطلب</button></div>
 </div>
+
+<div class="service">
+<div class="ic">🎓</div>
+<h3>استشارات مناخية</h3>
+<p>جلسة 60 دقيقة مع AI متخصص لتحليل استراتيجيتك المناخية.</p>
+<ul class="features">
+<li>تحليل الوضع</li>
+<li>توصيات استراتيجية</li>
+<li>خطة عمل</li>
+<li>متابعة شهرية</li>
+</ul>
+<div class="bottom"><div class="price">$50</div><button class="btn" onclick="order('Climate Consulting',50)">اطلب</button></div>
 </div>
 
 </div>
 </div>
 
 <div class="section">
-<div class="section-title">🎯 لماذا AION Climate؟</div>
+<div class="section-title">لماذا AION Climate؟</div>
 <div class="info-box">
-<p>"AION Climate يقدم تحليلات مناخية بمستوى شركات Big Four — لكن بالعربية، بأسعار رمزية، وبأسرع وقت، مدعوم بـ 100 وكيل AI متخصص."</p>
-</div>
-
-<div class="grid" style="margin-top:20px">
-<div class="service">
-<div class="ic">🌍</div>
-<h3>المنطقة العربية أولًا</h3>
-<p>نركز على مناخ الخليج والشرق الأوسط — الأكثر تأثرًا بالتغير المناخي.</p>
-</div>
-<div class="service">
-<div class="ic">⚡</div>
-<h3>تسليم خلال 48 ساعة</h3>
-<p>تقارير احترافية بسرعة لا مثيل لها في السوق.</p>
-</div>
-<div class="service">
-<div class="ic">💰</div>
-<h3>أسعار رمزية</h3>
-<p>تبدأ من $30 — أقل 90% من شركات الاستشارات التقليدية.</p>
-</div>
-<div class="service">
-<div class="ic">📜</div>
-<h3>متوافقة مع المعايير</h3>
-<p>تقاريرنا متوافقة مع GRI، SASB، TCFD، و معايير الاتحاد الأوروبي.</p>
-</div>
+<p>AION Climate يقدم تحليلات مناخية بمستوى شركات Big Four — لكن بالعربية، بأسعار رمزية، وبأسرع وقت، مدعوم بـ 100 وكيل AI متخصص.</p>
 </div>
 </div>
 
 <div class="cta">
 <h2>جاهز لتحليل <span>مناخك</span> مع AION؟</h2>
 <p>اطلب تقريرك الآن — التسليم خلال 48 ساعة</p>
-<a href="order.html" class="btn-hero">🛒 اطلب تقرير</a>
-<a href="intelligence.html" class="btn-hero outline">🧠 اسأل مجانًا</a>
+<a href="order.html" class="btn-hero">اطلب تقرير</a>
+<a href="intelligence.html" class="btn-hero outline">اسأل مجانًا</a>
 </div>
 
 <div class="footer">
@@ -311,10 +242,10 @@ aion.genesisss@gmail.com<br><br>
 </div>
 
 <script>
-function order(service, price) {
-  window.location.href = 'order.html?service=' + encodeURIComponent(service) + '&price=' + price;
-}
+function order(s,p){window.location.href='order.html?service='+encodeURIComponent(s)+'&price='+p;}
 </script>
+
+<script src="lang.js"></script>
 
 </body>
 </html>
