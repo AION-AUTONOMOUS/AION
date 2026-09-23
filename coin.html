@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AION Coin | أول عملة ذكية</title>
+<title>AION Coin | أول عملة ذكية Proof of Intelligence</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
@@ -39,6 +39,64 @@ a{text-decoration:none;color:inherit}
 .tok .pct{color:#D4AF37;font-size:32px;font-weight:900;margin-bottom:5px}
 .tok .name{color:#fff;font-size:14px;font-weight:bold;margin-bottom:5px}
 .tok .desc{color:#aebbd0;font-size:11px}
+.pie-container{display:grid;grid-template-columns:1fr 1fr;gap:25px;align-items:center;padding:25px;background:rgba(5,13,31,.75);border:1px solid rgba(212,175,55,.3);border-radius:20px;margin-bottom:20px}
+.pie-legend{display:flex;flex-direction:column;gap:12px}
+.legend-item{display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,0,0,.3);border-radius:10px}
+.legend-color{width:20px;height:20px;border-radius:5px;flex-shrink:0}
+.legend-item .name{flex:1;color:#fff;font-weight:700;font-size:13px}
+.legend-item .val{color:#D4AF37;font-weight:900;font-size:13px}
+.calc-box{padding:25px;background:linear-gradient(135deg,rgba(212,175,55,.1),rgba(122,75,255,.08));border:2px solid #D4AF37;border-radius:20px;margin-bottom:20px}
+.calc-box h3{color:#D4AF37;font-size:22px;text-align:center;margin-bottom:20px}
+.calc-input{width:100%;padding:15px;background:#0B1D3A;color:#fff;border:1px solid rgba(212,175,55,.4);border-radius:12px;font-size:18px;font-family:inherit;text-align:center;font-weight:900}
+.calc-input:focus{outline:none;border-color:#D4AF37;box-shadow:0 0 20px rgba(212,175,55,.4)}
+.calc-result{text-align:center;margin-top:20px;padding:20px;background:rgba(0,0,0,.4);border-radius:15px}
+.calc-result .aion-amount{color:#D4AF37;font-size:36px;font-weight:900;margin-bottom:5px}
+.calc-result .aion-label{color:#aebbd0;font-size:12px;margin-bottom:20px}
+.projection-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}
+.proj-item{padding:14px 10px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.4);border-radius:12px;text-align:center}
+.proj-item .price-target{color:#00c8ff;font-size:13px;font-weight:900;margin-bottom:5px}
+.proj-item .value{color:#4ade80;font-size:16px;font-weight:900}
+.proj-item .label{color:#aebbd0;font-size:10px;margin-top:3px}
+.security-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
+.sec-card{padding:20px 16px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.4);border-radius:15px;text-align:center}
+.sec-card .icon{font-size:32px;margin-bottom:10px;display:block}
+.sec-card h4{color:#4ade80;font-size:14px;margin-bottom:6px}
+.sec-card p{color:#c8d5e7;font-size:12px;line-height:1.6}
+.community-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px}
+.comm-card{padding:20px 15px;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.35);border-radius:15px;text-align:center;transition:.3s;display:block}
+.comm-card:hover{border-color:#00c8ff;transform:translateY(-4px);box-shadow:0 15px 40px rgba(0,200,255,.3)}
+.comm-card .icon{font-size:32px;margin-bottom:10px;display:block}
+.comm-card .count{color:#00c8ff;font-size:20px;font-weight:900;margin-bottom:4px}
+.comm-card .label{color:#aebbd0;font-size:12px}
+.comp-table{width:100%;border-collapse:collapse;background:rgba(5,13,31,.75);border-radius:15px;overflow:hidden}
+.comp-table th{background:rgba(212,175,55,.15);color:#D4AF37;padding:14px 10px;text-align:center;font-size:12px;font-weight:900;border-bottom:2px solid rgba(212,175,55,.3)}
+.comp-table th.aion{background:rgba(212,175,55,.25);color:#fff}
+.comp-table td{padding:12px 10px;color:#c8d5e7;font-size:13px;text-align:center;border-bottom:1px solid rgba(255,255,255,.05)}
+.comp-table td.aion{background:rgba(212,175,55,.08);color:#D4AF37;font-weight:900}
+.comp-table td.feature{text-align:right;color:#fff;font-weight:700}
+.guide-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px}
+.guide-step{padding:22px 18px;background:rgba(5,13,31,.75);border:1px solid rgba(212,175,55,.3);border-radius:18px;position:relative}
+.guide-step .step-num{display:inline-block;width:36px;height:36px;background:linear-gradient(135deg,#D4AF37,#e6a800);color:#0B1D3A;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:16px;margin-bottom:12px}
+.guide-step h4{color:#D4AF37;font-size:15px;margin-bottom:8px}
+.guide-step p{color:#c8d5e7;font-size:12px;line-height:1.7}
+.referral-box{padding:30px 25px;background:linear-gradient(135deg,rgba(74,222,128,.15),rgba(0,180,255,.08));border:2px solid #4ade80;border-radius:20px;margin-bottom:20px;text-align:center}
+.referral-box h3{color:#4ade80;font-size:24px;margin-bottom:10px}
+.referral-box p{color:#c8d5e7;font-size:14px;margin-bottom:20px;line-height:1.7}
+.ref-input-row{display:flex;gap:10px;max-width:500px;margin:0 auto;flex-wrap:wrap}
+.ref-input{flex:1;padding:14px;background:#0B1D3A;color:#fff;border:1px solid rgba(74,222,128,.4);border-radius:12px;font-family:monospace;font-size:14px;min-width:200px}
+.ref-copy{padding:14px 25px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#020817;border:none;border-radius:12px;font-weight:900;font-size:14px;cursor:pointer;font-family:inherit;white-space:nowrap}
+.timeline{position:relative;padding-right:30px}
+.timeline::before{content:"";position:absolute;right:10px;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#D4AF37,#7A4BFF)}
+.tl-item{position:relative;padding:20px 25px 20px 20px;background:rgba(5,13,31,.75);border:1px solid rgba(212,175,55,.3);border-radius:15px;margin-bottom:20px}
+.tl-item::before{content:"";position:absolute;right:-24px;top:30px;width:16px;height:16px;border-radius:50%;background:#D4AF37;border:3px solid #0B1D3A;box-shadow:0 0 15px rgba(212,175,55,.8)}
+.tl-item.active::before{background:#4ade80;box-shadow:0 0 20px rgba(74,222,128,1);animation:pulse-dot 1.5s infinite}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 20px rgba(74,222,128,1)}50%{box-shadow:0 0 35px rgba(74,222,128,1)}}
+.tl-item .tl-date{color:#D4AF37;font-size:12px;font-weight:900;margin-bottom:8px}
+.tl-item.active .tl-date{color:#4ade80}
+.tl-item h4{color:#fff;font-size:17px;margin-bottom:8px}
+.tl-item ul{list-style:none;padding:0}
+.tl-item ul li{color:#c8d5e7;font-size:13px;padding:5px 0;line-height:1.6}
+.tl-item ul li:before{content:"✓ ";color:#D4AF37;font-weight:900;margin-left:5px}
 .form-card{background:linear-gradient(135deg,rgba(212,175,55,.15),rgba(122,75,255,.1));border:2px solid #D4AF37;border-radius:20px;padding:30px;margin-bottom:30px}
 .form-card h2{color:#D4AF37;text-align:center;font-size:26px;margin-bottom:10px}
 .form-card .sub{text-align:center;color:#c8d5e7;margin-bottom:25px;font-size:14px}
@@ -46,25 +104,16 @@ a{text-decoration:none;color:inherit}
 .form-card input,.form-card select{width:100%;padding:14px;border-radius:12px;background:#0B1D3A;color:#fff;border:1px solid rgba(255,255,255,.2);font-family:inherit;font-size:15px}
 .form-card input:focus,.form-card select:focus{outline:none;border-color:#D4AF37}
 .form-card button{width:100%;padding:16px;margin-top:20px;background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border:none;border-radius:12px;font-weight:900;font-size:16px;cursor:pointer;font-family:inherit}
-.form-card button:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(212,175,55,.5)}
 .msg{text-align:center;padding:15px;border-radius:12px;margin-top:15px;font-weight:bold;display:none}
-.msg.success{background:rgba(0,200,100,.15);border:1px solid rgba(0,200,100,.5);color:#4ade80;display:block}
-.msg.error{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.5);color:#ff8888;display:block}
-.roadmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
-.phase{padding:22px;background:rgba(5,13,31,.75);border:1px solid rgba(212,175,55,.3);border-radius:18px}
-.phase.active{border:2px solid #D4AF37;box-shadow:0 0 25px rgba(212,175,55,.4)}
-.phase .phase-num{display:inline-block;padding:4px 12px;background:rgba(212,175,55,.2);border:1px solid #D4AF37;border-radius:15px;color:#D4AF37;font-size:11px;font-weight:900;margin-bottom:12px}
-.phase h4{color:#D4AF37;font-size:17px;margin-bottom:12px}
-.phase ul{list-style:none;padding:0}
-.phase ul li{color:#c8d5e7;font-size:13px;padding:5px 0;line-height:1.6}
-.phase ul li:before{content:"✓ ";color:#D4AF37;font-weight:900;margin-left:5px}
+.msg.success{background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.5);color:#4ade80;display:block}
 .btn-hero{display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border-radius:50px;font-weight:900;font-size:16px;box-shadow:0 15px 40px rgba(212,175,55,.5);transition:.3s;margin:6px;border:none;cursor:pointer}
 .btn-hero:hover{transform:translateY(-4px)}
 .btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #D4AF37}
 .center{text-align:center}
 .footer{text-align:center;padding:30px 20px;color:#aebbd0;font-size:12px;border-top:1px solid rgba(212,175,55,.2);margin-top:40px}
 .footer strong{color:#D4AF37}
-@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}}
+.footer a{color:#D4AF37;margin:0 8px}
+@media(max-width:700px){.pie-container{grid-template-columns:1fr}.projection-grid{grid-template-columns:1fr}.menu a{font-size:11px;margin-left:8px}.timeline{padding-right:20px}.tl-item::before{right:-19px}}
 </style>
 </head>
 <body>
@@ -77,9 +126,9 @@ a{text-decoration:none;color:inherit}
 </div>
 <div class="menu">
 <a href="index.html">الرئيسية</a>
-<a href="intelligence.html">Intelligence</a>
 <a href="teacher.html">المعلم</a>
 <a href="academy.html">Academy</a>
+<a href="wallet.html">المحفظة</a>
 <a href="pricing.html">الأسعار</a>
 <a href="coin.html" style="color:#D4AF37">AION Coin</a>
 <span class="lang-btn">اللغات</span>
@@ -111,12 +160,144 @@ a{text-decoration:none;color:inherit}
 </div>
 
 <h2 class="section-title">توزيع العملة</h2>
-<div class="tokenomics">
-<div class="tok"><div class="pct">40%</div><div class="name">المجتمع</div><div class="desc">4,000,000,000 AION</div></div>
-<div class="tok"><div class="pct">20%</div><div class="name">التطوير</div><div class="desc">2,000,000,000 AION</div></div>
-<div class="tok"><div class="pct">15%</div><div class="name">المؤسسون</div><div class="desc">1,500,000,000 AION</div></div>
-<div class="tok"><div class="pct">15%</div><div class="name">احتياطي</div><div class="desc">1,500,000,000 AION</div></div>
-<div class="tok"><div class="pct">10%</div><div class="name">مكافآت AI</div><div class="desc">1,000,000,000 AION</div></div>
+
+<div class="pie-container">
+<canvas id="pieChart" width="300" height="300" style="max-width:100%;margin:auto;display:block"></canvas>
+<div class="pie-legend">
+<div class="legend-item"><div class="legend-color" style="background:#D4AF37"></div><span class="name">المجتمع</span><span class="val">40%</span></div>
+<div class="legend-item"><div class="legend-color" style="background:#7A4BFF"></div><span class="name">التطوير</span><span class="val">20%</span></div>
+<div class="legend-item"><div class="legend-color" style="background:#00c8ff"></div><span class="name">المؤسسون</span><span class="val">15%</span></div>
+<div class="legend-item"><div class="legend-color" style="background:#4ade80"></div><span class="name">احتياطي</span><span class="val">15%</span></div>
+<div class="legend-item"><div class="legend-color" style="background:#f87171"></div><span class="name">مكافآت AI</span><span class="val">10%</span></div>
+</div>
+</div>
+
+<h2 class="section-title">حاسبة الاستثمار</h2>
+
+<div class="calc-box">
+<h3>كم AION ستحصل عليه؟</h3>
+<label style="display:block;color:#D4AF37;font-size:13px;font-weight:900;margin-bottom:10px;text-align:center">أدخل المبلغ بالدولار ($)</label>
+<input type="number" class="calc-input" id="calcAmount" placeholder="مثال: 100" min="1" oninput="calcInvestment()">
+
+<div class="calc-result">
+<div class="aion-amount" id="calcAion">0 AION</div>
+<div class="aion-label">بسعر التأسيس $0.01</div>
+
+<div class="projection-grid">
+<div class="proj-item"><div class="price-target">لو وصل $0.10</div><div class="value" id="proj10">$0</div><div class="label">10x</div></div>
+<div class="proj-item"><div class="price-target">لو وصل $1.00</div><div class="value" id="proj100">$0</div><div class="label">100x</div></div>
+<div class="proj-item"><div class="price-target">لو وصل $10.00</div><div class="value" id="proj1000">$0</div><div class="label">1000x</div></div>
+</div>
+</div>
+</div>
+
+<h2 class="section-title">الأمان والشفافية</h2>
+
+<div class="security-grid">
+<div class="sec-card"><span class="icon">🛡️</span><h4>تدقيق العقد الذكي</h4><p>سيتم تدقيق العقد من شركة أمنية معتمدة قبل الإطلاق الرسمي</p></div>
+<div class="sec-card"><span class="icon">🔒</span><h4>قفل السيولة</h4><p>سيتم قفل السيولة لمدة 12 شهرًا — حماية ضد السحب المفاجئ</p></div>
+<div class="sec-card"><span class="icon">👑</span><h4>إلغاء الملكية</h4><p>سيتم إلغاء ملكية العقد — لا يستطيع أحد تعديله بعد النشر</p></div>
+<div class="sec-card"><span class="icon">📜</span><h4>عقد مفتوح المصدر</h4><p>الكود منشور على GitHub — يمكن لأي شخص مراجعته والتحقق منه</p></div>
+</div>
+
+<h2 class="section-title">المقارنة مع العملات الأخرى</h2>
+
+<div class="card" style="padding:0;overflow-x:auto">
+<table class="comp-table">
+<tr><th>الميزة</th><th class="aion">AION</th><th>BTC</th><th>ETH</th><th>USDT</th></tr>
+<tr><td class="feature">Proof of Intelligence</td><td class="aion">نعم</td><td>لا</td><td>لا</td><td>لا</td></tr>
+<tr><td class="feature">AI Workforce (100 وكيل)</td><td class="aion">نعم</td><td>لا</td><td>لا</td><td>لا</td></tr>
+<tr><td class="feature">خدمات حقيقية</td><td class="aion">نعم</td><td>لا</td><td>لا</td><td>لا</td></tr>
+<tr><td class="feature">دعم 38 لغة</td><td class="aion">نعم</td><td>لا</td><td>لا</td><td>لا</td></tr>
+<tr><td class="feature">منظومة متكاملة</td><td class="aion">نعم</td><td>لا</td><td>جزئي</td><td>لا</td></tr>
+<tr><td class="feature">Pre-Sale مفتوح</td><td class="aion">نعم</td><td>لا</td><td>لا</td><td>لا</td></tr>
+</table>
+</div>
+
+<h2 class="section-title">دليل الشراء خطوة بخطوة</h2>
+
+<div class="guide-steps">
+<div class="guide-step"><span class="step-num">1</span><h4>حمّل MetaMask</h4><p>حمّل تطبيق MetaMask من متجر Google Play أو App Store — مجانًا.</p></div>
+<div class="guide-step"><span class="step-num">2</span><h4>أنشئ محفظتك</h4><p>أنشئ محفظة جديدة، واكتب الـ 12 كلمة السرية على ورق — لا تفقدها.</p></div>
+<div class="guide-step"><span class="step-num">3</span><h4>اشترِ BNB</h4><p>اشترِ BNB من Binance أو Rain، وحوّلها إلى محفظتك.</p></div>
+<div class="guide-step"><span class="step-num">4</span><h4>حوّل للشبكة الصحيحة</h4><p>في MetaMask، اختر شبكة BNB Smart Chain.</p></div>
+<div class="guide-step"><span class="step-num">5</span><h4>انتظر الإطلاق</h4><p>عند الإطلاق، سيتم إخبارك بعنوان العقد لشراء AION.</p></div>
+<div class="guide-step"><span class="step-num">6</span><h4>احفظ AION</h4><p>ستظهر AION في محفظتك تلقائيًا — احفظها بأمان.</p></div>
+</div>
+
+<h2 class="section-title">برنامج الإحالة</h2>
+
+<div class="referral-box">
+<h3>اربح AION مقابل كل صديق</h3>
+<p>شارك رابطك الفريد — واحصل على <strong style="color:#4ade80">500 AION</strong> مقابل كل صديق يسجل عبر رابطك.</p>
+<div class="ref-input-row">
+<input type="text" class="ref-input" id="refLink" value="https://aion-theta-eight.vercel.app/coin.html?ref=USER123" readonly>
+<button class="ref-copy" onclick="copyRef()">نسخ الرابط</button>
+</div>
+<p style="margin-top:15px;color:#aebbd0;font-size:11px">سيتم إنشاء رابطك الفريد بعد التسجيل الرسمي.</p>
+</div>
+
+<h2 class="section-title">خارطة الطريق التفاعلية</h2>
+
+<div class="timeline">
+
+<div class="tl-item active">
+<div class="tl-date">الآن — الربع الرابع 2026</div>
+<h4>المرحلة 1: الإطلاق</h4>
+<ul>
+<li>نشر العقد على BNB Smart Chain</li>
+<li>إضافة السيولة الأولية</li>
+<li>التحقق على BscScan</li>
+<li>إطلاق الطلب المسبق رسميًا</li>
+<li>تدقيق العقد من شركة أمنية</li>
+</ul>
+</div>
+
+<div class="tl-item">
+<div class="tl-date">الربع الأول 2027</div>
+<h4>المرحلة 2: النمو الأولي</h4>
+<ul>
+<li>إدراج على CoinGecko</li>
+<li>إدراج على CoinMarketCap</li>
+<li>شراكات مع 5 محافظ كبرى</li>
+<li>حملة تسويقية عالمية</li>
+<li>أول 10,000 حامل للعملة</li>
+</ul>
+</div>
+
+<div class="tl-item">
+<div class="tl-date">الربع الثاني 2027</div>
+<h4>المرحلة 3: التوسع</h4>
+<ul>
+<li>إدراج على منصات تداول متوسطة</li>
+<li>برنامج مكافآت الوكلاء (Staking)</li>
+<li>API عامة للمطورين</li>
+<li>شراكات استراتيجية مع شركات AI</li>
+</ul>
+</div>
+
+<div class="tl-item">
+<div class="tl-date">الربع الثالث 2027</div>
+<h4>المرحلة 4: DAO والحوكمة</h4>
+<ul>
+<li>إطلاق نظام DAO كامل</li>
+<li>تصويت المجتمع على القرارات</li>
+<li>خزينة المجتمع (Community Treasury)</li>
+<li>حوكمة لا مركزية</li>
+</ul>
+</div>
+
+<div class="tl-item">
+<div class="tl-date">2028+</div>
+<h4>المرحلة 5: السيادة العالمية</h4>
+<ul>
+<li>إدراج على Binance / Coinbase</li>
+<li>تطبيق رسمي على المتاجر</li>
+<li>مليون حامل للعملة</li>
+<li>منظومة AI كاملة عالميًا</li>
+</ul>
+</div>
+
 </div>
 
 <div class="form-card" id="presale">
@@ -146,42 +327,13 @@ a{text-decoration:none;color:inherit}
 <p style="text-align:center;color:#aebbd0;font-size:11px;margin-top:15px">الطلب المسبق = تسجيل اهتمام فقط. لا يتم أي دفع الآن.</p>
 </div>
 
-<h2 class="section-title">خارطة الطريق</h2>
-<div class="roadmap">
+<h2 class="section-title">تابعنا على</h2>
 
-<div class="phase active">
-<span class="phase-num">الآن</span>
-<h4>المرحلة 1 — الإطلاق</h4>
-<ul>
-<li>نشر العقد على BNB</li>
-<li>إضافة السيولة الأولية</li>
-<li>التحقق على BscScan</li>
-<li>إطلاق الطلب المسبق</li>
-</ul>
-</div>
-
-<div class="phase">
-<span class="phase-num">قريبًا</span>
-<h4>المرحلة 2 — النمو</h4>
-<ul>
-<li>إدراج على CoinGecko</li>
-<li>إدراج على CoinMarketCap</li>
-<li>شراكات مع محافظ</li>
-<li>حملة تسويقية عالمية</li>
-</ul>
-</div>
-
-<div class="phase">
-<span class="phase-num">2027</span>
-<h4>المرحلة 3 — التوسع</h4>
-<ul>
-<li>إدراج على منصات تداول</li>
-<li>برنامج مكافآت الوكلاء</li>
-<li>نظام DAO كامل</li>
-<li>API عامة</li>
-</ul>
-</div>
-
+<div class="community-grid">
+<a href="https://twitter.com/AIONNetworozes" target="_blank" class="comm-card"><span class="icon">𝕏</span><div class="count">Twitter</div><div class="label">تابعنا</div></a>
+<a href="https://discord.gg/pjq6eEvsZ" target="_blank" class="comm-card"><span class="icon">🎮</span><div class="count">Discord</div><div class="label">انضم</div></a>
+<a href="https://github.com/AION-AUTONOMOUS/AION" target="_blank" class="comm-card"><span class="icon">💻</span><div class="count">GitHub</div><div class="label">الكود</div></a>
+<a href="mailto:aion.genesisss@gmail.com" class="comm-card"><span class="icon">✉️</span><div class="count">Email</div><div class="label">تواصل</div></a>
 </div>
 
 <h2 class="section-title">أسئلة شائعة</h2>
@@ -199,6 +351,11 @@ a{text-decoration:none;color:inherit}
 <div class="card">
 <h3>كيف أشارك في الطلب المسبق؟</h3>
 <p>عبّئ النموذج أعلاه. سيتم التواصل معك عبر البريد الإلكتروني عند الإطلاق. لا يوجد دفع في هذه المرحلة.</p>
+</div>
+
+<div class="card">
+<h3>هل AION آمنة؟</h3>
+<p>نعم. سنقوم بتدقيق العقد من شركة أمنية، قفل السيولة 12 شهرًا، وإلغاء الملكية بعد النشر — كل هذا لحماية المستثمرين.</p>
 </div>
 
 <div class="card">
@@ -221,6 +378,7 @@ aion.genesisss@gmail.com<br><br>
 </div>
 
 <script>
+// Countdown
 const target = new Date();
 target.setDate(target.getDate() + 30);
 target.setHours(0,0,0,0);
@@ -244,6 +402,71 @@ function updateCountdown(){
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
+// Pie Chart
+function drawPie() {
+  const canvas = document.getElementById('pieChart');
+  const ctx = canvas.getContext('2d');
+  const data = [
+    {value: 40, color: '#D4AF37'},
+    {value: 20, color: '#7A4BFF'},
+    {value: 15, color: '#00c8ff'},
+    {value: 15, color: '#4ade80'},
+    {value: 10, color: '#f87171'}
+  ];
+  const total = data.reduce((s, d) => s + d.value, 0);
+  let startAngle = -Math.PI / 2;
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+  const r = Math.min(cx, cy) - 10;
+  data.forEach(d => {
+    const sliceAngle = (d.value / total) * 2 * Math.PI;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startAngle, startAngle + sliceAngle);
+    ctx.closePath();
+    ctx.fillStyle = d.color;
+    ctx.fill();
+    ctx.strokeStyle = '#0B1D3A';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    startAngle += sliceAngle;
+  });
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.45, 0, 2 * Math.PI);
+  ctx.fillStyle = '#0B1D3A';
+  ctx.fill();
+  ctx.fillStyle = '#D4AF37';
+  ctx.font = 'bold 22px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('10B', cx, cy - 8);
+  ctx.fillStyle = '#aebbd0';
+  ctx.font = '11px Arial';
+  ctx.fillText('AION', cx, cy + 12);
+}
+drawPie();
+
+// Investment Calculator
+function calcInvestment() {
+  const usd = parseFloat(document.getElementById('calcAmount').value) || 0;
+  const aion = Math.floor(usd / 0.01);
+  document.getElementById('calcAion').textContent = aion.toLocaleString('en-US') + ' AION';
+  document.getElementById('proj10').textContent = '$' + (aion * 0.10).toLocaleString('en-US');
+  document.getElementById('proj100').textContent = '$' + (aion * 1.00).toLocaleString('en-US');
+  document.getElementById('proj1000').textContent = '$' + (aion * 10.00).toLocaleString('en-US');
+}
+
+// Referral Copy
+function copyRef() {
+  const input = document.getElementById('refLink');
+  input.select();
+  navigator.clipboard.writeText(input.value).then(() => {
+    event.target.textContent = '✓ تم النسخ';
+    setTimeout(() => event.target.textContent = 'نسخ الرابط', 2000);
+  });
+}
+
+// Presale Form
 function submitForm(e){
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
@@ -251,18 +474,14 @@ function submitForm(e){
   const name = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
   const amount = document.getElementById('amount').value;
-
   if (!name || !email) return;
-
   btn.disabled = true;
   btn.textContent = 'جاري الحجز...';
-
   try {
     const list = JSON.parse(localStorage.getItem('aion_presale') || '[]');
     list.push({name, email, amount, date: new Date().toISOString()});
     localStorage.setItem('aion_presale', JSON.stringify(list));
   } catch(e){}
-
   setTimeout(function(){
     btn.disabled = false;
     btn.textContent = 'احجز الآن';
