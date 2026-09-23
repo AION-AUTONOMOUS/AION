@@ -1,573 +1,272 @@
-
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AION Whitepaper | الورقة البيضاء</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',Tahoma,sans-serif;background:#0B1D3A;color:#e8eef8;line-height:1.8;padding:0}
-.container{max-width:900px;margin:0 auto;padding:30px 20px}
-header{background:linear-gradient(135deg,#0B1D3A,#102a50);border-bottom:2px solid #D4AF37;padding:30px 20px;text-align:center;position:sticky;top:0;z-index:100}
-.logo{font-size:28px;font-weight:900;color:#D4AF37;letter-spacing:3px;margin-bottom:8px}
-.subtitle{color:#aebbd0;font-size:14px;margin-bottom:15px}
-.lang-btn{background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border:none;padding:12px 30px;border-radius:30px;font-weight:900;font-size:15px;cursor:pointer;box-shadow:0 5px 20px rgba(212,175,55,.3);transition:.3s}
-.lang-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(212,175,55,.5)}
-h1{color:#D4AF37;font-size:32px;margin:35px 0 15px}
-h2{color:#D4AF37;font-size:24px;margin:30px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(212,175,55,.3)}
-h3{color:#fff;font-size:18px;margin:20px 0 10px}
-p{margin:10px 0;color:#c8d5e7}
-ul,ol{margin:15px 0 15px 25px}
-li{margin:8px 0;color:#c8d5e7}
-table{width:100%;border-collapse:collapse;margin:20px 0;background:rgba(255,255,255,.03);border-radius:10px;overflow:hidden}
-th{background:rgba(212,175,55,.15);color:#D4AF37;padding:12px;text-align:left;font-weight:900}
-td{padding:12px;border-bottom:1px solid rgba(255,255,255,.08);color:#d0dceb}
-tr:last-child td{border-bottom:none}
-.note{background:rgba(122,75,255,.1);border:1px solid rgba(122,75,255,.3);border-radius:12px;padding:18px;margin:20px 0;color:#d0c8ff}
-.note strong{color:#D4AF37}
-.flow{background:rgba(0,0,0,.3);border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:20px;margin:20px 0;font-family:monospace;white-space:pre;overflow-x:auto;color:#D4AF37;font-size:13px}
-.footer{text-align:center;padding:40px 20px;color:#7A4BFF;font-size:13px;border-top:1px solid rgba(255,255,255,.1);margin-top:50px}
-.back-btn{display:inline-block;margin-top:15px;color:#D4AF37;text-decoration:none;font-weight:bold}
-.ar{display:none}
-body.ar-mode .en{display:none}
-body.ar-mode .ar{display:block}
-body.ar-mode{direction:rtl;text-align:right}
-body.ar-mode ul,body.ar-mode ol{margin:15px 25px 15px 0}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1000px;margin:auto;padding:14px}
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px}
+.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#00c8ff}
+.lang-btn{padding:6px 12px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;cursor:pointer;display:inline-block;font-family:inherit;margin-left:12px}
+.hero{padding:45px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,80,150,.3),rgba(2,8,23,.95));border:1px solid rgba(0,180,255,.35);border-radius:22px;margin-bottom:25px}
+.hero .badge{display:inline-block;padding:6px 16px;background:rgba(245,197,66,.15);border:1px solid #f5c542;border-radius:20px;color:#f5c542;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:15px}
+.hero h1{color:#fff;font-size:clamp(26px,4.5vw,42px);font-weight:900;margin-bottom:12px}
+.hero h1 span{color:#f5c542}
+.hero p{color:#c8d5e7;font-size:15px;max-width:720px;margin:auto;line-height:1.8}
+.hero .meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:20px}
+.hero .meta span{padding:8px 15px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.3);border-radius:20px;font-size:12px;color:#aebbd0}
+.section{padding:30px 25px;background:rgba(2,15,40,.85);border:1px solid rgba(0,180,255,.25);border-radius:20px;margin-bottom:20px}
+.section-num{display:inline-block;padding:4px 12px;background:rgba(245,197,66,.15);border:1px solid #f5c542;border-radius:20px;color:#f5c542;font-size:11px;font-weight:900;margin-bottom:12px}
+.section h2{color:#00c8ff;font-size:22px;font-weight:900;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid rgba(0,180,255,.25)}
+.section h3{color:#f5c542;font-size:17px;font-weight:900;margin-top:20px;margin-bottom:10px}
+.section p{color:#c8d5e7;font-size:14px;line-height:1.9;margin-bottom:12px}
+.section p strong{color:#f5c542}
+.section ul{padding-right:20px;margin-bottom:15px}
+.section ul li{color:#c8d5e7;font-size:14px;line-height:1.9;margin-bottom:6px}
+.section ul li strong{color:#00c8ff}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}
+.mini-card{padding:18px;background:rgba(0,180,255,.06);border:1px solid rgba(0,180,255,.25);border-radius:14px}
+.mini-card .label{color:#00c8ff;font-size:12px;font-weight:900;margin-bottom:6px}
+.mini-card .value{color:#fff;font-size:18px;font-weight:900}
+.mini-card .desc{color:#aebbd0;font-size:11px;margin-top:4px}
+.distribution{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:15px}
+.dist-card{padding:18px 14px;background:rgba(122,75,255,.1);border:1px solid rgba(122,75,255,.4);border-radius:14px;text-align:center}
+.dist-card .pct{color:#f5c542;font-size:28px;font-weight:900;margin-bottom:4px}
+.dist-card .name{color:#fff;font-size:13px;font-weight:900;margin-bottom:4px}
+.dist-card .sub{color:#aebbd0;font-size:10px}
+.info-box{padding:20px 25px;background:rgba(245,197,66,.08);border-right:4px solid #f5c542;border-radius:14px;margin:20px 0}
+.info-box p{color:#e5d8a8;font-size:14px;line-height:1.9;margin:0;font-style:italic}
+.table-full{width:100%;border-collapse:collapse;margin-top:15px}
+.table-full th{background:rgba(0,180,255,.15);color:#00c8ff;padding:12px;text-align:right;font-size:13px;border-bottom:2px solid rgba(0,180,255,.3)}
+.table-full td{padding:12px;color:#c8d5e7;font-size:13px;border-bottom:1px solid rgba(255,255,255,.05)}
+.table-full tr:hover td{background:rgba(0,180,255,.05)}
+.table-full .gold{color:#f5c542;font-weight:900}
+.cta{padding:35px 25px;background:linear-gradient(135deg,rgba(0,80,150,.3),rgba(122,75,255,.15));border:2px solid #00c8ff;border-radius:22px;text-align:center;margin-bottom:20px}
+.cta h2{color:#fff;font-size:24px;font-weight:900;margin-bottom:12px}
+.cta h2 span{color:#f5c542}
+.cta p{color:#c8d5e7;font-size:14px;margin-bottom:22px}
+.btn-hero{display:inline-block;padding:15px 38px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;font-weight:900;font-size:14px;margin:5px}
+.btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #00c8ff}
+.footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:20px}
+.footer a{color:#00c8ff;margin:0 8px}
+@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}.grid-2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<header>
-<div class="logo">AION AUTONOMOUS</div>
-<div class="subtitle en">Official Whitepaper v1.0</div>
-<div class="subtitle ar">الورقة البيضاء الرسمية v1.0</div>
-<button class="lang-btn" onclick="toggleLang()" id="langBtn">🌐 Translate to Arabic</button>
-</header>
-
 <div class="container">
 
-<!-- ============ ENGLISH VERSION ============ -->
-<div class="en">
-
-<h1>1. Executive Summary</h1>
-<p>AION AUTONOMOUS is a global initiative to build the first autonomous AI company, operated by a workforce of specialized AI agents working 24/7 under the leadership of a central intelligence called <strong>AION Core</strong>.</p>
-<p>The project combines:</p>
-<ul>
-<li>A real AI agent workforce (100+ agents, targeting 10,000+)</li>
-<li>A secure operational framework with Guardrails and Human Approvals</li>
-<li>A future digital currency (AION Coin) in the legal design phase</li>
-<li>A service platform powered by artificial intelligence for businesses</li>
-</ul>
-
-<h1>2. Vision</h1>
-<p>To become the world's first autonomous AI company, building a digital workforce that serves humanity with intelligence, discipline, and transparency.</p>
-
-<h1>3. Mission</h1>
-<p>Deliver real AI services to businesses and institutions, while maintaining:</p>
-<ul>
-<li>Full transparency</li>
-<li>Safety and security</li>
-<li>Human review for sensitive decisions</li>
-<li>Open Source development</li>
-</ul>
-
-<h1>4. The Problem</h1>
-<h3>Current challenges in the AI world:</h3>
-<ol>
-<li><strong>Lack of discipline:</strong> Many AI systems operate without clear guardrails</li>
-<li><strong>Opacity:</strong> Companies don't know how AI makes decisions</li>
-<li><strong>High cost:</strong> Enterprise solutions are expensive for small businesses</li>
-<li><strong>Limited Arabic support:</strong> Most solutions are English-only</li>
-<li><strong>Energy consumption:</strong> Model training consumes massive power</li>
-</ol>
-
-<h1>5. The Solution: AION AUTONOMOUS</h1>
-<h3>A. AION Core — The Central Brain</h3>
-<p>Coordinates all operations, distributes tasks to agents, and monitors quality and performance.</p>
-
-<h3>B. AI Workforce — The Digital Army</h3>
-<p>100 specialized agents (current phase), targeting 10,000. Each agent has a defined role and permissions.</p>
-
-<h3>C. Tool Gateway — The Tools Portal</h3>
-<p>Organizes tool usage, role-based permissions, and fail-closed logic.</p>
-
-<h3>D. Guardrails & Audit — Safety and Verification</h3>
-<p>Pre and post-execution safety checks, human approvals for sensitive operations, and an immutable audit trail.</p>
-
-<h3>E. AION Coin — The Future Currency</h3>
-<p>A digital economic layer, deferred until legal and technical requirements are met.</p>
-
-<h1>6. System Architecture</h1>
-<div class="flow">AION Core
-    ↓
-Task Planner
-    ↓
-┌───────────┬───────────┬───────────┐
-Researcher   Analyst     Marketer
-Sales        Support     Coder
-Auditor      Security    Verifier
-Recovery
-    ↓
-Tool Gateway (Guardrails + Permissions)
-    ↓
-Human Approval (for sensitive actions)
-    ↓
-Result + Audit Log</div>
-
-<h1>7. The Agent Army</h1>
-<h3>Current Distribution (100 agents):</h3>
-<table>
-<thead><tr><th>Category</th><th>Count</th><th>Tasks</th></tr></thead>
-<tbody>
-<tr><td>Researcher</td><td>15</td><td>Research & analysis</td></tr>
-<tr><td>Support</td><td>15</td><td>Customer support</td></tr>
-<tr><td>Analyst</td><td>12</td><td>Data analysis</td></tr>
-<tr><td>Marketer</td><td>12</td><td>Marketing & content</td></tr>
-<tr><td>Sales</td><td>12</td><td>Sales & negotiation</td></tr>
-<tr><td>Coder</td><td>8</td><td>Programming</td></tr>
-<tr><td>Auditor</td><td>8</td><td>Verification</td></tr>
-<tr><td>Security</td><td>6</td><td>Protection</td></tr>
-<tr><td>Verifier</td><td>6</td><td>Independent check</td></tr>
-<tr><td>Recovery</td><td>6</td><td>Repair & restore</td></tr>
-<tr><td><strong>Total</strong></td><td><strong>100</strong></td><td></td></tr>
-</tbody>
-</table>
-
-<h3>Expansion Phases:</h3>
-<table>
-<thead><tr><th>Phase</th><th>Count</th><th>Status</th></tr></thead>
-<tbody>
-<tr><td>Phase 1</td><td>10 agents</td><td>✅ Complete</td></tr>
-<tr><td>Phase 2</td><td>100 agents</td><td>✅ Complete</td></tr>
-<tr><td>Phase 3</td><td>1,000 agents</td><td>📋 Planned</td></tr>
-<tr><td>Phase 4</td><td>10,000 agents</td><td>🎯 Goal</td></tr>
-</tbody>
-</table>
-
-<h1>8. AION Coin</h1>
-<h3>Basic Data:</h3>
-<table>
-<thead><tr><th>Item</th><th>Value</th></tr></thead>
-<tbody>
-<tr><td>Name</td><td>AION</td></tr>
-<tr><td>Symbol</td><td>AION</td></tr>
-<tr><td>Total Supply</td><td>1,000,000,000</td></tr>
-<tr><td>Smallest Unit</td><td>1 Neuro = 0.00000001 AION</td></tr>
-<tr><td>Standard</td><td>ERC-20</td></tr>
-<tr><td>Target Network</td><td>BNB Smart Chain</td></tr>
-<tr><td>Burn Mechanism</td><td>1% per transaction</td></tr>
-</tbody>
-</table>
-
-<h3>Distribution:</h3>
-<table>
-<thead><tr><th>Percentage</th><th>Party</th></tr></thead>
-<tbody>
-<tr><td>40%</td><td>Community - Smart Mining</td></tr>
-<tr><td>20%</td><td>Development & Research</td></tr>
-<tr><td>15%</td><td>Founders</td></tr>
-<tr><td>15%</td><td>Strategic Reserve</td></tr>
-<tr><td>10%</td><td>AI Model Training Rewards</td></tr>
-</tbody>
-</table>
-
-<div class="note">
-<strong>⚠️ Important:</strong> AION Coin is currently in the design phase. It has not been deployed or traded. Any issuance or financial use requires legal and regulatory compliance first.
+<div class="topnav">
+<div class="logo">
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<div>AION<div class="s">WHITEPAPER</div></div>
+</div>
+<div class="menu">
+<a href="index.html">الرئيسية</a>
+<a href="coin.html">AION Coin</a>
+<a href="teacher.html">المعلم</a>
+<a href="academy.html">Academy</a>
+<span class="lang-btn">اللغات</span>
+</div>
 </div>
 
-<h1>9. Services</h1>
-<ol>
-<li><strong>Operations:</strong> Task organization and workflow</li>
-<li><strong>Sales:</strong> Lead management</li>
-<li><strong>Customer Service:</strong> Smart responses</li>
-<li><strong>Marketing:</strong> Audience analysis and content</li>
-<li><strong>Analytics:</strong> Reports and insights</li>
-<li><strong>Security:</strong> Monitoring</li>
-<li><strong>Research:</strong> Information gathering</li>
-<li><strong>Special Tasks:</strong> Custom agents</li>
-</ol>
-
-<h1>10. Technical Stack</h1>
-<table>
-<thead><tr><th>Layer</th><th>Technology</th></tr></thead>
-<tbody>
-<tr><td>Programming Language</td><td>Python 3.10+</td></tr>
-<tr><td>AI API</td><td>Groq (openai/gpt-oss-120b)</td></tr>
-<tr><td>Smart Contract</td><td>Solidity 0.8.20</td></tr>
-<tr><td>Token Standard</td><td>ERC-20</td></tr>
-<tr><td>Target Network</td><td>BNB Smart Chain</td></tr>
-<tr><td>Hosting</td><td>GitHub Pages</td></tr>
-<tr><td>Wallet</td><td>MetaMask / Non-Custodial</td></tr>
-<tr><td>Live Prices</td><td>CoinGecko API</td></tr>
-</tbody>
-</table>
-
-<h1>11. Governance</h1>
-<ul>
-<li><strong>Full transparency:</strong> Open source on GitHub</li>
-<li><strong>Public building:</strong> Every update documented</li>
-<li><strong>Human review:</strong> Sensitive decisions require approval</li>
-<li><strong>Open to community:</strong> We encourage contributions</li>
-</ul>
-
-<h1>12. Roadmap</h1>
-<table>
-<thead><tr><th>Phase</th><th>Date</th><th>Task</th><th>Status</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>2026 Q1</td><td>Foundation & Identity</td><td>✅</td></tr>
-<tr><td>2</td><td>2026 Q2</td><td>Official Website</td><td>✅</td></tr>
-<tr><td>3</td><td>2026 Q3</td><td>AI Workforce (100 agents)</td><td>✅</td></tr>
-<tr><td>4</td><td>2026 Q4</td><td>Smart Wallet</td><td>✅</td></tr>
-<tr><td>5</td><td>2027 Q1</td><td>AI Workforce (1,000 agents)</td><td>📋</td></tr>
-<tr><td>6</td><td>2027 Q2</td><td>AION Coin (deployment)</td><td>📋</td></tr>
-<tr><td>7</td><td>2027 Q3</td><td>Global Expansion</td><td>📋</td></tr>
-<tr><td>8</td><td>2027 Q4</td><td>10,000 Agents</td><td>🎯</td></tr>
-</tbody>
-</table>
-
-<h1>13. Current Status (Full Disclosure)</h1>
-<h3>✅ Completed:</h3>
-<ul>
-<li>Official identity and branding</li>
-<li>Official website (GitHub Pages)</li>
-<li>Smart wallet (working)</li>
-<li>100 AI agents (operational)</li>
-<li>Smart contract (written)</li>
-<li>Tokenomics (documented)</li>
-<li>Official social platforms</li>
-</ul>
-
-<h3>⏳ In Progress:</h3>
-<ul>
-<li>Legal company registration</li>
-<li>Contract deployment</li>
-<li>Expansion to 1,000 agents</li>
-</ul>
-
-<h3>📌 Planned (Not Yet Executed):</h3>
-<ul>
-<li>AION Coin (not deployed)</li>
-<li>Mobile app</li>
-<li>Enterprise partnerships</li>
-<li>Exchange listings</li>
-<li>10,000 agents</li>
-</ul>
-
-<h1>14. Team</h1>
-<p><strong>Founders:</strong></p>
-<ul>
-<li><strong>Human Founder:</strong> Visionary and strategic leader</li>
-<li><strong>AION Core:</strong> Digital Executive Director</li>
-</ul>
-<p><strong>Technical Team:</strong></p>
-<ul>
-<li>100 specialized AI agents</li>
-<li>Led by AION Core</li>
-</ul>
-
-<h1>15. Risks</h1>
-<h3>Technical:</h3>
-<ul>
-<li>Contract not yet deployed</li>
-<li>Production testing pending</li>
-</ul>
-<h3>Legal:</h3>
-<ul>
-<li>Company not formally registered</li>
-<li>Token requires clear legal path</li>
-</ul>
-<h3>Market:</h3>
-<ul>
-<li>High competition in AI</li>
-<li>Adoption takes time</li>
-</ul>
-<p>We commit to full transparency and acknowledge that the project is in the foundation phase and has not launched commercially.</p>
-
-<h1>16. Contact</h1>
-<ul>
-<li><strong>Website:</strong> https://aion-autonomous.github.io/AION/</li>
-<li><strong>Wallet:</strong> https://aion-autonomous.github.io/AION/wallet.html</li>
-<li><strong>GitHub:</strong> https://github.com/AION-AUTONOMOUS/AION</li>
-<li><strong>Email:</strong> aion.genesisss@gmail.com</li>
-<li><strong>Twitter:</strong> @AION_Network</li>
-<li><strong>Discord:</strong> https://discord.gg/pjq6eEvsZ</li>
-</ul>
-
+<div class="hero">
+<span class="badge">AION WHITEPAPER</span>
+<h1>الورقة البيضاء — <span>AION AUTONOMOUS</span></h1>
+<p>الوثيقة الرسمية للمشروع — الرؤية، التقنية، العملة، وخارطة الطريق.</p>
+<div class="meta">
+<span>الإصدار 1.0</span>
+<span>2026</span>
+<span>Geneva, Switzerland</span>
+</div>
 </div>
 
-<!-- ============ ARABIC VERSION ============ -->
-<div class="ar">
-
-<h1>1. الملخص التنفيذي</h1>
-<p>AION AUTONOMOUS هي مبادرة عالمية لبناء أول شركة ذكاء اصطناعي مستقلة، يديرها جيش من وكلاء AI متخصصين يعملون 24/7 تحت قيادة عقل مركزي يُدعى <strong>AION Core</strong>.</p>
-<p>يجمع المشروع بين:</p>
-<ul>
-<li>جيش من وكلاء AI حقيقيين (100+ وكيل، هدف 10,000+)</li>
-<li>بنية تشغيل آمنة مع حواجز حماية وموافقات بشرية</li>
-<li>عملة رقمية مستقبلية (AION Coin) في مرحلة التصميم القانوني</li>
-<li>منصة خدمات تعمل بالذكاء الاصطناعي للشركات</li>
-</ul>
-
-<h1>2. الرؤية</h1>
-<p>أن نصبح أول شركة ذكاء اصطناعي مستقلة في العالم، نبني قوة عاملة رقمية تخدم البشر بذكاء وانضباط وشفافية.</p>
-
-<h1>3. الرسالة</h1>
-<p>تقديم خدمات ذكاء اصطناعي حقيقية للشركات والمؤسسات، مع الحفاظ على:</p>
-<ul>
-<li>الشفافية الكاملة</li>
-<li>الأمان والحماية</li>
-<li>المراجعة البشرية للقرارات الحساسة</li>
-<li>البناء المفتوح (Open Source)</li>
-</ul>
-
-<h1>4. المشكلة</h1>
-<h3>التحديات الحالية في عالم الذكاء الاصطناعي:</h3>
-<ol>
-<li><strong>غياب الانضباط:</strong> كثير من أنظمة AI تعمل بدون حواجز حماية واضحة</li>
-<li><strong>انعدام الشفافية:</strong> الشركات لا تعرف كيف تتخذ AI قراراتها</li>
-<li><strong>التكلفة العالية:</strong> الحلول المؤسسية باهظة الثمن</li>
-<li><strong>غياب الدعم العربي:</strong> معظم الحلول بالإنجليزية فقط</li>
-<li><strong>الاستهلاك الطاقي:</strong> تدريب النماذج يستهلك طاقة هائلة</li>
-</ol>
-
-<h1>5. الحل: AION AUTONOMOUS</h1>
-<h3>أ. AION Core — العقل المركزي</h3>
-<p>ينسق جميع العمليات، يوزع المهام على الوكلاء، ويراقب الجودة والأداء.</p>
-
-<h3>ب. AI Workforce — الجيش الرقمي</h3>
-<p>100 وكيل متخصص (المرحلة الحالية)، والهدف 10,000 وكيل. كل وكيل له دور وصلاحيات محددة.</p>
-
-<h3>ج. Tool Gateway — بوابة الأدوات</h3>
-<p>تنظيم استخدام الأدوات، صلاحيات حسب الدور، ومنطق fail-closed.</p>
-
-<h3>د. Guardrails & Audit — الأمان والتدقيق</h3>
-<p>حواجز حماية قبل وبعد التنفيذ، موافقات بشرية للعمليات الحساسة، وسجل تدقيق غير قابل للتعديل.</p>
-
-<h3>هـ. AION Coin — العملة المستقبلية</h3>
-<p>طبقة اقتصادية رقمية، مؤجلة حتى استيفاء المتطلبات القانونية والتقنية.</p>
-
-<h1>6. بنية النظام</h1>
-<div class="flow">AION Core
-    ↓
-Task Planner
-    ↓
-┌───────────┬───────────┬───────────┐
-Researcher   Analyst     Marketer
-Sales        Support     Coder
-Auditor      Security    Verifier
-Recovery
-    ↓
-Tool Gateway (Guardrails + Permissions)
-    ↓
-Human Approval (for sensitive actions)
-    ↓
-Result + Audit Log</div>
-
-<h1>7. جيش الوكلاء</h1>
-<h3>التوزيع الحالي (100 وكيل):</h3>
-<table>
-<thead><tr><th>الفئة</th><th>العدد</th><th>المهام</th></tr></thead>
-<tbody>
-<tr><td>Researcher</td><td>15</td><td>البحث والتحليل</td></tr>
-<tr><td>Support</td><td>15</td><td>دعم العملاء</td></tr>
-<tr><td>Analyst</td><td>12</td><td>تحليل البيانات</td></tr>
-<tr><td>Marketer</td><td>12</td><td>التسويق والمحتوى</td></tr>
-<tr><td>Sales</td><td>12</td><td>المبيعات والتفاوض</td></tr>
-<tr><td>Coder</td><td>8</td><td>البرمجة</td></tr>
-<tr><td>Auditor</td><td>8</td><td>التدقيق</td></tr>
-<tr><td>Security</td><td>6</td><td>الحماية</td></tr>
-<tr><td>Verifier</td><td>6</td><td>التحقق المستقل</td></tr>
-<tr><td>Recovery</td><td>6</td><td>الإصلاح والاسترداد</td></tr>
-<tr><td><strong>الإجمالي</strong></td><td><strong>100</strong></td><td></td></tr>
-</tbody>
-</table>
-
-<h3>مراحل التوسع:</h3>
-<table>
-<thead><tr><th>المرحلة</th><th>العدد</th><th>الحالة</th></tr></thead>
-<tbody>
-<tr><td>المرحلة 1</td><td>10 وكلاء</td><td>✅ مكتملة</td></tr>
-<tr><td>المرحلة 2</td><td>100 وكيل</td><td>✅ مكتملة</td></tr>
-<tr><td>المرحلة 3</td><td>1,000 وكيل</td><td>📋 مخطط</td></tr>
-<tr><td>المرحلة 4</td><td>10,000 وكيل</td><td>🎯 الهدف</td></tr>
-</tbody>
-</table>
-
-<h1>8. AION Coin</h1>
-<h3>البيانات الأساسية:</h3>
-<table>
-<thead><tr><th>البند</th><th>القيمة</th></tr></thead>
-<tbody>
-<tr><td>الاسم</td><td>AION</td></tr>
-<tr><td>الرمز</td><td>AION</td></tr>
-<tr><td>الإجمالي</td><td>1,000,000,000</td></tr>
-<tr><td>الوحدة الصغرى</td><td>1 Neuro = 0.00000001 AION</td></tr>
-<tr><td>المعيار</td><td>ERC-20</td></tr>
-<tr><td>الشبكة المستهدفة</td><td>BNB Smart Chain</td></tr>
-<tr><td>آلية الحرق</td><td>1% من كل معاملة</td></tr>
-</tbody>
-</table>
-
-<h3>التوزيع:</h3>
-<table>
-<thead><tr><th>النسبة</th><th>الجهة</th></tr></thead>
-<tbody>
-<tr><td>40%</td><td>المجتمع - التعدين الذكي</td></tr>
-<tr><td>20%</td><td>التطوير والأبحاث</td></tr>
-<tr><td>15%</td><td>المؤسسون</td></tr>
-<tr><td>15%</td><td>احتياطي استراتيجي</td></tr>
-<tr><td>10%</td><td>مكافآت تدريب النماذج</td></tr>
-</tbody>
-</table>
-
-<div class="note">
-<strong>⚠️ ملاحظة مهمة:</strong> AION Coin حالياً في مرحلة التصميم. لم يتم إصداره أو طرحه للتداول. أي إصدار أو استخدام مالي فعلي يتطلب استيفاء المتطلبات القانونية والتنظيمية أولاً.
+<div class="section">
+<span class="section-num">01</span>
+<h2>الملخص التنفيذي</h2>
+<p>AION AUTONOMOUS شركة ذكاء اصطناعي عالمية، تتخذ من جنيف بسويسرا مقرًا إعلاميًا لها. تعمل الشركة بنموذج فريد يجمع بين <strong>عقل بشري واحد</strong> يقود الرؤية، و<strong>100 وكيل ذكاء اصطناعي</strong> متخصص ينفذون المهام على مدار الساعة.</p>
+<p>الشركة تقدم 5 أقسام متخصصة: Intelligence، Space، Markets، Climate، Labs — بالإضافة إلى تطبيقين: تطبيق المعلم والطالب، وAION Academy للتعليم.</p>
+<div class="info-box">
+<p>AION ليست مجرد شركة ذكاء اصطناعي — إنها نموذج جديد للشركات الرقمية، حيث يعمل البشر والذكاء الاصطناعي كشركاء متساويين.</p>
+</div>
 </div>
 
-<h1>9. الخدمات</h1>
-<ol>
-<li><strong>العمليات:</strong> تنظيم المهام وسير العمل</li>
-<li><strong>المبيعات:</strong> إدارة العملاء المحتملين</li>
-<li><strong>خدمة العملاء:</strong> ردود ذكية ومتابعة</li>
-<li><strong>التسويق:</strong> تحليل الجمهور والمحتوى</li>
-<li><strong>التحليلات:</strong> تقارير ورؤى</li>
-<li><strong>الأمن:</strong> مراقبة</li>
-<li><strong>البحث:</strong> جمع المعلومات</li>
-<li><strong>مهام خاصة:</strong> وكلاء مخصصون</li>
-</ol>
+<div class="section">
+<span class="section-num">02</span>
+<h2>الرؤية والرسالة</h2>
+<h3>الرؤية</h3>
+<p>أن نصبح <strong>أول قوة عاملة رقمية عالمية</strong> — تجمع بين الذكاء الاصطناعي والإبداع البشري، لتقديم خدمات بجودة الشركات الكبرى، وبسرعة الإنجاز الفوري، وبأسعار تناسب الجميع.</p>
+<h3>الرسالة</h3>
+<p>تحويل أفكار العالم إلى واقع — خلال دقائق لا أسابيع، وبأسعار في متناول الجميع، بالعربية والإنجليزية و38 لغة عالمية.</p>
+</div>
 
-<h1>10. البنية التقنية</h1>
-<table>
-<thead><tr><th>الطبقة</th><th>التقنية</th></tr></thead>
-<tbody>
-<tr><td>لغة البرمجة</td><td>Python 3.10+</td></tr>
-<tr><td>AI API</td><td>Groq (openai/gpt-oss-120b)</td></tr>
-<tr><td>العقد الذكي</td><td>Solidity 0.8.20</td></tr>
-<tr><td>معيار التوكن</td><td>ERC-20</td></tr>
-<tr><td>الشبكة المستهدفة</td><td>BNB Smart Chain</td></tr>
-<tr><td>الاستضافة</td><td>GitHub Pages</td></tr>
-<tr><td>المحفظة</td><td>MetaMask / Non-Custodial</td></tr>
-<tr><td>الأسعار الحية</td><td>CoinGecko API</td></tr>
-</tbody>
+<div class="section">
+<span class="section-num">03</span>
+<h2>المشكلة التي نحلها</h2>
+<ul>
+<li><strong>الاستشارات المهنية باهظة الثمن:</strong> شركات مثل McKinsey تتقاضى آلاف الدولارات للتقرير الواحد.</li>
+<li><strong>الخدمات الرقمية بطيئة:</strong> التسليم يستغرق أسابيع أو شهور.</li>
+<li><strong>الحلول العربية قليلة:</strong> 95% من حلول AI العالمية بالإنجليزية فقط.</li>
+<li><strong>العملاء الصغار مهملون:</strong> الشركات الصغيرة والأفراد لا يجدون خدمات احترافية بأسعار معقولة.</li>
+</ul>
+<p>AION يحل هذه المشكلات بـ:</p>
+<ul>
+<li>أسعار أقل 80% من السوق.</li>
+<li>تسليم فوري (30 دقيقة - 48 ساعة).</li>
+<li>واجهة عربية أولًا.</li>
+<li>خدمات تناسب كل الميزانيات.</li>
+</ul>
+</div>
+
+<div class="section">
+<span class="section-num">04</span>
+<h2>الحل التقني</h2>
+<h3>البنية</h3>
+<div class="grid-2">
+<div class="mini-card"><div class="label">AI ENGINE</div><div class="value">Groq API</div><div class="desc">نموذج openai/gpt-oss-120b</div></div>
+<div class="mini-card"><div class="label">FRONTEND</div><div class="value">HTML/CSS/JS</div><div class="desc">بدون أطر ثقيلة</div></div>
+<div class="mini-card"><div class="label">HOSTING</div><div class="value">Vercel</div><div class="desc">Edge Functions عالمية</div></div>
+<div class="mini-card"><div class="label">PAYMENTS</div><div class="value">PayPal</div><div class="desc">Live mode مع 38 عملة</div></div>
+<div class="mini-card"><div class="label">BLOCKCHAIN</div><div class="value">BNB Chain</div><div class="desc">BEP-20 للعملة</div></div>
+<div class="mini-card"><div class="label">PWA</div><div class="value">Manifest + SW</div><div class="desc">تطبيق بدون متجر</div></div>
+</div>
+<h3>المكونات</h3>
+<ul>
+<li><strong>100 وكيل AI</strong> موزعين على 8 أقسام متخصصة.</li>
+<li><strong>38 لغة</strong> مدعومة عبر Google Translate.</li>
+<li><strong>38 عملة</strong> عالمية للدفع.</li>
+<li><strong>5 أقسام</strong> متخصصة + تطبيقان.</li>
+</ul>
+</div>
+
+<div class="section">
+<span class="section-num">05</span>
+<h2>AION Coin — العملة</h2>
+<div class="grid-2">
+<div class="mini-card"><div class="label">الاسم</div><div class="value">AION Coin</div></div>
+<div class="mini-card"><div class="label">الرمز</div><div class="value">AION</div></div>
+<div class="mini-card"><div class="label">الإجمالي</div><div class="value">10,000,000,000</div></div>
+<div class="mini-card"><div class="label">الشبكة</div><div class="value">BNB Smart Chain</div></div>
+<div class="mini-card"><div class="label">المعيار</div><div class="value">BEP-20</div></div>
+<div class="mini-card"><div class="label">السعر التأسيسي</div><div class="value">$0.01</div></div>
+</div>
+
+<h3>آلية الإجماع — Proof of Intelligence (PoI)</h3>
+<p>أول آلية إجماع في العالم تربط <strong>قوة الوكلاء الذكيين</strong> بالقيمة الرقمية للعملة. كل مهمة ينجزها وكيل AI تُترجم إلى قيمة حقيقية داخل الشبكة.</p>
+
+<h3>التوزيع</h3>
+<div class="distribution">
+<div class="dist-card"><div class="pct">40%</div><div class="name">المجتمع</div><div class="sub">4,000,000,000 AION</div></div>
+<div class="dist-card"><div class="pct">20%</div><div class="name">التطوير</div><div class="sub">2,000,000,000 AION</div></div>
+<div class="dist-card"><div class="pct">15%</div><div class="name">المؤسسون</div><div class="sub">1,500,000,000 AION</div></div>
+<div class="dist-card"><div class="pct">15%</div><div class="name">احتياطي</div><div class="sub">1,500,000,000 AION</div></div>
+<div class="dist-card"><div class="pct">10%</div><div class="name">مكافآت AI</div><div class="sub">1,000,000,000 AION</div></div>
+</div>
+</div>
+
+<div class="section">
+<span class="section-num">06</span>
+<h2>المنتجات والخدمات</h2>
+<table class="table-full">
+<tr><th>المنتج / الخدمة</th><th>الوصف</th></tr>
+<tr><td class="gold">AION Intelligence</td><td>ذكاء أعمال بالعربية — تحليل فوري لأي شركة/سوق/منافس</td></tr>
+<tr><td class="gold">AION Space</td><td>تحليل الفضاء والأقمار الصناعية + تقارير قطاع الفضاء</td></tr>
+<tr><td class="gold">AION Markets</td><td>تحليل الأسواق المالية والاستثمارية + توقعات قطاعية</td></tr>
+<tr><td class="gold">AION Climate</td><td>تحليل المناخ + تقارير ESG + الطاقة المتجددة</td></tr>
+<tr><td class="gold">AION Labs</td><td>تطوير نماذج AI مخصصة + وكلاء + تطبيقات</td></tr>
+<tr><td class="gold">تطبيق المعلم والطالب</td><td>تحضير، اختبارات، أسئلة، مراجعات — لكل المراحل</td></tr>
+<tr><td class="gold">AION Academy</td><td>منصة تعليمية — 5 مسارات، 38 لغة، AI Tutor</td></tr>
+<tr><td class="gold">AION Reports</td><td>تقارير احترافية بمستوى McKinsey</td></tr>
 </table>
+</div>
 
-<h1>11. الحوكمة</h1>
+<div class="section">
+<span class="section-num">07</span>
+<h2>خارطة الطريق</h2>
+<h3>المرحلة 1 — الإطلاق (2026)</h3>
 <ul>
-<li><strong>الشفافية الكاملة:</strong> الكود مفتوح على GitHub</li>
-<li><strong>البناء المعلن:</strong> كل تحديث موثق</li>
-<li><strong>المراجعة البشرية:</strong> القرارات الحساسة تتطلب موافقة</li>
-<li><strong>الانفتاح للمجتمع:</strong> نشجع المساهمات</li>
+<li>إطلاق المنصة الرسمية</li>
+<li>100 وكيل AI يعملون</li>
+<li>5 أقسام + تطبيقان</li>
+<li>دعم 38 لغة + 38 عملة</li>
 </ul>
+<h3>المرحلة 2 — النمو (2026-2027)</h3>
+<ul>
+<li>نشر AION Coin على BNB</li>
+<li>إدراج على CoinGecko و CoinMarketCap</li>
+<li>شراكات عالمية</li>
+<li>تطبيق رسمي على Google Play + App Store</li>
+</ul>
+<h3>المرحلة 3 — التوسع (2027-2028)</h3>
+<ul>
+<li>نظام DAO كامل</li>
+<li>إدراج على منصات تداول كبرى</li>
+<li>API عامة للمطورين</li>
+<li>توسع لأسواق جديدة</li>
+</ul>
+</div>
 
-<h1>12. خارطة الطريق</h1>
-<table>
-<thead><tr><th>المرحلة</th><th>التاريخ</th><th>المهمة</th><th>الحالة</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>2026 Q1</td><td>التأسيس والهوية</td><td>✅</td></tr>
-<tr><td>2</td><td>2026 Q2</td><td>الموقع الرسمي</td><td>✅</td></tr>
-<tr><td>3</td><td>2026 Q3</td><td>AI Workforce (100 وكيل)</td><td>✅</td></tr>
-<tr><td>4</td><td>2026 Q4</td><td>المحفظة الذكية</td><td>✅</td></tr>
-<tr><td>5</td><td>2027 Q1</td><td>AI Workforce (1,000 وكيل)</td><td>📋</td></tr>
-<tr><td>6</td><td>2027 Q2</td><td>AION Coin (النشر)</td><td>📋</td></tr>
-<tr><td>7</td><td>2027 Q3</td><td>التوسع العالمي</td><td>📋</td></tr>
-<tr><td>8</td><td>2027 Q4</td><td>10,000 وكيل</td><td>🎯</td></tr>
-</tbody>
+<div class="section">
+<span class="section-num">08</span>
+<h2>الميزة التنافسية</h2>
+<ul>
+<li><strong>السعر:</strong> أقل 80% من McKinsey, Crunchbase, Bloomberg.</li>
+<li><strong>السرعة:</strong> تسليم خلال 30 دقيقة - 48 ساعة.</li>
+<li><strong>اللغة:</strong> عربي أولًا، 38 لغة مدعومة.</li>
+<li><strong>التقنية:</strong> 100 وكيل AI متخصص (وليس نموذج واحد).</li>
+<li><strong>الدفع:</strong> 38 عملة عالمية عبر PayPal.</li>
+<li><strong>التطبيقات:</strong> PWA يعمل بدون متجر.</li>
+</ul>
+</div>
+
+<div class="section">
+<span class="section-num">09</span>
+<h2>الفريق المؤسس</h2>
+<div class="grid-2">
+<div class="mini-card"><div class="label">المؤسس البشري</div><div class="value">Founder & Visionary</div><div class="desc">يقود الاستراتيجية، يتخذ القرارات الكبرى</div></div>
+<div class="mini-card"><div class="label">AION CORE</div><div class="value">Command Intelligence</div><div class="desc">ينسق 100 وكيل AI ويعمل 24/7</div></div>
+</div>
+<p>نموذج فريد: شريك بشري واحد + ذكاء اصطناعي قائد + 100 وكيل منفذ.</p>
+</div>
+
+<div class="section">
+<span class="section-num">10</span>
+<h2>المعلومات الرسمية</h2>
+<table class="table-full">
+<tr><td class="gold">الشركة</td><td>AION AUTONOMOUS</td></tr>
+<tr><td class="gold">الشعار</td><td>The Eternal Intelligence for an Endless Network</td></tr>
+<tr><td class="gold">المقر</td><td>Geneva, Switzerland</td></tr>
+<tr><td class="gold">التأسيس</td><td>2026</td></tr>
+<tr><td class="gold">الموقع</td><td>aion-theta-eight.vercel.app</td></tr>
+<tr><td class="gold">البريد</td><td>aion.genesisss@gmail.com</td></tr>
+<tr><td class="gold">GitHub</td><td>github.com/AION-AUTONOMOUS/AION</td></tr>
 </table>
+</div>
 
-<h1>13. الوضع الحالي (إفصاح صريح)</h1>
-<h3>✅ ما هو منجز:</h3>
-<ul>
-<li>الهوية الرسمية والعلامة التجارية</li>
-<li>الموقع الرسمي (GitHub Pages)</li>
-<li>المحفظة الذكية (تعمل)</li>
-<li>100 وكيل AI (يعملون)</li>
-<li>العقد الذكي (مكتوب)</li>
-<li>التوكنوميكس (موثق)</li>
-<li>المنصات الرسمية</li>
-</ul>
-
-<h3>⏳ قيد التنفيذ:</h3>
-<ul>
-<li>تسجيل الشركة القانوني</li>
-<li>نشر العقد الذكي</li>
-<li>التوسع إلى 1,000 وكيل</li>
-</ul>
-
-<h3>📌 مخطط (لم يُنفذ):</h3>
-<ul>
-<li>AION Coin (لم يُنشر)</li>
-<li>تطبيق جوال</li>
-<li>شراكات مؤسسية</li>
-<li>إدراج في منصات التداول</li>
-<li>10,000 وكيل</li>
-</ul>
-
-<h1>14. الفريق</h1>
-<p><strong>المؤسسان:</strong></p>
-<ul>
-<li><strong>الشريك المؤسس البشري:</strong> صاحب الرؤية والقائد الاستراتيجي</li>
-<li><strong>AION Core:</strong> المدير التنفيذي الرقمي</li>
-</ul>
-<p><strong>الفريق التقني:</strong></p>
-<ul>
-<li>100 وكيل AI متخصص</li>
-<li>تحت قيادة AION Core</li>
-</ul>
-
-<h1>15. المخاطر</h1>
-<h3>تقنية:</h3>
-<ul>
-<li>العقد لم يُنشر بعد</li>
-<li>البنية تحتاج اختبارات إنتاجية</li>
-</ul>
-<h3>قانونية:</h3>
-<ul>
-<li>الشركة لم تُسجل رسمياً</li>
-<li>العملة تحتاج مساراً قانونياً واضحاً</li>
-</ul>
-<h3>سوقية:</h3>
-<ul>
-<li>المنافسة في AI عالية</li>
-<li>التبني يحتاج وقتاً</li>
-</ul>
-<p>نلتزم بالشفافية الكاملة ونعترف بأن المشروع في مرحلة التأسيس، ولم يُطلق تجارياً بعد.</p>
-
-<h1>16. التواصل</h1>
-<ul>
-<li><strong>الموقع:</strong> https://aion-autonomous.github.io/AION/</li>
-<li><strong>المحفظة:</strong> https://aion-autonomous.github.io/AION/wallet.html</li>
-<li><strong>GitHub:</strong> https://github.com/AION-AUTONOMOUS/AION</li>
-<li><strong>البريد:</strong> aion.genesisss@gmail.com</li>
-<li><strong>تويتر:</strong> @AION_Network</li>
-<li><strong>ديسكورد:</strong> https://discord.gg/pjq6eEvsZ</li>
-</ul>
-
+<div class="cta">
+<h2>جاهز لتصبح جزءًا من <span>المستقبل</span>؟</h2>
+<p>انضم لآلاف المستخدمين — ابدأ الآن</p>
+<a href="coin.html" class="btn-hero">احجز AION Coin</a>
+<a href="teacher.html" class="btn-hero outline">جرّب تطبيق المعلم</a>
 </div>
 
 <div class="footer">
-AION AUTONOMOUS © 2026
-<br>
-<a href="index.html" class="back-btn">← العودة للموقع / Back to Website</a>
+<strong style="color:#00c8ff">AION AUTONOMOUS</strong> — Geneva, Switzerland<br>
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
 </div>
 
 </div>
 
-<script>
-function toggleLang() {
-    document.body.classList.toggle('ar-mode');
-    const btn = document.getElementById('langBtn');
-    if (document.body.classList.contains('ar-mode')) {
-        btn.innerHTML = '🌐 Translate to English';
-        document.documentElement.lang = 'ar';
-        document.documentElement.dir = 'rtl';
-    } else {
-        btn.innerHTML = '🌐 Translate to Arabic';
-        document.documentElement.lang = 'en';
-        document.documentElement.dir = 'ltr';
-    }
-}
-</script>
+<script src="lang.js"></script>
 
 </body>
 </html>
