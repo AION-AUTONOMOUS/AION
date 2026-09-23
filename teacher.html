@@ -106,10 +106,12 @@ a{text-decoration:none;color:inherit}
 .delivery.active{display:block}
 .delivery .d-head{color:#00c8ff;font-size:13px;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .delivery .d-body{color:#dfe8f5;font-size:13px;line-height:1.9;white-space:pre-wrap;max-height:400px;overflow-y:auto;padding:12px;background:rgba(2,8,23,.6);border-radius:10px}
-.delivery .d-actions{display:flex;gap:8px;margin-top:12px}
-.delivery .d-actions button{flex:1;padding:10px;border-radius:10px;border:none;font-family:inherit;font-weight:900;font-size:12px;cursor:pointer}
+.delivery .d-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+.delivery .d-actions button{padding:12px 8px;border-radius:10px;border:none;font-family:inherit;font-weight:900;font-size:11px;cursor:pointer;transition:.3s}
+.delivery .d-actions button:hover{transform:translateY(-2px)}
 .delivery .d-copy{background:rgba(0,200,255,.2);color:#00c8ff;border:1px solid #00c8ff}
-.delivery .d-close{background:rgba(255,255,255,.1);color:#fff}
+.delivery .d-home{background:linear-gradient(135deg,#4ade80,#22c55e);color:#020817}
+.delivery .d-close{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}
 .spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(0,200,255,.2);border-top-color:#00c8ff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-left:8px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:30px}
@@ -120,6 +122,7 @@ a{text-decoration:none;color:inherit}
 .services-grid{grid-template-columns:1fr}
 .menu a{font-size:11px}
 .form-grid{grid-template-columns:1fr}
+.delivery .d-actions{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -140,7 +143,6 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 
-<!-- MAIN VIEW -->
 <div class="view active" id="mainView">
 <div class="hero">
 <div class="content">
@@ -225,7 +227,6 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 
-<!-- TEACHER VIEW -->
 <div class="view" id="teacherView">
 <button class="back-btn" onclick="showView('mainView')">← رجوع</button>
 <div class="hero">
@@ -321,7 +322,6 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 
-<!-- STUDENT VIEW -->
 <div class="view" id="studentView">
 <button class="back-btn" onclick="showView('mainView')">← رجوع</button>
 <div class="hero">
@@ -417,7 +417,6 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 
-<!-- MODAL -->
 <div class="modal" id="payModal">
 <div class="modal-box">
 <button class="close-x" onclick="closeModal()">✕</button>
@@ -498,7 +497,8 @@ a{text-decoration:none;color:inherit}
 <div class="d-body" id="dBody"></div>
 <div class="d-actions">
 <button class="d-copy" onclick="copyDelivery()">📋 نسخ</button>
-<button class="d-close" onclick="closeModal()">إغلاق</button>
+<button class="d-home" onclick="goHome()">🏠 الرئيسية</button>
+<button class="d-close" onclick="closeModal()">↩ رجوع</button>
 </div>
 </div>
 </div>
@@ -584,7 +584,6 @@ function updateAllPrices() {
   });
 }
 
-// ===== AUTO-DETECT COUNTRY =====
 async function detectCountry() {
   const lang = (navigator.language || navigator.userLanguage || '').toLowerCase();
   const langMap = {
@@ -597,9 +596,7 @@ async function detectCountry() {
     'ms-my':'MY','en-ph':'PH','bn-bd':'BD','fa-ir':'IR','ps-af':'AF',
     'en-ng':'NG','sw-ke':'KE','en-za':'ZA'
   };
-
   let detected = langMap[lang];
-
   if (!detected) {
     try {
       const res = await fetch('https://ipapi.co/json/');
@@ -616,7 +613,6 @@ async function detectCountry() {
       else detected = 'US';
     }
   }
-
   if (detected && CURRENCIES[detected]) {
     currentCurrency = detected;
     document.getElementById('currencySelect').value = detected;
@@ -624,7 +620,6 @@ async function detectCountry() {
   }
 }
 
-// ===== PDF =====
 if (typeof pdfjsLib !== 'undefined') {
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 }
@@ -667,11 +662,15 @@ async function handlePDF(event) {
   }
 }
 
-// ===== VIEWS =====
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
+}
+
+function goHome() {
+  closeModal();
+  showView('mainView');
 }
 
 let currentService = { title:'', price:0, desc:'' };
@@ -842,7 +841,6 @@ function copyDelivery() {
   });
 }
 
-// ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   updateAllPrices();
   detectCountry();
