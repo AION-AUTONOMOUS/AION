@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -10,130 +9,93 @@
 body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
 .container{max-width:900px;margin:auto;padding:14px}
-
-/* NAV */
 .topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
 .logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
-.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo svg{width:34px;height:34px}
 .logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
 .menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
 .menu a:hover{color:#00c8ff}
-
-h1{text-align:center;color:#00c8ff;font-size:clamp(24px,4vw,34px);margin-bottom:6px;text-shadow:0 0 25px rgba(0,200,255,.6)}
+.lang-btn{padding:6px 12px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;cursor:pointer;display:inline-block;font-family:inherit;margin-left:12px}
+h1{text-align:center;color:#00c8ff;font-size:clamp(24px,4vw,34px);margin-bottom:6px}
 .sub{text-align:center;color:#aebbd0;font-size:13px;margin-bottom:25px}
-
-/* CONNECT CARD */
-.connect-card{padding:35px 25px;background:linear-gradient(180deg,rgba(0,80,150,.25),rgba(2,15,40,.9));border:1px solid rgba(0,180,255,.4);border-radius:20px;text-align:center;margin-bottom:20px;box-shadow:0 0 40px rgba(0,150,255,.2)}
-.connect-card .icon{font-size:64px;margin-bottom:15px;display:block;filter:drop-shadow(0 0 20px rgba(0,200,255,.7))}
+.connect-card{padding:35px 25px;background:rgba(0,80,150,.15);border:1px solid rgba(0,180,255,.4);border-radius:20px;text-align:center;margin-bottom:20px}
+.connect-card .icon{font-size:64px;margin-bottom:15px;display:block}
 .connect-card h2{color:#fff;font-size:22px;margin-bottom:10px;font-weight:900}
 .connect-card p{color:#aebbd0;font-size:13px;margin-bottom:25px;line-height:1.7}
 .btn-connect{padding:16px 45px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;border:none;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit;transition:.3s;box-shadow:0 15px 40px rgba(245,197,66,.5)}
 .btn-connect:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(245,197,66,.8)}
 .btn-connect:disabled{opacity:.5;cursor:wait}
-
-/* WALLET INFO */
-.wallet-info{padding:22px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.85));border:1px solid rgba(0,180,255,.35);border-radius:20px;margin-bottom:20px;display:none}
+.wallet-info{padding:22px;background:rgba(2,15,40,.9);border:1px solid rgba(0,180,255,.35);border-radius:20px;margin-bottom:20px;display:none}
 .wallet-info.active{display:block}
 .wallet-info .row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid rgba(0,180,255,.15)}
 .wallet-info .row:last-child{border-bottom:none}
 .wallet-info .label{color:#aebbd0;font-size:13px;font-weight:600}
-.wallet-info .value{color:#f5c542;font-size:13px;font-weight:900;font-family:monospace;word-break:break-all;text-align:left;max-width:60%}
-.wallet-info .value.small{font-size:11px}
+.wallet-info .value{color:#f5c542;font-size:13px;font-weight:900;font-family:monospace;text-align:left;max-width:60%;word-break:break-all}
 .wallet-info .addr{color:#00c8ff}
-.wallet-info .balance{color:#fff;font-size:18px}
-
-/* BALANCE CARDS */
 .balances{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px;display:none}
 .balances.active{display:grid}
-.bal-card{padding:22px 18px;background:linear-gradient(180deg,rgba(0,80,150,.2),rgba(2,15,40,.9));border:1px solid rgba(0,180,255,.35);border-radius:18px;text-align:center}
-.bal-card.gold{background:linear-gradient(180deg,rgba(245,197,66,.15),rgba(2,15,40,.9));border-color:rgba(245,197,66,.5)}
+.bal-card{padding:22px 18px;background:rgba(0,80,150,.15);border:1px solid rgba(0,180,255,.35);border-radius:18px;text-align:center}
+.bal-card.gold{background:rgba(245,197,66,.1);border-color:rgba(245,197,66,.5)}
 .bal-card .coin{font-size:34px;margin-bottom:8px;display:block}
 .bal-card .name{color:#aebbd0;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:6px}
 .bal-card .amount{color:#00c8ff;font-size:24px;font-weight:900;margin-bottom:3px}
 .bal-card.gold .amount{color:#f5c542}
 .bal-card .usd{color:#6b7c94;font-size:11px}
-
-/* TOKEN INFO */
-.token-card{padding:20px;background:linear-gradient(180deg,rgba(122,75,255,.15),rgba(2,15,40,.9));border:1px solid rgba(122,75,255,.4);border-radius:18px;margin-bottom:20px}
-.token-card h3{color:#a78bfa;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.token-card{padding:20px;background:rgba(122,75,255,.1);border:1px solid rgba(122,75,255,.4);border-radius:18px;margin-bottom:20px}
+.token-card h3{color:#a78bfa;font-size:16px;margin-bottom:14px}
 .token-card .info-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(122,75,255,.15);font-size:13px}
 .token-card .info-row:last-child{border:none}
 .token-card .k{color:#aebbd0}
 .token-card .v{color:#fff;font-weight:700}
 .token-card .v.gold{color:#f5c542}
-
-/* STATUS */
 .status{padding:14px;border-radius:12px;text-align:center;margin-top:15px;font-size:13px;font-weight:700;display:none}
-.status.success{background:rgba(0,200,100,.15);border:1px solid rgba(0,200,100,.5);color:#4ade80;display:block}
+.status.success{background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.5);color:#4ade80;display:block}
 .status.error{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.5);color:#ff8888;display:block}
-.status.info{background:rgba(0,180,255,.15);border:1px solid rgba(0,180,255,.5);color:#00c8ff;display:block}
-
-/* ACTIONS */
 .actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;display:none}
 .actions.active{display:grid}
 .action-btn{padding:16px;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.35);border-radius:14px;color:#fff;font-weight:900;font-size:13px;cursor:pointer;font-family:inherit;transition:.3s;display:flex;flex-direction:column;align-items:center;gap:6px}
 .action-btn .ic{font-size:22px}
 .action-btn:hover{background:rgba(0,180,255,.2);border-color:#00c8ff;transform:translateY(-3px)}
-
-/* NOT CONNECTED VIEW */
 .not-connected{padding:60px 20px;text-align:center;background:rgba(2,15,40,.6);border:1px dashed rgba(0,180,255,.3);border-radius:20px;color:#6b7c94;font-size:13px;margin-bottom:20px}
-
-/* FOOTER */
 .footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:30px}
 .footer a{color:#00c8ff;margin:0 8px}
-
-@media(max-width:600px){
-.balances{grid-template-columns:1fr}
-.actions{grid-template-columns:1fr}
-.menu a{font-size:11px;margin-left:8px}
-}
+@media(max-width:600px){.balances{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.menu a{font-size:11px;margin-left:8px}}
 </style>
 </head>
 <body>
 <div class="container">
 
-<!-- NAV -->
 <div class="topnav">
 <div class="logo">
 <svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
-<div>AION<div class="s">AUTONOMOUS</div></div>
+<div>AION<div class="s">WALLET</div></div>
 </div>
 <div class="menu">
 <a href="index.html">الرئيسية</a>
 <a href="coin.html">AION Coin</a>
-<a href="chat.html">الشات</a>
+<a href="teacher.html">المعلم</a>
+<a href="academy.html">Academy</a>
+<span class="lang-btn">اللغات</span>
 </div>
 </div>
 
-<h1>👛 محفظة AION</h1>
+<h1>محفظة AION</h1>
 <p class="sub">اربط محفظتك لعرض رصيدك وإدارة AION Coin</p>
 
-<!-- CONNECT -->
 <div class="connect-card" id="connectCard">
 <span class="icon">🔐</span>
 <h2>اربط محفظتك</h2>
 <p>اضغط الزر أدناه للاتصال بـ MetaMask<br>واختر شبكة BNB Smart Chain</p>
-<button class="btn-connect" id="connectBtn" onclick="connectWallet()">🔗 ربط المحفظة</button>
+<button class="btn-connect" id="connectBtn" onclick="connectWallet()">ربط المحفظة</button>
 <div class="status" id="statusBox"></div>
 </div>
 
-<!-- WALLET INFO -->
 <div class="wallet-info" id="walletInfo">
-<div class="row">
-<span class="label">العنوان</span>
-<span class="value small addr" id="walletAddr">-</span>
-</div>
-<div class="row">
-<span class="label">الشبكة</span>
-<span class="value" id="walletNetwork">-</span>
-</div>
-<div class="row">
-<span class="label">الحالة</span>
-<span class="value" style="color:#4ade80">✅ متصل</span>
-</div>
+<div class="row"><span class="label">العنوان</span><span class="value addr" id="walletAddr">-</span></div>
+<div class="row"><span class="label">الشبكة</span><span class="value" id="walletNetwork">-</span></div>
+<div class="row"><span class="label">الحالة</span><span class="value" style="color:#4ade80">متصل</span></div>
 </div>
 
-<!-- BALANCES -->
 <div class="balances" id="balances">
 <div class="bal-card">
 <span class="coin">💎</span>
@@ -149,20 +111,12 @@ h1{text-align:center;color:#00c8ff;font-size:clamp(24px,4vw,34px);margin-bottom:
 </div>
 </div>
 
-<!-- ACTIONS -->
 <div class="actions" id="actions">
-<button class="action-btn" onclick="alert('قريباً: استلام AION')">
-<span class="ic">📥</span>استلام
-</button>
-<button class="action-btn" onclick="alert('قريباً: إرسال AION')">
-<span class="ic">📤</span>إرسال
-</button>
-<button class="action-btn" onclick="openBscScan()">
-<span class="ic">🔍</span>مستكشف
-</button>
+<button class="action-btn" onclick="alert('قريبًا: استلام AION')"><span class="ic">📥</span>استلام</button>
+<button class="action-btn" onclick="alert('قريبًا: إرسال AION')"><span class="ic">📤</span>إرسال</button>
+<button class="action-btn" onclick="openBscScan()"><span class="ic">🔍</span>مستكشف</button>
 </div>
 
-<!-- TOKEN INFO -->
 <div class="token-card">
 <h3>🪙 AION Coin — معلومات</h3>
 <div class="info-row"><span class="k">اسم العملة</span><span class="v gold">AION Coin</span></div>
@@ -170,21 +124,19 @@ h1{text-align:center;color:#00c8ff;font-size:clamp(24px,4vw,34px);margin-bottom:
 <div class="info-row"><span class="k">الإجمالي</span><span class="v">10,000,000,000</span></div>
 <div class="info-row"><span class="k">الشبكة</span><span class="v">BNB Smart Chain</span></div>
 <div class="info-row"><span class="k">المعيار</span><span class="v">BEP-20</span></div>
-<div class="info-row"><span class="k">حالة النشر</span><span class="v" style="color:#f5c542">⏳ قريبًا</span></div>
-<div class="info-row"><span class="k">عقد العملة</span><span class="v small" id="tokenAddr" style="font-family:monospace;font-size:11px">سيُضاف بعد النشر</span></div>
+<div class="info-row"><span class="k">حالة النشر</span><span class="v" style="color:#f5c542">قريبًا</span></div>
+<div class="info-row"><span class="k">عقد العملة</span><span class="v" style="font-family:monospace;font-size:11px">سيُضاف بعد النشر</span></div>
 </div>
 
-<!-- NOT CONNECTED VIEW -->
 <div class="not-connected" id="notConnected">
 💡 عند ربط المحفظة، سيظهر رصيدك تلقائيًا هنا.
 </div>
 
-<!-- FOOTER -->
 <div class="footer">
 <strong style="color:#00c8ff">AION AUTONOMOUS</strong> © 2026<br>
+aion.genesisss@gmail.com<br><br>
 <a href="https://twitter.com/AIONNetworozes">Twitter</a>
 <a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
-<a href="mailto:aion.genesisss@gmail.com">Contact</a>
 </div>
 
 </div>
@@ -198,10 +150,7 @@ const BNB_CHAIN_PARAMS = {
   rpcUrls: ['https://bsc-dataseed.binance.org/'],
   blockExplorerUrls: ['https://bscscan.com/']
 };
-
-// AION Token address — placeholder (added after deployment)
 const AION_TOKEN_ADDRESS = '';
-
 let currentAccount = null;
 
 function showStatus(msg, type) {
@@ -212,20 +161,15 @@ function showStatus(msg, type) {
 
 async function connectWallet() {
   const btn = document.getElementById('connectBtn');
-  
   if (typeof window.ethereum === 'undefined') {
-    showStatus('⚠️ لم يتم العثور على MetaMask. افتح الصفحة من داخل تطبيق MetaMask.', 'error');
+    showStatus('لم يتم العثور على MetaMask. افتح الصفحة من داخل تطبيق MetaMask.', 'error');
     return;
   }
-
   btn.disabled = true;
-  btn.textContent = '⏳ جاري الاتصال...';
-
+  btn.textContent = 'جاري الاتصال...';
   try {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     currentAccount = accounts[0];
-
-    // Try switch to BNB Chain
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
@@ -239,34 +183,26 @@ async function connectWallet() {
         });
       }
     }
-
     await updateUI();
-    showStatus('✅ تم ربط المحفظة بنجاح!', 'success');
-
+    showStatus('تم ربط المحفظة بنجاح!', 'success');
     setTimeout(() => {
       document.getElementById('connectCard').style.display = 'none';
       document.getElementById('notConnected').style.display = 'none';
     }, 1000);
-
   } catch (err) {
-    showStatus('❌ فشل الاتصال: ' + err.message, 'error');
+    showStatus('فشل الاتصال: ' + err.message, 'error');
   }
-
   btn.disabled = false;
-  btn.textContent = '🔗 ربط المحفظة';
+  btn.textContent = 'ربط المحفظة';
 }
 
 async function updateUI() {
   if (!currentAccount) return;
-
   document.getElementById('walletInfo').classList.add('active');
   document.getElementById('balances').classList.add('active');
   document.getElementById('actions').classList.add('active');
-
   document.getElementById('walletAddr').textContent = currentAccount.slice(0,10) + '...' + currentAccount.slice(-8);
   document.getElementById('walletNetwork').textContent = 'BNB Smart Chain';
-
-  // Get BNB balance
   try {
     const balHex = await window.ethereum.request({
       method: 'eth_getBalance',
@@ -278,8 +214,6 @@ async function updateUI() {
   } catch (e) {
     document.getElementById('bnbBalance').textContent = '0.00';
   }
-
-  // Get AION balance (if token deployed)
   if (AION_TOKEN_ADDRESS) {
     try {
       const data = '0x70a08231' + currentAccount.slice(2).padStart(64, '0');
@@ -303,7 +237,6 @@ function openBscScan() {
   }
 }
 
-// Auto-detect if already connected
 if (typeof window.ethereum !== 'undefined') {
   window.ethereum.request({ method: 'eth_accounts' }).then(accounts => {
     if (accounts.length > 0) {
@@ -313,7 +246,6 @@ if (typeof window.ethereum !== 'undefined') {
       document.getElementById('notConnected').style.display = 'none';
     }
   });
-
   window.ethereum.on('accountsChanged', accounts => {
     if (accounts.length === 0) {
       location.reload();
@@ -324,5 +256,8 @@ if (typeof window.ethereum !== 'undefined') {
   });
 }
 </script>
+
+<script src="lang.js"></script>
+
 </body>
 </html>
