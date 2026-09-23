@@ -1,48 +1,36 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AION Space | تحليل الفضاء بالذكاء الاصطناعي</title>
+<title>AION Space | تحليل الفضاء</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
 .container{max-width:1200px;margin:auto;padding:14px}
-
 .topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
 .logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
-.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo svg{width:34px;height:34px}
 .logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
 .menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
 .menu a:hover{color:#00c8ff}
 .menu a.active{color:#f5c542}
-
-.hero{padding:45px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,20,60,.9),rgba(2,8,23,.95)),radial-gradient(circle at 50% 40%,rgba(0,150,255,.35),transparent 60%);border:1px solid rgba(0,180,255,.35);border-radius:22px;margin-bottom:25px;position:relative;overflow:hidden;min-height:380px}
-.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 15% 20%,#fff,transparent),radial-gradient(2px 2px at 45% 60%,#fff,transparent),radial-gradient(1px 1px at 70% 30%,#00c8ff,transparent),radial-gradient(2px 2px at 85% 75%,#fff,transparent),radial-gradient(1px 1px at 25% 85%,#f5c542,transparent);opacity:.8;animation:twinkle 4s ease-in-out infinite;pointer-events:none}
-@keyframes twinkle{0%,100%{opacity:.8}50%{opacity:.4}}
-.hero .content{position:relative;z-index:2}
+.lang-btn{padding:6px 12px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;cursor:pointer;display:inline-block;font-family:inherit;margin-left:12px}
+.hero{padding:45px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,20,60,.9),rgba(2,8,23,.95));border:1px solid rgba(0,180,255,.35);border-radius:22px;margin-bottom:25px;position:relative;overflow:hidden;min-height:380px}
 .hero .badge{display:inline-block;padding:6px 16px;background:rgba(0,200,255,.15);border:1px solid #00c8ff;border-radius:20px;color:#00c8ff;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:15px}
 .hero h1{color:#fff;font-size:clamp(26px,4.5vw,44px);font-weight:900;margin-bottom:12px;line-height:1.3}
-.hero h1 span{color:#f5c542;text-shadow:0 0 25px rgba(245,197,66,.8)}
+.hero h1 span{color:#f5c542}
 .hero p{color:#c8d5e7;font-size:15px;max-width:720px;margin:auto;line-height:1.9}
-.hero .planet{font-size:80px;margin:15px 0;display:block;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(0,200,255,.8))}
-@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-15px) rotate(5deg)}}
-
-/* SECTION */
-.section{padding:30px 25px;background:linear-gradient(180deg,rgba(2,15,40,.85),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.25);border-radius:20px;margin-bottom:20px}
+.hero .planet{font-size:80px;margin:15px 0;display:block}
+.section{padding:30px 25px;background:rgba(2,15,40,.85);border:1px solid rgba(0,180,255,.25);border-radius:20px;margin-bottom:20px}
 .section-title{color:#00c8ff;font-size:22px;font-weight:900;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid rgba(0,180,255,.25);display:flex;align-items:center;gap:10px}
-.section-title::before{content:"◆";color:#f5c542;font-size:14px}
-.section-title span{color:#f5c542;font-size:14px;font-weight:700;margin-right:auto;letter-spacing:1px}
-
-/* SERVICES GRID */
+.section-title span{color:#f5c542;font-size:14px;font-weight:700;margin-right:auto}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
-.service{padding:24px 22px;background:linear-gradient(180deg,rgba(0,20,60,.6),rgba(2,8,23,.9));border:1px solid rgba(0,180,255,.25);border-radius:18px;transition:.3s;position:relative}
+.service{padding:24px 22px;background:rgba(2,15,40,.9);border:1px solid rgba(0,180,255,.25);border-radius:18px;transition:.3s;position:relative}
 .service:hover{border-color:#00c8ff;transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,200,255,.3)}
-.service.featured{border:2px solid #f5c542;background:linear-gradient(180deg,rgba(245,197,66,.1),rgba(2,8,23,.9))}
-.service.featured::before{content:"⭐ الأكثر طلبًا";position:absolute;top:-12px;right:20px;background:#f5c542;color:#020817;padding:4px 14px;border-radius:15px;font-size:10px;font-weight:900}
-.service .ic{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(0,200,255,.15),rgba(122,75,255,.1));border:1px solid rgba(0,200,255,.5);display:grid;place-items:center;font-size:26px;margin-bottom:14px;filter:drop-shadow(0 0 15px rgba(0,200,255,.5))}
+.service.featured{border:2px solid #f5c542;background:rgba(245,197,66,.08)}
+.service .ic{width:56px;height:56px;border-radius:14px;background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.5);display:grid;place-items:center;font-size:26px;margin-bottom:14px}
 .service h3{color:#fff;font-size:17px;font-weight:900;margin-bottom:8px}
 .service p{color:#aebbd0;font-size:13px;line-height:1.7;margin-bottom:14px}
 .service .features{list-style:none;padding:0;margin-bottom:15px}
@@ -50,34 +38,22 @@ a{text-decoration:none;color:inherit}
 .service .features li:before{content:"✓ ";color:#00c8ff;font-weight:900;margin-left:6px}
 .service .bottom{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(0,180,255,.15)}
 .service .price{color:#f5c542;font-size:20px;font-weight:900}
-.service .price small{color:#aebbd0;font-size:10px;font-weight:normal}
-.service .btn{padding:9px 20px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border-radius:30px;font-weight:900;font-size:12px;border:none;cursor:pointer;font-family:inherit;transition:.3s}
-.service .btn:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(0,200,255,.6)}
-
-/* STATS */
+.service .btn{padding:9px 20px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border-radius:30px;font-weight:900;font-size:12px;border:none;cursor:pointer;font-family:inherit}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-top:20px}
-.stat{padding:20px 15px;background:rgba(0,180,255,.04);border:1px solid rgba(0,180,255,.25);border-radius:14px;text-align:center;transition:.3s}
-.stat:hover{border-color:#00c8ff;background:rgba(0,180,255,.1);transform:translateY(-3px)}
-.stat .n{color:#f5c542;font-size:32px;font-weight:900;margin-bottom:6px;text-shadow:0 0 15px rgba(245,197,66,.5)}
-.stat .l{color:#aebbd0;font-size:11px;letter-spacing:1px}
-
-/* INFO BOX */
-.info-box{padding:22px 25px;background:linear-gradient(135deg,rgba(245,197,66,.1),rgba(122,75,255,.05));border-right:4px solid #f5c542;border-radius:14px;margin:20px 0}
+.stat{padding:20px 15px;background:rgba(0,180,255,.04);border:1px solid rgba(0,180,255,.25);border-radius:14px;text-align:center}
+.stat .n{color:#f5c542;font-size:32px;font-weight:900;margin-bottom:6px}
+.stat .l{color:#aebbd0;font-size:11px}
+.info-box{padding:22px 25px;background:rgba(245,197,66,.08);border-right:4px solid #f5c542;border-radius:14px;margin:20px 0}
 .info-box p{color:#e5d8a8;font-size:15px;line-height:1.9;font-style:italic;margin:0}
-
-/* CTA */
 .cta{padding:35px 25px;background:linear-gradient(135deg,rgba(0,80,150,.35),rgba(122,75,255,.2));border:2px solid #00c8ff;border-radius:22px;text-align:center;margin-bottom:20px}
 .cta h2{color:#fff;font-size:24px;font-weight:900;margin-bottom:12px}
 .cta h2 span{color:#f5c542}
 .cta p{color:#c8d5e7;font-size:14px;margin-bottom:22px}
-.btn-hero{display:inline-block;padding:15px 38px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;font-weight:900;font-size:14px;box-shadow:0 15px 40px rgba(245,197,66,.5);transition:.3s;margin:5px}
-.btn-hero:hover{transform:translateY(-3px)}
+.btn-hero{display:inline-block;padding:15px 38px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;font-weight:900;font-size:14px;margin:5px}
 .btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #00c8ff}
-
 .footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:20px}
 .footer a{color:#00c8ff;margin:0 8px}
-
-@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}.hero .planet{font-size:60px}}
+@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}}
 </style>
 </head>
 <body>
@@ -91,25 +67,25 @@ a{text-decoration:none;color:inherit}
 <div class="menu">
 <a href="index.html">الرئيسية</a>
 <a href="intelligence.html">Intelligence</a>
-<a href="space.html" class="active">🛰️ الفضاء</a>
-<a href="markets.html">📈 الأسواق</a>
-<a href="climate.html">🌍 المناخ</a>
-<a href="labs.html">🧪 المختبر</a>
+<a href="space.html" class="active">Space</a>
+<a href="markets.html">Markets</a>
+<a href="climate.html">Climate</a>
+<a href="labs.html">Labs</a>
+<a href="teacher.html">المعلم</a>
+<a href="academy.html">Academy</a>
+<span class="lang-btn">اللغات</span>
 </div>
 </div>
 
 <div class="hero">
-<div class="content">
-<span class="badge">🛰️ AION SPACE DIVISION</span>
+<span class="badge">AION SPACE DIVISION</span>
 <span class="planet">🪐</span>
 <h1>تحليل <span>الفضاء</span> بالذكاء الاصطناعي</h1>
-<p>القسم الأول من نوعه في العالم العربي — تحليل بيانات الأقمار الصناعية، تقارير قطاع الفضاء، والاستشارات الفضائية. مدعوم بـ 100 وكيل AI متخصص.</p>
-</div>
+<p>القسم الأول من نوعه في العالم العربي — تحليل بيانات الأقمار الصناعية، تقارير قطاع الفضاء، والاستشارات الفضائية.</p>
 </div>
 
-<!-- STATS -->
 <div class="section">
-<div class="section-title">📊 قطاع الفضاء بالأرقام <span>2026</span></div>
+<div class="section-title">قطاع الفضاء بالأرقام <span>2026</span></div>
 <div class="stats">
 <div class="stat"><div class="n">$1.8T</div><div class="l">حجم السوق العالمي</div></div>
 <div class="stat"><div class="n">12,000+</div><div class="l">قمر صناعي نشط</div></div>
@@ -118,10 +94,8 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 
-<!-- SERVICES -->
 <div class="section">
-<div class="section-title">🛰️ خدمات AION Space</div>
-
+<div class="section-title">خدمات AION Space</div>
 <div class="grid">
 
 <div class="service featured">
@@ -134,10 +108,7 @@ a{text-decoration:none;color:inherit}
 <li>تقارير مفصلة</li>
 <li>خلال 24 ساعة</li>
 </ul>
-<div class="bottom">
-<div class="price">$35 <small>USD</small></div>
-<button class="btn" onclick="order('تحليل بيانات الأقمار الصناعية',35)">اطلب الآن</button>
-</div>
+<div class="bottom"><div class="price">$35</div><button class="btn" onclick="order('Satellite Data',35)">اطلب</button></div>
 </div>
 
 <div class="service">
@@ -150,10 +121,7 @@ a{text-decoration:none;color:inherit}
 <li>تحليل الشركات الرائدة</li>
 <li>تسليم خلال 48 ساعة</li>
 </ul>
-<div class="bottom">
-<div class="price">$25 <small>USD</small></div>
-<button class="btn" onclick="order('تقارير قطاع الفضاء',25)">اطلب الآن</button>
-</div>
+<div class="bottom"><div class="price">$25</div><button class="btn" onclick="order('Space Reports',25)">اطلب</button></div>
 </div>
 
 <div class="service">
@@ -161,15 +129,12 @@ a{text-decoration:none;color:inherit}
 <h3>استشارات الفضاء</h3>
 <p>استشارات استراتيجية لشركات الفضاء أو المستثمرين في القطاع.</p>
 <ul class="features">
-<li>ساعة كاملة مع AI متخصص</li>
+<li>ساعة كاملة</li>
 <li>تحليل SWOT</li>
 <li>توصيات عملية</li>
 <li>تقرير مكتوب</li>
 </ul>
-<div class="bottom">
-<div class="price">$40 <small>USD</small></div>
-<button class="btn" onclick="order('استشارات الفضاء',40)">اطلب الآن</button>
-</div>
+<div class="bottom"><div class="price">$40</div><button class="btn" onclick="order('Space Consulting',40)">اطلب</button></div>
 </div>
 
 <div class="service">
@@ -182,15 +147,12 @@ a{text-decoration:none;color:inherit}
 <li>تقارير أسبوعية</li>
 <li>دعم 24/7</li>
 </ul>
-<div class="bottom">
-<div class="price">$99 <small>/شهر</small></div>
-<button class="btn" onclick="order('مراقبة الأقمار الصناعية',99)">اشترك</button>
-</div>
+<div class="bottom"><div class="price">$99/شهر</div><button class="btn" onclick="order('Satellite Monitoring',99)">اشترك</button></div>
 </div>
 
 <div class="service">
 <div class="ic">🔬</div>
-<h3>تحليل بيانات الاستشعار عن بعد</h3>
+<h3>تحليل الاستشعار عن بعد</h3>
 <p>تحليل صور من الأقمار الصناعية لأغراض زراعية، بيئية، عمرانية.</p>
 <ul class="features">
 <li>تحليل بصري</li>
@@ -198,10 +160,7 @@ a{text-decoration:none;color:inherit}
 <li>توقعات المحاصيل</li>
 <li>خرائط تفاعلية</li>
 </ul>
-<div class="bottom">
-<div class="price">$30 <small>USD</small></div>
-<button class="btn" onclick="order('تحليل الاستشعار عن بعد',30)">اطلب الآن</button>
-</div>
+<div class="bottom"><div class="price">$30</div><button class="btn" onclick="order('Remote Sensing',30)">اطلب</button></div>
 </div>
 
 <div class="service">
@@ -214,52 +173,24 @@ a{text-decoration:none;color:inherit}
 <li>الميزانية المفصلة</li>
 <li>خارطة زمنية</li>
 </ul>
-<div class="bottom">
-<div class="price">$150 <small>USD</small></div>
-<button class="btn" onclick="order('خطط إطلاق الأقمار',150)">اطلب الآن</button>
-</div>
+<div class="bottom"><div class="price">$150</div><button class="btn" onclick="order('Launch Planning',150)">اطلب</button></div>
 </div>
 
 </div>
 </div>
 
-<!-- WHY US -->
 <div class="section">
-<div class="section-title">🎯 لماذا AION Space؟</div>
+<div class="section-title">لماذا AION Space؟</div>
 <div class="info-box">
-<p>"AION Space هو القسم الأول من نوعه في العالم العربي الذي يقدم تحليل بيانات فضائية باللغة العربية، بأسعار رمزية، مدعوم بـ 100 وكيل AI متخصص."</p>
-</div>
-
-<div class="grid" style="margin-top:20px">
-<div class="service">
-<div class="ic">🌍</div>
-<h3>الأول في العالم العربي</h3>
-<p>لا توجد منصة عربية متخصصة في تحليل بيانات الفضاء. AION هي الأولى.</p>
-</div>
-<div class="service">
-<div class="ic">⚡</div>
-<h3>تسليم فوري</h3>
-<p>تقارير خلال 24-48 ساعة. لا ننتظر أسابيع.</p>
-</div>
-<div class="service">
-<div class="ic">💰</div>
-<h3>أسعار رمزية</h3>
-<p>تبدأ من $25 — أقل بكثير من الشركات العالمية.</p>
-</div>
-<div class="service">
-<div class="ic">🧠</div>
-<h3>100 وكيل متخصص</h3>
-<p>فريق AI كامل يعمل على تقريرك — ليس نموذج واحد.</p>
-</div>
+<p>AION Space هو القسم الأول من نوعه في العالم العربي الذي يقدم تحليل بيانات فضائية باللغة العربية، بأسعار رمزية، مدعوم بـ 100 وكيل AI متخصص.</p>
 </div>
 </div>
 
-<!-- CTA -->
 <div class="cta">
 <h2>جاهز لتحليل <span>الفضاء</span> مع AION؟</h2>
 <p>ابدأ الآن — التسليم خلال 24-48 ساعة، مع تعديلات مجانية</p>
-<a href="order.html" class="btn-hero">🛒 اطلب خدمة</a>
-<a href="intelligence.html" class="btn-hero outline">🧠 اسأل مجانًا</a>
+<a href="order.html" class="btn-hero">اطلب خدمة</a>
+<a href="intelligence.html" class="btn-hero outline">اسأل مجانًا</a>
 </div>
 
 <div class="footer">
@@ -272,10 +203,10 @@ aion.genesisss@gmail.com<br><br>
 </div>
 
 <script>
-function order(service, price) {
-  window.location.href = 'order.html?service=' + encodeURIComponent(service) + '&price=' + price;
-}
+function order(s,p){window.location.href='order.html?service='+encodeURIComponent(s)+'&price='+p;}
 </script>
+
+<script src="lang.js"></script>
 
 </body>
 </html>
