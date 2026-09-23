@@ -1,9 +1,10 @@
 {
+  "id": "/teacher-app-v1",
   "name": "AION Teacher | تطبيق المعلم والطالب",
   "short_name": "AION Teacher",
   "description": "تطبيق المعلم والطالب مدعوم بالذكاء الاصطناعي",
   "start_url": "/teacher.html",
-  "scope": "/",
+  "scope": "/teacher-app/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#020817",
@@ -30,14 +31,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "بدء المحادثة",
-      "short_name": "Chat",
-      "url": "/chat.html",
-      "icons": [{ "src": "https://placehold.co/192x192/00c8ff/020817/png?text=AI&font=Roboto", "sizes": "192x192" }]
     }
   ]
 }
