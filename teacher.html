@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#00c8ff">
 <title>AION Teacher | تطبيق المعلم والطالب</title>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
@@ -76,18 +77,33 @@ a{text-decoration:none;color:inherit}
 .back-btn{display:inline-block;padding:10px 22px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:13px;font-weight:900;cursor:pointer;margin-bottom:20px;font-family:inherit}
 .back-btn:hover{background:rgba(0,200,255,.25)}
 
+/* MODAL */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;place-items:center;z-index:9999;padding:20px;backdrop-filter:blur(8px);overflow-y:auto}
 .modal.active{display:grid}
-.modal-box{background:linear-gradient(135deg,#0B1D3A,#020817);border:2px solid #00c8ff;border-radius:22px;padding:28px;max-width:480px;width:100%;box-shadow:0 0 60px rgba(0,200,255,.5);position:relative;max-height:90vh;overflow-y:auto}
-.modal-box .close-x{position:absolute;top:15px;left:15px;background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;font-family:inherit}
+.modal-box{background:linear-gradient(135deg,#0B1D3A,#020817);border:2px solid #00c8ff;border-radius:22px;padding:28px;max-width:520px;width:100%;box-shadow:0 0 60px rgba(0,200,255,.5);position:relative;max-height:90vh;overflow-y:auto}
+.modal-box .close-x{position:absolute;top:15px;left:15px;background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;font-family:inherit;z-index:2}
 .modal-box h3{color:#00c8ff;font-size:20px;margin-bottom:8px;text-align:center}
 .modal-box .m-desc{color:#aebbd0;font-size:13px;text-align:center;margin-bottom:15px;line-height:1.7}
 .modal-box .m-price{color:#fff;font-size:38px;font-weight:900;text-align:center;margin:15px 0}
 .modal-box .m-price small{color:#aebbd0;font-size:14px}
-.modal-box textarea{width:100%;padding:12px;background:#020817;color:#fff;border:1px solid rgba(0,200,255,.4);border-radius:12px;font-family:inherit;font-size:13px;resize:vertical;min-height:80px;margin-bottom:15px}
-.modal-box textarea:focus{outline:none;border-color:#f5c542}
-.modal-box label{display:block;color:#00c8ff;font-size:12px;font-weight:900;margin-bottom:6px}
-#paypal-button-container{min-height:50px;margin-top:10px}
+
+.modal-box label{display:block;color:#00c8ff;font-size:12px;font-weight:900;margin-bottom:6px;margin-top:12px}
+.modal-box select,.modal-box input[type="text"]{width:100%;padding:11px;background:#020817;color:#fff;border:1px solid rgba(0,200,255,.4);border-radius:10px;font-family:inherit;font-size:13px;cursor:pointer}
+.modal-box select:focus,.modal-box input:focus{outline:none;border-color:#f5c542}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.pdf-area{margin-top:14px;padding:16px;background:rgba(0,200,255,.05);border:2px dashed rgba(0,200,255,.4);border-radius:12px;text-align:center;cursor:pointer;transition:.3s}
+.pdf-area:hover{background:rgba(0,200,255,.1);border-color:#00c8ff}
+.pdf-area input{display:none}
+.pdf-area .pdf-ic{font-size:32px;margin-bottom:8px;display:block}
+.pdf-area .pdf-text{color:#c8d5e7;font-size:12px;font-weight:700}
+.pdf-area .pdf-sub{color:#6b7c94;font-size:10px;margin-top:4px}
+.pdf-status{margin-top:8px;font-size:11px;color:#4ade80;display:none}
+.pdf-status.show{display:block}
+.pdf-status.error{color:#ff8888}
+
+#paypal-button-container{min-height:50px;margin-top:12px}
 .m-status{padding:12px;border-radius:12px;text-align:center;margin-top:12px;font-size:13px;font-weight:700;display:none}
 .m-status.success{background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.5);color:#4ade80;display:block}
 .m-status.error{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.5);color:#ff8888;display:block}
@@ -112,6 +128,7 @@ a{text-decoration:none;color:inherit}
 .choice{grid-template-columns:1fr}
 .services-grid{grid-template-columns:1fr}
 .menu a{font-size:11px}
+.form-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -137,7 +154,7 @@ a{text-decoration:none;color:inherit}
 <div class="hero">
 <div class="content">
 <h1>تطبيق <span>المعلم والطالب</span></h1>
-<p>مدعوم بالذكاء الاصطناعي — 38 لغة — أسعار في متناول الجميع</p>
+<p>مدعوم بالذكاء الاصطناعي — كل المناهج — أسعار في متناول الجميع</p>
 </div>
 </div>
 
@@ -145,14 +162,14 @@ a{text-decoration:none;color:inherit}
 <div class="choice-card teacher" onclick="showView('teacherView')">
 <span class="big-ic">👨‍🏫</span>
 <h2>أنا معلم</h2>
-<p>تحضير، اختبارات، أسئلة — أسعار مخفّضة 50%</p>
+<p>تحضير، اختبارات، أسئلة — كل المناهج والمراحل</p>
 <span class="btn-enter">ابدأ ←</span>
 </div>
 
 <div class="choice-card teacher-f" onclick="showView('teacherView')">
 <span class="big-ic">👩‍🏫</span>
 <h2>أنا معلمة</h2>
-<p>تحضير، اختبارات، أسئلة — أسعار مخفّضة 50%</p>
+<p>تحضير، اختبارات، أسئلة — كل المناهج والمراحل</p>
 <span class="btn-enter">ابدأي ←</span>
 </div>
 
@@ -179,17 +196,17 @@ a{text-decoration:none;color:inherit}
 <div class="hero">
 <div class="content">
 <h1>👨‍🏫 <span>أدوات المعلم والمعلمة</span></h1>
-<p>أسعار مخفّضة 50% — اضغط، ادفع، واستلم مباشرة</p>
+<p>كل المناهج — كل المراحل — كل المواد</p>
 </div>
 </div>
 
 <h2 class="section-title">📚 <span>تحضير الدروس</span></h2>
 <div class="services-grid">
 
-<div class="service-card" onclick="openPay('تحضير درس كامل', 5, 'تحضير درس احترافي لأي مادة وأي مستوى — يشمل الأهداف، الأنشطة، والوسائل التعليمية.')">
+<div class="service-card" onclick="openPay('تحضير درس كامل', 5, 'تحضير درس احترافي لأي مادة وأي مستوى.')">
 <div class="ic">📝</div>
 <h3>تحضير درس كامل</h3>
-<div class="desc">درس جاهز لأي مادة — أهداف + أنشطة + وسائل.</div>
+<div class="desc">درس جاهز — أهداف + أنشطة + وسائل.</div>
 <div class="meta"><div class="price">$5 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
@@ -200,10 +217,10 @@ a{text-decoration:none;color:inherit}
 <div class="meta"><div class="price">$20 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
-<div class="service-card" onclick="openPay('خطة وحدة كاملة', 12, 'خطة وحدة تعليمية كاملة — أسبوع أو أكثر.')">
+<div class="service-card" onclick="openPay('خطة وحدة كاملة', 12, 'خطة وحدة تعليمية كاملة.')">
 <div class="ic">📋</div>
 <h3>خطة وحدة كاملة</h3>
-<div class="desc">خطة وحدة تعليمية كاملة.</div>
+<div class="desc">خطة وحدة تعليمية — أسبوع أو أكثر.</div>
 <div class="meta"><div class="price">$12 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
@@ -226,10 +243,10 @@ a{text-decoration:none;color:inherit}
 <div class="meta"><div class="price">$3 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
-<div class="service-card" onclick="openPay('20 سؤال واجب', 4, '20 سؤال واجب منزلي + الإجابات.')">
+<div class="service-card" onclick="openPay('20 سؤال واجب', 4, '20 سؤال واجب + الإجابات.')">
 <div class="ic">🏠</div>
 <h3>20 سؤال واجب</h3>
-<div class="desc">أسئلة واجب منزلي + الإجابات.</div>
+<div class="desc">أسئلة واجب + الإجابات.</div>
 <div class="meta"><div class="price">$4 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
@@ -245,7 +262,7 @@ a{text-decoration:none;color:inherit}
 <div class="meta"><div class="price">$8 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
-<div class="service-card" onclick="openPay('اختبار فصلي', 12, 'اختبار فصلي شامل (ترم 1 أو 2) + الإجابات.')">
+<div class="service-card" onclick="openPay('اختبار فصلي', 12, 'اختبار فصلي شامل + الإجابات.')">
 <div class="ic">📆</div>
 <h3>اختبار فصلي</h3>
 <div class="desc">ترم 1 أو 2 — شامل + الإجابات.</div>
@@ -259,7 +276,7 @@ a{text-decoration:none;color:inherit}
 <div class="meta"><div class="price">$18 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
-<div class="service-card" onclick="openPay('بنك أسئلة كامل', 25, 'بنك أسئلة ضخم (100+ سؤال) لكل مادة.')">
+<div class="service-card" onclick="openPay('بنك أسئلة كامل', 25, 'بنك أسئلة 100+ سؤال لكل مادة.')">
 <div class="ic">🏦</div>
 <h3>بنك أسئلة كامل</h3>
 <div class="desc">100+ سؤال مصنّف — لكل مادة.</div>
@@ -276,38 +293,38 @@ a{text-decoration:none;color:inherit}
 <div class="hero">
 <div class="content">
 <h1>👨‍🎓 <span>أدوات الطالب والطالبة</span></h1>
-<p>أسعار مخفّضة 70% — في متناول كل طالب وطالبة</p>
+<p>كل المناهج — كل المراحل — أسعار مخفّضة</p>
 </div>
 </div>
 
 <h2 class="section-title gold">📖 <span>المراجعة والحلول</span></h2>
 <div class="services-grid">
 
-<div class="service-card gold" onclick="openPay('مراجعة درس كامل', 2, 'مراجعة شاملة لدرس واحد — ملخص + نقاط مهمة + أسئلة.')">
+<div class="service-card gold" onclick="openPay('مراجعة درس كامل', 2, 'مراجعة شاملة لدرس واحد.')">
 <div class="ic">📖</div>
 <h3>مراجعة درس كامل</h3>
 <div class="desc">ملخص + نقاط مهمة + أسئلة.</div>
 <div class="meta"><div class="price">$2 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
-<div class="service-card gold" onclick="openPay('مراجعة وحدة كاملة', 5, 'مراجعة شاملة لوحدة كاملة — تشمل عدة دروس.')">
+<div class="service-card gold" onclick="openPay('مراجعة وحدة كاملة', 5, 'مراجعة شاملة لوحدة كاملة.')">
 <div class="ic">📚</div>
 <h3>مراجعة وحدة كاملة</h3>
 <div class="desc">مراجعة شاملة لعدة دروس.</div>
 <div class="meta"><div class="price">$5 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
-<div class="service-card gold" onclick="openPay('حل جميع أسئلة درس', 3, 'حل كامل لجميع أسئلة الدرس مع الشرح.')">
+<div class="service-card gold" onclick="openPay('حل جميع أسئلة درس', 3, 'حل كامل لجميع أسئلة الدرس.')">
 <div class="ic">✅</div>
 <h3>حل أسئلة درس</h3>
 <div class="desc">حل كامل + شرح خطوة بخطوة.</div>
 <div class="meta"><div class="price">$3 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
-<div class="service-card gold" onclick="openPay('حل كتاب كامل', 15, 'حل جميع أسئلة الكتاب لمادة كاملة — 100% مع الشرح.')">
+<div class="service-card gold" onclick="openPay('حل كتاب كامل', 15, 'حل جميع أسئلة الكتاب لمادة كاملة.')">
 <div class="ic">📕</div>
 <h3>حل كتاب كامل</h3>
-<div class="desc">حل جميع أسئلة كتاب مادة كاملة.</div>
+<div class="desc">حل جميع أسئلة كتاب مادة.</div>
 <div class="meta"><div class="price">$15 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
@@ -316,21 +333,21 @@ a{text-decoration:none;color:inherit}
 <h2 class="section-title gold">🔮 <span>توقع الاختبارات</span></h2>
 <div class="services-grid">
 
-<div class="service-card gold" onclick="openPay('توقع اختبار شهري', 5, 'توقع أسئلة الاختبار الشهري بدقة عالية.')">
+<div class="service-card gold" onclick="openPay('توقع اختبار شهري', 5, 'توقع أسئلة الشهر بدقة عالية.')">
 <div class="ic">📅</div>
 <h3>توقع اختبار شهري</h3>
 <div class="desc">توقع أسئلة الشهر بدقة عالية.</div>
 <div class="meta"><div class="price">$5 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
-<div class="service-card gold" onclick="openPay('توقع اختبار فصلي', 8, 'توقع كامل لأسئلة الاختبار الفصلي + الإجابات.')">
+<div class="service-card gold" onclick="openPay('توقع اختبار فصلي', 8, 'توقع كامل + الإجابات.')">
 <div class="ic">📆</div>
 <h3>توقع اختبار فصلي</h3>
 <div class="desc">توقع كامل + الإجابات.</div>
 <div class="meta"><div class="price">$8 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
-<div class="service-card gold" onclick="openPay('توقع اختبار نهائي', 12, 'توقع اختبار نهاية العام — تحليل دقيق.')">
+<div class="service-card gold" onclick="openPay('توقع اختبار نهائي', 12, 'توقع اختبار نهاية العام.')">
 <div class="ic">🎓</div>
 <h3>توقع اختبار نهائي</h3>
 <div class="desc">تحليل السنوات السابقة + توقع دقيق.</div>
@@ -342,21 +359,21 @@ a{text-decoration:none;color:inherit}
 <h2 class="section-title gold">💡 <span>شرح وتبسيط</span></h2>
 <div class="services-grid">
 
-<div class="service-card gold" onclick="openPay('شرح مفهوم صعب', 2, 'شرح مبسط لمفهوم صعب — بأمثلة عملية.')">
+<div class="service-card gold" onclick="openPay('شرح مفهوم صعب', 2, 'شرح مبسط + أمثلة عملية.')">
 <div class="ic">💡</div>
 <h3>شرح مفهوم صعب</h3>
 <div class="desc">تبسيط + أمثلة عملية.</div>
 <div class="meta"><div class="price">$2 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
-<div class="service-card gold" onclick="openPay('خطة مذاكرة أسبوعية', 3, 'خطة مذاكرة مخصصة — حسب جدولك ومستواك.')">
+<div class="service-card gold" onclick="openPay('خطة مذاكرة أسبوعية', 3, 'خطة مذاكرة مخصصة.')">
 <div class="ic">📅</div>
 <h3>خطة مذاكرة أسبوعية</h3>
 <div class="desc">خطة مخصصة حسب مستواك.</div>
 <div class="meta"><div class="price">$3 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
 </div>
 
-<div class="service-card gold" onclick="openPay('ملخص شامل لمادة', 5, 'ملخص احترافي لمادة كاملة — يغنيك عن الكتاب.')">
+<div class="service-card gold" onclick="openPay('ملخص شامل لمادة', 5, 'ملخص احترافي لمادة كاملة.')">
 <div class="ic">📝</div>
 <h3>ملخص شامل لمادة</h3>
 <div class="desc">ملخص احترافي لكل مادة.</div>
@@ -374,8 +391,100 @@ a{text-decoration:none;color:inherit}
 <div class="m-desc" id="mDesc">وصف الخدمة</div>
 <div class="m-price" id="mPrice">$5 <small>USD</small></div>
 
-<label for="mDetails">📝 اكتب تفاصيل طلبك (المادة، المستوى، المنهج):</label>
-<textarea id="mDetails" placeholder="مثال: مادة الرياضيات، الصف الثالث المتوسط، الفصل الأول، درس المعادلات..."></textarea>
+<label for="selCountry">🌍 المنهج / البلد:</label>
+<select id="selCountry">
+<option value="السعودية">🇸🇦 السعودية</option>
+<option value="مصر">🇪🇬 مصر</option>
+<option value="الإمارات">🇦🇪 الإمارات</option>
+<option value="الكويت">🇰🇼 الكويت</option>
+<option value="قطر">🇶🇦 قطر</option>
+<option value="البحرين">🇧🇭 البحرين</option>
+<option value="عمان">🇴🇲 عمان</option>
+<option value="الأردن">🇯🇴 الأردن</option>
+<option value="فلسطين">🇵🇸 فلسطين</option>
+<option value="لبنان">🇱🇧 لبنان</option>
+<option value="سوريا">🇸🇾 سوريا</option>
+<option value="العراق">🇮🇶 العراق</option>
+<option value="اليمن">🇾🇪 اليمن</option>
+<option value="السودان">🇸🇩 السودان</option>
+<option value="ليبيا">🇱🇾 ليبيا</option>
+<option value="تونس">🇹🇳 تونس</option>
+<option value="الجزائر">🇩🇿 الجزائر</option>
+<option value="المغرب">🇲🇦 المغرب</option>
+<option value="موريتانيا">🇲🇷 موريتانيا</option>
+<option value="الصومال">🇸🇴 الصومال</option>
+<option value="تركيا">🇹🇷 تركيا</option>
+<option value="أمريكا">🇺🇸 أمريكا</option>
+<option value="بريطانيا">🇬🇧 بريطانيا</option>
+<option value="فرنسا">🇫🇷 فرنسا</option>
+<option value="أخرى">🌐 أخرى</option>
+</select>
+
+<div class="form-grid">
+<div>
+<label for="selGrade">🎓 المرحلة / الصف:</label>
+<select id="selGrade">
+<option value="الروضة">الروضة</option>
+<option value="الابتدائي - الصف الأول">الابتدائي - الأول</option>
+<option value="الابتدائي - الصف الثاني">الابتدائي - الثاني</option>
+<option value="الابتدائي - الصف الثالث">الابتدائي - الثالث</option>
+<option value="الابتدائي - الصف الرابع">الابتدائي - الرابع</option>
+<option value="الابتدائي - الصف الخامس">الابتدائي - الخامس</option>
+<option value="الابتدائي - الصف السادس">الابتدائي - السادس</option>
+<option value="المتوسط - الصف الأول">المتوسط - الأول</option>
+<option value="المتوسط - الصف الثاني">المتوسط - الثاني</option>
+<option value="المتوسط - الصف الثالث">المتوسط - الثالث</option>
+<option value="الثانوي - الصف الأول">الثانوي - الأول</option>
+<option value="الثانوي - الصف الثاني">الثانوي - الثاني</option>
+<option value="الثانوي - الصف الثالث">الثانوي - الثالث</option>
+<option value="الجامعة - بكالوريوس">الجامعة - بكالوريوس</option>
+<option value="الجامعة - ماجستير">الجامعة - ماجستير</option>
+</select>
+</div>
+
+<div>
+<label for="selSubject">📚 المادة:</label>
+<select id="selSubject">
+<option value="الرياضيات">الرياضيات</option>
+<option value="اللغة العربية">اللغة العربية</option>
+<option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
+<option value="العلوم">العلوم</option>
+<option value="الفيزياء">الفيزياء</option>
+<option value="الكيمياء">الكيمياء</option>
+<option value="الأحياء">الأحياء</option>
+<option value="التاريخ">التاريخ</option>
+<option value="الجغرافيا">الجغرافيا</option>
+<option value="التربية الإسلامية">التربية الإسلامية</option>
+<option value="الحاسب الآلي">الحاسب الآلي</option>
+<option value="الاجتماعيات">الاجتماعيات</option>
+<option value="الفلسفة">الفلسفة</option>
+<option value="الاقتصاد">الاقتصاد</option>
+<option value="علم النفس">علم النفس</option>
+<option value="أخرى">أخرى</option>
+</select>
+</div>
+</div>
+
+<label for="selTerm">📅 الفصل الدراسي:</label>
+<select id="selTerm">
+<option value="الفصل الأول">الفصل الأول (ترم 1)</option>
+<option value="الفصل الثاني">الفصل الثاني (ترم 2)</option>
+<option value="الفصل الثالث">الفصل الثالث (ترم 3)</option>
+<option value="سنة كاملة">السنة كاملة</option>
+</select>
+
+<label for="mDetails">📝 تفاصيل إضافية (اسم الدرس، رقم الصفحة، أي ملاحظات):</label>
+<textarea id="mDetails" placeholder="مثال: الدرس الثالث - المعادلات الخطية - ص 45"></textarea>
+
+<!-- PDF UPLOAD -->
+<label>📎 ارفع الكتاب / الملزمة (PDF) — اختياري لزيادة الدقة:</label>
+<div class="pdf-area" onclick="document.getElementById('pdfFile').click()">
+<input type="file" id="pdfFile" accept=".pdf" onchange="handlePDF(event)">
+<span class="pdf-ic">📄</span>
+<div class="pdf-text" id="pdfText">اضغط لرفع ملف PDF</div>
+<div class="pdf-sub">اختياري — يساعد AI على مطابقة المنهج بدقة 100%</div>
+</div>
+<div class="pdf-status" id="pdfStatus"></div>
 
 <div id="paypal-button-container"></div>
 <div class="m-status" id="mStatus"></div>
@@ -401,6 +510,13 @@ aion.genesisss@gmail.com<br><br>
 </div>
 
 <script>
+// PDF.js worker setup
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+}
+
+let pdfTextContent = '';
+
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -415,6 +531,11 @@ function openPay(title, price, desc) {
   document.getElementById('mDesc').textContent = desc;
   document.getElementById('mPrice').innerHTML = '$' + price + ' <small>USD</small>';
   document.getElementById('mDetails').value = '';
+  document.getElementById('pdfFile').value = '';
+  document.getElementById('pdfText').textContent = 'اضغط لرفع ملف PDF';
+  document.getElementById('pdfStatus').className = 'pdf-status';
+  document.getElementById('pdfStatus').textContent = '';
+  pdfTextContent = '';
   document.getElementById('mStatus').style.display = 'none';
   document.getElementById('delivery').classList.remove('active');
   document.getElementById('payModal').classList.add('active');
@@ -438,6 +559,57 @@ function showStatus(msg, type) {
   el.style.display = 'block';
 }
 
+// ===== PDF HANDLING =====
+async function handlePDF(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  if (file.type !== 'application/pdf') {
+    document.getElementById('pdfStatus').textContent = '❌ الملف ليس PDF';
+    document.getElementById('pdfStatus').className = 'pdf-status show error';
+    return;
+  }
+
+  if (file.size > 20 * 1024 * 1024) {
+    document.getElementById('pdfStatus').textContent = '❌ الملف كبير جدًا (الحد 20MB)';
+    document.getElementById('pdfStatus').className = 'pdf-status show error';
+    return;
+  }
+
+  document.getElementById('pdfText').textContent = '⏳ جاري قراءة الملف...';
+  document.getElementById('pdfStatus').className = 'pdf-status';
+  document.getElementById('pdfStatus').textContent = '';
+
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+    let fullText = '';
+    const maxPages = Math.min(pdf.numPages, 30);
+
+    for (let i = 1; i <= maxPages; i++) {
+      const page = await pdf.getPage(i);
+      const textContent = await page.getTextContent();
+      const pageText = textContent.items.map(item => item.str).join(' ');
+      fullText += '\n--- صفحة ' + i + ' ---\n' + pageText;
+    }
+
+    // Limit to ~15000 chars to not exceed AI limits
+    pdfTextContent = fullText.slice(0, 15000);
+
+    document.getElementById('pdfText').textContent = '✅ ' + file.name;
+    document.getElementById('pdfStatus').textContent = '✅ تم قراءة ' + maxPages + ' صفحة من ' + pdf.numPages + ' (' + pdfTextContent.length + ' حرف)';
+    document.getElementById('pdfStatus').className = 'pdf-status show';
+  } catch (err) {
+    console.error(err);
+    document.getElementById('pdfText').textContent = '❌ فشل قراءة الملف';
+    document.getElementById('pdfStatus').textContent = '❌ ' + err.message;
+    document.getElementById('pdfStatus').className = 'pdf-status show error';
+    pdfTextContent = '';
+  }
+}
+
+// ===== PAYPAL =====
 async function loadPayPal() {
   const container = document.getElementById('paypal-button-container');
   container.innerHTML = '';
@@ -462,6 +634,34 @@ async function loadPayPal() {
   renderPayPalButtons();
 }
 
+function buildPrompt() {
+  const country = document.getElementById('selCountry').value;
+  const grade = document.getElementById('selGrade').value;
+  const subject = document.getElementById('selSubject').value;
+  const term = document.getElementById('selTerm').value;
+  const details = document.getElementById('mDetails').value.trim();
+
+  let prompt = 'أنت خبير تعليمي عربي محترف.\n\n';
+  prompt += '📋 المطلوب: ' + currentService.title + '\n';
+  prompt += '🌍 المنهج/البلد: ' + country + '\n';
+  prompt += '🎓 المرحلة/الصف: ' + grade + '\n';
+  prompt += '📚 المادة: ' + subject + '\n';
+  prompt += '📅 الفصل: ' + term + '\n';
+  if (details) prompt += '📝 تفاصيل إضافية: ' + details + '\n';
+
+  if (pdfTextContent) {
+    prompt += '\n📎 النص المستخرج من الكتاب/الملزمة المرفقة:\n';
+    prompt += '"""\n' + pdfTextContent + '\n"""\n\n';
+    prompt += '⚠️ مهم: طابق المحتوى مع ما في الكتاب/الملزمة المرفقة بدقة عالية.\n';
+  }
+
+  prompt += '\nاكتب الآن ' + currentService.title + ' احترافي كامل، منظّم، جاهز للاستخدام.\n';
+  prompt += 'استخدم العناوين والنقاط والأمثلة المناسبة للمرحلة.\n';
+  prompt += 'نفّذ المهمة كاملة الآن — لا تطلب معلومات إضافية.';
+
+  return prompt;
+}
+
 function renderPayPalButtons() {
   const container = document.getElementById('paypal-button-container');
   container.innerHTML = '';
@@ -469,12 +669,16 @@ function renderPayPalButtons() {
   paypal.Buttons({
     style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal', height: 45 },
     createOrder: async () => {
-      const details = document.getElementById('mDetails').value.trim();
-      if (!details) { showStatus('⚠️ اكتب تفاصيل طلبك أولًا', 'error'); throw new Error('no details'); }
+      const prompt = buildPrompt();
       const res = await fetch('/api/paypal/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: currentService.price, currency: 'USD', description: currentService.title, details: details })
+        body: JSON.stringify({
+          amount: currentService.price,
+          currency: 'USD',
+          description: currentService.title,
+          details: prompt.slice(0, 200)
+        })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'fail');
@@ -500,7 +704,6 @@ function renderPayPalButtons() {
 }
 
 async function deliverService() {
-  const details = document.getElementById('mDetails').value.trim();
   const deliveryEl = document.getElementById('delivery');
   const bodyEl = document.getElementById('dBody');
 
@@ -508,7 +711,7 @@ async function deliverService() {
   document.getElementById('dHeadText').textContent = '⏳ AI يعمل على طلبك...';
   bodyEl.innerHTML = '<div style="text-align:center;padding:20px">AION AI جاري إنشاء الخدمة<span class="spinner"></span></div>';
 
-  const prompt = 'أنت خبير تعليمي عربي محترف.\nالمطلوب: ' + currentService.title + '\nتفاصيل الطلب: ' + details + '\n\nاكتب خدمة احترافية كاملة، منظمة، جاهزة للاستخدام.\nاستخدم العناوين والنقاط والأمثلة.\nنفّذ المهمة كاملة الآن.';
+  const prompt = buildPrompt();
 
   try {
     const res = await fetch('/api/chat', {
