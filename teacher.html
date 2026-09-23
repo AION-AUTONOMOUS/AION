@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#00c8ff">
+<title>AION Teacher | تطبيق المعلم والطالب</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1400px;margin:auto;padding:14px}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#00c8ff}
+
+/* HERO */
+.hero{padding:40px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,80,150,.35),rgba(2,8,23,.95));border:1px solid rgba(0,180,255,.35);border-radius:22px;margin-bottom:25px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#00c8ff,transparent),radial-gradient(2px 2px at 60% 70%,#f5c542,transparent),radial-gradient(1px 1px at 40% 80%,#a78bfa,transparent);opacity:.6;pointer-events:none}
+.hero .content{position:relative;z-index:2}
+.hero h1{color:#fff;font-size:clamp(26px,4.5vw,44px);font-weight:900;margin-bottom:12px;line-height:1.3}
+.hero h1 span{color:#f5c542;text-shadow:0 0 25px rgba(245,197,66,.8)}
+.hero p{color:#c8d5e7;font-size:15px;max-width:720px;margin:auto;line-height:1.8}
+
+/* CHOICE */
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:30px}
+.choice-card{padding:40px 30px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.85));border:2px solid rgba(0,180,255,.3);border-radius:22px;text-align:center;cursor:pointer;transition:.4s;position:relative;overflow:hidden}
+.choice-card:hover{transform:translateY(-8px);box-shadow:0 25px 60px rgba(0,200,255,.4)}
+.choice-card.teacher{border-color:rgba(0,200,255,.5)}
+.choice-card.teacher:hover{box-shadow:0 25px 60px rgba(0,200,255,.6)}
+.choice-card.student{border-color:rgba(245,197,66,.5)}
+.choice-card.student:hover{box-shadow:0 25px 60px rgba(245,197,66,.6)}
+.choice-card .big-ic{font-size:70px;margin-bottom:18px;display:block;filter:drop-shadow(0 0 25px rgba(0,200,255,.7))}
+.choice-card h2{color:#fff;font-size:28px;font-weight:900;margin-bottom:10px}
+.choice-card.teacher h2{color:#00c8ff}
+.choice-card.student h2{color:#f5c542}
+.choice-card p{color:#aebbd0;font-size:14px;line-height:1.7;margin-bottom:15px}
+.choice-card .btn-enter{display:inline-block;padding:12px 30px;border-radius:40px;font-weight:900;font-size:14px;transition:.3s}
+.choice-card.teacher .btn-enter{background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff}
+.choice-card.student .btn-enter{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}
+
+/* SECTION VIEWS */
+.view{display:none}
+.view.active{display:block}
+
+.section-title{color:#fff;font-size:24px;font-weight:900;margin:25px 0 20px;text-align:center}
+.section-title span{color:#00c8ff}
+.section-title.gold span{color:#f5c542}
+
+/* SERVICE CARDS */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:15px;margin-bottom:25px}
+.service-card{padding:22px 20px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.75));border:1px solid rgba(0,180,255,.3);border-radius:18px;transition:.3s;cursor:pointer;position:relative;display:flex;flex-direction:column;min-height:240px}
+.service-card:hover{transform:translateY(-5px);border-color:#00c8ff;box-shadow:0 20px 45px rgba(0,200,255,.35)}
+.service-card.gold:hover{border-color:#f5c542;box-shadow:0 20px 45px rgba(245,197,66,.35)}
+.service-card .ic{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;font-size:24px;margin-bottom:12px;background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.5)}
+.service-card.gold .ic{background:rgba(245,197,66,.15);border-color:rgba(245,197,66,.5)}
+.service-card h3{color:#fff;font-size:16px;font-weight:900;margin-bottom:6px}
+.service-card .desc{color:#aebbd0;font-size:12px;line-height:1.6;flex:1;margin-bottom:12px}
+.service-card .meta{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)}
+.service-card .price{color:#f5c542;font-size:20px;font-weight:900}
+.service-card .price small{color:#aebbd0;font-size:10px;font-weight:normal}
+.service-card .buy-btn{padding:9px 16px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border:none;border-radius:30px;font-weight:900;font-size:12px;cursor:pointer;font-family:inherit;transition:.3s}
+.service-card.gold .buy-btn{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}
+.service-card .buy-btn:hover{transform:scale(1.05)}
+
+/* BACK BUTTON */
+.back-btn{display:inline-block;padding:10px 22px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:13px;font-weight:900;cursor:pointer;margin-bottom:20px;font-family:inherit}
+.back-btn:hover{background:rgba(0,200,255,.25)}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;place-items:center;z-index:9999;padding:20px;backdrop-filter:blur(8px);overflow-y:auto}
+.modal.active{display:grid}
+.modal-box{background:linear-gradient(135deg,#0B1D3A,#020817);border:2px solid #00c8ff;border-radius:22px;padding:28px;max-width:480px;width:100%;box-shadow:0 0 60px rgba(0,200,255,.5);position:relative;max-height:90vh;overflow-y:auto}
+.modal-box.gold{border-color:#f5c542;box-shadow:0 0 60px rgba(245,197,66,.5)}
+.modal-box .close-x{position:absolute;top:15px;left:15px;background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;font-family:inherit}
+.modal-box h3{color:#00c8ff;font-size:20px;margin-bottom:8px;text-align:center}
+.modal-box.gold h3{color:#f5c542}
+.modal-box .m-desc{color:#aebbd0;font-size:13px;text-align:center;margin-bottom:15px;line-height:1.7}
+.modal-box .m-price{color:#fff;font-size:38px;font-weight:900;text-align:center;margin:15px 0}
+.modal-box .m-price small{color:#aebbd0;font-size:14px}
+.modal-box textarea{width:100%;padding:12px;background:#020817;color:#fff;border:1px solid rgba(0,200,255,.4);border-radius:12px;font-family:inherit;font-size:13px;resize:vertical;min-height:80px;margin-bottom:15px}
+.modal-box textarea:focus{outline:none;border-color:#f5c542}
+.modal-box label{display:block;color:#00c8ff;font-size:12px;font-weight:900;margin-bottom:6px}
+#paypal-button-container{min-height:50px;margin-top:10px}
+.m-status{padding:12px;border-radius:12px;text-align:center;margin-top:12px;font-size:13px;font-weight:700;display:none}
+.m-status.success{background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.5);color:#4ade80;display:block}
+.m-status.error{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.5);color:#ff8888;display:block}
+.m-status.info{background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.5);color:#00c8ff;display:block}
+
+.delivery{padding:20px;background:rgba(0,200,255,.05);border:1px solid rgba(0,200,255,.3);border-radius:14px;margin-top:15px;display:none}
+.delivery.active{display:block}
+.delivery .d-head{color:#00c8ff;font-size:13px;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.delivery .d-body{color:#dfe8f5;font-size:13px;line-height:1.9;white-space:pre-wrap;max-height:400px;overflow-y:auto;padding:12px;background:rgba(2,8,23,.6);border-radius:10px}
+.delivery .d-actions{display:flex;gap:8px;margin-top:12px}
+.delivery .d-actions button{flex:1;padding:10px;border-radius:10px;border:none;font-family:inherit;font-weight:900;font-size:12px;cursor:pointer}
+.delivery .d-copy{background:rgba(0,200,255,.2);color:#00c8ff;border:1px solid #00c8ff}
+.delivery .d-close{background:rgba(255,255,255,.1);color:#fff}
+
+.spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(0,200,255,.2);border-top-color:#00c8ff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-left:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* FOOTER */
+.footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:30px}
+.footer strong{color:#00c8ff}
+.footer a{color:#00c8ff;margin:0 8px}
+
+@media(max-width:600px){
+.choice{grid-template-columns:1fr}
+.services-grid{grid-template-columns:1fr}
+.menu a{font-size:11px;margin-left:8px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="topnav">
+<div class="logo">
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<div>AION<div class="s">TEACHER</div></div>
+</div>
+<div class="menu">
+<a href="index.html">الرئيسية</a>
+<a href="academy.html">Academy</a>
+<a href="chat.html">AI Tutor</a>
+<a href="pricing.html">الأسعار</a>
+</div>
+</div>
+
+<!-- ============= MAIN VIEW ============= -->
+<div class="view active" id="mainView">
+<div class="hero">
+<div class="content">
+<h1>تطبيق <span>المعلم والطالب</span></h1>
+<p>مدعوم بالذكاء الاصطناعي — 38 لغة — كل الخدمات في مكان واحد. اختر دورك وابدأ.</p>
+</div>
+</div>
+
+<div class="choice">
+<div class="choice-card teacher" onclick="showView('teacherView')">
+<span class="big-ic">👨‍🏫</span>
+<h2>أنا معلم</h2>
+<p>تحضير الدروس، إنشاء الأسئلة، تصميم الاختبارات — كل شي في دقيقة واحدة.</p>
+<span class="btn-enter">ابدأ الآن ←</span>
+</div>
+
+<div class="choice-card student" onclick="showView('studentView')">
+<span class="big-ic">👨‍🎓</span>
+<h2>أنا طالب</h2>
+<p>مراجعة شاملة، حل الأسئلة، توقع الاختبارات — كل شي بضغطة زر.</p>
+<span class="btn-enter">ابدأ الآن ←</span>
+</div>
+</div>
+</div>
+
+<!-- ============= TEACHER VIEW ============= -->
+<div class="view" id="teacherView">
+<button class="back-btn" onclick="showView('mainView')">← رجوع</button>
+
+<div class="hero">
+<div class="content">
+<h1>👨‍🏫 <span>أدوات المعلم</span></h1>
+<p>كل خدمة لها سعرها — اضغط، ادفع، واستلم مباشرة.</p>
+</div>
+</div>
+
+<h2 class="section-title">📚 <span>تحضير الدروس</span></h2>
+<div class="services-grid">
+
+<div class="service-card" onclick="openPay('تحضير درس كامل', 10, 'تحضير درس احترافي لأي مادة وأي مستوى — يشمل الأهداف، الأنشطة، والوسائل التعليمية.')">
+<div class="ic">📝</div>
+<h3>تحضير درس كامل</h3>
+<div class="desc">درس جاهز لأي مادة — أهداف + أنشطة + وسائل تعليمية.</div>
+<div class="meta"><div class="price">$10 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card" onclick="openPay('تحضير 5 دروس', 40, 'باقة 5 دروس كاملة بخصم 20% — لأي مواد ومناهج.')">
+<div class="ic">📚</div>
+<h3>باقة 5 دروس</h3>
+<div class="desc">5 دروس كاملة بخصم 20% — لأي مناهج.</div>
+<div class="meta"><div class="price">$40 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card" onclick="openPay('خطة وحدة كاملة', 25, 'خطة وحدة تعليمية كاملة — أسبوع أو أكثر، بأنشطة وتقييمات.')">
+<div class="ic">📋</div>
+<h3>خطة وحدة كاملة</h3>
+<div class="desc">خطة وحدة تعليمية — أسبوع أو أكثر.</div>
+<div class="meta"><div class="price">$25 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+</div>
+
+<h2 class="section-title">✍️ <span>الواجبات والأنشطة</span></h2>
+<div class="services-grid">
+
+<div class="service-card" onclick="openPay('ورقة عمل كاملة', 8, 'ورقة عمل احترافية بأسئلة متنوعة (اختيار متعدد، صح/خطأ، مقالي).')">
+<div class="ic">📄</div>
+<h3>ورقة عمل</h3>
+<div class="desc">ورقة عمل كاملة + أسئلة متنوعة + الإجابات.</div>
+<div class="meta"><div class="price">$8 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card" onclick="openPay('أسئلة مشاركة صفية', 5, '20 سؤال تفاعلي للمشاركة الصفية — مع الإجابات.')">
+<div class="ic">💬</div>
+<h3>أسئلة مشاركة صفية</h3>
+<div class="desc">20 سؤال تفاعلي + الإجابات.</div>
+<div class="meta"><div class="price">$5 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card" onclick="openPay('20 سؤال واجب', 7, '20 سؤال واجب منزلي + الإجابات النموذجية.')">
+<div class="ic">🏠</div>
+<h3>20 سؤال واجب</h3>
+<div class="desc">أسئلة واجب منزلي + الإجابات.</div>
+<div class="meta"><div class="price">$7 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+</div>
+
+<h2 class="section-title">📊 <span>الاختبارات</span></h2>
+<div class="services-grid">
+
+<div class="service-card" onclick="openPay('اختبار شهري', 15, 'اختبار شهري كامل — أسئلة متنوعة + الإجابات + سلم التصحيح.')">
+<div class="ic">📅</div>
+<h3>اختبار شهري</h3>
+<div class="desc">اختبار كامل + الإجابات + التصحيح.</div>
+<div class="meta"><div class="price">$15 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card" onclick="openPay('اختبار فصلي', 25, 'اختبار فصلي شامل (ترم أول أو ثاني) — جميع الوحدات + الإجابات.')">
+<div class="ic">📆</div>
+<h3>اختبار فصلي</h3>
+<div class="desc">ترم 1 أو 2 — شامل + الإجابات.</div>
+<div class="meta"><div class="price">$25 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card" onclick="openPay('اختبار نهائي', 35, 'اختبار نهائي كامل للعام الدراسي — بمستوى احترافي + الإجابات.')">
+<div class="ic">🎓</div>
+<h3>اختبار نهائي</h3>
+<div class="desc">اختبار نهاية العام + الإجابات.</div>
+<div class="meta"><div class="price">$35 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card" onclick="openPay('بنك أسئلة كامل', 50, 'بنك أسئلة ضخم (100+ سؤال) لكل مادة — مصنف حسب المستوى.')">
+<div class="ic">🏦</div>
+<h3>بنك أسئلة كامل</h3>
+<div class="desc">100+ سؤال مصنّف — لكل مادة.</div>
+<div class="meta"><div class="price">$50 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+</div>
+</div>
+
+<!-- ============= STUDENT VIEW ============= -->
+<div class="view" id="studentView">
+<button class="back-btn" onclick="showView('mainView')">← رجوع</button>
+
+<div class="hero">
+<div class="content">
+<h1>👨‍🎓 <span>أدوات الطالب</span></h1>
+<p>كل خدمة لها سعرها — اضغط، ادفع، واستلم مباشرة.</p>
+</div>
+</div>
+
+<h2 class="section-title gold">📖 <span>المراجعة والحلول</span></h2>
+<div class="services-grid">
+
+<div class="service-card gold" onclick="openPay('مراجعة درس كامل', 7, 'مراجعة شاملة لدرس واحد — ملخص + نقاط مهمة + أسئلة.')">
+<div class="ic">📖</div>
+<h3>مراجعة درس كامل</h3>
+<div class="desc">ملخص + نقاط مهمة + أسئلة.</div>
+<div class="meta"><div class="price">$7 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card gold" onclick="openPay('مراجعة وحدة كاملة', 20, 'مراجعة شاملة لوحدة كاملة — تشمل عدة دروس.')">
+<div class="ic">📚</div>
+<h3>مراجعة وحدة كاملة</h3>
+<div class="desc">مراجعة شاملة لعدة دروس.</div>
+<div class="meta"><div class="price">$20 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card gold" onclick="openPay('حل جميع أسئلة درس', 10, 'حل كامل لجميع أسئلة الدرس مع الشرح خطوة بخطوة.')">
+<div class="ic">✅</div>
+<h3>حل أسئلة درس</h3>
+<div class="desc">حل كامل + شرح خطوة بخطوة.</div>
+<div class="meta"><div class="price">$10 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card gold" onclick="openPay('حل كتاب كامل', 60, 'حل جميع أسئلة الكتاب لمادة كاملة — 100% مع الشرح.')">
+<div class="ic">📕</div>
+<h3>حل كتاب كامل</h3>
+<div class="desc">حل جميع أسئلة كتاب مادة كاملة.</div>
+<div class="meta"><div class="price">$60 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+</div>
+
+<h2 class="section-title gold">🔮 <span>توقع الاختبارات</span></h2>
+<div class="services-grid">
+
+<div class="service-card gold" onclick="openPay('توقع اختبار شهري', 15, 'توقع أسئلة الاختبار الشهري بناءً على المنهج — دقة عالية.')">
+<div class="ic">📅</div>
+<h3>توقع اختبار شهري</h3>
+<div class="desc">توقع أسئلة الشهر بدقة عالية.</div>
+<div class="meta"><div class="price">$15 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card gold" onclick="openPay('توقع اختبار فصلي', 25, 'توقع كامل لأسئلة الاختبار الفصلي (ترم 1 أو 2) — مع الإجابات.')">
+<div class="ic">📆</div>
+<h3>توقع اختبار فصلي</h3>
+<div class="desc">توقع كامل + الإجابات.</div>
+<div class="meta"><div class="price">$25 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card gold" onclick="openPay('توقع اختبار نهائي', 35, 'توقع اختبار نهاية العام — بناءً على تحليل أسئلة السنوات السابقة.')">
+<div class="ic">🎓</div>
+<h3>توقع اختبار نهائي</h3>
+<div class="desc">تحليل السنوات السابقة + توقع دقيق.</div>
+<div class="meta"><div class="price">$35 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+</div>
+
+<h2 class="section-title gold">💡 <span>شرح وتبسيط</span></h2>
+<div class="services-grid">
+
+<div class="service-card gold" onclick="openPay('شرح مفهوم صعب', 5, 'شرح مبسط لمفهوم صعب — بأمثلة عملية.')">
+<div class="ic">💡</div>
+<h3>شرح مفهوم صعب</h3>
+<div class="desc">تبسيط + أمثلة عملية.</div>
+<div class="meta"><div class="price">$5 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card gold" onclick="openPay('خطة مذاكرة أسبوعية', 10, 'خطة مذاكرة مخصصة لك — حسب جدولك ومستواك.')">
+<div class="ic">📅</div>
+<h3>خطة مذاكرة أسبوعية</h3>
+<div class="desc">خطة مخصصة حسب مستواك.</div>
+<div class="meta"><div class="price">$10 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+<div class="service-card gold" onclick="openPay('ملخص شامل لمادة', 20, 'ملخص احترافي لمادة كاملة — يغنيك عن الكتاب.')">
+<div class="ic">📝</div>
+<h3>ملخص شامل لمادة</h3>
+<div class="desc">ملخص احترافي لكل مادة.</div>
+<div class="meta"><div class="price">$20 <small>USD</small></div><button class="buy-btn">💳 اطلب</button></div>
+</div>
+
+</div>
+</div>
+
+<!-- ============= MODAL ============= -->
+<div class="modal" id="payModal">
+<div class="modal-box" id="modalBox">
+<button class="close-x" onclick="closeModal()">✕</button>
+<h3 id="mTitle">تحضير درس</h3>
+<div class="m-desc" id="mDesc">وصف الخدمة</div>
+<div class="m-price" id="mPrice">$10 <small>USD</small></div>
+
+<label for="mDetails">📝 اكتب تفاصيل طلبك (المادة، المستوى، المنهج، أي تفاصيل مهمة):</label>
+<textarea id="mDetails" placeholder="مثال: مادة الرياضيات، الصف الثالث المتوسط، الفصل الأول، درس المعادلات..."></textarea>
+
+<div id="paypal-button-container"></div>
+
+<div class="m-status" id="mStatus"></div>
+
+<div class="delivery" id="delivery">
+<div class="d-head">✅ <span id="dHeadText">الخدمة جاهزة!</span></div>
+<div class="d-body" id="dBody"></div>
+<div class="d-actions">
+<button class="d-copy" onclick="copyDelivery()">📋 نسخ</button>
+<button class="d-close" onclick="closeModal()">إغلاق</button>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer">
+<strong>AION AUTONOMOUS</strong> — Teacher App<br>
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
+</div>
+
+</div>
+
+<script>
+// ===== VIEW MANAGEMENT =====
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ===== MODAL / PAYMENT =====
+let currentService = { title: '', price: 0, desc: '' };
+let paypalRendered = false;
+
+function openPay(title, price, desc) {
+  currentService = { title, price, desc };
+  document.getElementById('mTitle').textContent = title;
+  document.getElementById('mDesc').textContent = desc;
+  document.getElementById('mPrice').innerHTML = '$' + price + ' <small>USD</small>';
+  document.getElementById('mDetails').value = '';
+  document.getElementById('mStatus').style.display = 'none';
+  document.getElementById('delivery').classList.remove('active');
+  document.getElementById('payModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Load PayPal buttons
+  loadPayPal();
+}
+
+function closeModal() {
+  document.getElementById('payModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('payModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function showStatus(msg, type) {
+  const el = document.getElementById('mStatus');
+  el.textContent = msg;
+  el.className = 'm-status ' + type;
+  el.style.display = 'block';
+}
+
+// ===== PAYPAL =====
+async function loadPayPal() {
+  const container = document.getElementById('paypal-button-container');
+  container.innerHTML = '';
+
+  if (typeof paypal === 'undefined') {
+    try {
+      const res = await fetch('/api/paypal/client-id');
+      const data = await res.json();
+      if (!data.clientId) { showStatus('خطأ: لم يتم العثور على PayPal Client ID', 'error'); return; }
+
+      await new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = 'https://www.paypal.com/sdk/js?client-id=' + data.clientId + '&currency=USD&components=buttons&enable-funding=card';
+        s.onload = resolve;
+        s.onerror = reject;
+        document.body.appendChild(s);
+      });
+    } catch (e) {
+      showStatus('خطأ في تحميل PayPal', 'error');
+      return;
+    }
+  }
+  renderPayPalButtons();
+}
+
+function renderPayPalButtons() {
+  const container = document.getElementById('paypal-button-container');
+  container.innerHTML = '';
+
+  paypal.Buttons({
+    style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal', height: 45 },
+
+    createOrder: async () => {
+      const details = document.getElementById('mDetails').value.trim();
+      if (!details) { showStatus('⚠️ اكتب تفاصيل طلبك أولًا', 'error'); throw new Error('no details'); }
+
+      const res = await fetch('/api/paypal/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: currentService.price,
+          currency: 'USD',
+          description: currentService.title,
+          details: details
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'fail');
+      return data.id;
+    },
+
+    onApprove: async (data) => {
+      const res = await fetch('/api/paypal/capture-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: data.orderID })
+      });
+      const result = await res.json();
+      if (res.ok && result.status === 'COMPLETED') {
+        showStatus('✅ تم الدفع! جاري إنشاء الخدمة...', 'success');
+        deliverService();
+      } else {
+        showStatus('❌ فشل تأكيد الدفع', 'error');
+      }
+    },
+
+    onError: (err) => {
+      console.error(err);
+      showStatus('❌ حدث خطأ في الدفع', 'error');
+    },
+
+    onCancel: () => showStatus('⚠️ تم إلغاء الدفع', 'error')
+  }).render('#paypal-button-container');
+}
+
+// ===== SERVICE DELIVERY (via AION AI) =====
+async function deliverService() {
+  const details = document.getElementById('mDetails').value.trim();
+  const deliveryEl = document.getElementById('delivery');
+  const bodyEl = document.getElementById('dBody');
+
+  deliveryEl.classList.add('active');
+  document.getElementById('dHeadText').textContent = '⏳ AI يعمل على طلبك...';
+  bodyEl.innerHTML = '<div style="text-align:center;padding:20px">AION AI جاري إنشاء الخدمة<span class="spinner"></span></div>';
+
+  const prompt = `أنت خبير تعليمي عربي محترف.
+المطلوب منك: ${currentService.title}
+تفاصيل الطلب من العميل: ${details}
+
+اكتب الآن خدمة احترافية كاملة، منظمة، جاهزة للاستخدام.
+استخدم العناوين والنقاط والأمثلة.
+لا تطلب أي معلومات إضافية — نفّذ المهمة كاملة الآن.`;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: prompt, role: 'content' })
+    });
+    const data = await res.json();
+    if (data.success && data.reply) {
+      document.getElementById('dHeadText').textContent = '✅ ' + currentService.title + ' — جاهز!';
+      bodyEl.textContent = data.reply;
+    } else {
+      document.getElementById('dHeadText').textContent = '⚠️ خطأ في الإنشاء';
+      bodyEl.textContent = 'حدث خطأ: ' + (data.error || 'حاول مرة أخرى');
+    }
+  } catch (err) {
+    document.getElementById('dHeadText').textContent = '⚠️ خطأ في الاتصال';
+    bodyEl.textContent = 'حدث خطأ: ' + err.message;
+  }
+}
+
+function copyDelivery() {
+  const text = document.getElementById('dBody').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.d-copy');
+    btn.textContent = '✅ تم النسخ';
+    setTimeout(() => btn.textContent = '📋 نسخ', 2000);
+  });
+}
+</script>
+
+<script src="lang.js"></script>
+
+</body>
+</html>
