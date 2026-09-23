@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#00c8ff">
+<link rel="manifest" href="/manifest.json">
+<title>AION Academy | منصة التعليم الذكية</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1400px;margin:auto;padding:14px}
+
+/* NAV */
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
+.logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#00c8ff}
+.lang-btn{padding:6px 12px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;margin-left:12px;display:inline-block}
+
+/* HERO */
+.hero{padding:50px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,80,150,.4),rgba(2,8,23,.95)),radial-gradient(circle at 50% 40%,rgba(0,200,255,.3),transparent 60%);border:1px solid rgba(0,200,255,.4);border-radius:25px;margin-bottom:25px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 15% 20%,#fff,transparent),radial-gradient(2px 2px at 45% 60%,#00c8ff,transparent),radial-gradient(1px 1px at 70% 30%,#f5c542,transparent),radial-gradient(2px 2px at 85% 75%,#fff,transparent);opacity:.7;animation:twinkle 4s ease-in-out infinite;pointer-events:none}
+@keyframes twinkle{0%,100%{opacity:.7}50%{opacity:.3}}
+.hero .content{position:relative;z-index:2}
+.hero .badge{display:inline-block;padding:6px 18px;background:rgba(0,200,255,.15);border:1px solid #00c8ff;border-radius:20px;color:#00c8ff;font-size:12px;font-weight:900;letter-spacing:3px;margin-bottom:18px}
+.hero h1{color:#fff;font-size:clamp(28px,5vw,50px);font-weight:900;margin-bottom:15px;line-height:1.3}
+.hero h1 span{color:#00c8ff;text-shadow:0 0 30px rgba(0,200,255,.8)}
+.hero p{color:#c8d5e7;font-size:16px;max-width:750px;margin:auto;line-height:1.9;margin-bottom:25px}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-hero{display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border-radius:50px;font-weight:900;font-size:15px;box-shadow:0 15px 40px rgba(0,200,255,.5);transition:.3s}
+.btn-hero:hover{transform:translateY(-3px)}
+.btn-hero.gold{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-bottom:30px}
+.stat{padding:22px 15px;background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.25);border-radius:16px;text-align:center;transition:.3s}
+.stat:hover{border-color:#00c8ff;transform:translateY(-4px);box-shadow:0 15px 40px rgba(0,200,255,.3)}
+.stat .n{color:#f5c542;font-size:32px;font-weight:900;margin-bottom:6px;text-shadow:0 0 15px rgba(245,197,66,.5)}
+.stat .l{color:#aebbd0;font-size:12px}
+
+/* TRACKS */
+.section-title{color:#fff;font-size:26px;font-weight:900;margin:30px 0 20px;text-align:center}
+.section-title span{color:#00c8ff}
+.section-desc{text-align:center;color:#aebbd0;font-size:14px;margin-bottom:25px}
+
+.tracks{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-bottom:30px}
+.track{padding:28px 22px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.7));border:2px solid rgba(0,180,255,.3);border-radius:20px;transition:.3s;position:relative;cursor:pointer}
+.track:hover{transform:translateY(-6px);border-color:#00c8ff;box-shadow:0 20px 50px rgba(0,200,255,.3)}
+.track.ai{border-color:rgba(0,200,255,.5)}
+.track.ai:hover{box-shadow:0 20px 50px rgba(0,200,255,.5)}
+.track.code{border-color:rgba(122,75,255,.5)}
+.track.code:hover{box-shadow:0 20px 50px rgba(122,75,255,.5)}
+.track.business{border-color:rgba(245,197,66,.5)}
+.track.business:hover{box-shadow:0 20px 50px rgba(245,197,66,.5)}
+.track.lang{border-color:rgba(74,222,128,.5)}
+.track.lang:hover{box-shadow:0 20px 50px rgba(74,222,128,.5)}
+.track.science{border-color:rgba(239,68,68,.5)}
+.track.science:hover{box-shadow:0 20px 50px rgba(239,68,68,.5)}
+
+.track .ic{width:64px;height:64px;border-radius:16px;display:grid;place-items:center;font-size:30px;margin-bottom:15px}
+.track.ai .ic{background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.5)}
+.track.code .ic{background:rgba(122,75,255,.15);border:1px solid rgba(122,75,255,.5)}
+.track.business .ic{background:rgba(245,197,66,.15);border:1px solid rgba(245,197,66,.5)}
+.track.lang .ic{background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.5)}
+.track.science .ic{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.5)}
+
+.track h3{color:#fff;font-size:19px;font-weight:900;margin-bottom:8px}
+.track.ai h3{color:#00c8ff}
+.track.code h3{color:#a78bfa}
+.track.business h3{color:#f5c542}
+.track.lang h3{color:#4ade80}
+.track.science h3{color:#f87171}
+
+.track .desc{color:#c8d5e7;font-size:13px;line-height:1.7;margin-bottom:15px}
+.track .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.track .meta span{padding:4px 10px;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.25);border-radius:20px;font-size:10px;color:#aebbd0}
+.track .btn-start{display:block;width:100%;padding:12px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border-radius:30px;font-weight:900;font-size:13px;text-align:center;transition:.3s}
+.track.business .btn-start{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}
+.track.lang .btn-start{background:linear-gradient(135deg,#4ade80,#22c55e);color:#020817}
+.track .btn-start:hover{transform:scale(1.03);box-shadow:0 10px 30px rgba(0,200,255,.5)}
+
+/* AI TUTOR */
+.tutor{padding:35px 25px;background:linear-gradient(135deg,rgba(0,80,150,.3),rgba(122,75,255,.15));border:2px solid #00c8ff;border-radius:22px;text-align:center;margin-bottom:30px}
+.tutor .ic{font-size:60px;margin-bottom:15px;display:block;filter:drop-shadow(0 0 25px rgba(0,200,255,.8))}
+.tutor h2{color:#fff;font-size:26px;font-weight:900;margin-bottom:12px}
+.tutor h2 span{color:#f5c542}
+.tutor p{color:#c8d5e7;font-size:15px;margin-bottom:22px;line-height:1.8}
+.tutor-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:25px}
+.tutor-feat{padding:14px 12px;background:rgba(0,180,255,.08);border:1px solid rgba(0,180,255,.3);border-radius:12px;font-size:12px;color:#dfe8f5;font-weight:700}
+.tutor-feat::before{content:"✓ ";color:#00c8ff;font-weight:900;margin-left:5px}
+
+/* FEATURES */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:30px}
+.feat{padding:22px 18px;background:rgba(0,180,255,.04);border:1px solid rgba(0,180,255,.2);border-radius:16px;text-align:center;transition:.3s}
+.feat:hover{border-color:#00c8ff;background:rgba(0,180,255,.1);transform:translateY(-4px)}
+.feat .fi{font-size:36px;margin-bottom:12px;display:block;filter:drop-shadow(0 0 12px rgba(0,200,255,.6))}
+.feat h4{color:#fff;font-size:15px;font-weight:900;margin-bottom:8px}
+.feat p{color:#aebbd0;font-size:12px;line-height:1.6}
+
+/* CTA */
+.cta{padding:40px 25px;background:linear-gradient(135deg,rgba(0,80,150,.4),rgba(245,197,66,.15));border:2px solid #f5c542;border-radius:22px;text-align:center;margin-bottom:20px}
+.cta h2{color:#fff;font-size:28px;font-weight:900;margin-bottom:15px}
+.cta h2 span{color:#f5c542}
+.cta p{color:#c8d5e7;font-size:15px;margin-bottom:25px}
+.btn-big{display:inline-block;padding:18px 50px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;font-weight:900;font-size:16px;box-shadow:0 15px 40px rgba(245,197,66,.5);transition:.3s;margin:5px}
+.btn-big:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(245,197,66,.8)}
+.btn-big.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #00c8ff;box-shadow:none}
+
+/* INSTALL PWA */
+.install-pwa{position:fixed;bottom:20px;right:20px;padding:16px 22px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);border-radius:50px;display:none;align-items:center;gap:12px;cursor:pointer;box-shadow:0 10px 40px rgba(0,200,255,.6);z-index:9999;animation:float 2.5s infinite;font-weight:900;font-size:14px}
+.install-pwa.show{display:flex}
+.install-pwa:hover{transform:scale(1.05)}
+@keyframes float{0%,100%{box-shadow:0 10px 40px rgba(0,200,255,.6)}50%{box-shadow:0 15px 50px rgba(0,200,255,.9)}}
+
+/* FOOTER */
+.footer{text-align:center;padding:30px 15px;color:#6b7c94;font-size:12px;border-top:1px solid rgba(0,180,255,.15);margin-top:20px}
+.footer strong{color:#00c8ff}
+.footer a{color:#00c8ff;margin:0 8px}
+
+@media(max-width:600px){
+  .menu a{font-size:11px;margin-left:8px}
+  .tracks{grid-template-columns:1fr}
+  .install-pwa{bottom:15px;right:15px;padding:12px 18px;font-size:12px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="topnav">
+<div class="logo">
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c8ff"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#f5c542"/></svg>
+<div>AION<div class="s">ACADEMY</div></div>
+</div>
+<div class="menu">
+<a href="index.html">الرئيسية</a>
+<a href="chat.html">AI Tutor</a>
+<a href="pricing.html">الأسعار</a>
+<a href="en.html" class="lang-btn">EN 🌐</a>
+</div>
+</div>
+
+<div class="hero">
+<div class="content">
+<span class="badge">🎓 AION ACADEMY</span>
+<h1>منصة التعليم <span>الذكية</span> للعالم بأسره</h1>
+<p>تعلّم من AI متخصص، بـ 38 لغة، في 5 مسارات احترافية. من الصفر إلى الاحتراف — مع شهادة معتمدة من AION.</p>
+<div class="hero-btns">
+<a href="chat.html" class="btn-hero">🤖 ابدأ مع AI Tutor</a>
+<a href="#tracks" class="btn-hero gold">📚 استعرض المسارات</a>
+</div>
+</div>
+</div>
+
+<div class="stats">
+<div class="stat"><div class="n">5</div><div class="l">مسارات أساسية</div></div>
+<div class="stat"><div class="n">38</div><div class="l">لغة مدعومة</div></div>
+<div class="stat"><div class="n">24/7</div><div class="l">AI متاح دائمًا</div></div>
+<div class="stat"><div class="n">100</div><div class="l">وكيل متخصص</div></div>
+</div>
+
+<h2 class="section-title" id="tracks">📚 <span>المسارات التعليمية</span></h2>
+<p class="section-desc">اختر مسارك — وتعلّم من AI متخصص بأي لغة تريد</p>
+
+<div class="tracks">
+
+<div class="track ai" onclick="location.href='chat.html'">
+<div class="ic">🧠</div>
+<h3>الذكاء الاصطناعي</h3>
+<div class="desc">من أساسيات AI إلى Machine Learning و Deep Learning — مع مشاريع عملية.</div>
+<div class="meta"><span>مبتدئ</span><span>متوسط</span><span>خبير</span></div>
+<div class="btn-start">ابدأ الآن ←</div>
+</div>
+
+<div class="track code" onclick="location.href='chat.html'">
+<div class="ic">💻</div>
+<h3>البرمجة</h3>
+<div class="desc">Python, JavaScript, Web Development, Mobile Apps — من الأساسيات للاحتراف.</div>
+<div class="meta"><span>مبتدئ</span><span>متوسط</span><span>خبير</span></div>
+<div class="btn-start">ابدأ الآن ←</div>
+</div>
+
+<div class="track business" onclick="location.href='chat.html'">
+<div class="ic">💼</div>
+<h3>الأعمال والتسويق</h3>
+<div class="desc">إدارة الأعمال، التسويق الرقمي، ريادة الأعمال، والتحليل المالي.</div>
+<div class="meta"><span>مبتدئ</span><span>متوسط</span><span>خبير</span></div>
+<div class="btn-start">ابدأ الآن ←</div>
+</div>
+
+<div class="track lang" onclick="location.href='chat.html'">
+<div class="ic">🌍</div>
+<h3>اللغات</h3>
+<div class="desc">تعلّم أي لغة من 38 لغة — عربي، إنجليزي، فرنسي، صيني، والمزيد.</div>
+<div class="meta"><span>مبتدئ</span><span>متوسط</span><span>خبير</span></div>
+<div class="btn-start">ابدأ الآن ←</div>
+</div>
+
+<div class="track science" onclick="location.href='chat.html'">
+<div class="ic">🔬</div>
+<h3>العلوم والرياضيات</h3>
+<div class="desc">الفيزياء، الكيمياء، الأحياء، والرياضيات — من الابتدائي إلى الجامعة.</div>
+<div class="meta"><span>مبتدئ</span><span>متوسط</span><span>خبير</span></div>
+<div class="btn-start">ابدأ الآن ←</div>
+</div>
+
+</div>
+
+<div class="tutor">
+<span class="ic">🤖</span>
+<h2>AI Tutor <span>الشخصي</span></h2>
+<p>معلّم ذكي يتكيف مع مستواك، يشرح بأي لغة، ويجيب على كل أسئلتك — 24/7.</p>
+
+<div class="tutor-features">
+<div class="tutor-feat">يشرح بأي مستوى</div>
+<div class="tutor-feat">38 لغة</div>
+<div class="tutor-feat">أمثلة عملية</div>
+<div class="tutor-feat">اختبارات ذكية</div>
+<div class="tutor-feat">تصحيح فوري</div>
+<div class="tutor-feat">شهادة معتمدة</div>
+</div>
+
+<a href="chat.html" class="btn-hero">💬 تحدث مع AI Tutor الآن</a>
+</div>
+
+<h2 class="section-title">✨ <span>لماذا AION Academy؟</span></h2>
+
+<div class="features">
+
+<div class="feat">
+<span class="fi">🌍</span>
+<h4>38 لغة</h4>
+<p>تعلّم بأي لغة — العربية، الإنجليزية، الفرنسية، الصينية، والمزيد</p>
+</div>
+
+<div class="feat">
+<span class="fi">🤖</span>
+<h4>AI مخصص لك</h4>
+<p>معلّم ذكي يتكيف مع مستواك وسرعتك</p>
+</div>
+
+<div class="feat">
+<span class="fi">⚡</span>
+<h4>متاح 24/7</h4>
+<p>لا وقت محدد — تعلّم متى تريد</p>
+</div>
+
+<div class="feat">
+<span class="fi">📱</span>
+<h4>يعمل كتطبيق</h4>
+<p>ثبّت التطبيق على جوالك بضغطة</p>
+</div>
+
+<div class="feat">
+<span class="fi">🎓</span>
+<h4>شهادة معتمدة</h4>
+<p>شهادة من AION Academy بعد كل مسار</p>
+</div>
+
+<div class="feat">
+<span class="fi">💰</span>
+<h4>مجاني للبدء</h4>
+<p>ابدأ مجانًا — وادفع فقط لو أردت المزيد</p>
+</div>
+
+</div>
+
+<div class="cta">
+<h2>جاهز لبدء <span>رحلة التعلم</span>؟</h2>
+<p>انضم لآلاف المتعلمين حول العالم — ابدأ الآن مجانًا</p>
+<a href="chat.html" class="btn-big">🚀 ابدأ الآن مجانًا</a>
+<a href="pricing.html" class="btn-big outline">💰 شاهد الباقات</a>
+</div>
+
+<div class="footer">
+<strong>AION AUTONOMOUS</strong> — Academy Division<br>
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
+</div>
+
+</div>
+
+<div class="install-pwa" id="installBtn" onclick="installPWA()">
+<span>📱</span>
+<span>ثبّت التطبيق</span>
+</div>
+
+<script>
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js')
+      .then(function(reg) { console.log('SW registered:', reg.scope); })
+      .catch(function(err) { console.log('SW error:', err); });
+  });
+}
+
+// PWA Install Prompt
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBtn').classList.add('show');
+});
+
+function installPWA() {
+  if (!deferredPrompt) {
+    alert('التطبيق مثبّت بالفعل، أو افتح الموقع من متصفح Chrome على الجوال للتثبيت.');
+    return;
+  }
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(function(choice) {
+    if (choice.outcome === 'accepted') {
+      console.log('User installed AION Academy');
+    }
+    deferredPrompt = null;
+    document.getElementById('installBtn').classList.remove('show');
+  });
+}
+
+// Hide install button if already installed
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  document.getElementById('installBtn').style.display = 'none';
+}
+</script>
+
+<script src="lang.js"></script>
+
+</body>
+</html>
