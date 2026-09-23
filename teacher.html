@@ -15,10 +15,11 @@ a{text-decoration:none;color:inherit}
 .logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
 .logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
 .logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
-.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;transition:.3s}
 .menu a:hover{color:#00c8ff}
+.lang-btn{padding:6px 12px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;cursor:pointer;display:inline-block;font-family:inherit}
 
-/* HERO */
 .hero{padding:40px 25px;text-align:center;background:linear-gradient(180deg,rgba(0,80,150,.35),rgba(2,8,23,.95));border:1px solid rgba(0,180,255,.35);border-radius:22px;margin-bottom:25px;position:relative;overflow:hidden}
 .hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#00c8ff,transparent),radial-gradient(2px 2px at 60% 70%,#f5c542,transparent),radial-gradient(1px 1px at 40% 80%,#a78bfa,transparent);opacity:.6;pointer-events:none}
 .hero .content{position:relative;z-index:2}
@@ -26,7 +27,6 @@ a{text-decoration:none;color:inherit}
 .hero h1 span{color:#f5c542;text-shadow:0 0 25px rgba(245,197,66,.8)}
 .hero p{color:#c8d5e7;font-size:15px;max-width:720px;margin:auto;line-height:1.8}
 
-/* CHOICE */
 .choice{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:30px}
 .choice-card{padding:40px 30px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.85));border:2px solid rgba(0,180,255,.3);border-radius:22px;text-align:center;cursor:pointer;transition:.4s;position:relative;overflow:hidden}
 .choice-card:hover{transform:translateY(-8px);box-shadow:0 25px 60px rgba(0,200,255,.4)}
@@ -43,7 +43,6 @@ a{text-decoration:none;color:inherit}
 .choice-card.teacher .btn-enter{background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff}
 .choice-card.student .btn-enter{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}
 
-/* SECTION VIEWS */
 .view{display:none}
 .view.active{display:block}
 
@@ -51,7 +50,6 @@ a{text-decoration:none;color:inherit}
 .section-title span{color:#00c8ff}
 .section-title.gold span{color:#f5c542}
 
-/* SERVICE CARDS */
 .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:15px;margin-bottom:25px}
 .service-card{padding:22px 20px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.75));border:1px solid rgba(0,180,255,.3);border-radius:18px;transition:.3s;cursor:pointer;position:relative;display:flex;flex-direction:column;min-height:240px}
 .service-card:hover{transform:translateY(-5px);border-color:#00c8ff;box-shadow:0 20px 45px rgba(0,200,255,.35)}
@@ -67,18 +65,14 @@ a{text-decoration:none;color:inherit}
 .service-card.gold .buy-btn{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}
 .service-card .buy-btn:hover{transform:scale(1.05)}
 
-/* BACK BUTTON */
 .back-btn{display:inline-block;padding:10px 22px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:13px;font-weight:900;cursor:pointer;margin-bottom:20px;font-family:inherit}
 .back-btn:hover{background:rgba(0,200,255,.25)}
 
-/* MODAL */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;place-items:center;z-index:9999;padding:20px;backdrop-filter:blur(8px);overflow-y:auto}
 .modal.active{display:grid}
 .modal-box{background:linear-gradient(135deg,#0B1D3A,#020817);border:2px solid #00c8ff;border-radius:22px;padding:28px;max-width:480px;width:100%;box-shadow:0 0 60px rgba(0,200,255,.5);position:relative;max-height:90vh;overflow-y:auto}
-.modal-box.gold{border-color:#f5c542;box-shadow:0 0 60px rgba(245,197,66,.5)}
 .modal-box .close-x{position:absolute;top:15px;left:15px;background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;font-family:inherit}
 .modal-box h3{color:#00c8ff;font-size:20px;margin-bottom:8px;text-align:center}
-.modal-box.gold h3{color:#f5c542}
 .modal-box .m-desc{color:#aebbd0;font-size:13px;text-align:center;margin-bottom:15px;line-height:1.7}
 .modal-box .m-price{color:#fff;font-size:38px;font-weight:900;text-align:center;margin:15px 0}
 .modal-box .m-price small{color:#aebbd0;font-size:14px}
@@ -89,7 +83,6 @@ a{text-decoration:none;color:inherit}
 .m-status{padding:12px;border-radius:12px;text-align:center;margin-top:12px;font-size:13px;font-weight:700;display:none}
 .m-status.success{background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.5);color:#4ade80;display:block}
 .m-status.error{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.5);color:#ff8888;display:block}
-.m-status.info{background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.5);color:#00c8ff;display:block}
 
 .delivery{padding:20px;background:rgba(0,200,255,.05);border:1px solid rgba(0,200,255,.3);border-radius:14px;margin-top:15px;display:none}
 .delivery.active{display:block}
@@ -103,7 +96,6 @@ a{text-decoration:none;color:inherit}
 .spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(0,200,255,.2);border-top-color:#00c8ff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-left:8px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* FOOTER */
 .footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:30px}
 .footer strong{color:#00c8ff}
 .footer a{color:#00c8ff;margin:0 8px}
@@ -111,7 +103,7 @@ a{text-decoration:none;color:inherit}
 @media(max-width:600px){
 .choice{grid-template-columns:1fr}
 .services-grid{grid-template-columns:1fr}
-.menu a{font-size:11px;margin-left:8px}
+.menu a{font-size:11px}
 }
 </style>
 </head>
@@ -128,6 +120,7 @@ a{text-decoration:none;color:inherit}
 <a href="academy.html">Academy</a>
 <a href="chat.html">AI Tutor</a>
 <a href="pricing.html">الأسعار</a>
+<span class="lang-btn" onclick="document.querySelector('.lang-btn').click ? null : openLangBox()">🌐 اللغات</span>
 </div>
 </div>
 
@@ -353,7 +346,7 @@ a{text-decoration:none;color:inherit}
 
 <!-- ============= MODAL ============= -->
 <div class="modal" id="payModal">
-<div class="modal-box" id="modalBox">
+<div class="modal-box">
 <button class="close-x" onclick="closeModal()">✕</button>
 <h3 id="mTitle">تحضير درس</h3>
 <div class="m-desc" id="mDesc">وصف الخدمة</div>
@@ -387,16 +380,13 @@ aion.genesisss@gmail.com<br><br>
 </div>
 
 <script>
-// ===== VIEW MANAGEMENT =====
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
 }
 
-// ===== MODAL / PAYMENT =====
 let currentService = { title: '', price: 0, desc: '' };
-let paypalRendered = false;
 
 function openPay(title, price, desc) {
   currentService = { title, price, desc };
@@ -408,8 +398,6 @@ function openPay(title, price, desc) {
   document.getElementById('delivery').classList.remove('active');
   document.getElementById('payModal').classList.add('active');
   document.body.style.overflow = 'hidden';
-
-  // Load PayPal buttons
   loadPayPal();
 }
 
@@ -429,7 +417,6 @@ function showStatus(msg, type) {
   el.style.display = 'block';
 }
 
-// ===== PAYPAL =====
 async function loadPayPal() {
   const container = document.getElementById('paypal-button-container');
   container.innerHTML = '';
@@ -505,7 +492,6 @@ function renderPayPalButtons() {
   }).render('#paypal-button-container');
 }
 
-// ===== SERVICE DELIVERY (via AION AI) =====
 async function deliverService() {
   const details = document.getElementById('mDetails').value.trim();
   const deliveryEl = document.getElementById('delivery');
@@ -515,13 +501,7 @@ async function deliverService() {
   document.getElementById('dHeadText').textContent = '⏳ AI يعمل على طلبك...';
   bodyEl.innerHTML = '<div style="text-align:center;padding:20px">AION AI جاري إنشاء الخدمة<span class="spinner"></span></div>';
 
-  const prompt = `أنت خبير تعليمي عربي محترف.
-المطلوب منك: ${currentService.title}
-تفاصيل الطلب من العميل: ${details}
-
-اكتب الآن خدمة احترافية كاملة، منظمة، جاهزة للاستخدام.
-استخدم العناوين والنقاط والأمثلة.
-لا تطلب أي معلومات إضافية — نفّذ المهمة كاملة الآن.`;
+  const prompt = 'أنت خبير تعليمي عربي محترف.\nالمطلوب منك: ' + currentService.title + '\nتفاصيل الطلب من العميل: ' + details + '\n\nاكتب الآن خدمة احترافية كاملة، منظمة، جاهزة للاستخدام.\nاستخدم العناوين والنقاط والأمثلة.\nلا تطلب أي معلومات إضافية — نفّذ المهمة كاملة الآن.';
 
   try {
     const res = await fetch('/api/chat', {
