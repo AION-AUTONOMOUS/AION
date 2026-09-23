@@ -1,268 +1,163 @@
-```
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AION Currencies | عملات AION</title>
+<title>AION Currencies | 38 عملة</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%),#0B1D3A;color:#fff;line-height:1.7;padding:0}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
-.container{max-width:1200px;margin:auto;padding:20px}
-header{background:rgba(11,29,58,.85);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.12);padding:15px 0;position:sticky;top:0;z-index:100}
-.nav{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:0 20px;max-width:1200px;margin:auto}
-.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:900;color:#D4AF37;letter-spacing:2px}
-.logo-mark{width:38px;height:38px;border:2px solid #D4AF37;border-radius:50%;display:grid;place-items:center;color:#D4AF37;font-weight:900}
-.lang-switch{display:flex;gap:8px}
-.lang-btn{padding:6px 14px;border-radius:20px;border:1px solid #D4AF37;background:transparent;color:#D4AF37;cursor:pointer;font-weight:bold;font-size:13px;font-family:inherit}
-.lang-btn.active{background:#D4AF37;color:#0B1D3A}
-.hero{text-align:center;padding:50px 20px 30px}
-h1{color:#D4AF37;font-size:clamp(32px,5vw,52px);margin-bottom:15px}
-.sub{color:#aebbd0;max-width:700px;margin:0 auto 30px;font-size:17px}
-.region{margin-bottom:40px}
-.region h2{color:#D4AF37;font-size:24px;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid rgba(212,175,55,.3)}
-.currencies{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:15px}
-.currency{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.12);border-radius:15px;padding:18px;transition:.3s}
-.currency:hover{border-color:rgba(212,175,55,.5);transform:translateY(-3px)}
-.currency-code{color:#8fa0b8;font-size:12px;font-weight:bold;letter-spacing:1px;margin-bottom:5px}
-.currency-name{color:#fff;font-size:15px;margin-bottom:10px}
-.currency-rate{color:#D4AF37;font-weight:900;font-size:20px;margin-bottom:5px}
-.currency-sub{color:#aebbd0;font-size:12px}
-.aion-price{color:#54e6a7;font-size:14px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08)}
-.info-box{background:linear-gradient(145deg,rgba(212,175,55,.08),rgba(122,75,255,.04));border:1px solid rgba(212,175,55,.3);border-radius:20px;padding:25px;margin:30px 0;text-align:center}
-.info-box p{color:#c8d5e7;margin-bottom:10px}
-.info-box strong{color:#D4AF37}
-.loading{text-align:center;color:#D4AF37;padding:30px;font-size:16px}
-footer{border-top:1px solid rgba(255,255,255,.12);padding:35px 0;color:#8fa0b8;font-size:12px;text-align:center;margin-top:50px}
-.ar{display:block}
-.en{display:none}
-body.en-mode .ar{display:none}
-body.en-mode .en{display:block}
-body.en-mode{direction:ltr}
+.container{max-width:1200px;margin:auto;padding:14px}
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(245,197,66,.3);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px}
+.logo .s{font-size:8px;color:#f5c542;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu a:hover{color:#f5c542}
+.lang-btn{padding:6px 12px;background:rgba(245,197,66,.1);border:1px solid rgba(245,197,66,.4);border-radius:20px;color:#f5c542;font-size:11px;font-weight:bold;cursor:pointer;display:inline-block;font-family:inherit;margin-left:12px}
+.hero{padding:40px 25px;text-align:center;background:linear-gradient(180deg,rgba(80,60,0,.4),rgba(2,8,23,.95));border:1px solid rgba(245,197,66,.4);border-radius:22px;margin-bottom:25px}
+.hero .badge{display:inline-block;padding:6px 16px;background:rgba(245,197,66,.15);border:1px solid #f5c542;border-radius:20px;color:#f5c542;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:15px}
+.hero h1{color:#fff;font-size:clamp(26px,4.5vw,42px);font-weight:900;margin-bottom:12px}
+.hero h1 span{color:#f5c542}
+.hero p{color:#c8d5e7;font-size:15px;max-width:720px;margin:auto;line-height:1.8}
+.coin-hero{padding:25px;background:linear-gradient(135deg,rgba(245,197,66,.15),rgba(122,75,255,.1));border:2px solid #f5c542;border-radius:20px;margin-bottom:25px;text-align:center}
+.coin-hero .icon{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#f5c542,#e6a800);display:grid;place-items:center;font-size:32px;font-weight:900;color:#020817;margin:0 auto 12px}
+.coin-hero h2{color:#f5c542;font-size:24px;margin-bottom:8px}
+.coin-hero .price-big{color:#fff;font-size:42px;font-weight:900;margin:12px 0}
+.coin-hero .price-big small{color:#aebbd0;font-size:14px;font-weight:normal}
+.coin-hero .stats-mini{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:15px}
+.coin-hero .stat-mini{background:rgba(2,8,23,.7);border:1px solid rgba(245,197,66,.3);border-radius:12px;padding:10px 18px}
+.coin-hero .stat-mini .n{color:#f5c542;font-size:18px;font-weight:900}
+.coin-hero .stat-mini .l{color:#aebbd0;font-size:10px}
+.section-title{color:#f5c542;font-size:22px;font-weight:900;margin:30px 0 18px;text-align:center}
+.currencies-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:25px}
+.currency-card{padding:16px;background:rgba(2,15,40,.9);border:1px solid rgba(245,197,66,.25);border-radius:14px;transition:.3s;text-align:center}
+.currency-card:hover{border-color:#f5c542;transform:translateY(-4px);box-shadow:0 15px 40px rgba(245,197,66,.3)}
+.currency-card .flag{font-size:32px;margin-bottom:8px;display:block}
+.currency-card .code{color:#f5c542;font-size:14px;font-weight:900;font-family:monospace;margin-bottom:4px}
+.currency-card .name{color:#c8d5e7;font-size:12px;margin-bottom:8px}
+.currency-card .rate{color:#00c8ff;font-size:11px;font-weight:700;font-family:monospace;padding:5px 10px;background:rgba(0,200,255,.1);border-radius:10px;display:inline-block}
+.info-box{padding:20px 25px;background:rgba(245,197,66,.08);border-right:4px solid #f5c542;border-radius:14px;margin:20px 0}
+.info-box p{color:#e5d8a8;font-size:14px;line-height:1.9;margin:0}
+.cta{padding:35px 25px;background:linear-gradient(135deg,rgba(80,60,0,.4),rgba(245,197,66,.15));border:2px solid #f5c542;border-radius:22px;text-align:center;margin-bottom:20px}
+.cta h2{color:#fff;font-size:24px;font-weight:900;margin-bottom:12px}
+.cta h2 span{color:#f5c542}
+.cta p{color:#c8d5e7;font-size:14px;margin-bottom:22px}
+.btn-hero{display:inline-block;padding:15px 38px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border-radius:50px;font-weight:900;font-size:14px;margin:5px}
+.btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #f5c542}
+.footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(245,197,66,.15);margin-top:20px}
+.footer a{color:#f5c542;margin:0 8px}
+@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}.currencies-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
-
-<header>
-<div class="nav">
-<div class="logo">
-<div class="logo-mark">A</div>
-AION
-</div>
-<div class="lang-switch">
-<button class="lang-btn active" id="btnAr" onclick="setLang('ar')">العربية</button>
-<button class="lang-btn" id="btnEn" onclick="setLang('en')">English</button>
-</div>
-</div>
-</header>
-
 <div class="container">
 
+<div class="topnav">
+<div class="logo">
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5c542"/><stop offset="1" stop-color="#e6a800"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#020817"/></svg>
+<div>AION<div class="s">CURRENCIES</div></div>
+</div>
+<div class="menu">
+<a href="index.html">الرئيسية</a>
+<a href="coin.html">AION Coin</a>
+<a href="teacher.html">المعلم</a>
+<a href="academy.html">Academy</a>
+<a href="pricing.html">الأسعار</a>
+<span class="lang-btn">اللغات</span>
+</div>
+</div>
+
 <div class="hero">
-<h1 class="ar">🌍 عملات AION العالمية</h1>
-<h1 class="en">🌍 AION Global Currencies</h1>
-<p class="sub ar">تعرف على قيمة AION بعملات دول الخليج والعالم العربي والعالمية</p>
-<p class="sub en">Discover AION value in Gulf, Arab, and global currencies</p>
+<span class="badge">AION CURRENCIES</span>
+<h1>عملات <span>عالمية</span> مدعومة</h1>
+<p>نقبل الدفع بـ 38 عملة عربية وعالمية — والدفع يتم بالدولار الأمريكي مع تحويل تلقائي.</p>
+</div>
+
+<div class="coin-hero">
+<div class="icon">A</div>
+<h2>AION Coin</h2>
+<div class="price-big">$0.01<small> USD</small></div>
+<div class="stats-mini">
+<div class="stat-mini"><div class="n">10B</div><div class="l">إجمالي العرض</div></div>
+<div class="stat-mini"><div class="n">BNB</div><div class="l">الشبكة</div></div>
+<div class="stat-mini"><div class="n">PoI</div><div class="l">الإجماع</div></div>
+<div class="stat-mini"><div class="n">BEP-20</div><div class="l">المعيار</div></div>
+</div>
+</div>
+
+<h2 class="section-title">العملات العربية</h2>
+<div class="currencies-grid">
+
+<div class="currency-card"><span class="flag">🇸🇦</span><div class="code">SAR</div><div class="name">ريال سعودي</div><div class="rate">1$ = 3.75</div></div>
+<div class="currency-card"><span class="flag">🇦🇪</span><div class="code">AED</div><div class="name">درهم إماراتي</div><div class="rate">1$ = 3.67</div></div>
+<div class="currency-card"><span class="flag">🇪🇬</span><div class="code">EGP</div><div class="name">جنيه مصري</div><div class="rate">1$ = 49</div></div>
+<div class="currency-card"><span class="flag">🇰🇼</span><div class="code">KWD</div><div class="name">دينار كويتي</div><div class="rate">1$ = 0.31</div></div>
+<div class="currency-card"><span class="flag">🇶🇦</span><div class="code">QAR</div><div class="name">ريال قطري</div><div class="rate">1$ = 3.64</div></div>
+<div class="currency-card"><span class="flag">🇧🇭</span><div class="code">BHD</div><div class="name">دينار بحريني</div><div class="rate">1$ = 0.38</div></div>
+<div class="currency-card"><span class="flag">🇴🇲</span><div class="code">OMR</div><div class="name">ريال عماني</div><div class="rate">1$ = 0.38</div></div>
+<div class="currency-card"><span class="flag">🇯🇴</span><div class="code">JOD</div><div class="name">دينار أردني</div><div class="rate">1$ = 0.71</div></div>
+<div class="currency-card"><span class="flag">🇵🇸</span><div class="code">ILS</div><div class="name">شيكل</div><div class="rate">1$ = 3.7</div></div>
+<div class="currency-card"><span class="flag">🇱🇧</span><div class="code">LBP</div><div class="name">ليرة لبنانية</div><div class="rate">1$ = 89500</div></div>
+<div class="currency-card"><span class="flag">🇸🇾</span><div class="code">SYP</div><div class="name">ليرة سورية</div><div class="rate">1$ = 13000</div></div>
+<div class="currency-card"><span class="flag">🇮🇶</span><div class="code">IQD</div><div class="name">دينار عراقي</div><div class="rate">1$ = 1310</div></div>
+<div class="currency-card"><span class="flag">🇾🇪</span><div class="code">YER</div><div class="name">ريال يمني</div><div class="rate">1$ = 250</div></div>
+<div class="currency-card"><span class="flag">🇸🇩</span><div class="code">SDG</div><div class="name">جنيه سوداني</div><div class="rate">1$ = 601</div></div>
+<div class="currency-card"><span class="flag">🇱🇾</span><div class="code">LYD</div><div class="name">دينار ليبي</div><div class="rate">1$ = 4.85</div></div>
+<div class="currency-card"><span class="flag">🇹🇳</span><div class="code">TND</div><div class="name">دينار تونسي</div><div class="rate">1$ = 3.15</div></div>
+<div class="currency-card"><span class="flag">🇩🇿</span><div class="code">DZD</div><div class="name">دينار جزائري</div><div class="rate">1$ = 134</div></div>
+<div class="currency-card"><span class="flag">🇲🇦</span><div class="code">MAD</div><div class="name">درهم مغربي</div><div class="rate">1$ = 10</div></div>
+<div class="currency-card"><span class="flag">🇲🇷</span><div class="code">MRU</div><div class="name">أوقية موريتانية</div><div class="rate">1$ = 40</div></div>
+<div class="currency-card"><span class="flag">🇸🇴</span><div class="code">SOS</div><div class="name">شلن صومالي</div><div class="rate">1$ = 571</div></div>
+
+</div>
+
+<h2 class="section-title">العملات العالمية</h2>
+<div class="currencies-grid">
+
+<div class="currency-card"><span class="flag">🇺🇸</span><div class="code">USD</div><div class="name">دولار أمريكي</div><div class="rate">العملة الأساسية</div></div>
+<div class="currency-card"><span class="flag">🇬🇧</span><div class="code">GBP</div><div class="name">جنيه إسترليني</div><div class="rate">1$ = 0.79</div></div>
+<div class="currency-card"><span class="flag">🇪🇺</span><div class="code">EUR</div><div class="name">يورو</div><div class="rate">1$ = 0.92</div></div>
+<div class="currency-card"><span class="flag">🇹🇷</span><div class="code">TRY</div><div class="name">ليرة تركية</div><div class="rate">1$ = 34</div></div>
+<div class="currency-card"><span class="flag">🇵🇰</span><div class="code">PKR</div><div class="name">روبية باكستانية</div><div class="rate">1$ = 278</div></div>
+<div class="currency-card"><span class="flag">🇮🇳</span><div class="code">INR</div><div class="name">روبية هندية</div><div class="rate">1$ = 84</div></div>
+<div class="currency-card"><span class="flag">🇮🇩</span><div class="code">IDR</div><div class="name">روبية إندونيسية</div><div class="rate">1$ = 15900</div></div>
+<div class="currency-card"><span class="flag">🇲🇾</span><div class="code">MYR</div><div class="name">رينغيت ماليزي</div><div class="rate">1$ = 4.4</div></div>
+<div class="currency-card"><span class="flag">🇵🇭</span><div class="code">PHP</div><div class="name">بيزو فلبيني</div><div class="rate">1$ = 58</div></div>
+<div class="currency-card"><span class="flag">🇧🇩</span><div class="code">BDT</div><div class="name">تاكا بنغلاديشية</div><div class="rate">1$ = 120</div></div>
+<div class="currency-card"><span class="flag">🇮🇷</span><div class="code">IRR</div><div class="name">ريال إيراني</div><div class="rate">1$ = 42000</div></div>
+<div class="currency-card"><span class="flag">🇦🇫</span><div class="code">AFN</div><div class="name">أفغاني</div><div class="rate">1$ = 68</div></div>
+<div class="currency-card"><span class="flag">🇳🇬</span><div class="code">NGN</div><div class="name">نيرة نيجيرية</div><div class="rate">1$ = 1650</div></div>
+<div class="currency-card"><span class="flag">🇰🇪</span><div class="code">KES</div><div class="name">شلن كيني</div><div class="rate">1$ = 129</div></div>
+<div class="currency-card"><span class="flag">🇿🇦</span><div class="code">ZAR</div><div class="name">راند جنوب أفريقي</div><div class="rate">1$ = 18</div></div>
+<div class="currency-card"><span class="flag">🇨🇳</span><div class="code">CNY</div><div class="name">يوان صيني</div><div class="rate">1$ = 7.2</div></div>
+<div class="currency-card"><span class="flag">🇯🇵</span><div class="code">JPY</div><div class="name">ين ياباني</div><div class="rate">1$ = 155</div></div>
+<div class="currency-card"><span class="flag">🇰🇷</span><div class="code">KRW</div><div class="name">وون كوري</div><div class="rate">1$ = 1350</div></div>
+
 </div>
 
 <div class="info-box">
-<p class="ar"><strong>سعر AION التأسيسي:</strong> 1 AION = 0.001 USD</p>
-<p class="en"><strong>AION Founding Price:</strong> 1 AION = 0.001 USD</p>
-<p class="ar" id="updateTime"></p>
-<p class="en" id="updateTimeEn"></p>
+<p>ملاحظة: الدفع يتم بالدولار الأمريكي ($) عبر PayPal. عندما تدفع بعملتك المحلية، سيقوم PayPal بتحويل المبلغ تلقائيًا بسعر الصرف الرسمي في يوم الدفع.</p>
 </div>
 
-<div id="loading" class="loading ar">⏳ جاري تحميل أسعار الصرف...</div>
-<div id="loadingEn" class="loading en">⏳ Loading exchange rates...</div>
-
-<div id="content" style="display:none">
-
-<div class="region">
-<h2 class="ar">🇸🇦 عملات الخليج</h2>
-<h2 class="en">🇸🇦 Gulf Currencies</h2>
-<div class="currencies" id="gulf"></div>
+<div class="cta">
+<h2>جاهز للدفع <span>بعملتك</span>؟</h2>
+<p>اختر خدمتك وادفع بأي عملة مدعومة — عبر PayPal</p>
+<a href="pricing.html" class="btn-hero">شاهد الأسعار</a>
+<a href="teacher.html" class="btn-hero outline">تطبيق المعلم</a>
 </div>
 
-<div class="region">
-<h2 class="ar">🌍 العملات العربية</h2>
-<h2 class="en">🌍 Arab Currencies</h2>
-<div class="currencies" id="arab"></div>
-</div>
-
-<div class="region">
-<h2 class="ar">🌐 العملات العالمية</h2>
-<h2 class="en">🌐 Global Currencies</h2>
-<div class="currencies" id="global"></div>
-</div>
-
-<div class="region">
-<h2 class="ar">🪙 العملات الرقمية</h2>
-<h2 class="en">🪙 Cryptocurrencies</h2>
-<div class="currencies" id="crypto"></div>
+<div class="footer">
+<strong style="color:#f5c542">AION AUTONOMOUS</strong> — Geneva, Switzerland<br>
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
 </div>
 
 </div>
 
-</div>
-
-<footer>
-<div class="ar">
-AION AUTONOMOUS © 2026
-<br>
-<a href="index.html" style="color:#D4AF37">الرئيسية</a> ·
-<a href="services.html" style="color:#D4AF37">الخدمات</a> ·
-<a href="chat.html" style="color:#D4AF37">الشات</a> ·
-<a href="wallet.html" style="color:#D4AF37">المحفظة</a>
-</div>
-<div class="en">
-AION AUTONOMOUS © 2026
-<br>
-<a href="index.html" style="color:#D4AF37">Home</a> ·
-<a href="services.html" style="color:#D4AF37">Services</a> ·
-<a href="chat.html" style="color:#D4AF37">Chat</a> ·
-<a href="wallet.html" style="color:#D4AF37">Wallet</a>
-</div>
-</footer>
-
-<script>
-const AION_PRICE_USD = 0.001;
-
-const CURRENCIES = {
-    gulf: [
-        {code: 'SAR', name_ar: 'ريال سعودي', name_en: 'Saudi Riyal', flag: '🇸🇦'},
-        {code: 'AED', name_ar: 'درهم إماراتي', name_en: 'UAE Dirham', flag: '🇦🇪'},
-        {code: 'KWD', name_ar: 'دينار كويتي', name_en: 'Kuwaiti Dinar', flag: '🇰🇼'},
-        {code: 'QAR', name_ar: 'ريال قطري', name_en: 'Qatari Riyal', flag: '🇶🇦'},
-        {code: 'BHD', name_ar: 'دينار بحريني', name_en: 'Bahraini Dinar', flag: '🇧🇭'},
-        {code: 'OMR', name_ar: 'ريال عماني', name_en: 'Omani Rial', flag: '🇴🇲'}
-    ],
-    arab: [
-        {code: 'EGP', name_ar: 'جنيه مصري', name_en: 'Egyptian Pound', flag: '🇪🇬'},
-        {code: 'JOD', name_ar: 'دينار أردني', name_en: 'Jordanian Dinar', flag: '🇯🇴'},
-        {code: 'MAD', name_ar: 'درهم مغربي', name_en: 'Moroccan Dirham', flag: '🇲🇦'},
-        {code: 'TND', name_ar: 'دينار تونسي', name_en: 'Tunisian Dinar', flag: '🇹🇳'},
-        {code: 'DZD', name_ar: 'دينار جزائري', name_en: 'Algerian Dinar', flag: '🇩🇿'},
-        {code: 'IQD', name_ar: 'دينار عراقي', name_en: 'Iraqi Dinar', flag: '🇮🇶'},
-        {code: 'LYD', name_ar: 'دينار ليبي', name_en: 'Libyan Dinar', flag: '🇱🇾'},
-        {code: 'SDG', name_ar: 'جنيه سوداني', name_en: 'Sudanese Pound', flag: '🇸🇩'},
-        {code: 'LBP', name_ar: 'ليرة لبنانية', name_en: 'Lebanese Pound', flag: '🇱🇧'},
-        {code: 'SYP', name_ar: 'ليرة سورية', name_en: 'Syrian Pound', flag: '🇸🇾'},
-        {code: 'YER', name_ar: 'ريال يمني', name_en: 'Yemeni Rial', flag: '🇾🇪'}
-    ],
-    global: [
-        {code: 'USD', name_ar: 'دولار أمريكي', name_en: 'US Dollar', flag: '🇺🇸'},
-        {code: 'EUR', name_ar: 'يورو', name_en: 'Euro', flag: '🇪🇺'},
-        {code: 'GBP', name_ar: 'جنيه إسترليني', name_en: 'British Pound', flag: '🇬🇧'},
-        {code: 'JPY', name_ar: 'ين ياباني', name_en: 'Japanese Yen', flag: '🇯🇵'},
-        {code: 'CNY', name_ar: 'يوان صيني', name_en: 'Chinese Yuan', flag: '🇨🇳'},
-        {code: 'INR', name_ar: 'روبية هندية', name_en: 'Indian Rupee', flag: '🇮🇳'},
-        {code: 'TRY', name_ar: 'ليرة تركية', name_en: 'Turkish Lira', flag: '🇹🇷'},
-        {code: 'RUB', name_ar: 'روبل روسي', name_en: 'Russian Ruble', flag: '🇷🇺'},
-        {code: 'CAD', name_ar: 'دولار كندي', name_en: 'Canadian Dollar', flag: '🇨🇦'},
-        {code: 'AUD', name_ar: 'دولار أسترالي', name_en: 'Australian Dollar', flag: '🇦🇺'},
-        {code: 'CHF', name_ar: 'فرنك سويسري', name_en: 'Swiss Franc', flag: '🇨🇭'},
-        {code: 'SGD', name_ar: 'دولار سنغافوري', name_en: 'Singapore Dollar', flag: '🇸🇬'}
-    ],
-    crypto: [
-        {code: 'BTC', name_ar: 'بيتكوين', name_en: 'Bitcoin', flag: '₿'},
-        {code: 'ETH', name_ar: 'إيثيريوم', name_en: 'Ethereum', flag: 'Ξ'},
-        {code: 'BNB', name_ar: 'بينانس كوين', name_en: 'Binance Coin', flag: '🟡'},
-        {code: 'USDT', name_ar: 'تيثر', name_en: 'Tether', flag: '💵'},
-        {code: 'SOL', name_ar: 'سولانا', name_en: 'Solana', flag: '🟣'}
-    ]
-};
-
-async function loadRates() {
-    try {
-        const res = await fetch('https://open.er-api.com/v6/latest/USD');
-        const data = await res.json();
-
-        if (data && data.rates) {
-            renderCurrencies(data.rates);
-        }
-
-        const cryptoRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,tether,solana&vs_currencies=usd');
-        const cryptoData = await cryptoRes.json();
-        renderCrypto(cryptoData);
-
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('loadingEn').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-
-        const now = new Date().toLocaleString('ar-SA');
-        document.getElementById('updateTime').textContent = 'آخر تحديث: ' + now;
-        document.getElementById('updateTimeEn').textContent = 'Last update: ' + new Date().toLocaleString('en-US');
-    } catch (err) {
-        document.getElementById('loading').textContent = 'خطأ في التحميل';
-        document.getElementById('loadingEn').textContent = 'Loading error';
-    }
-}
-
-function renderCurrencies(rates) {
-    ['gulf', 'arab', 'global'].forEach(section => {
-        const container = document.getElementById(section);
-        container.innerHTML = '';
-
-        CURRENCIES[section].forEach(curr => {
-            const rate = rates[curr.code] || 0;
-            const aionPrice = AION_PRICE_USD * rate;
-            const div = document.createElement('div');
-            div.className = 'currency';
-            div.innerHTML = '<div class="currency-code">' + curr.flag + ' ' + curr.code + '</div>' +
-                '<div class="currency-name ar">' + curr.name_ar + '</div>' +
-                '<div class="currency-name en">' + curr.name_en + '</div>' +
-                '<div class="currency-rate">' + rate.toFixed(4) + '</div>' +
-                '<div class="currency-sub ar">1 USD = ' + rate.toFixed(4) + ' ' + curr.code + '</div>' +
-                '<div class="currency-sub en">1 USD = ' + rate.toFixed(4) + ' ' + curr.code + '</div>' +
-                '<div class="aion-price">1 AION = ' + aionPrice.toFixed(6) + ' ' + curr.code + '</div>';
-            container.appendChild(div);
-        });
-    });
-}
-
-function renderCrypto(data) {
-    const container = document.getElementById('crypto');
-    container.innerHTML = '';
-
-    const cryptoMap = {
-        'BTC': 'bitcoin',
-        'ETH': 'ethereum',
-        'BNB': 'binancecoin',
-        'USDT': 'tether',
-        'SOL': 'solana'
-    };
-
-    CURRENCIES.crypto.forEach(curr => {
-        const coinId = cryptoMap[curr.code];
-        const price = data[coinId] ? data[coinId].usd : 0;
-        const aionInCrypto = price > 0 ? (AION_PRICE_USD / price) : 0;
-
-        const div = document.createElement('div');
-        div.className = 'currency';
-        div.innerHTML = '<div class="currency-code">' + curr.flag + ' ' + curr.code + '</div>' +
-            '<div class="currency-name ar">' + curr.name_ar + '</div>' +
-            '<div class="currency-name en">' + curr.name_en + '</div>' +
-            '<div class="currency-rate">$' + price.toLocaleString() + '</div>' +
-            '<div class="currency-sub ar">سعر ' + curr.code + '</div>' +
-            '<div class="currency-sub en">' + curr.code + ' price</div>' +
-            '<div class="aion-price">1 AION = ' + aionInCrypto.toFixed(10) + ' ' + curr.code + '</div>';
-        container.appendChild(div);
-    });
-}
-
-function setLang(lang) {
-    document.body.classList.toggle('en-mode', lang === 'en');
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
-    document.getElementById('btnEn').classList.toggle('active', lang === 'en');
-}
-
-loadRates();
-</script>
+<script src="lang.js"></script>
 
 </body>
 </html>
-```
-
