@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -7,13 +6,16 @@
 <title>AION Coin | أول عملة ذكية</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75% 10%,rgba(122,75,255,.18),transparent 30%),#0B1D3A;color:#fff;min-height:100vh;padding:20px}
-.container{max-width:1200px;margin:auto}
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:rgba(5,13,31,.65);backdrop-filter:blur(15px);border:1px solid rgba(212,175,55,.3);border-radius:20px;margin-bottom:25px;flex-wrap:wrap;gap:15px}
-.logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:900;color:#D4AF37;letter-spacing:2px}
-.logo .mark{width:36px;height:36px;border:2px solid #D4AF37;border-radius:50%;display:grid;place-items:center;font-weight:900;box-shadow:0 0 20px rgba(212,175,55,.5)}
-.menu a{color:#dfe8f5;text-decoration:none;font-size:14px;font-weight:bold;margin-left:15px;transition:.3s}
+body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:auto;padding:14px}
+.topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,.3);border-radius:16px;margin-bottom:25px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
+.logo svg{width:34px;height:34px}
+.logo .s{font-size:8px;color:#D4AF37;letter-spacing:4px;margin-top:2px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
 .menu a:hover{color:#D4AF37}
+.lang-btn{padding:6px 12px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.4);border-radius:20px;color:#D4AF37;font-size:11px;font-weight:bold;cursor:pointer;display:inline-block;font-family:inherit;margin-left:12px}
 .hero{text-align:center;padding:40px 20px;background:linear-gradient(135deg,rgba(122,75,255,.15),rgba(212,175,55,.08));border:1px solid rgba(212,175,55,.3);border-radius:25px;margin-bottom:30px}
 .hero .coin-logo{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#D4AF37,#7A4BFF);display:grid;place-items:center;font-size:48px;font-weight:900;color:#0B1D3A;margin:0 auto 20px;box-shadow:0 0 50px rgba(212,175,55,.6)}
 .hero h1{color:#D4AF37;font-size:clamp(32px,6vw,56px);margin-bottom:12px;text-shadow:0 0 40px rgba(212,175,55,.7)}
@@ -43,40 +45,44 @@ body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75
 .form-card label{display:block;color:#dfe8f5;font-size:13px;font-weight:bold;margin-bottom:8px;margin-top:15px}
 .form-card input,.form-card select{width:100%;padding:14px;border-radius:12px;background:#0B1D3A;color:#fff;border:1px solid rgba(255,255,255,.2);font-family:inherit;font-size:15px}
 .form-card input:focus,.form-card select:focus{outline:none;border-color:#D4AF37}
-.form-card button{width:100%;padding:16px;margin-top:20px;background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border:none;border-radius:12px;font-weight:900;font-size:16px;cursor:pointer;font-family:inherit;transition:.3s}
+.form-card button{width:100%;padding:16px;margin-top:20px;background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border:none;border-radius:12px;font-weight:900;font-size:16px;cursor:pointer;font-family:inherit}
 .form-card button:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(212,175,55,.5)}
-.form-card button:disabled{opacity:.6;cursor:wait}
 .msg{text-align:center;padding:15px;border-radius:12px;margin-top:15px;font-weight:bold;display:none}
-.msg.success{background:rgba(0,200,100,.15);border:1px solid rgba(0,200,100,.5);color:#4ade80}
-.msg.error{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.5);color:#ff8888}
+.msg.success{background:rgba(0,200,100,.15);border:1px solid rgba(0,200,100,.5);color:#4ade80;display:block}
+.msg.error{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.5);color:#ff8888;display:block}
 .roadmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
-.phase{padding:22px;background:rgba(5,13,31,.75);border:1px solid rgba(212,175,55,.3);border-radius:18px;position:relative}
+.phase{padding:22px;background:rgba(5,13,31,.75);border:1px solid rgba(212,175,55,.3);border-radius:18px}
 .phase.active{border:2px solid #D4AF37;box-shadow:0 0 25px rgba(212,175,55,.4)}
 .phase .phase-num{display:inline-block;padding:4px 12px;background:rgba(212,175,55,.2);border:1px solid #D4AF37;border-radius:15px;color:#D4AF37;font-size:11px;font-weight:900;margin-bottom:12px}
 .phase h4{color:#D4AF37;font-size:17px;margin-bottom:12px}
 .phase ul{list-style:none;padding:0}
 .phase ul li{color:#c8d5e7;font-size:13px;padding:5px 0;line-height:1.6}
 .phase ul li:before{content:"✓ ";color:#D4AF37;font-weight:900;margin-left:5px}
-.btn-hero{display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border-radius:50px;font-weight:900;font-size:16px;text-decoration:none;box-shadow:0 15px 40px rgba(212,175,55,.5);transition:.3s;margin:6px;border:none;cursor:pointer}
+.btn-hero{display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#D4AF37,#f2d477);color:#0B1D3A;border-radius:50px;font-weight:900;font-size:16px;box-shadow:0 15px 40px rgba(212,175,55,.5);transition:.3s;margin:6px;border:none;cursor:pointer}
 .btn-hero:hover{transform:translateY(-4px)}
 .btn-hero.outline{background:rgba(255,255,255,.08);color:#fff;border:2px solid #D4AF37}
 .center{text-align:center}
 .footer{text-align:center;padding:30px 20px;color:#aebbd0;font-size:12px;border-top:1px solid rgba(212,175,55,.2);margin-top:40px}
 .footer strong{color:#D4AF37}
-@media(max-width:600px){.menu a{font-size:12px;margin-left:8px}}
+@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}}
 </style>
 </head>
 <body>
 <div class="container">
 
-<div class="topbar">
-<div class="logo"><div class="mark">A</div>AION AUTONOMOUS</div>
+<div class="topnav">
+<div class="logo">
+<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D4AF37"/><stop offset="1" stop-color="#7A4BFF"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#fff"/></svg>
+<div>AION<div class="s">COIN</div></div>
+</div>
 <div class="menu">
 <a href="index.html">الرئيسية</a>
-<a href="services.html">الخدمات</a>
+<a href="intelligence.html">Intelligence</a>
+<a href="teacher.html">المعلم</a>
+<a href="academy.html">Academy</a>
 <a href="pricing.html">الأسعار</a>
-<a href="team.html">الفريق</a>
-<a href="chat.html">الشات</a>
+<a href="coin.html" style="color:#D4AF37">AION Coin</a>
+<span class="lang-btn">اللغات</span>
 </div>
 </div>
 
@@ -93,8 +99,8 @@ body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75
 <div class="cd-box"><div class="num" id="seconds">--</div><div class="lbl">ثانية</div></div>
 </div>
 
-<a href="#presale" class="btn-hero">🎯 احجز مكانك في الطلب المسبق</a>
-<a href="whitepaper.html" class="btn-hero outline">📄 الورقة البيضاء</a>
+<a href="#presale" class="btn-hero">احجز مكانك في الطلب المسبق</a>
+<a href="whitepaper.html" class="btn-hero outline">الورقة البيضاء</a>
 </div>
 
 <div class="stats">
@@ -104,7 +110,7 @@ body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75
 <div class="stat"><div class="num">PoI</div><div class="lbl">آلية الإجماع</div></div>
 </div>
 
-<h2 class="section-title">🪙 توزيع العملة</h2>
+<h2 class="section-title">توزيع العملة</h2>
 <div class="tokenomics">
 <div class="tok"><div class="pct">40%</div><div class="name">المجتمع</div><div class="desc">4,000,000,000 AION</div></div>
 <div class="tok"><div class="pct">20%</div><div class="name">التطوير</div><div class="desc">2,000,000,000 AION</div></div>
@@ -114,7 +120,7 @@ body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75
 </div>
 
 <div class="form-card" id="presale">
-<h2>🎯 الطلب المسبق</h2>
+<h2>الطلب المسبق</h2>
 <p class="sub">احجز مكانك قبل الإطلاق الرسمي — أول 1,000 حاجز يحصلون على 500 AION مجانًا</p>
 
 <form id="presaleForm" onsubmit="submitForm(event)">
@@ -133,14 +139,14 @@ body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75
 <option value="100000">100,000 AION — $1,000</option>
 </select>
 
-<button type="submit" id="submitBtn">🚀 احجز الآن</button>
+<button type="submit" id="submitBtn">احجز الآن</button>
 </form>
 
 <div class="msg" id="msg"></div>
-<p style="text-align:center;color:#aebbd0;font-size:11px;margin-top:15px">⚠️ الطلب المسبق = تسجيل اهتمام فقط. لا يتم أي دفع الآن.</p>
+<p style="text-align:center;color:#aebbd0;font-size:11px;margin-top:15px">الطلب المسبق = تسجيل اهتمام فقط. لا يتم أي دفع الآن.</p>
 </div>
 
-<h2 class="section-title">🗺️ خارطة الطريق</h2>
+<h2 class="section-title">خارطة الطريق</h2>
 <div class="roadmap">
 
 <div class="phase active">
@@ -178,7 +184,7 @@ body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75
 
 </div>
 
-<h2 class="section-title">❓ أسئلة شائعة</h2>
+<h2 class="section-title">أسئلة شائعة</h2>
 
 <div class="card">
 <h3>ما هي AION Coin؟</h3>
@@ -201,19 +207,20 @@ body{font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 75
 </div>
 
 <div class="center" style="margin:40px 0">
-<a href="chat.html" class="btn-hero">🤖 تحدث مع الوكلاء</a>
-<a href="pricing.html" class="btn-hero outline">💰 شاهد الخدمات</a>
+<a href="chat.html" class="btn-hero">تحدث مع الوكلاء</a>
+<a href="pricing.html" class="btn-hero outline">شاهد الخدمات</a>
 </div>
 
 <div class="footer">
 <strong>AION AUTONOMOUS</strong> © 2026 — Geneva, Switzerland<br>
-aion.genesisss@gmail.com
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
 </div>
 
 </div>
 
 <script>
-// Countdown — 30 يومًا من الآن
 const target = new Date();
 target.setDate(target.getDate() + 30);
 target.setHours(0,0,0,0);
@@ -222,7 +229,7 @@ function updateCountdown(){
   const now = new Date().getTime();
   const diff = target.getTime() - now;
   if (diff <= 0) {
-    document.getElementById('countdown').innerHTML = '<div style="color:#D4AF37;font-size:24px;font-weight:900">🚀 الإطلاق الآن!</div>';
+    document.getElementById('countdown').innerHTML = '<div style="color:#D4AF37;font-size:24px;font-weight:900">الإطلاق الآن!</div>';
     return;
   }
   const d = Math.floor(diff / (1000*60*60*24));
@@ -237,7 +244,6 @@ function updateCountdown(){
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// Pre-sale form
 function submitForm(e){
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
@@ -249,9 +255,8 @@ function submitForm(e){
   if (!name || !email) return;
 
   btn.disabled = true;
-  btn.textContent = '⏳ جاري الحجز...';
+  btn.textContent = 'جاري الحجز...';
 
-  // Simulate — save locally + show success
   try {
     const list = JSON.parse(localStorage.getItem('aion_presale') || '[]');
     list.push({name, email, amount, date: new Date().toISOString()});
@@ -260,13 +265,16 @@ function submitForm(e){
 
   setTimeout(function(){
     btn.disabled = false;
-    btn.textContent = '🚀 احجز الآن';
+    btn.textContent = 'احجز الآن';
     msg.className = 'msg success';
-    msg.textContent = '✅ تم حجزك بنجاح! سنتواصل معك عند الإطلاق.';
+    msg.textContent = 'تم حجزك بنجاح! سنتواصل معك عند الإطلاق.';
     msg.style.display = 'block';
     document.getElementById('presaleForm').reset();
   }, 800);
 }
 </script>
+
+<script src="lang.js"></script>
+
 </body>
 </html>
