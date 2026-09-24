@@ -31,28 +31,21 @@ a{text-decoration:none;color:inherit}
 .currency-bar select{padding:10px 15px;background:#020817;color:#fff;border:1px solid rgba(0,200,255,.4);border-radius:12px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;min-width:240px}
 .currency-bar select:focus{outline:none;border-color:#f5c542}
 .auto-badge{padding:4px 10px;background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.5);border-radius:15px;color:#4ade80;font-size:10px;font-weight:900}
-.currency-status{width:100%;text-align:center;font-size:11px;color:#aebbd0;padding-top:6px}
-.currency-status.ok{color:#4ade80}
-.currency-status.warn{color:#f5c542}
 .choice{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:30px}
 .choice-card{padding:32px 22px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.85));border:2px solid rgba(0,180,255,.3);border-radius:22px;text-align:center;cursor:pointer;transition:.4s}
 .choice-card:hover{transform:translateY(-8px)}
 .choice-card.teacher{border-color:rgba(0,200,255,.5)}
-.choice-card.teacher:hover{box-shadow:0 25px 60px rgba(0,200,255,.5)}
 .choice-card.teacher-f{border-color:rgba(167,139,250,.5)}
-.choice-card.teacher-f:hover{box-shadow:0 25px 60px rgba(167,139,250,.5)}
 .choice-card.student{border-color:rgba(245,197,66,.5)}
-.choice-card.student:hover{box-shadow:0 25px 60px rgba(245,197,66,.5)}
 .choice-card.student-f{border-color:rgba(74,222,128,.5)}
-.choice-card.student-f:hover{box-shadow:0 25px 60px rgba(74,222,128,.5)}
-.choice-card .big-ic{font-size:60px;margin-bottom:15px;display:block;filter:drop-shadow(0 0 20px rgba(0,200,255,.7))}
+.choice-card .big-ic{font-size:60px;margin-bottom:15px;display:block}
 .choice-card h2{color:#fff;font-size:22px;font-weight:900;margin-bottom:8px}
 .choice-card.teacher h2{color:#00c8ff}
 .choice-card.teacher-f h2{color:#a78bfa}
 .choice-card.student h2{color:#f5c542}
 .choice-card.student-f h2{color:#4ade80}
 .choice-card p{color:#aebbd0;font-size:13px;line-height:1.6;margin-bottom:12px}
-.choice-card .btn-enter{display:inline-block;padding:10px 25px;border-radius:40px;font-weight:900;font-size:13px}
+.choice-card .btn-enter{display:inline-block;padding:12px 32px;border-radius:40px;font-weight:900;font-size:14px;border:none;cursor:pointer;font-family:inherit}
 .choice-card.teacher .btn-enter{background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff}
 .choice-card.teacher-f .btn-enter{background:linear-gradient(135deg,#a78bfa,#7A4BFF);color:#fff}
 .choice-card.student .btn-enter{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}
@@ -63,9 +56,9 @@ a{text-decoration:none;color:inherit}
 .section-title span{color:#00c8ff}
 .section-title.gold span{color:#f5c542}
 .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:15px;margin-bottom:25px}
-.service-card{padding:22px 20px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.75));border:1px solid rgba(0,180,255,.3);border-radius:18px;transition:.3s;cursor:pointer;position:relative;display:flex;flex-direction:column;min-height:240px}
+.service-card{padding:22px 20px;background:linear-gradient(180deg,rgba(2,15,40,.95),rgba(2,8,23,.75));border:1px solid rgba(0,180,255,.3);border-radius:18px;transition:.3s;cursor:pointer;display:flex;flex-direction:column;min-height:240px}
 .service-card:hover{transform:translateY(-5px);border-color:#00c8ff;box-shadow:0 20px 45px rgba(0,200,255,.35)}
-.service-card.gold:hover{border-color:#f5c542;box-shadow:0 20px 45px rgba(245,197,66,.35)}
+.service-card.gold:hover{border-color:#f5c542}
 .service-card .ic{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;font-size:24px;margin-bottom:12px;background:rgba(0,200,255,.15);border:1px solid rgba(0,200,255,.5)}
 .service-card.gold .ic{background:rgba(245,197,66,.15);border-color:rgba(245,197,66,.5)}
 .service-card h3{color:#fff;font-size:16px;font-weight:900;margin-bottom:6px}
@@ -73,65 +66,54 @@ a{text-decoration:none;color:inherit}
 .service-card .meta{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)}
 .service-card .price{color:#f5c542;font-size:22px;font-weight:900;line-height:1}
 .service-card .price small{color:#aebbd0;font-size:10px;font-weight:normal;display:block;margin-top:3px}
-.service-card .buy-btn{padding:9px 16px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border:none;border-radius:30px;font-weight:900;font-size:12px;cursor:pointer;font-family:inherit;transition:.3s}
+.service-card .buy-btn{padding:9px 16px;background:linear-gradient(135deg,#00c8ff,#7A4BFF);color:#fff;border:none;border-radius:30px;font-weight:900;font-size:12px;cursor:pointer;font-family:inherit}
 .service-card.gold .buy-btn{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}
-.service-card .buy-btn:hover{transform:scale(1.05)}
-.back-btn{display:inline-block;padding:10px 22px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:13px;font-weight:900;cursor:pointer;margin-bottom:20px;font-family:inherit}
-.back-btn:hover{background:rgba(0,200,255,.25)}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;place-items:center;z-index:9999;padding:20px;backdrop-filter:blur(8px);overflow-y:auto}
+.back-btn{display:inline-block;padding:10px 22px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:13px;font-weight:900;cursor:pointer;margin-bottom:20px;font-family:inherit;border:none}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;place-items:center;z-index:9999;padding:20px;overflow-y:auto}
 .modal.active{display:grid}
-.modal-box{background:linear-gradient(135deg,#0B1D3A,#020817);border:2px solid #00c8ff;border-radius:22px;padding:28px;max-width:520px;width:100%;box-shadow:0 0 60px rgba(0,200,255,.5);position:relative;max-height:90vh;overflow-y:auto}
+.modal-box{background:linear-gradient(135deg,#0B1D3A,#020817);border:2px solid #00c8ff;border-radius:22px;padding:28px;max-width:520px;width:100%;position:relative;max-height:90vh;overflow-y:auto}
 .modal-box .close-x{position:absolute;top:15px;left:15px;background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;font-family:inherit;z-index:2}
 .modal-box h3{color:#00c8ff;font-size:20px;margin-bottom:8px;text-align:center}
 .modal-box .m-desc{color:#aebbd0;font-size:13px;text-align:center;margin-bottom:15px;line-height:1.7}
 .modal-box .m-price{color:#fff;font-size:34px;font-weight:900;text-align:center;margin:15px 0;line-height:1.2}
 .modal-box .m-price .usd-note{display:block;color:#aebbd0;font-size:14px;font-weight:normal;margin-top:6px}
 .modal-box label{display:block;color:#00c8ff;font-size:12px;font-weight:900;margin-bottom:6px;margin-top:12px}
-.modal-box select,.modal-box input[type="text"]{width:100%;padding:11px;background:#020817;color:#fff;border:1px solid rgba(0,200,255,.4);border-radius:10px;font-family:inherit;font-size:13px;cursor:pointer}
-.modal-box select:focus,.modal-box input:focus{outline:none;border-color:#f5c542}
+.modal-box select{width:100%;padding:11px;background:#020817;color:#fff;border:1px solid rgba(0,200,255,.4);border-radius:10px;font-family:inherit;font-size:13px}
 .modal-box textarea{width:100%;padding:12px;background:#020817;color:#fff;border:1px solid rgba(0,200,255,.4);border-radius:12px;font-family:inherit;font-size:13px;resize:vertical;min-height:70px}
-.modal-box textarea:focus{outline:none;border-color:#f5c542}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.pdf-area{margin-top:14px;padding:16px;background:rgba(0,200,255,.05);border:2px dashed rgba(0,200,255,.4);border-radius:12px;text-align:center;cursor:pointer;transition:.3s}
-.pdf-area:hover{background:rgba(0,200,255,.1);border-color:#00c8ff}
+.pdf-area{margin-top:14px;padding:16px;background:rgba(0,200,255,.05);border:2px dashed rgba(0,200,255,.4);border-radius:12px;text-align:center;cursor:pointer}
 .pdf-area input{display:none}
 .pdf-area .pdf-ic{font-size:32px;margin-bottom:8px;display:block;font-weight:900;color:#00c8ff}
 .pdf-area .pdf-text{color:#c8d5e7;font-size:12px;font-weight:700}
 .pdf-area .pdf-sub{color:#6b7c94;font-size:10px;margin-top:4px}
 .pdf-status{margin-top:8px;font-size:11px;color:#4ade80;display:none}
 .pdf-status.show{display:block}
-.pdf-status.error{color:#ff8888}
-.pay-btn-main{display:block;width:100%;padding:18px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border:none;border-radius:14px;font-weight:900;font-size:17px;cursor:pointer;font-family:inherit;margin-top:15px;transition:.3s;box-shadow:0 10px 30px rgba(245,197,66,.4)}
-.pay-btn-main:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(245,197,66,.6)}
-.pay-btn-main:disabled{opacity:.5;cursor:wait}
+.pay-btn-main{display:block;width:100%;padding:18px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border:none;border-radius:14px;font-weight:900;font-size:17px;cursor:pointer;font-family:inherit;margin-top:15px}
 .pay-alt-btn{display:block;width:100%;padding:14px;background:rgba(255,255,255,.08);color:#fff;border:2px solid #f5c542;border-radius:14px;font-weight:900;font-size:14px;cursor:pointer;font-family:inherit;margin-top:10px;text-align:center;text-decoration:none}
-.pay-alt-btn:hover{background:#f5c542;color:#020817}
 .m-status{padding:12px;border-radius:12px;text-align:center;margin-top:12px;font-size:13px;font-weight:700;display:none}
 .m-status.success{background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.5);color:#4ade80;display:block}
 .m-status.error{background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.5);color:#ff8888;display:block}
 .currency-note{padding:12px;background:rgba(245,197,66,.08);border:1px solid rgba(245,197,66,.4);border-radius:10px;margin-top:10px;font-size:11px;color:#e5d8a8;text-align:center;line-height:1.6;display:none}
 .delivery{padding:20px;background:rgba(0,200,255,.05);border:1px solid rgba(0,200,255,.3);border-radius:14px;margin-top:15px;display:none}
 .delivery.active{display:block}
-.delivery .d-head{color:#00c8ff;font-size:13px;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.delivery .d-head{color:#00c8ff;font-size:13px;font-weight:900;margin-bottom:10px}
 .delivery .d-body{color:#dfe8f5;font-size:13px;line-height:1.9;white-space:pre-wrap;max-height:400px;overflow-y:auto;padding:12px;background:rgba(2,8,23,.6);border-radius:10px}
 .delivery .d-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
-.delivery .d-actions button{padding:12px 8px;border-radius:10px;border:none;font-family:inherit;font-weight:900;font-size:11px;cursor:pointer;transition:.3s}
-.delivery .d-actions button:hover{transform:translateY(-2px)}
+.delivery .d-actions button{padding:12px 8px;border-radius:10px;border:none;font-family:inherit;font-weight:900;font-size:11px;cursor:pointer}
 .delivery .d-copy{background:rgba(0,200,255,.2);color:#00c8ff;border:1px solid #00c8ff}
 .delivery .d-home{background:linear-gradient(135deg,#4ade80,#22c55e);color:#020817}
 .delivery .d-close{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}
-.spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(0,200,255,.2);border-top-color:#00c8ff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-left:8px}
+.spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(0,200,255,.2);border-top-color:#00c8ff;border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .footer{text-align:center;padding:25px 15px;color:#6b7c94;font-size:11px;border-top:1px solid rgba(0,180,255,.15);margin-top:30px}
 .footer strong{color:#00c8ff}
 .footer a{color:#00c8ff;margin:0 8px}
 @media(max-width:600px){
-  .choice{grid-template-columns:1fr}
-  .services-grid{grid-template-columns:1fr}
-  .menu a{font-size:11px}
-  .form-grid{grid-template-columns:1fr}
-  .delivery .d-actions{grid-template-columns:1fr}
-  .currency-bar select{min-width:100%;width:100%}
+.choice{grid-template-columns:1fr}
+.services-grid{grid-template-columns:1fr}
+.menu a{font-size:11px}
+.form-grid{grid-template-columns:1fr}
+.delivery .d-actions{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -152,11 +134,7 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 
-<!-- ============================ -->
-<!-- العرض الرئيسي -->
-<!-- ============================ -->
 <div class="view active" id="mainView">
-
 <div class="hero">
 <div class="content">
 <h1>تطبيق <span>المعلم والطالب</span></h1>
@@ -165,85 +143,83 @@ a{text-decoration:none;color:inherit}
 </div>
 
 <div class="currency-bar">
-<label>🌐 عملتك:</label>
+<label>عملتك:</label>
 <select id="currencySelect" onchange="changeCurrency()">
-<option value="SA">🇸🇦 السعودية — ريال سعودي</option>
-<option value="AE">🇦🇪 الإمارات — درهم إماراتي</option>
-<option value="EG">🇪🇬 مصر — جنيه مصري</option>
-<option value="KW">🇰🇼 الكويت — دينار كويتي</option>
-<option value="QA">🇶🇦 قطر — ريال قطري</option>
-<option value="BH">🇧🇭 البحرين — دينار بحريني</option>
-<option value="OM">🇴🇲 عمان — ريال عماني</option>
-<option value="JO">🇯🇴 الأردن — دينار أردني</option>
-<option value="PS">🇵🇸 فلسطين — شيكل</option>
-<option value="LB">🇱🇧 لبنان — ليرة لبنانية</option>
-<option value="SY">🇸🇾 سوريا — ليرة سورية</option>
-<option value="IQ">🇮🇶 العراق — دينار عراقي</option>
-<option value="YE">🇾🇪 اليمن — ريال يمني</option>
-<option value="SD">🇸🇩 السودان — جنيه سوداني</option>
-<option value="LY">🇱🇾 ليبيا — دينار ليبي</option>
-<option value="TN">🇹🇳 تونس — دينار تونسي</option>
-<option value="DZ">🇩🇿 الجزائر — دينار جزائري</option>
-<option value="MA">🇲🇦 المغرب — درهم مغربي</option>
-<option value="MR">🇲🇷 موريتانيا — أوقية</option>
-<option value="SO">🇸🇴 الصومال — شلن</option>
-<option value="TR">🇹🇷 تركيا — ليرة تركية</option>
-<option value="US">🇺🇸 أمريكا — دولار</option>
-<option value="GB">🇬🇧 بريطانيا — جنيه إسترليني</option>
-<option value="FR">🇫🇷 فرنسا — يورو</option>
-<option value="DE">🇩🇪 ألمانيا — يورو</option>
-<option value="ES">🇪🇸 إسبانيا — يورو</option>
-<option value="IT">🇮🇹 إيطاليا — يورو</option>
-<option value="PK">🇵🇰 باكستان — روبية</option>
-<option value="IN">🇮🇳 الهند — روبية هندية</option>
-<option value="ID">🇮🇩 إندونيسيا — روبية</option>
-<option value="MY">🇲🇾 ماليزيا — رينغيت</option>
-<option value="PH">🇵🇭 الفلبين — بيزو</option>
-<option value="BD">🇧🇩 بنغلاديش — تاكا</option>
-<option value="IR">🇮🇷 إيران — ريال</option>
-<option value="AF">🇦🇫 أفغانستان — أفغاني</option>
-<option value="NG">🇳🇬 نيجيريا — نيرة</option>
-<option value="KE">🇰🇪 كينيا — شلن</option>
-<option value="ZA">🇿🇦 جنوب أفريقيا — راند</option>
+<option value="SA">السعودية — ريال</option>
+<option value="EG">مصر — جنيه</option>
+<option value="AE">الإمارات — درهم</option>
+<option value="KW">الكويت — دينار</option>
+<option value="QA">قطر — ريال</option>
+<option value="BH">البحرين — دينار</option>
+<option value="OM">عمان — ريال</option>
+<option value="JO">الأردن — دينار</option>
+<option value="PS">فلسطين — شيكل</option>
+<option value="LB">لبنان — ليرة</option>
+<option value="SY">سوريا — ليرة</option>
+<option value="IQ">العراق — دينار</option>
+<option value="YE">اليمن — ريال</option>
+<option value="SD">السودان — جنيه</option>
+<option value="LY">ليبيا — دينار</option>
+<option value="TN">تونس — دينار</option>
+<option value="DZ">الجزائر — دينار</option>
+<option value="MA">المغرب — درهم</option>
+<option value="MR">موريتانيا — أوقية</option>
+<option value="SO">الصومال — شلن</option>
+<option value="TR">تركيا — ليرة</option>
+<option value="US">أمريكا — دولار</option>
+<option value="GB">بريطانيا — جنيه إسترليني</option>
+<option value="FR">فرنسا — يورو</option>
+<option value="DE">ألمانيا — يورو</option>
+<option value="ES">إسبانيا — يورو</option>
+<option value="IT">إيطاليا — يورو</option>
+<option value="PK">باكستان — روبية</option>
+<option value="IN">الهند — روبية</option>
+<option value="ID">إندونيسيا — روبية</option>
+<option value="MY">ماليزيا — رينغيت</option>
+<option value="PH">الفلبين — بيزو</option>
+<option value="BD">بنغلاديش — تاكا</option>
+<option value="IR">إيران — ريال</option>
+<option value="AF">أفغانستان — أفغاني</option>
+<option value="NG">نيجيريا — نيرة</option>
+<option value="KE">كينيا — شلن</option>
+<option value="ZA">جنوب أفريقيا — راند</option>
 </select>
 <span class="auto-badge" id="autoBadge">تلقائي</span>
-<div class="currency-status" id="currencyStatus">🌐 جاري اكتشاف بلدك تلقائياً...</div>
 </div>
 
 <div class="choice">
-<div class="choice-card teacher" onclick="showView('teacherView')">
+<div class="choice-card teacher">
 <span class="big-ic">👨‍🏫</span>
 <h2>أنا معلم</h2>
 <p>تحضير، اختبارات، أسئلة — من 5 ر.س إلى 10 ر.س</p>
-<span class="btn-enter">ابدأ</span>
+<button class="btn-enter" onclick="showView('teacherView')">ابدأ</button>
 </div>
-<div class="choice-card teacher-f" onclick="showView('teacherView')">
+
+<div class="choice-card teacher-f">
 <span class="big-ic">👩‍🏫</span>
 <h2>أنا معلمة</h2>
 <p>تحضير، اختبارات، أسئلة — من 5 ر.س إلى 10 ر.س</p>
-<span class="btn-enter">ابدأي</span>
+<button class="btn-enter" onclick="showView('teacherView')">ابدأي</button>
 </div>
-<div class="choice-card student" onclick="showView('studentView')">
+
+<div class="choice-card student">
 <span class="big-ic">👨‍🎓</span>
 <h2>أنا طالب</h2>
 <p>من 2 ر.س إلى 5 ر.س — توقع الاختبار 8 ر.س</p>
-<span class="btn-enter">ابدأ</span>
+<button class="btn-enter" onclick="showView('studentView')">ابدأ</button>
 </div>
-<div class="choice-card student-f" onclick="showView('studentView')">
+
+<div class="choice-card student-f">
 <span class="big-ic">👩‍🎓</span>
 <h2>أنا طالبة</h2>
 <p>من 2 ر.س إلى 5 ر.س — توقع الاختبار 8 ر.س</p>
-<span class="btn-enter">ابدأي</span>
+<button class="btn-enter" onclick="showView('studentView')">ابدأي</button>
+</div>
 </div>
 </div>
 
-</div>
-
-<!-- ============================ -->
-<!-- عرض المعلم -->
-<!-- ============================ -->
 <div class="view" id="teacherView">
-<button class="back-btn" onclick="showView('mainView')">← رجوع</button>
+<button class="back-btn" onclick="showView('mainView')">رجوع</button>
 <div class="hero">
 <div class="content">
 <h1>👨‍🏫 <span>أدوات المعلم والمعلمة</span></h1>
@@ -253,83 +229,59 @@ a{text-decoration:none;color:inherit}
 
 <h2 class="section-title">📚 <span>تحضير الدروس</span></h2>
 <div class="services-grid">
-<div class="service-card" onclick="openPay('تحضير درس كامل', 1.33, 'تحضير درس احترافي لأي مادة وأي مستوى.')">
-<div class="ic">📝</div>
-<h3>تحضير درس كامل</h3>
-<div class="desc">درس جاهز — أهداف + أنشطة + وسائل.</div>
+<div class="service-card" onclick="openPay('تحضير درس كامل', 1.33, 'تحضير درس احترافي.')">
+<div class="ic">📝</div><h3>تحضير درس كامل</h3><div class="desc">درس جاهز — أهداف + أنشطة + وسائل.</div>
 <div class="meta"><div class="price" data-usd="1.33"></div><button class="buy-btn">اطلب</button></div>
 </div>
-<div class="service-card" onclick="openPay('تحضير 5 دروس', 2.67, 'باقة 5 دروس كاملة بخصم.')">
-<div class="ic">📚</div>
-<h3>باقة 5 دروس</h3>
-<div class="desc">5 دروس كاملة بخصم مميز.</div>
+<div class="service-card" onclick="openPay('تحضير 5 دروس', 2.67, 'باقة 5 دروس.')">
+<div class="ic">📚</div><h3>باقة 5 دروس</h3><div class="desc">5 دروس كاملة بخصم.</div>
 <div class="meta"><div class="price" data-usd="2.67"></div><button class="buy-btn">اطلب</button></div>
 </div>
-<div class="service-card" onclick="openPay('خطة وحدة كاملة', 1.87, 'خطة وحدة تعليمية كاملة.')">
-<div class="ic">📋</div>
-<h3>خطة وحدة كاملة</h3>
-<div class="desc">خطة وحدة تعليمية — أسبوع أو أكثر.</div>
+<div class="service-card" onclick="openPay('خطة وحدة كاملة', 1.87, 'خطة وحدة كاملة.')">
+<div class="ic">📋</div><h3>خطة وحدة كاملة</h3><div class="desc">خطة وحدة تعليمية.</div>
 <div class="meta"><div class="price" data-usd="1.87"></div><button class="buy-btn">اطلب</button></div>
 </div>
 </div>
 
 <h2 class="section-title">✍️ <span>الواجبات والأنشطة</span></h2>
 <div class="services-grid">
-<div class="service-card" onclick="openPay('ورقة عمل كاملة', 1.33, 'ورقة عمل احترافية + الإجابات.')">
-<div class="ic">📄</div>
-<h3>ورقة عمل</h3>
-<div class="desc">ورقة عمل كاملة + الإجابات.</div>
+<div class="service-card" onclick="openPay('ورقة عمل كاملة', 1.33, 'ورقة عمل + إجابات.')">
+<div class="ic">📄</div><h3>ورقة عمل</h3><div class="desc">ورقة عمل كاملة + الإجابات.</div>
 <div class="meta"><div class="price" data-usd="1.33"></div><button class="buy-btn">اطلب</button></div>
 </div>
-<div class="service-card" onclick="openPay('أسئلة مشاركة صفية', 1.33, '20 سؤال تفاعلي + الإجابات.')">
-<div class="ic">💬</div>
-<h3>أسئلة مشاركة صفية</h3>
-<div class="desc">20 سؤال تفاعلي + الإجابات.</div>
+<div class="service-card" onclick="openPay('أسئلة مشاركة صفية', 1.33, '20 سؤال تفاعلي.')">
+<div class="ic">💬</div><h3>أسئلة مشاركة صفية</h3><div class="desc">20 سؤال تفاعلي + الإجابات.</div>
 <div class="meta"><div class="price" data-usd="1.33"></div><button class="buy-btn">اطلب</button></div>
 </div>
-<div class="service-card" onclick="openPay('20 سؤال واجب', 1.33, '20 سؤال واجب + الإجابات.')">
-<div class="ic">🏠</div>
-<h3>20 سؤال واجب</h3>
-<div class="desc">أسئلة واجب + الإجابات.</div>
+<div class="service-card" onclick="openPay('20 سؤال واجب', 1.33, '20 سؤال واجب.')">
+<div class="ic">🏠</div><h3>20 سؤال واجب</h3><div class="desc">أسئلة واجب + الإجابات.</div>
 <div class="meta"><div class="price" data-usd="1.33"></div><button class="buy-btn">اطلب</button></div>
 </div>
 </div>
 
 <h2 class="section-title">📊 <span>الاختبارات</span></h2>
 <div class="services-grid">
-<div class="service-card" onclick="openPay('اختبار شهري', 1.87, 'اختبار شهري كامل + الإجابات + التصحيح.')">
-<div class="ic">📅</div>
-<h3>اختبار شهري</h3>
-<div class="desc">اختبار كامل + الإجابات + التصحيح.</div>
+<div class="service-card" onclick="openPay('اختبار شهري', 1.87, 'اختبار شهري كامل.')">
+<div class="ic">📅</div><h3>اختبار شهري</h3><div class="desc">اختبار كامل + الإجابات.</div>
 <div class="meta"><div class="price" data-usd="1.87"></div><button class="buy-btn">اطلب</button></div>
 </div>
-<div class="service-card" onclick="openPay('اختبار فصلي', 2.13, 'اختبار فصلي شامل + الإجابات.')">
-<div class="ic">📆</div>
-<h3>اختبار فصلي</h3>
-<div class="desc">ترم 1 أو 2 — شامل + الإجابات.</div>
+<div class="service-card" onclick="openPay('اختبار فصلي', 2.13, 'اختبار فصلي شامل.')">
+<div class="ic">📆</div><h3>اختبار فصلي</h3><div class="desc">ترم 1 أو 2 — شامل + الإجابات.</div>
 <div class="meta"><div class="price" data-usd="2.13"></div><button class="buy-btn">اطلب</button></div>
 </div>
-<div class="service-card" onclick="openPay('اختبار نهائي', 2.67, 'اختبار نهائي كامل + الإجابات.')">
-<div class="ic">🎓</div>
-<h3>اختبار نهائي</h3>
-<div class="desc">اختبار نهاية العام + الإجابات.</div>
+<div class="service-card" onclick="openPay('اختبار نهائي', 2.67, 'اختبار نهائي كامل.')">
+<div class="ic">🎓</div><h3>اختبار نهائي</h3><div class="desc">اختبار نهاية العام + الإجابات.</div>
 <div class="meta"><div class="price" data-usd="2.67"></div><button class="buy-btn">اطلب</button></div>
 </div>
-<div class="service-card" onclick="openPay('بنك أسئلة كامل', 2.67, 'بنك أسئلة 100+ سؤال لكل مادة.')">
-<div class="ic">🏦</div>
-<h3>بنك أسئلة كامل</h3>
-<div class="desc">100+ سؤال مصنّف — لكل مادة.</div>
+<div class="service-card" onclick="openPay('بنك أسئلة كامل', 2.67, 'بنك أسئلة شامل.')">
+<div class="ic">🏦</div><h3>بنك أسئلة كامل</h3><div class="desc">100+ سؤال مصنّف.</div>
 <div class="meta"><div class="price" data-usd="2.67"></div><button class="buy-btn">اطلب</button></div>
 </div>
 </div>
-
 </div>
 
-<!-- ============================ -->
-<!-- عرض الطالب -->
-<!-- ============================ -->
 <div class="view" id="studentView">
-<button class="back-btn" onclick="showView('mainView')">← رجوع</button>
+<button class="back-btn" onclick="showView('mainView')">رجوع</button>
 <div class="hero">
 <div class="content">
 <h1>👨‍🎓 <span>أدوات الطالب والطالبة</span></h1>
@@ -339,35 +291,433 @@ a{text-decoration:none;color:inherit}
 
 <h2 class="section-title gold">📖 <span>المراجعة والحلول</span></h2>
 <div class="services-grid">
-<div class="service-card gold" onclick="openPay('مراجعة درس كامل', 0.53, 'مراجعة شاملة لدرس واحد.')">
-<div class="ic">📖</div>
-<h3>مراجعة درس كامل</h3>
-<div class="desc">ملخص + نقاط مهمة + أسئلة.</div>
+<div class="service-card gold" onclick="openPay('مراجعة درس كامل', 0.53, 'مراجعة درس.')">
+<div class="ic">📖</div><h3>مراجعة درس كامل</h3><div class="desc">ملخص + نقاط مهمة + أسئلة.</div>
 <div class="meta"><div class="price" data-usd="0.53"></div><button class="buy-btn">اطلب</button></div>
 </div>
-<div class="service-card gold" onclick="openPay('مراجعة وحدة كاملة', 0.80, 'مراجعة شاملة لوحدة كاملة.')">
-<div class="ic">📚</div>
-<h3>مراجعة وحدة كاملة</h3>
-<div class="desc">مراجعة شاملة لعدة دروس.</div>
+<div class="service-card gold" onclick="openPay('مراجعة وحدة كاملة', 0.80, 'مراجعة وحدة.')">
+<div class="ic">📚</div><h3>مراجعة وحدة كاملة</h3><div class="desc">مراجعة شاملة لعدة دروس.</div>
 <div class="meta"><div class="price" data-usd="0.80"></div><button class="buy-btn">اطلب</button></div>
 </div>
-<div class="service-card gold" onclick="openPay('حل جميع أسئلة درس', 0.80, 'حل كامل لجميع أسئلة الدرس.')">
-<div class="ic">✅</div>
-<h3>حل أسئلة درس</h3>
-<div class="desc">حل كامل + شرح خطوة بخطوة.</div>
+<div class="service-card gold" onclick="openPay('حل جميع أسئلة درس', 0.80, 'حل أسئلة درس.')">
+<div class="ic">✅</div><h3>حل أسئلة درس</h3><div class="desc">حل كامل + شرح خطوة بخطوة.</div>
 <div class="meta"><div class="price" data-usd="0.80"></div><button class="buy-btn">اطلب</button></div>
 </div>
-<div class="service-card gold" onclick="openPay('حل كتاب كامل', 1.33, 'حل جميع أسئلة الكتاب لمادة كاملة.')">
-<div class="ic">📕</div>
-<h3>حل كتاب كامل</h3>
-<div class="desc">حل جميع أسئلة كتاب مادة.</div>
+<div class="service-card gold" onclick="openPay('حل كتاب كامل', 1.33, 'حل كتاب كامل.')">
+<div class="ic">📕</div><h3>حل كتاب كامل</h3><div class="desc">حل جميع أسئلة كتاب مادة.</div>
 <div class="meta"><div class="price" data-usd="1.33"></div><button class="buy-btn">اطلب</button></div>
 </div>
 </div>
 
 <h2 class="section-title gold">🔮 <span>توقع ومراجعة الاختبارات</span></h2>
 <div class="services-grid">
-<div class="service-card gold" onclick="openPay('توقع اختبار شهري', 2.13, 'توقع أسئلة الشهر بدقة عالية.')">
-<div class="ic">📅</div>
-<h3>توقع اختبار شهري</h3>
-<div class="desc">توقع أسئلة الشهر بدقة ع
+<div class="service-card gold" onclick="openPay('توقع اختبار شهري', 2.13, 'توقع اختبار شهري.')">
+<div class="ic">📅</div><h3>توقع اختبار شهري</h3><div class="desc">توقع أسئلة الشهر.</div>
+<div class="meta"><div class="price" data-usd="2.13"></div><button class="buy-btn">اطلب</button></div>
+</div>
+<div class="service-card gold" onclick="openPay('توقع اختبار فصلي', 2.13, 'توقع اختبار فصلي.')">
+<div class="ic">📆</div><h3>توقع اختبار فصلي</h3><div class="desc">توقع كامل + الإجابات.</div>
+<div class="meta"><div class="price" data-usd="2.13"></div><button class="buy-btn">اطلب</button></div>
+</div>
+<div class="service-card gold" onclick="openPay('توقع اختبار نهائي', 2.13, 'توقع اختبار نهائي.')">
+<div class="ic">🎓</div><h3>توقع اختبار نهائي</h3><div class="desc">توقع نهاية العام.</div>
+<div class="meta"><div class="price" data-usd="2.13"></div><button class="buy-btn">اطلب</button></div>
+</div>
+<div class="service-card gold" onclick="openPay('مراجعة اختبار شاملة', 2.13, 'مراجعة شاملة.')">
+<div class="ic">📝</div><h3>مراجعة اختبار</h3><div class="desc">مراجعة شاملة للاختبار.</div>
+<div class="meta"><div class="price" data-usd="2.13"></div><button class="buy-btn">اطلب</button></div>
+</div>
+</div>
+
+<h2 class="section-title gold">💡 <span>شرح وتبسيط</span></h2>
+<div class="services-grid">
+<div class="service-card gold" onclick="openPay('شرح مفهوم صعب', 0.53, 'شرح مبسط.')">
+<div class="ic">💡</div><h3>شرح مفهوم صعب</h3><div class="desc">تبسيط + أمثلة عملية.</div>
+<div class="meta"><div class="price" data-usd="0.53"></div><button class="buy-btn">اطلب</button></div>
+</div>
+<div class="service-card gold" onclick="openPay('خطة مذاكرة أسبوعية', 0.53, 'خطة مذاكرة.')">
+<div class="ic">📅</div><h3>خطة مذاكرة أسبوعية</h3><div class="desc">خطة مخصصة.</div>
+<div class="meta"><div class="price" data-usd="0.53"></div><button class="buy-btn">اطلب</button></div>
+</div>
+<div class="service-card gold" onclick="openPay('ملخص شامل لمادة', 0.80, 'ملخص مادة.')">
+<div class="ic">📝</div><h3>ملخص شامل لمادة</h3><div class="desc">ملخص احترافي.</div>
+<div class="meta"><div class="price" data-usd="0.80"></div><button class="buy-btn">اطلب</button></div>
+</div>
+</div>
+</div>
+
+<div class="modal" id="payModal">
+<div class="modal-box">
+<button class="close-x" onclick="closeModal()">X</button>
+<h3 id="mTitle">تحضير درس</h3>
+<div class="m-desc" id="mDesc">وصف الخدمة</div>
+<div class="m-price" id="mPrice"></div>
+
+<label>المرحلة / الصف:</label>
+<select id="selGrade">
+<option value="الروضة">الروضة</option>
+<option value="الابتدائي - الأول">الابتدائي - الأول</option>
+<option value="الابتدائي - الثاني">الابتدائي - الثاني</option>
+<option value="الابتدائي - الثالث">الابتدائي - الثالث</option>
+<option value="الابتدائي - الرابع">الابتدائي - الرابع</option>
+<option value="الابتدائي - الخامس">الابتدائي - الخامس</option>
+<option value="الابتدائي - السادس">الابتدائي - السادس</option>
+<option value="المتوسط - الأول">المتوسط - الأول</option>
+<option value="المتوسط - الثاني">المتوسط - الثاني</option>
+<option value="المتوسط - الثالث">المتوسط - الثالث</option>
+<option value="الثانوي - الأول">الثانوي - الأول</option>
+<option value="الثانوي - الثاني">الثانوي - الثاني</option>
+<option value="الثانوي - الثالث">الثانوي - الثالث</option>
+<option value="الجامعة - بكالوريوس">الجامعة - بكالوريوس</option>
+<option value="الجامعة - ماجستير">الجامعة - ماجستير</option>
+</select>
+
+<div class="form-grid">
+<div>
+<label>المادة:</label>
+<select id="selSubject">
+<option value="الرياضيات">الرياضيات</option>
+<option value="اللغة العربية">اللغة العربية</option>
+<option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
+<option value="العلوم">العلوم</option>
+<option value="الفيزياء">الفيزياء</option>
+<option value="الكيمياء">الكيمياء</option>
+<option value="الأحياء">الأحياء</option>
+<option value="التاريخ">التاريخ</option>
+<option value="الجغرافيا">الجغرافيا</option>
+<option value="التربية الإسلامية">التربية الإسلامية</option>
+<option value="الحاسب الآلي">الحاسب الآلي</option>
+<option value="الاجتماعيات">الاجتماعيات</option>
+<option value="أخرى">أخرى</option>
+</select>
+</div>
+<div>
+<label>الفصل:</label>
+<select id="selTerm">
+<option value="الفصل الأول">ترم 1</option>
+<option value="الفصل الثاني">ترم 2</option>
+<option value="الفصل الثالث">ترم 3</option>
+<option value="سنة كاملة">سنة كاملة</option>
+</select>
+</div>
+</div>
+
+<label>تفاصيل إضافية:</label>
+<textarea id="mDetails" placeholder="مثال: الدرس الثالث - المعادلات الخطية - ص 45"></textarea>
+
+<label>ارفع الكتاب / الملزمة (PDF) — اختياري:</label>
+<div class="pdf-area" onclick="document.getElementById('pdfFile').click()">
+<input type="file" id="pdfFile" accept=".pdf" onchange="handlePDF(event)">
+<span class="pdf-ic">PDF</span>
+<div class="pdf-text" id="pdfText">اضغط لرفع ملف PDF</div>
+<div class="pdf-sub">يساعد AI على مطابقة المنهج بدقة</div>
+</div>
+<div class="pdf-status" id="pdfStatus"></div>
+
+<button id="payNowBtn" class="pay-btn-main" onclick="payNow()">ادفع الآن بأمان</button>
+<a id="paypalFallback" class="pay-alt-btn" href="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J" target="_blank" style="display:none">أو ادفع عبر رابط PayPal</a>
+
+<div class="m-status" id="mStatus"></div>
+<div class="currency-note" id="currencyNote"></div>
+
+<div class="delivery" id="delivery">
+<div class="d-head"><span id="dHeadText">الخدمة جاهزة!</span></div>
+<div class="d-body" id="dBody"></div>
+<div class="d-actions">
+<button class="d-copy" onclick="copyDelivery()">نسخ</button>
+<button class="d-home" onclick="goHome()">الرئيسية</button>
+<button class="d-close" onclick="closeModal()">رجوع</button>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer">
+<strong>AION AUTONOMOUS</strong> — Teacher App<br>
+aion.genesisss@gmail.com<br><br>
+<a href="https://twitter.com/AIONNetworozes">Twitter</a>
+<a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
+</div>
+
+</div>
+
+<script>
+const CURRENCIES = {
+  SA:{name:'ريال سعودي',symbol:'ر.س',code:'SAR',rate:3.75},
+  EG:{name:'جنيه مصري',symbol:'ج.م',code:'EGP',rate:49},
+  AE:{name:'درهم إماراتي',symbol:'د.إ',code:'AED',rate:3.67},
+  KW:{name:'دينار كويتي',symbol:'د.ك',code:'KWD',rate:0.31},
+  QA:{name:'ريال قطري',symbol:'ر.ق',code:'QAR',rate:3.64},
+  BH:{name:'دينار بحريني',symbol:'د.ب',code:'BHD',rate:0.38},
+  OM:{name:'ريال عماني',symbol:'ر.ع',code:'OMR',rate:0.38},
+  JO:{name:'دينار أردني',symbol:'د.أ',code:'JOD',rate:0.71},
+  PS:{name:'شيكل',symbol:'₪',code:'ILS',rate:3.7},
+  LB:{name:'ليرة لبنانية',symbol:'ل.ل',code:'LBP',rate:89500},
+  SY:{name:'ليرة سورية',symbol:'ل.س',code:'SYP',rate:13000},
+  IQ:{name:'دينار عراقي',symbol:'د.ع',code:'IQD',rate:1310},
+  YE:{name:'ريال يمني',symbol:'ر.ي',code:'YER',rate:250},
+  SD:{name:'جنيه سوداني',symbol:'ج.س',code:'SDG',rate:601},
+  LY:{name:'دينار ليبي',symbol:'د.ل',code:'LYD',rate:4.85},
+  TN:{name:'دينار تونسي',symbol:'د.ت',code:'TND',rate:3.15},
+  DZ:{name:'دينار جزائري',symbol:'د.ج',code:'DZD',rate:134},
+  MA:{name:'درهم مغربي',symbol:'د.م',code:'MAD',rate:10},
+  MR:{name:'أوقية موريتانية',symbol:'أ.م',code:'MRU',rate:40},
+  SO:{name:'شلن صومالي',symbol:'Sh',code:'SOS',rate:571},
+  TR:{name:'ليرة تركية',symbol:'₺',code:'TRY',rate:34},
+  US:{name:'دولار أمريكي',symbol:'$',code:'USD',rate:1},
+  GB:{name:'جنيه إسترليني',symbol:'£',code:'GBP',rate:0.79},
+  FR:{name:'يورو',symbol:'€',code:'EUR',rate:0.92},
+  DE:{name:'يورو',symbol:'€',code:'EUR',rate:0.92},
+  ES:{name:'يورو',symbol:'€',code:'EUR',rate:0.92},
+  IT:{name:'يورو',symbol:'€',code:'EUR',rate:0.92},
+  PK:{name:'روبية باكستانية',symbol:'₨',code:'PKR',rate:278},
+  IN:{name:'روبية هندية',symbol:'₹',code:'INR',rate:84},
+  ID:{name:'روبية إندونيسية',symbol:'Rp',code:'IDR',rate:15900},
+  MY:{name:'رينغيت ماليزي',symbol:'RM',code:'MYR',rate:4.4},
+  PH:{name:'بيزو فلبيني',symbol:'₱',code:'PHP',rate:58},
+  BD:{name:'تاكا بنغلاديشية',symbol:'৳',code:'BDT',rate:120},
+  IR:{name:'ريال إيراني',symbol:'﷼',code:'IRR',rate:42000},
+  AF:{name:'أفغاني',symbol:'؋',code:'AFN',rate:68},
+  NG:{name:'نيرة نيجيرية',symbol:'₦',code:'NGN',rate:1650},
+  KE:{name:'شلن كيني',symbol:'KSh',code:'KES',rate:129},
+  ZA:{name:'راند جنوب أفريقي',symbol:'R',code:'ZAR',rate:18}
+};
+
+let currentCurrency = 'SA';
+
+function changeCurrency() {
+  currentCurrency = document.getElementById('currencySelect').value;
+  updateAllPrices();
+  const badge = document.getElementById('autoBadge');
+  if (badge) badge.style.display = 'none';
+}
+
+function formatPrice(usd) {
+  const curr = CURRENCIES[currentCurrency];
+  if (!curr) return {local:'$'+usd, usd:'$'+usd+' USD', code:'USD'};
+  const local = usd * curr.rate;
+  let formatted;
+  if (local >= 1000) formatted = Math.round(local).toLocaleString('en-US');
+  else if (local >= 100) formatted = Math.round(local);
+  else if (local >= 10) formatted = local.toFixed(1);
+  else formatted = local.toFixed(2);
+  return {local: formatted+' '+curr.symbol, usd:'$'+usd+' USD', code:curr.code};
+}
+
+function updateAllPrices() {
+  document.querySelectorAll('.price[data-usd]').forEach(el => {
+    const usd = parseFloat(el.getAttribute('data-usd'));
+    const p = formatPrice(usd);
+    el.innerHTML = p.local + '<small>' + p.usd + '</small>';
+  });
+}
+
+async function detectCountry() {
+  const lang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+  const langMap = {
+    'ar-sa':'SA','ar-eg':'EG','ar-ae':'AE','ar-kw':'KW','ar-qa':'QA',
+    'ar-bh':'BH','ar-om':'OM','ar-jo':'JO','ar-ps':'PS','ar-lb':'LB',
+    'ar-sy':'SY','ar-iq':'IQ','ar-ye':'YE','ar-sd':'SD','ar-ly':'LY',
+    'ar-tn':'TN','ar-dz':'DZ','ar-ma':'MA','ar-mr':'MR','ar-so':'SO',
+    'tr-tr':'TR','en-us':'US','en-gb':'GB','fr-fr':'FR','de-de':'DE',
+    'es-es':'ES','it-it':'IT','ur-pk':'PK','hi-in':'IN','id-id':'ID',
+    'ms-my':'MY','en-ph':'PH','bn-bd':'BD','fa-ir':'IR','ps-af':'AF',
+    'en-ng':'NG','sw-ke':'KE','en-za':'ZA'
+  };
+  let detected = langMap[lang];
+  if (!detected) {
+    try {
+      const res = await fetch('https://ipapi.co/json/');
+      const data = await res.json();
+      detected = data.country_code;
+    } catch(e) {
+      detected = 'SA';
+    }
+  }
+  if (detected && CURRENCIES[detected]) {
+    currentCurrency = detected;
+    document.getElementById('currencySelect').value = detected;
+    updateAllPrices();
+  }
+}
+
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+}
+let pdfTextContent = '';
+
+async function handlePDF(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (file.type !== 'application/pdf') {
+    document.getElementById('pdfStatus').textContent = 'الملف ليس PDF';
+    document.getElementById('pdfStatus').className = 'pdf-status show error';
+    return;
+  }
+  document.getElementById('pdfText').textContent = 'جاري القراءة...';
+  document.getElementById('pdfStatus').className = 'pdf-status';
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let fullText = '';
+    const maxPages = Math.min(pdf.numPages, 30);
+    for (let i=1; i<=maxPages; i++) {
+      const page = await pdf.getPage(i);
+      const tc = await page.getTextContent();
+      fullText += '\n--- صفحة '+i+' ---\n' + tc.items.map(it=>it.str).join(' ');
+    }
+    pdfTextContent = fullText.slice(0, 15000);
+    document.getElementById('pdfText').textContent = file.name;
+    document.getElementById('pdfStatus').textContent = 'قرأنا '+maxPages+' من '+pdf.numPages+' صفحة';
+    document.getElementById('pdfStatus').className = 'pdf-status show';
+  } catch(err) {
+    document.getElementById('pdfText').textContent = 'فشل';
+    document.getElementById('pdfStatus').textContent = err.message;
+    document.getElementById('pdfStatus').className = 'pdf-status show error';
+    pdfTextContent = '';
+  }
+}
+
+function showView(id) {
+  var views = document.querySelectorAll('.view');
+  for (var i = 0; i < views.length; i++) {
+    views[i].classList.remove('active');
+  }
+  var target = document.getElementById(id);
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+}
+
+function goHome() {
+  closeModal();
+  showView('mainView');
+}
+
+let currentService = { title:'', price:0, desc:'' };
+
+function openPay(title, price, desc) {
+  currentService = { title: title, price: price, desc: desc };
+  document.getElementById('mTitle').textContent = title;
+  document.getElementById('mDesc').textContent = desc;
+  const p = formatPrice(price);
+  document.getElementById('mPrice').innerHTML = p.local + '<span class="usd-note">= ' + p.usd + '</span>';
+  document.getElementById('mDetails').value = '';
+  document.getElementById('pdfFile').value = '';
+  document.getElementById('pdfText').textContent = 'اضغط لرفع ملف PDF';
+  document.getElementById('pdfStatus').className = 'pdf-status';
+  document.getElementById('pdfStatus').textContent = '';
+  pdfTextContent = '';
+  document.getElementById('mStatus').style.display = 'none';
+  document.getElementById('delivery').classList.remove('active');
+  document.getElementById('payNowBtn').disabled = false;
+  document.getElementById('payNowBtn').textContent = 'ادفع الآن بأمان';
+  document.getElementById('paypalFallback').style.display = 'none';
+  document.getElementById('payModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  const curr = CURRENCIES[currentCurrency];
+  const note = document.getElementById('currencyNote');
+  if (curr && curr.code !== 'USD') {
+    note.textContent = 'السعر بالـ '+curr.name+'. الدفع بالدولار ($'+price+') عبر PayPal.';
+    note.style.display = 'block';
+  } else {
+    note.style.display = 'none';
+  }
+}
+
+function closeModal() {
+  document.getElementById('payModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function showStatus(msg, type) {
+  const el = document.getElementById('mStatus');
+  el.textContent = msg;
+  el.className = 'm-status ' + type;
+  el.style.display = 'block';
+}
+
+function buildPrompt() {
+  const grade = document.getElementById('selGrade').value;
+  const subject = document.getElementById('selSubject').value;
+  const term = document.getElementById('selTerm').value;
+  const details = document.getElementById('mDetails').value.trim();
+  const country = CURRENCIES[currentCurrency].name;
+
+  let prompt = 'أنت خبير تعليمي عربي محترف.\n\n';
+  prompt += 'المطلوب: ' + currentService.title + '\n';
+  prompt += 'البلد: ' + country + '\n';
+  prompt += 'الصف: ' + grade + '\n';
+  prompt += 'المادة: ' + subject + '\n';
+  prompt += 'الفصل: ' + term + '\n';
+  if (details) prompt += 'تفاصيل: ' + details + '\n';
+  if (pdfTextContent) {
+    prompt += '\nالنص من الكتاب:\n' + pdfTextContent + '\n';
+  }
+  prompt += '\nاكتب '+currentService.title+' احترافي كامل.';
+  return prompt;
+}
+
+async function payNow() {
+  const btn = document.getElementById('payNowBtn');
+  const fallback = document.getElementById('paypalFallback');
+
+  btn.disabled = true;
+  btn.textContent = 'جاري تجهيز الدفع...';
+  showStatus('جاري تجهيز الدفع...', 'success');
+
+  try {
+    const prompt = buildPrompt();
+    const res = await fetch('/api/paypal/create-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        amount: currentService.price,
+        currency: 'USD',
+        description: currentService.title,
+        details: prompt.slice(0, 200)
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.id) {
+      showStatus('سيتم توجيهك إلى PayPal...', 'success');
+      setTimeout(function() {
+        window.location.href = 'https://www.paypal.com/checkoutnow?token=' + data.id;
+      }, 500);
+    } else {
+      showStatus('خطأ: ' + (data.error || 'فشل') + ' — استخدم الرابط البديل', 'error');
+      fallback.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'ادفع الآن بأمان';
+    }
+  } catch (err) {
+    showStatus('خطأ في الاتصال. استخدم الرابط البديل', 'error');
+    fallback.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'ادفع الآن بأمان';
+  }
+}
+
+function copyDelivery() {
+  const text = document.getElementById('dBody').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    const btn = document.querySelector('.d-copy');
+    btn.textContent = 'تم النسخ';
+    setTimeout(function() { btn.textContent = 'نسخ'; }, 2000);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  updateAllPrices();
+  detectCountry();
+});
+</script>
+
+<script src="lang.js"></script>
+
+</body>
+</html>
