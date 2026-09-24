@@ -19,10 +19,14 @@ a{text-decoration:none;color:inherit}
 .menu a:hover{color:#00c8ff}
 .lang-btn{padding:6px 12px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;display:inline-block}
 
-.currency-select{padding:6px 10px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;font-family:inherit;cursor:pointer;outline:none}
-.currency-select option{background:#020817;color:#fff}
+h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:12px;text-shadow:0 0 25px rgba(0,200,255,.6)}
 
-h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:8px;text-shadow:0 0 25px rgba(0,200,255,.6)}
+.currency-bar{display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.currency-bar label{color:#c8d5e7;font-size:13px;font-weight:600}
+.currency-bar select{padding:8px 14px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.5);border-radius:20px;color:#00c8ff;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;outline:none;transition:.3s}
+.currency-bar select:hover{border-color:#00c8ff;background:rgba(0,180,255,.2)}
+.currency-bar select option{background:#020817;color:#fff;font-size:14px}
+
 .sub{text-align:center;color:#aebbd0;margin-bottom:25px;font-size:13px}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px;margin-bottom:30px}
@@ -32,9 +36,12 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 .card-icon{font-size:38px;margin-bottom:12px;display:block;filter:drop-shadow(0 0 15px rgba(0,200,255,.6))}
 .card h3{color:#fff;font-size:16px;font-weight:900;margin-bottom:6px}
 .card .desc{color:#aebbd0;font-size:11px;line-height:1.6;margin-bottom:12px}
-.card .price-tag{display:inline-block;padding:5px 14px;background:rgba(245,197,66,.15);border:1px solid #f5c542;border-radius:20px;color:#f5c542;font-size:14px;font-weight:900}
-.local-price{display:block;margin-top:8px;color:#00c8ff;font-size:13px;font-weight:700;letter-spacing:.5px;transition:.3s}
-.local-price.loading{color:#6b7c94;font-weight:400;font-size:11px}
+
+.price-block{display:flex;flex-direction:column;align-items:flex-start;gap:2px;margin-top:8px}
+.local-price-main{color:#00c8ff;font-size:18px;font-weight:900;letter-spacing:.5px;text-shadow:0 0 12px rgba(0,200,255,.5);line-height:1.2}
+.usd-price-sub{color:#aebbd0;font-size:12px;font-weight:600;opacity:.8}
+.local-price-main.loading{color:#6b7c94;font-weight:400;font-size:13px;text-shadow:none}
+
 .card-bottom{padding:0 20px 20px}
 .pay-btn{display:block;width:100%;padding:13px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border:none;border-radius:12px;font-weight:900;font-size:13px;cursor:pointer;font-family:inherit;transition:.3s;text-align:center}
 .pay-btn:hover{transform:scale(1.03);box-shadow:0 10px 30px rgba(245,197,66,.6)}
@@ -55,14 +62,19 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 .modal.active{display:grid}
 .modal-box{background:linear-gradient(135deg,#0B1D3A,#050d1f);border:2px solid #f5c542;border-radius:22px;padding:30px;max-width:420px;width:100%;text-align:center;box-shadow:0 0 60px rgba(245,197,66,.5)}
 .modal-box h3{color:#f5c542;font-size:22px;margin-bottom:12px}
-.modal-box .price{color:#fff;font-size:42px;font-weight:900;margin:15px 0}
-.modal-box .local-price-modal{color:#00c8ff;font-size:18px;font-weight:700;margin-bottom:15px}
+.modal-box .local-price-modal{color:#00c8ff;font-size:32px;font-weight:900;margin:15px 0 5px;text-shadow:0 0 15px rgba(0,200,255,.5)}
+.modal-box .usd-price-modal{color:#aebbd0;font-size:14px;font-weight:600;margin-bottom:15px;opacity:.8}
 .modal-box .desc{color:#aebbd0;font-size:13px;margin-bottom:22px;line-height:1.7}
 .modal-box .btn{display:block;width:100%;padding:16px;background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border:none;border-radius:14px;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit;margin-bottom:10px;text-decoration:none;text-align:center}
 .modal-box .btn.outline{background:transparent;color:#f5c542;border:2px solid #f5c542}
 .modal-box .close-btn{background:none;border:none;color:#aebbd0;cursor:pointer;font-size:13px;font-family:inherit;margin-top:8px;padding:8px}
 
-@media(max-width:600px){.menu a{font-size:11px}.grid{grid-template-columns:1fr}}
+@media(max-width:600px){
+  .menu a{font-size:11px}
+  .grid{grid-template-columns:1fr}
+  .currency-bar{flex-direction:column;gap:6px}
+  .currency-bar select{width:100%;max-width:280px;text-align:center}
+}
 </style>
 </head>
 <body>
@@ -78,8 +90,16 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <a href="pricing.html">الأسعار</a>
 <a href="portfolio.html">أعمالنا</a>
 <a href="chat.html">الشات</a>
-<select class="currency-select" id="currencySelect" onchange="changeCurrency(this.value)">
-<option value="auto">🌐 تلقائي</option>
+<a href="en.html" class="lang-btn">EN 🌐</a>
+</div>
+</div>
+
+<h1>🛒 اختر خدمتك</h1>
+
+<div class="currency-bar">
+<label for="currencySelect">🌐 اختر عملتك المفضلة:</label>
+<select id="currencySelect" onchange="changeCurrency(this.value)">
+<option value="auto">🌐 تلقائي (حسب بلدك)</option>
 <option value="USD">🇺🇸 دولار أمريكي</option>
 <option value="SAR">🇸🇦 ريال سعودي</option>
 <option value="AED">🇦🇪 درهم إماراتي</option>
@@ -126,11 +146,8 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <option value="PLN">🇵🇱 زلوتي بولندي</option>
 <option value="ILS">🇮🇱 شيكل</option>
 </select>
-<a href="en.html" class="lang-btn">EN 🌐</a>
-</div>
 </div>
 
-<h1>🛒 اختر خدمتك</h1>
 <p class="sub">اضغط على الخدمة → ادفع بأمان عبر PayPal أو البطاقة</p>
 
 <div class="grid">
@@ -140,8 +157,10 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <span class="card-icon">✍️</span>
 <h3>مقال 500 كلمة</h3>
 <p class="desc">محتوى احترافي بالعربية أو الإنجليزية</p>
-<span class="price-tag">$5</span>
-<span class="local-price loading" data-usd="5">...</span>
+<div class="price-block">
+<span class="local-price-main loading" data-usd="5">...</span>
+<span class="usd-price-sub">$5 USD</span>
+</div>
 </div>
 <div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
@@ -151,8 +170,10 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <span class="card-icon">📝</span>
 <h3>مقال 1000 كلمة</h3>
 <p class="desc">بحث عميق + كتابة احترافية</p>
-<span class="price-tag">$10</span>
-<span class="local-price loading" data-usd="10">...</span>
+<div class="price-block">
+<span class="local-price-main loading" data-usd="10">...</span>
+<span class="usd-price-sub">$10 USD</span>
+</div>
 </div>
 <div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
@@ -162,8 +183,10 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <span class="card-icon">📱</span>
 <h3>5 منشورات سوشيال</h3>
 <p class="desc">تويتر، لينكدإن، إنستغرام</p>
-<span class="price-tag">$5</span>
-<span class="local-price loading" data-usd="5">...</span>
+<div class="price-block">
+<span class="local-price-main loading" data-usd="5">...</span>
+<span class="usd-price-sub">$5 USD</span>
+</div>
 </div>
 <div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
@@ -173,8 +196,10 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <span class="card-icon">🌍</span>
 <h3>ترجمة 500 كلمة</h3>
 <p class="desc">عربي ↔ إنجليزي — دقة عالية</p>
-<span class="price-tag">$5</span>
-<span class="local-price loading" data-usd="5">...</span>
+<div class="price-block">
+<span class="local-price-main loading" data-usd="5">...</span>
+<span class="usd-price-sub">$5 USD</span>
+</div>
 </div>
 <div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
@@ -184,8 +209,10 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <span class="card-icon">📊</span>
 <h3>تحليل سوق</h3>
 <p class="desc">تحليل شامل + منافسون + توصيات</p>
-<span class="price-tag">$30</span>
-<span class="local-price loading" data-usd="30">...</span>
+<div class="price-block">
+<span class="local-price-main loading" data-usd="30">...</span>
+<span class="usd-price-sub">$30 USD</span>
+</div>
 </div>
 <div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
@@ -195,8 +222,10 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <span class="card-icon">🎯</span>
 <h3>تحليل منافسين</h3>
 <p class="desc">3-5 منافسين + تحليل SWOT</p>
-<span class="price-tag">$20</span>
-<span class="local-price loading" data-usd="20">...</span>
+<div class="price-block">
+<span class="local-price-main loading" data-usd="20">...</span>
+<span class="usd-price-sub">$20 USD</span>
+</div>
 </div>
 <div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
@@ -206,8 +235,10 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <span class="card-icon">💼</span>
 <h3>Business Plan</h3>
 <p class="desc">خطة عمل كاملة (20-25 صفحة)</p>
-<span class="price-tag">$50</span>
-<span class="local-price loading" data-usd="50">...</span>
+<div class="price-block">
+<span class="local-price-main loading" data-usd="50">...</span>
+<span class="usd-price-sub">$50 USD</span>
+</div>
 </div>
 <div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
@@ -217,8 +248,10 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <span class="card-icon">📄</span>
 <h3>CV احترافي</h3>
 <p class="desc">تصميم عصري + محتوى مقنع</p>
-<span class="price-tag">$10</span>
-<span class="local-price loading" data-usd="10">...</span>
+<div class="price-block">
+<span class="local-price-main loading" data-usd="10">...</span>
+<span class="usd-price-sub">$10 USD</span>
+</div>
 </div>
 <div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
@@ -228,8 +261,10 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <span class="card-icon">💻</span>
 <h3>سكريبت Python</h3>
 <p class="desc">سكريبت مخصص + شرح</p>
-<span class="price-tag">$15</span>
-<span class="local-price loading" data-usd="15">...</span>
+<div class="price-block">
+<span class="local-price-main loading" data-usd="15">...</span>
+<span class="usd-price-sub">$15 USD</span>
+</div>
 </div>
 <div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
@@ -239,8 +274,10 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <span class="card-icon">🕵️</span>
 <h3>تحليل شركة</h3>
 <p class="desc">تحليل 360° + توصية</p>
-<span class="price-tag">$15</span>
-<span class="local-price loading" data-usd="15">...</span>
+<div class="price-block">
+<span class="local-price-main loading" data-usd="15">...</span>
+<span class="usd-price-sub">$15 USD</span>
+</div>
 </div>
 <div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
@@ -250,8 +287,10 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <span class="card-icon">🚀</span>
 <h3>Pitch Deck</h3>
 <p class="desc">10-15 شريحة جاهزة للمستثمرين</p>
-<span class="price-tag">$60</span>
-<span class="local-price loading" data-usd="60">...</span>
+<div class="price-block">
+<span class="local-price-main loading" data-usd="60">...</span>
+<span class="usd-price-sub">$60 USD</span>
+</div>
 </div>
 <div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
@@ -261,8 +300,10 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <span class="card-icon">📋</span>
 <h3>دراسة جدوى</h3>
 <p class="desc">تحليل شامل + الميزانية + المخاطر</p>
-<span class="price-tag">$30</span>
-<span class="local-price loading" data-usd="30">...</span>
+<div class="price-block">
+<span class="local-price-main loading" data-usd="30">...</span>
+<span class="usd-price-sub">$30 USD</span>
+</div>
 </div>
 <div class="card-bottom"><button class="pay-btn">💳 ادفع الآن</button></div>
 </div>
@@ -288,8 +329,8 @@ aion.genesisss@gmail.com<br><br>
 <div class="modal-box">
 <button class="close-btn" onclick="closeModal()" style="float:left;font-size:20px">✕</button>
 <h3 id="mTitle">مقال 500 كلمة</h3>
-<div class="price" id="mPrice">$5</div>
 <div class="local-price-modal" id="mLocalPrice"></div>
+<div class="usd-price-modal" id="mUsdPrice">$5 USD</div>
 <p class="desc" id="mDesc">محتوى احترافي</p>
 <a href="#" id="mPayLink" class="btn" target="_blank">💳 ادفع عبر PayPal</a>
 <a href="chat.html" class="btn outline">💬 استفسر أولًا</a>
@@ -372,11 +413,11 @@ function formatLocalPrice(usdAmount) {
   if (localAmount < 1) formatted = localAmount.toFixed(2);
   else if (localAmount < 100) formatted = localAmount.toFixed(1);
   else formatted = Math.round(localAmount).toLocaleString('en-US');
-  return `≈ ${formatted} ${symbol} (${name})`;
+  return `${formatted} ${symbol} (${name})`;
 }
 
 function updateCardPrices() {
-  document.querySelectorAll('.local-price').forEach(el => {
+  document.querySelectorAll('.local-price-main').forEach(el => {
     const usd = parseFloat(el.getAttribute('data-usd'));
     const local = formatLocalPrice(usd);
     if (local) {
@@ -384,7 +425,9 @@ function updateCardPrices() {
       el.style.display = 'block';
       el.classList.remove('loading');
     } else {
-      el.style.display = 'none';
+      // إذا كانت العملة دولار — نخلي العنصر يظهر الدولار فقط
+      el.textContent = '$' + usd;
+      el.classList.remove('loading');
     }
   });
 }
@@ -405,17 +448,23 @@ async function changeCurrency(currency) {
 
 function openPay(title, price, desc) {
   document.getElementById('mTitle').textContent = title;
-  document.getElementById('mPrice').textContent = '$' + price;
   document.getElementById('mDesc').textContent = desc;
   document.getElementById('mPayLink').href = PAYPAL_LINK;
+  
+  // السعر المحلي (فوق)
   const localPriceEl = document.getElementById('mLocalPrice');
   const local = formatLocalPrice(price);
   if (local) {
     localPriceEl.textContent = local;
     localPriceEl.style.display = 'block';
   } else {
-    localPriceEl.style.display = 'none';
+    localPriceEl.textContent = '$' + price;
+    localPriceEl.style.display = 'block';
   }
+  
+  // السعر بالدولار (تحت)
+  document.getElementById('mUsdPrice').textContent = '$' + price + ' USD';
+  
   document.getElementById('payModal').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -440,12 +489,8 @@ document.getElementById('payModal').addEventListener('click', function(e) {
   
   if (userCurrency !== 'USD') {
     exchangeRates = await fetchRates();
-    updateCardPrices();
-  } else {
-    document.querySelectorAll('.local-price').forEach(el => {
-      el.style.display = 'none';
-    });
   }
+  updateCardPrices();
 })();
 </script>
 
