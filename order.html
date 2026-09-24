@@ -14,9 +14,13 @@ a{text-decoration:none;color:inherit}
 .logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
 .logo svg{width:34px;height:34px;filter:drop-shadow(0 0 8px rgba(0,200,255,.8))}
 .logo .s{font-size:8px;color:#00c8ff;letter-spacing:4px;margin-top:2px}
-.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;margin-left:12px;transition:.3s}
+.menu{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;transition:.3s}
 .menu a:hover{color:#00c8ff}
-.lang-btn{padding:6px 12px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;margin-left:12px;display:inline-block}
+.lang-btn{padding:6px 12px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;display:inline-block}
+
+.currency-select{padding:6px 10px;background:rgba(0,180,255,.1);border:1px solid rgba(0,200,255,.4);border-radius:20px;color:#00c8ff;font-size:11px;font-weight:bold;font-family:inherit;cursor:pointer;outline:none}
+.currency-select option{background:#020817;color:#fff}
 
 h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:8px;text-shadow:0 0 25px rgba(0,200,255,.6)}
 .sub{text-align:center;color:#aebbd0;margin-bottom:25px;font-size:13px}
@@ -58,7 +62,7 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 .modal-box .btn.outline{background:transparent;color:#f5c542;border:2px solid #f5c542}
 .modal-box .close-btn{background:none;border:none;color:#aebbd0;cursor:pointer;font-size:13px;font-family:inherit;margin-top:8px;padding:8px}
 
-@media(max-width:600px){.menu a{font-size:11px;margin-left:8px}.grid{grid-template-columns:1fr}}
+@media(max-width:600px){.menu a{font-size:11px}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -74,6 +78,54 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 <a href="pricing.html">الأسعار</a>
 <a href="portfolio.html">أعمالنا</a>
 <a href="chat.html">الشات</a>
+<select class="currency-select" id="currencySelect" onchange="changeCurrency(this.value)">
+<option value="auto">🌐 تلقائي</option>
+<option value="USD">🇺🇸 دولار أمريكي</option>
+<option value="SAR">🇸🇦 ريال سعودي</option>
+<option value="AED">🇦🇪 درهم إماراتي</option>
+<option value="EGP">🇪🇬 جنيه مصري</option>
+<option value="KWD">🇰🇼 دينار كويتي</option>
+<option value="QAR">🇶🇦 ريال قطري</option>
+<option value="BHD">🇧🇭 دينار بحريني</option>
+<option value="OMR">🇴🇲 ريال عماني</option>
+<option value="JOD">🇯🇴 دينار أردني</option>
+<option value="LBP">🇱🇧 ليرة لبنانية</option>
+<option value="IQD">🇮🇶 دينار عراقي</option>
+<option value="SYP">🇸🇾 ليرة سورية</option>
+<option value="YER">🇾🇪 ريال يمني</option>
+<option value="MAD">🇲🇦 درهم مغربي</option>
+<option value="DZD">🇩🇿 دينار جزائري</option>
+<option value="TND">🇹🇳 دينار تونسي</option>
+<option value="LYD">🇱🇾 دينار ليبي</option>
+<option value="SDG">🇸🇩 جنيه سوداني</option>
+<option value="EUR">🇪🇺 يورو</option>
+<option value="GBP">🇬🇧 جنيه إسترليني</option>
+<option value="TRY">🇹🇷 ليرة تركية</option>
+<option value="INR">🇮🇳 روبية هندية</option>
+<option value="PKR">🇵🇰 روبية باكستانية</option>
+<option value="BDT">🇧🇩 تاكا بنغلاديشية</option>
+<option value="IDR">🇮🇩 روبية إندونيسية</option>
+<option value="MYR">🇲🇾 رينغيت ماليزي</option>
+<option value="CNY">🇨🇳 يوان صيني</option>
+<option value="JPY">🇯🇵 ين ياباني</option>
+<option value="KRW">🇰🇷 وون كوري</option>
+<option value="PHP">🇵🇭 بيزو فلبيني</option>
+<option value="THB">🇹🇭 بات تايلندي</option>
+<option value="VND">🇻🇳 دونغ فيتنامي</option>
+<option value="RUB">🇷🇺 روبل روسي</option>
+<option value="CAD">🇨🇦 دولار كندي</option>
+<option value="AUD">🇦🇺 دولار أسترالي</option>
+<option value="BRL">🇧🇷 ريال برازيلي</option>
+<option value="MXN">🇲🇽 بيزو مكسيكي</option>
+<option value="ZAR">🇿🇦 راند جنوب أفريقي</option>
+<option value="NGN">🇳🇬 نايرا نيجيري</option>
+<option value="KES">🇰🇪 شلن كيني</option>
+<option value="CHF">🇨🇭 فرنك سويسري</option>
+<option value="SEK">🇸🇪 كرونة سويدية</option>
+<option value="NOK">🇳🇴 كرونة نرويجية</option>
+<option value="PLN">🇵🇱 زلوتي بولندي</option>
+<option value="ILS">🇮🇱 شيكل</option>
+</select>
 <a href="en.html" class="lang-btn">EN 🌐</a>
 </div>
 </div>
@@ -248,34 +300,46 @@ aion.genesisss@gmail.com<br><br>
 <script>
 const PAYPAL_LINK = 'https://www.paypal.com/ncp/payment/QSNNFE77HUN5J';
 
-// متغيرات عامة
 let userCurrency = 'USD';
 let exchangeRates = {};
+let userPicked = false;
 
-// قائمة أسماء العملات
 const currencyNames = {
   USD:'دولار أمريكي', AED:'درهم إماراتي', SAR:'ريال سعودي', EGP:'جنيه مصري',
   KWD:'دينار كويتي', QAR:'ريال قطري', BHD:'دينار بحريني', OMR:'ريال عماني',
   JOD:'دينار أردني', LBP:'ليرة لبنانية', IQD:'دينار عراقي', SYP:'ليرة سورية',
   YER:'ريال يمني', MAD:'درهم مغربي', DZD:'دينار جزائري', TND:'دينار تونسي',
-  LYD:'دينار ليبي', SDG:'جنيه سوداني', MRU:'أوقية موريتانية', SOS:'شلن صومالي',
-  DJF:'فرنك جيبوتي', KMF:'فرنك قمري', EUR:'يورو', GBP:'جنيه إسترليني',
+  LYD:'دينار ليبي', SDG:'جنيه سوداني', EUR:'يورو', GBP:'جنيه إسترليني',
   TRY:'ليرة تركية', INR:'روبية هندية', PKR:'روبية باكستانية', BDT:'تاكا بنغلاديشية',
   IDR:'روبية إندونيسية', MYR:'رينغيت ماليزي', CNY:'يوان صيني', JPY:'ين ياباني',
   KRW:'وون كوري', PHP:'بيزو فلبيني', THB:'بات تايلندي', VND:'دونغ فيتنامي',
-  RUB:'روبل روسي', UAH:'هريفنيا أوكرانية', CAD:'دولار كندي', AUD:'دولار أسترالي',
-  NZD:'دولار نيوزيلندي', BRL:'ريال برازيلي', MXN:'بيزو مكسيكي', ARS:'بيزو أرجنتيني',
-  CLP:'بيزو تشيلي', COP:'بيزو كولومبي', PEN:'سول بيروفي', ZAR:'راند جنوب أفريقي',
-  NGN:'نايرا نيجيري', KES:'شلن كيني', GHS:'سيدي غاني', ETH:'بير إثيوبي',
-  CHF:'فرنك سويسري', SEK:'كرونة سويدية', NOK:'كرونة نرويجية', DKK:'كرونة دنماركية',
-  PLN:'زلوتي بولندي', CZK:'كرونة تشيكية', HUF:'فورنت هنغاري', RON:'ليو روماني',
-  ILS:'شيكل إسرائيلي', IRR:'ريال إيراني', AFN:'أفغاني', NPR:'روبية نيبالية',
-  LKR:'روبية سريلانكية', MMK:'كيات ميانمار', KHR:'رييل كمبودي', LAK:'كيب لاوسي',
-  MNT:'توغروغ منغولي', KZT:'تينغي كازاخي', UZS:'سوم أوزبكي', AZN:'مانات أذربيجاني',
-  GEL:'لاري جورجي', AMD:'درام أرميني'
+  RUB:'روبل روسي', CAD:'دولار كندي', AUD:'دولار أسترالي', BRL:'ريال برازيلي',
+  MXN:'بيزو مكسيكي', ZAR:'راند جنوب أفريقي', NGN:'نايرا نيجيري', KES:'شلن كيني',
+  CHF:'فرنك سويسري', SEK:'كرونة سويدية', NOK:'كرونة نرويجية', PLN:'زلوتي بولندي',
+  ILS:'شيكل'
 };
 
-// جلب دولة الزائر
+const currencySymbols = {
+  USD:'$', AED:'د.إ', SAR:'ر.س', EGP:'ج.م', KWD:'د.ك', QAR:'ر.ق', BHD:'د.ب',
+  OMR:'ر.ع', JOD:'د.أ', LBP:'ل.ل', IQD:'د.ع', SYP:'ل.س', YER:'ر.ي', MAD:'د.م',
+  DZD:'د.ج', TND:'د.ت', LYD:'د.ل', SDG:'ج.س', EUR:'€', GBP:'£', TRY:'₺',
+  INR:'₹', PKR:'₨', BDT:'৳', IDR:'Rp', MYR:'RM', CNY:'¥', JPY:'¥', KRW:'₩',
+  PHP:'₱', THB:'฿', VND:'₫', RUB:'₽', CAD:'C$', AUD:'A$', BRL:'R$',
+  MXN:'Mex$', ZAR:'R', NGN:'₦', KES:'KSh', CHF:'CHF', SEK:'kr', NOK:'kr',
+  PLN:'zł', ILS:'₪'
+};
+
+const countryToCurrency = {
+  AE:'AED', SA:'SAR', EG:'EGP', KW:'KWD', QA:'QAR', BH:'BHD', OM:'OMR',
+  JO:'JOD', LB:'LBP', IQ:'IQD', SY:'SYP', YE:'YER', MA:'MAD', DZ:'DZD',
+  TN:'TND', LY:'LYD', SD:'SDG', PS:'ILS', TR:'TRY', IN:'INR', PK:'PKR',
+  BD:'BDT', ID:'IDR', MY:'MYR', CN:'CNY', JP:'JPY', KR:'KRW', PH:'PHP',
+  TH:'THB', VN:'VND', RU:'RUB', CA:'CAD', AU:'AUD', BR:'BRL', MX:'MXN',
+  ZA:'ZAR', NG:'NGN', KE:'KES', CH:'CHF', SE:'SEK', NO:'NOK', PL:'PLN',
+  IL:'ILS', US:'USD', GB:'GBP', DE:'EUR', FR:'EUR', ES:'EUR', IT:'EUR',
+  NL:'EUR', BE:'EUR', AT:'EUR', PT:'EUR', IE:'EUR', GR:'EUR', FI:'EUR'
+};
+
 async function detectCountry() {
   try {
     const res = await fetch('https://ipapi.co/json/');
@@ -286,79 +350,38 @@ async function detectCountry() {
       const res = await fetch('https://ipwho.is/');
       const data = await res.json();
       return data.country_code || 'US';
-    } catch(e2) {
-      return 'US';
-    }
+    } catch(e2) { return 'US'; }
   }
 }
 
-// جلب أسعار الصرف
 async function fetchRates() {
   try {
     const res = await fetch('https://open.er-api.com/v6/latest/USD');
     const data = await res.json();
     return data.rates || {};
-  } catch(e) {
-    return {};
-  }
+  } catch(e) { return {}; }
 }
 
-// خريطة: الدولة -> العملة
-const countryToCurrency = {
-  AE:'AED', SA:'SAR', EG:'EGP', KW:'KWD', QA:'QAR', BH:'BHD', OM:'OMR',
-  JO:'JOD', LB:'LBP', IQ:'IQD', SY:'SYP', YE:'YER', MA:'MAD', DZ:'DZD',
-  TN:'TND', LY:'LYD', SD:'SDG', MR:'MRU', SO:'SOS', DJ:'DJF', KM:'KMF',
-  PS:'ILS', TR:'TRY', IN:'INR', PK:'PKR', BD:'BDT', ID:'IDR', MY:'MYR',
-  CN:'CNY', JP:'JPY', KR:'KRW', PH:'PHP', TH:'THB', VN:'VND', RU:'RUB',
-  UA:'UAH', CA:'CAD', AU:'AUD', NZ:'NZD', BR:'BRL', MX:'MXN', AR:'ARS',
-  CL:'CLP', CO:'COP', PE:'PEN', ZA:'ZAR', NG:'NGN', KE:'KES', GH:'GHS',
-  ET:'ETB', CH:'CHF', SE:'SEK', NO:'NOK', DK:'DKK', PL:'PLN', CZ:'CZK',
-  HU:'HUF', RO:'RON', IL:'ILS', IR:'IRR', AF:'AFN', NP:'NPR', LK:'LKR',
-  MM:'MMK', KH:'KHR', LA:'LAK', MN:'MNT', KZ:'KZT', UZ:'UZS', AZ:'AZN',
-  GE:'GEL', AM:'AMD', US:'USD', GB:'GBP', DE:'EUR', FR:'EUR', ES:'EUR',
-  IT:'EUR', NL:'EUR', BE:'EUR', AT:'EUR', PT:'EUR', IE:'EUR', GR:'EUR',
-  FI:'EUR', LU:'EUR', MT:'EUR', CY:'EUR', EE:'EUR', LV:'EUR', LT:'EUR',
-  SK:'EUR', SI:'EUR', HR:'EUR'
-};
-
-// رمز العملة
-const currencySymbols = {
-  USD:'$', AED:'د.إ', SAR:'ر.س', EGP:'ج.م', KWD:'د.ك', QAR:'ر.ق', BHD:'د.ب',
-  OMR:'ر.ع', JOD:'د.أ', LBP:'ل.ل', IQD:'د.ع', SYP:'ل.س', YER:'ر.ي', MAD:'د.م',
-  DZD:'د.ج', TND:'د.ت', LYD:'د.ل', SDG:'ج.س', EUR:'€', GBP:'£', TRY:'₺',
-  INR:'₹', PKR:'₨', BDT:'৳', IDR:'Rp', MYR:'RM', CNY:'¥', JPY:'¥', KRW:'₩',
-  PHP:'₱', THB:'฿', VND:'₫', RUB:'₽', UAH:'₴', CAD:'C$', AUD:'A$', NZD:'NZ$',
-  BRL:'R$', MXN:'Mex$', ARS:'$', CLP:'$', COP:'$', PEN:'S/', ZAR:'R',
-  NGN:'₦', KES:'KSh', GHS:'₵', CHF:'CHF', SEK:'kr', NOK:'kr', DKK:'kr',
-  PLN:'zł', CZK:'Kč', HUF:'Ft', RON:'lei', ILS:'₪', IRR:'﷼'
-};
-
-// تنسيق السعر بالعملة المحلية
 function formatLocalPrice(usdAmount) {
-  if (userCurrency === 'USD' || !exchangeRates[userCurrency]) {
-    return null;
-  }
+  if (userCurrency === 'USD' || !exchangeRates[userCurrency]) return null;
   const rate = exchangeRates[userCurrency];
   const localAmount = usdAmount * rate;
   const symbol = currencySymbols[userCurrency] || userCurrency;
   const name = currencyNames[userCurrency] || userCurrency;
-  
-  // تنسيق الرقم
   let formatted;
   if (localAmount < 1) formatted = localAmount.toFixed(2);
   else if (localAmount < 100) formatted = localAmount.toFixed(1);
   else formatted = Math.round(localAmount).toLocaleString('en-US');
-  
   return `≈ ${formatted} ${symbol} (${name})`;
 }
 
-// تحديث كل الأسعار المحلية في البطاقات
 function updateCardPrices() {
   document.querySelectorAll('.local-price').forEach(el => {
     const usd = parseFloat(el.getAttribute('data-usd'));
     const local = formatLocalPrice(usd);
     if (local) {
       el.textContent = local;
+      el.style.display = 'block';
       el.classList.remove('loading');
     } else {
       el.style.display = 'none';
@@ -366,14 +389,25 @@ function updateCardPrices() {
   });
 }
 
-// فتح نافذة الدفع
+async function changeCurrency(currency) {
+  userPicked = true;
+  if (currency === 'auto') {
+    const country = await detectCountry();
+    userCurrency = countryToCurrency[country] || 'USD';
+  } else {
+    userCurrency = currency;
+  }
+  if (!Object.keys(exchangeRates).length) {
+    exchangeRates = await fetchRates();
+  }
+  updateCardPrices();
+}
+
 function openPay(title, price, desc) {
   document.getElementById('mTitle').textContent = title;
   document.getElementById('mPrice').textContent = '$' + price;
   document.getElementById('mDesc').textContent = desc;
   document.getElementById('mPayLink').href = PAYPAL_LINK;
-  
-  // السعر المحلي في النافذة
   const localPriceEl = document.getElementById('mLocalPrice');
   const local = formatLocalPrice(price);
   if (local) {
@@ -382,7 +416,6 @@ function openPay(title, price, desc) {
   } else {
     localPriceEl.style.display = 'none';
   }
-  
   document.getElementById('payModal').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -396,16 +429,19 @@ document.getElementById('payModal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
 
-// تشغيل تلقائي عند تحميل الصفحة
 (async function init() {
   const country = await detectCountry();
   userCurrency = countryToCurrency[country] || 'USD';
+  
+  const select = document.getElementById('currencySelect');
+  if (select && countryToCurrency[country]) {
+    select.value = countryToCurrency[country];
+  }
   
   if (userCurrency !== 'USD') {
     exchangeRates = await fetchRates();
     updateCardPrices();
   } else {
-    // إخفاء السعر المحلي إذا كان المستخدم من أمريكا
     document.querySelectorAll('.local-price').forEach(el => {
       el.style.display = 'none';
     });
