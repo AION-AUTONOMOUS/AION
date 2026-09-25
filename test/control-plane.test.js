@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import { AGENTS_PER_DEPARTMENT, TOTAL_AGENTS } from '../config/aion-fleet.js';
 import { AUTONOMOUS_POLICIES, routeTask, controlPlaneHealth } from '../config/aion-control-plane.js';
 
-test('control plane sees the full 4,000-agent fleet', () => {
+test('control plane sees the full 10,000-agent fleet', () => {
   const health = controlPlaneHealth();
-  assert.equal(health.fleet.total_agents, 4000);
-  assert.equal(TOTAL_AGENTS, 4000);
-  assert.equal(AGENTS_PER_DEPARTMENT, 200);
+  assert.equal(health.fleet.total_agents, 10000);
+  assert.equal(TOTAL_AGENTS, 10000);
+  assert.equal(AGENTS_PER_DEPARTMENT, 500);
 });
 
 test('ordinary engineering tasks can be routed autonomously', () => {
