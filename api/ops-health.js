@@ -1,11 +1,2 @@
 import { opsHealth } from '../config/aion-ops-engine.js';
-
-const ALLOWED_ORIGIN =
-  process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
-
-export default function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
-  res.setHeader('Vary', 'Origin');
-  if (req.method !== 'GET') return res.status(405).json({ success: false, error: 'Method not allowed' });
-  return res.status(200).json({ success: true, ...opsHealth() });
-}
+export default async function handler(req,res){if(req.method!=='GET')return res.status(405).json({success:false,error:'Method not allowed'});return res.status(200).json({success:true,...await opsHealth()});}

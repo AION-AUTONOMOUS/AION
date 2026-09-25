@@ -7,12 +7,12 @@ export const MAX_CONCURRENCY = 20;
 
 const running = new Set();
 
-export function submitTask(input = {}) {
+export async function submitTask(input = {}) {
   return dispatchTask(input);
 }
 
-export function workerRuntimeStatus() {
-  const tasks = listTasks();
+export async function workerRuntimeStatus() {
+  const tasks = await listTasks();
   return {
     version: RUNTIME_VERSION,
     maxConcurrency: MAX_CONCURRENCY,
@@ -25,7 +25,7 @@ export function workerRuntimeStatus() {
 }
 
 export async function processOne() {
-  const task = listTasks().find(item => item.status === 'ready');
+  const task = (await listTasks()).find(item => item.status === 'ready');
   if (!task || running.size >= MAX_CONCURRENCY) return null;
 
   running.add(task.id);
@@ -34,15 +34,15 @@ export async function processOne() {
     // Execution boundary: workers perform only approved, registered actions.
     // Side-effect adapters can be attached here without granting arbitrary access.
     const { updateTask } = await import('./aion-ops-store.js');
-    updateTask(task.id, { status: 'running', startedAt: new Date().toISOString() });
-    return updateTask(task.id, {
+    await updateTask(task.id, { status: 'running', startedAt: new Date().toISOString() });
+    return await updateTask(task.id, {
       status: 'completed',
       completedAt: new Date().toISOString(),
       durationMs: Date.now() - started
     });
   } catch (error) {
     const { updateTask } = await import('./aion-ops-store.js');
-    return updateTask(task.id, {
+    return await updateTask(task.id, {
       status: 'failed',
       error: String(error?.message || error),
       failedAt: new Date().toISOString()
