@@ -7,7 +7,7 @@ export const MAX_CONCURRENCY = 20;
 
 const running = new Set();
 
-export function submitTask(input = {}) {
+export async function submitTask(input = {}) {
   return dispatchTask(input);
 }
 
