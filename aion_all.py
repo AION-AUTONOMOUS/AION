@@ -11,7 +11,7 @@ AGENT_TEMPLATES = {
     },
     "marketer": {
         "role": "Marketing",
-        "skills": ["summarize"],
+        "skills": ["summarize", "publish_tweet"],
         "forbidden": ["send_payment"],
     },
     "sales": {
