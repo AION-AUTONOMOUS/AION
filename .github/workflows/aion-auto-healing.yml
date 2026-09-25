@@ -20,14 +20,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-      - run: npm ci
+      - run: npm install
       - name: Safe dependency repair
         id: repair
         continue-on-error: true
         run: |
           npm audit fix --package-lock-only --ignore-scripts
-          npm ci --ignore-scripts
+          npm install --ignore-scripts
           npm audit --audit-level=high
           npx hardhat compile
           node --test
