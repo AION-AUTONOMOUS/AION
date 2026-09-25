@@ -37,5 +37,11 @@ jobs:
           node --check api/verify.js
           node --check api/presale.js
           node --check api/chat.js
+          node --check api/paypal/client-id.js
+          node --check api/test-redis.js
+      - name: Check Python syntax
+        run: |
+          find . -name '*.py' -print0 | xargs -0 -n1 python -m py_compile
+
       - name: Run Node tests
         run: node --test test/paypal-services.test.js test/agent-fleet.test.js test/paypal-verification.test.js
