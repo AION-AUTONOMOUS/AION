@@ -1,0 +1,50 @@
+name: AION Autonomous Maintenance
+
+on:
+  schedule:
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: npm install
+      - name: Compile
+        run: npx hardhat compile
+      - name: Solidity tests
+        run: npx hardhat test solidity
+      - name: Node tests
+        run: node --test test/paypal-services.test.js test/agent-fleet.test.js test/paypal-verification.test.js test/control-plane.test.js test/ops-engine.test.js test/workers.test.js
+      - name: Python syntax
+        run: find . -name '*.py' -print0 | xargs -0 -n1 python -m py_compile
+      - name: Generate maintenance report
+        if: always()
+        run: |
+          mkdir -p reports
+          {
+            echo "# AION Autonomous Maintenance Report"
+            echo
+            echo "- UTC: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            echo "- Commit: $GITHUB_SHA"
+            echo "- Repository: $GITHUB_REPOSITORY"
+            echo "- Fleet target: 10,000 software-agent roles"
+            echo
+            echo "This workflow verifies build, tests and syntax. It does not move money, publish paid ads, deploy the mainnet token, execute legal decisions, or target political actors."
+          } > reports/aion-maintenance.md
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aion-maintenance-report
+          path: reports/aion-maintenance.md

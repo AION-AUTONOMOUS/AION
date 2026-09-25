@@ -1,4 +1,4 @@
-// AION Autonomous Fleet — deterministic 4,000-agent registry.
+// AION Autonomous Fleet — deterministic 10,000-agent registry.
 // These are software-agent roles, not 4,000 continuously running model instances.
 // Runtime workers can be scaled horizontally from this registry.
 
@@ -25,7 +25,7 @@ const DEPARTMENT_NAMES = [
   ['communications', 'Communications', 'Public company communications, press materials and creator/business outreach.']
 ];
 
-export const AGENTS_PER_DEPARTMENT = 200;
+export const AGENTS_PER_DEPARTMENT = 500;
 export const TOTAL_AGENTS = DEPARTMENT_NAMES.length * AGENTS_PER_DEPARTMENT;
 
 export const DEPARTMENTS = Object.fromEntries(
@@ -77,6 +77,6 @@ export function fleetHealth() {
   };
 }
 
-if (TOTAL_AGENTS !== 4000) {
-  throw new Error(`AION fleet misconfigured: expected 4000, got ${TOTAL_AGENTS}`);
+if (TOTAL_AGENTS !== 10000) {
+  throw new Error(`AION fleet misconfigured: expected 10000, got ${TOTAL_AGENTS}`);
 }

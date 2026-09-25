@@ -24,7 +24,7 @@ test('sensitive tasks stop for human approval', () => {
 test('operations health reports task lifecycle', () => {
   enqueueTask({ text: 'update documentation' });
   const health = opsHealth();
-  assert.equal(health.total_agents, 4000);
+  assert.equal(health.total_agents, 10000);
   assert.equal(health.ready, 1);
   assert.ok(health.recentEvents.length >= 2);
 });
