@@ -1,0 +1,59 @@
+name: AION Autonomous Maintenance
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aion-autonomous-maintenance
+  cancel-in-progress: true
+
+jobs:
+  maintenance:
+    name: Baseline maintenance
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts
+
+      - name: Run Node tests
+        run: node --test
+
+      - name: Compile Solidity
+        run: npx hardhat compile
+
+      - name: Validate JavaScript
+        run: find api config scripts test -type f -name '*.js' -print0 | xargs -0 -n1 node --check
+
+      - name: Write evidence
+        if: always()
+        run: |
+          mkdir -p reports
+          {
+            echo "# AION Autonomous Maintenance"
+            echo
+            echo "UTC: $(date -u)"
+            echo "Commit: $GITHUB_SHA"
+          } > reports/autonomous-maintenance.md
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aion-autonomous-maintenance
+          path: reports/autonomous-maintenance.md
