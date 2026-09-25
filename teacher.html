@@ -608,36 +608,6 @@ function goHome() {
 
 let currentService = { title:'', price:0, desc:'' };
 
-function openPay(title, price, desc) {
-  currentService = { title: title, price: price, desc: desc };
-  document.getElementById('mTitle').textContent = title;
-  document.getElementById('mDesc').textContent = desc;
-  const p = formatPrice(price);
-  document.getElementById('mPrice').innerHTML = p.local + '<span class="usd-note">= ' + p.usd + '</span>';
-  document.getElementById('mDetails').value = '';
-  document.getElementById('pdfFile').value = '';
-  document.getElementById('pdfText').textContent = 'اضغط لرفع ملف PDF';
-  document.getElementById('pdfStatus').className = 'pdf-status';
-  document.getElementById('pdfStatus').textContent = '';
-  pdfTextContent = '';
-  document.getElementById('mStatus').style.display = 'none';
-  document.getElementById('delivery').classList.remove('active');
-  document.getElementById('payNowBtn').disabled = false;
-  document.getElementById('payNowBtn').textContent = 'ادفع الآن بأمان';
-  document.getElementById('paypalFallback').style.display = 'none';
-  document.getElementById('payModal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-
-  const curr = CURRENCIES[currentCurrency];
-  const note = document.getElementById('currencyNote');
-  if (curr && curr.code !== 'USD') {
-    note.textContent = 'السعر بالـ '+curr.name+'. الدفع بالدولار ($'+price+') عبر PayPal.';
-    note.style.display = 'block';
-  } else {
-    note.style.display = 'none';
-  }
-}
-
 function closeModal() {
   document.getElementById('payModal').classList.remove('active');
   document.body.style.overflow = '';
