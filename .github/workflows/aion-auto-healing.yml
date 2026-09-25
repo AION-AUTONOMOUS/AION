@@ -1,0 +1,52 @@
+name: AION Auto-Healing
+on:
+  workflow_run:
+    workflows: ["AION Distributed Real Work", "AION Security Shield", "AION Autonomous Maintenance"]
+    types: [completed]
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+jobs:
+  diagnose-and-repair:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Safe dependency repair
+        id: repair
+        continue-on-error: true
+        run: |
+          npm audit fix --package-lock-only --ignore-scripts
+          npm ci --ignore-scripts
+          npm audit --audit-level=high
+          npx hardhat compile
+          node --test
+      - name: Open repair PR when safe repair changed dependencies
+        if: ${{ steps.repair.outcome == 'success' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- package-lock.json; then exit 0; fi
+          BRANCH="aion-auto-heal-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git config user.name "AION Auto-Healing"
+          git config user.email "aion-auto-healing@users.noreply.github.com"
+          git add package-lock.json
+          git commit -m "chore: apply safe dependency security repair"
+          git push --set-upstream origin "$BRANCH"
+          gh pr create --base main --head "$BRANCH" --title "AION auto-heal: dependency security repair" --body "Automated low-risk dependency remediation. CI must pass before merge."
+      - name: Create incident issue when repair cannot complete
+        if: ${{ steps.repair.outcome == 'failure' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue create --title "AION automated security incident" --body "Automated shield detected a failure and could not complete the safe repair path. Human review is required."
