@@ -29,6 +29,8 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check config/aion-fleet.js
+          node --check config/aion-control-plane.js
+          node --check api/orchestrator.js
           node --check api/paypal/services.js
           node --check api/paypal/verification.js
           node --check api/paypal/create-order.js
@@ -43,4 +45,4 @@ jobs:
           find . -name '*.py' -print0 | xargs -0 -n1 python -m py_compile
 
       - name: Run Node tests
-        run: node --test test/paypal-services.test.js test/agent-fleet.test.js test/paypal-verification.test.js
+        run: node --test test/paypal-services.test.js test/agent-fleet.test.js test/paypal-verification.test.js test/control-plane.test.js
