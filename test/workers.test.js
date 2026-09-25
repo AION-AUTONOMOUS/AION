@@ -21,5 +21,5 @@ test('sensitive work is approval-gated before worker execution', () => {
 
 test('health reports worker fleet and task metrics', () => {
   assert.equal(workerCapabilities('security').includes('audit'), true);
-  assert.equal(opsHealth().total_agents, 4000);
+  assert.equal(opsHealth().total_agents, 10000);
 });
