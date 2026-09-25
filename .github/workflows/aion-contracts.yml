@@ -39,6 +39,9 @@ jobs:
           node --check api/ops-health.js
           node --check config/aion-daily-report.js
           node --check api/daily-report.js
+          node --check config/aion-worker-runtime.js
+          node --check api/worker-runtime.js
+          node --check api/worker-runtime-health.js
           node --check api/paypal/services.js
           node --check api/paypal/verification.js
           node --check api/paypal/create-order.js
@@ -53,4 +56,4 @@ jobs:
           find . -name '*.py' -print0 | xargs -0 -n1 python -m py_compile
 
       - name: Run Node tests
-        run: node --test test/paypal-services.test.js test/agent-fleet.test.js test/paypal-verification.test.js test/control-plane.test.js test/ops-engine.test.js test/workers.test.js
+        run: node --test test/paypal-services.test.js test/agent-fleet.test.js test/paypal-verification.test.js test/control-plane.test.js test/ops-engine.test.js test/workers.test.js test/worker-runtime.test.js
