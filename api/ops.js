@@ -1,27 +1,4 @@
 import { enqueueTask, opsHealth } from '../config/aion-ops-engine.js';
-
-const ALLOWED_ORIGIN =
-  process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
-
-function cors(res) {
-  res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
-  res.setHeader('Vary', 'Origin');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-}
-
-export default function handler(req, res) {
-  cors(res);
-  if (req.method === 'OPTIONS') return res.status(204).end();
-  if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method not allowed' });
-
-  const body = req.body || {};
-  if (typeof body.text !== 'string' || !body.text.trim()) {
-    return res.status(400).json({ success: false, error: 'task.text required' });
-  }
-  if (body.text.length > 4000) {
-    return res.status(413).json({ success: false, error: 'task too long' });
-  }
-
-  return res.status(201).json({ success: true, ...enqueueTask(body), health: opsHealth() });
-}
+const ALLOWED_ORIGIN=process.env.AION_PUBLIC_ORIGIN||'https://aion-theta-eight.vercel.app';
+function cors(res){res.setHeader('Access-Control-Allow-Origin',ALLOWED_ORIGIN);res.setHeader('Vary','Origin');res.setHeader('Access-Control-Allow-Methods','POST, OPTIONS');res.setHeader('Access-Control-Allow-Headers','Content-Type');}
+export default async function handler(req,res){cors(res);if(req.method==='OPTIONS')return res.status(204).end();if(req.method!=='POST')return res.status(405).json({success:false,error:'Method not allowed'});const body=req.body||{};if(typeof body.text!=='string'||!body.text.trim())return res.status(400).json({success:false,error:'task.text required'});if(body.text.length>4000)return res.status(413).json({success:false,error:'task too long'});return res.status(201).json({success:true,...await enqueueTask(body),health:await opsHealth()});}
