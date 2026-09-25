@@ -49,7 +49,7 @@ export const AGENTS = DEPARTMENT_NAMES.flatMap(([id, name, mission]) =>
     const number = index + 1;
     const specialty = DEPARTMENTS[id].specialties[index % DEPARTMENTS[id].specialties.length];
     return {
-      id: `AION-${id.slice(0, 3).toUpperCase()}-${String(number).padStart(3, '0')}`,
+      id: `AION-${id.slice(0, 4).toUpperCase()}-${String(number).padStart(3, '0')}`,
       name: `${name} Agent ${number}`,
       department: id,
       specialty,
