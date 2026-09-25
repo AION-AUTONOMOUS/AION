@@ -54,9 +54,16 @@ export default async function handler(req, res) {
         application_context: {
           brand_name: 'AION AUTONOMOUS',
           shipping_preference: 'NO_SHIPPING',
-          user_action: 'PAY_NOW',
-          return_url: ALLOWED_ORIGIN + '/teacher.html?paypal=success',
-          cancel_url: ALLOWED_ORIGIN + '/teacher.html?paypal=cancel'
+          user_action: 'PAY_NOW'
+        },
+        payment_source: {
+          card: {
+            attributes: {
+              verification: {
+                method: 'SCA_WHEN_REQUIRED'
+              }
+            }
+          }
         },
         purchase_units: [{
           reference_id: service.id,
@@ -85,7 +92,8 @@ export default async function handler(req, res) {
       serviceId: service.id,
       amount: service.price.toFixed(2),
       currency: 'USD',
-      approvalUrl: approvalLink || ('https://www.paypal.com/checkoutnow?token=' + orderData.id)
+      embeddedCheckout: true,
+      approvalUrl: approvalLink || null
     });
   } catch (err) {
     console.error('AION PayPal create-order error:', err);

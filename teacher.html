@@ -414,8 +414,19 @@ a{text-decoration:none;color:inherit}
 </div>
 <div class="pdf-status" id="pdfStatus"></div>
 
-<button id="payNowBtn" class="pay-btn-main" onclick="payNow()">ادفع الآن بأمان</button>
-<a id="paypalFallback" class="pay-alt-btn" href="https://www.paypal.com/ncp/payment/QSNNFE77HUN5J" target="_blank" style="display:none">أو ادفع عبر رابط PayPal</a>
+<div id="embeddedPayment" style="margin-top:14px">
+  <div id="paypalCardFields" style="display:none">
+    <div style="color:#aebbd0;font-size:12px;margin:0 0 8px">الدفع بالبطاقة يتم داخل موقع AION عبر حقول آمنة مستضافة من PayPal.</div>
+    <div id="card-number" style="height:48px;background:#fff;border-radius:10px;margin-bottom:9px;padding:4px"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+      <div id="card-expiry" style="height:48px;background:#fff;border-radius:10px;padding:4px"></div>
+      <div id="card-cvv" style="height:48px;background:#fff;border-radius:10px;padding:4px"></div>
+    </div>
+  </div>
+  <button id="payNowBtn" class="pay-btn-main" onclick="payNow()">ادفع بالبطاقة داخل الموقع</button>
+  <div style="margin:10px 0;text-align:center;color:#6b7c94;font-size:11px">أو</div>
+  <div id="paypal-button-container"></div>
+</div>
 
 <div class="m-status" id="mStatus"></div>
 <div class="currency-note" id="currencyNote"></div>
@@ -597,36 +608,6 @@ function goHome() {
 
 let currentService = { title:'', price:0, desc:'' };
 
-function openPay(title, price, desc) {
-  currentService = { title: title, price: price, desc: desc };
-  document.getElementById('mTitle').textContent = title;
-  document.getElementById('mDesc').textContent = desc;
-  const p = formatPrice(price);
-  document.getElementById('mPrice').innerHTML = p.local + '<span class="usd-note">= ' + p.usd + '</span>';
-  document.getElementById('mDetails').value = '';
-  document.getElementById('pdfFile').value = '';
-  document.getElementById('pdfText').textContent = 'اضغط لرفع ملف PDF';
-  document.getElementById('pdfStatus').className = 'pdf-status';
-  document.getElementById('pdfStatus').textContent = '';
-  pdfTextContent = '';
-  document.getElementById('mStatus').style.display = 'none';
-  document.getElementById('delivery').classList.remove('active');
-  document.getElementById('payNowBtn').disabled = false;
-  document.getElementById('payNowBtn').textContent = 'ادفع الآن بأمان';
-  document.getElementById('paypalFallback').style.display = 'none';
-  document.getElementById('payModal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-
-  const curr = CURRENCIES[currentCurrency];
-  const note = document.getElementById('currencyNote');
-  if (curr && curr.code !== 'USD') {
-    note.textContent = 'السعر بالـ '+curr.name+'. الدفع بالدولار ($'+price+') عبر PayPal.';
-    note.style.display = 'block';
-  } else {
-    note.style.display = 'none';
-  }
-}
-
 function closeModal() {
   document.getElementById('payModal').classList.remove('active');
   document.body.style.overflow = '';
@@ -660,104 +641,202 @@ function buildPrompt() {
   return prompt;
 }
 
-async function payNow() {
-  const btn = document.getElementById('payNowBtn');
-  const fallback = document.getElementById('paypalFallback');
+let paypalSdkPromise = null;
+let paypalCardFields = null;
+let paypalCardFieldsEligible = false;
 
-  btn.disabled = true;
-  btn.textContent = 'جاري تجهيز الدفع...';
-  showStatus('جاري تجهيز الدفع...', 'success');
+async function loadPayPalSDK() {
+  if (window.paypal) return window.paypal;
+  if (paypalSdkPromise) return paypalSdkPromise;
+  paypalSdkPromise = fetch('/api/paypal/client-config', { cache: 'no-store' })
+    .then(r => r.json())
+    .then(config => {
+      if (!config.ready || !config.clientId) throw new Error(config.error || 'PayPal غير مهيأ');
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://www.paypal.com/sdk/js?client-id=' +
+          encodeURIComponent(config.clientId) +
+          '&components=buttons,card-fields&currency=USD&intent=capture&locale=ar_SA';
+        script.async = true;
+        script.onload = () => resolve(window.paypal);
+        script.onerror = () => reject(new Error('تعذر تحميل بوابة الدفع'));
+        document.head.appendChild(script);
+      });
+    });
+  return paypalSdkPromise;
+}
+
+async function createEmbeddedOrder() {
+  const prompt = buildPrompt();
+  const res = await fetch('/api/paypal/create-order', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      serviceTitle: currentService.title,
+      details: prompt.slice(0, 500)
+    })
+  });
+  const data = await res.json();
+  if (!res.ok || !data.id) throw new Error(data.error || 'فشل إنشاء طلب الدفع');
+  return data.id;
+}
+
+async function finishEmbeddedPayment(orderId) {
+  const captureRes = await fetch('/api/paypal/capture-order', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ orderId })
+  });
+  const captureData = await captureRes.json();
+  if (!captureRes.ok || captureData.status !== 'COMPLETED') {
+    throw new Error(captureData.error || 'فشل إتمام الدفع');
+  }
+
+  const verifyRes = await fetch('/api/verify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ orderId })
+  });
+  const verifyData = await verifyRes.json();
+  if (!verifyRes.ok || !verifyData.success) {
+    throw new Error(verifyData.error || 'تعذر التحقق من الدفع');
+  }
+
+  showStatus('تم الدفع بنجاح ✓ رقم العملية: ' + (verifyData.transactionId || orderId), 'success');
+  document.getElementById('payNowBtn').disabled = false;
+  document.getElementById('payNowBtn').textContent = 'تم الدفع ✓';
+}
+
+async function renderEmbeddedPayment() {
+  const cardBox = document.getElementById('paypalCardFields');
+  const cardButton = document.getElementById('payNowBtn');
+  const paypalButton = document.getElementById('paypal-button-container');
+  if (!cardBox || !paypalButton) return;
+
+  cardBox.style.display = 'none';
+  paypalButton.innerHTML = '';
+  paypalCardFields = null;
+  paypalCardFieldsEligible = false;
 
   try {
-    const prompt = buildPrompt();
-    const res = await fetch('/api/paypal/create-order', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        serviceTitle: currentService.title,
-        details: prompt.slice(0, 500)
-      })
-    });
+    const paypal = await loadPayPalSDK();
 
-    const data = await res.json();
+    if (paypal.CardFields) {
+      paypalCardFields = paypal.CardFields({
+        createOrder: createEmbeddedOrder,
+        onApprove: async (data) => {
+          try {
+            showStatus('جاري تأكيد الدفع...', 'success');
+            await finishEmbeddedPayment(data.orderID);
+          } catch (err) {
+            showStatus(err.message || 'فشل الدفع', 'error');
+          }
+        },
+        onError: (err) => {
+          console.error('AION PayPal CardFields error:', err);
+          showStatus('تعذر إتمام الدفع بالبطاقة. اختر طريقة الدفع الأخرى.', 'error');
+        },
+        style: {
+          input: { 'font-size': '16px', 'font-family': 'Segoe UI, Arial, sans-serif' },
+          '.invalid': { color: '#c53030' }
+        }
+      });
 
-    if (res.ok && data.id) {
-      showStatus('سيتم توجيهك إلى PayPal...', 'success');
-      setTimeout(function() {
-        sessionStorage.setItem('aion_pending_payment', JSON.stringify({ ...currentService, verificationToken: data.verificationToken }));
-        window.location.href = data.approvalUrl;
-      }, 500);
+      if (paypalCardFields.isEligible()) {
+        paypalCardFieldsEligible = true;
+        cardBox.style.display = 'block';
+        cardButton.style.display = 'block';
+        paypalCardFields.NumberField().render('#card-number');
+        paypalCardFields.ExpiryField().render('#card-expiry');
+        paypalCardFields.CVVField().render('#card-cvv');
+      } else {
+        cardButton.style.display = 'none';
+      }
     } else {
-      showStatus('خطأ: ' + (data.error || 'فشل') + ' — استخدم الرابط البديل', 'error');
-      fallback.style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = 'ادفع الآن بأمان';
+      cardButton.style.display = 'none';
+    }
+
+    if (paypal.Buttons) {
+      paypal.Buttons({
+        style: { layout: 'vertical', label: 'paypal', shape: 'rect' },
+        createOrder: createEmbeddedOrder,
+        onApprove: async (data) => {
+          try {
+            showStatus('جاري تأكيد الدفع...', 'success');
+            await finishEmbeddedPayment(data.orderID);
+          } catch (err) {
+            showStatus(err.message || 'فشل الدفع', 'error');
+          }
+        },
+        onCancel: () => showStatus('تم إلغاء الدفع. يمكنك المحاولة مرة أخرى.', 'error'),
+        onError: (err) => {
+          console.error('AION PayPal Buttons error:', err);
+          showStatus('تعذر تحميل/إتمام طريقة الدفع.', 'error');
+        }
+      }).render('#paypal-button-container');
     }
   } catch (err) {
-    showStatus('خطأ في الاتصال. استخدم الرابط البديل', 'error');
-    fallback.style.display = 'block';
-    btn.disabled = false;
-    btn.textContent = 'ادفع الآن بأمان';
+    cardButton.style.display = 'block';
+    cardButton.disabled = false;
+    cardButton.textContent = 'إعادة محاولة الدفع';
+    showStatus(err.message || 'بوابة الدفع غير مهيأة بعد', 'error');
   }
 }
 
-async function handlePayPalReturn() {
-  const params = new URLSearchParams(window.location.search);
-  const status = params.get('paypal');
-  const orderId = params.get('token');
+function openPay(title, price, desc) {
+  currentService = { title: title, price: price, desc: desc };
+  document.getElementById('mTitle').textContent = title;
+  document.getElementById('mDesc').textContent = desc;
+  const p = formatPrice(price);
+  document.getElementById('mPrice').innerHTML = p.local + '<span class="usd-note">= ' + p.usd + '</span>';
+  document.getElementById('mDetails').value = '';
+  document.getElementById('pdfFile').value = '';
+  document.getElementById('pdfText').textContent = 'اضغط لرفع ملف PDF';
+  document.getElementById('pdfStatus').className = 'pdf-status';
+  document.getElementById('pdfStatus').textContent = '';
+  pdfTextContent = '';
+  document.getElementById('mStatus').style.display = 'none';
+  document.getElementById('delivery').classList.remove('active');
+  document.getElementById('payNowBtn').disabled = false;
+  document.getElementById('payNowBtn').textContent = 'ادفع بالبطاقة داخل الموقع';
+  document.getElementById('payNowBtn').style.display = 'block';
+  document.getElementById('paypalCardFields').style.display = 'none';
+  document.getElementById('paypal-button-container').innerHTML = '';
+  document.getElementById('payModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
 
-  if (status === 'cancel') {
-    sessionStorage.removeItem('aion_pending_payment');
-    window.history.replaceState({}, document.title, window.location.pathname);
+  const curr = CURRENCIES[currentCurrency];
+  const note = document.getElementById('currencyNote');
+  if (curr && curr.code !== 'USD') {
+    note.textContent = 'السعر المعروض بالعملة المحلية، والدفع النهائي بالدولار داخل الموقع.';
+    note.style.display = 'block';
+  } else {
+    note.style.display = 'none';
+  }
+
+  renderEmbeddedPayment();
+}
+
+async function payNow() {
+  const btn = document.getElementById('payNowBtn');
+  if (!paypalCardFieldsEligible || !paypalCardFields) {
+    showStatus('الدفع بالبطاقة غير متاح لهذا الحساب/البلد حاليًا. استخدم زر PayPal المضمن أدناه.', 'error');
     return;
   }
-
-  if (status !== 'success' || !orderId) return;
-
-  let pending = null;
+  btn.disabled = true;
+  btn.textContent = 'جاري إرسال الدفع...';
+  showStatus('جاري معالجة الدفع بأمان...', 'success');
   try {
-    pending = JSON.parse(sessionStorage.getItem('aion_pending_payment') || 'null');
-  } catch (e) {}
-
-  if (pending && pending.title) {
-    openPay(pending.title, pending.price, pending.desc);
-  }
-
-  showStatus('جاري تأكيد الدفع...', 'success');
-
-  try {
-    const captureRes = await fetch('/api/paypal/capture-order', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderId: orderId })
-    });
-    const captureData = await captureRes.json();
-
-    if (!captureRes.ok || captureData.status !== 'COMPLETED') {
-      throw new Error(captureData.error || 'فشل إتمام الدفع');
-    }
-
-    const verifyRes = await fetch('/api/verify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderId: orderId, verificationToken: pending?.verificationToken || '' })
-    });
-    const verifyData = await verifyRes.json();
-
-    if (!verifyRes.ok || !verifyData.success) {
-      throw new Error(verifyData.error || 'تعذر التحقق من الدفع');
-    }
-
-    showStatus(
-      'تم الدفع بنجاح ✓ رقم العملية: ' + (verifyData.transactionId || orderId),
-      'success'
-    );
-    sessionStorage.removeItem('aion_pending_payment');
+    await paypalCardFields.submit();
   } catch (err) {
-    showStatus('تعذر تأكيد الدفع تلقائيًا: ' + (err.message || 'خطأ غير معروف'), 'error');
-  } finally {
-    window.history.replaceState({}, document.title, window.location.pathname);
+    btn.disabled = false;
+    btn.textContent = 'إعادة المحاولة';
+    showStatus(err.message || 'تعذر إتمام الدفع', 'error');
   }
+}
+
+function handlePayPalReturn() {
+  // الدفع أصبح مضمّنًا داخل صفحة AION؛ لا توجد إعادة توجيه إلى PayPal.
 }
 
 function copyDelivery() {
