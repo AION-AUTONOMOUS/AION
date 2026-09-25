@@ -36,6 +36,7 @@ export function approveTask(id) {
 export function opsHealth() {
   const tasks = listTasks();
   return {
+    total_agents: controlPlaneHealth().fleet.total_agents,
     ...controlPlaneHealth(),
     queued: tasks.filter(t => t.status === 'queued').length,
     awaitingApproval: tasks.filter(t => t.status === 'awaiting_approval').length,
