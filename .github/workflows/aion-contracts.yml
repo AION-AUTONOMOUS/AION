@@ -37,6 +37,8 @@ jobs:
           node --check config/aion-workers.js
           node --check api/workers.js
           node --check api/ops-health.js
+          node --check config/aion-daily-report.js
+          node --check api/daily-report.js
           node --check api/paypal/services.js
           node --check api/paypal/verification.js
           node --check api/paypal/create-order.js
