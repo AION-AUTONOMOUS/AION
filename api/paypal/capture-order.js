@@ -58,7 +58,11 @@ export default async function handler(req, res) {
       PAYPAL_BASE_URL + '/v2/checkout/orders/' + encodeURIComponent(orderId) + '/capture',
       {
         method: 'POST',
-        headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+        headers: {
+          Authorization: 'Bearer ' + accessToken,
+          'Content-Type': 'application/json',
+          'PayPal-Request-Id': orderId
+        },
         body: '{}'
       }
     );
