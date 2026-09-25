@@ -1,5 +1,5 @@
 import { routeTask } from './aion-control-plane.js';
-import { enqueueTask, approveTask, runNextTask, updateTask, listTasks } from './aion-ops-engine.js';
+import { enqueueTask, approveTask, runNextTask } from './aion-ops-engine.js';
 
 export const WORKER_VERSION = '1.0.0';
 
@@ -44,7 +44,7 @@ export function dispatchTask(input = {}) {
 }
 
 export function executeApprovedTask(id) {
-  const task = listTasks().find(item => item.id === id);
+  const task = (await import('./aion-ops-store.js')).getTask(id);
   if (!task) return null;
   if (task.status === 'awaiting_approval') approveTask(id);
   return runNextTask();
