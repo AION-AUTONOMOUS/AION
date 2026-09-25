@@ -96,6 +96,12 @@ h1{text-align:center;color:#00c8ff;font-size:clamp(24px,4vw,34px);margin-bottom:
 <div class="row"><span class="label">الحالة</span><span class="value" style="color:#4ade80">متصل</span></div>
 </div>
 
+<div class="wallet-info active" id="companyWalletInfo" style="margin-top:20px">
+<div class="row"><span class="label">محفظة شركة AION</span><span class="value addr" id="companyWalletAddr">جارٍ التحقق...</span></div>
+<div class="row"><span class="label">الشبكة</span><span class="value">BNB Smart Chain</span></div>
+<div class="row"><span class="label">حالة الربط</span><span class="value" id="companyWalletStatus" style="color:#f5c542">غير مهيأة</span></div>
+</div>
+
 <div class="balances" id="balances">
 <div class="bal-card">
 <span class="coin">💎</span>
@@ -150,13 +156,42 @@ const BNB_CHAIN_PARAMS = {
   rpcUrls: ['https://bsc-dataseed.binance.org/'],
   blockExplorerUrls: ['https://bscscan.com/']
 };
-const AION_TOKEN_ADDRESS = '';
+let AION_TOKEN_ADDRESS = '';
 let currentAccount = null;
 
 function showStatus(msg, type) {
   const el = document.getElementById('statusBox');
   el.textContent = msg;
   el.className = 'status ' + type;
+}
+
+async function loadCompanyWalletConfig() {
+  try {
+    const res = await fetch('/api/wallet/config', { cache: 'no-store' });
+    const config = await res.json();
+    const addr = document.getElementById('companyWalletAddr');
+    const status = document.getElementById('companyWalletStatus');
+    if (config.ready && config.companyWallet) {
+      addr.textContent = config.companyWallet.slice(0,10) + '...' + config.companyWallet.slice(-8);
+      addr.title = config.companyWallet;
+      status.textContent = 'متصلة';
+      status.style.color = '#4ade80';
+    } else {
+      addr.textContent = 'لم تُضبط بعد';
+      status.textContent = 'بانتظار AION_COMPANY_WALLET';
+      status.style.color = '#f5c542';
+    }
+    if (config.tokenAddress) {
+      AION_TOKEN_ADDRESS = config.tokenAddress;
+      const tokenValue = document.querySelector('.token-card .info-row:last-child .v');
+      if (tokenValue) tokenValue.textContent = config.tokenAddress;
+    }
+  } catch (err) {
+    const addr = document.getElementById('companyWalletAddr');
+    const status = document.getElementById('companyWalletStatus');
+    if (addr) addr.textContent = 'تعذر التحقق';
+    if (status) status.textContent = 'خطأ في الإعداد';
+  }
 }
 
 async function connectWallet() {
@@ -236,6 +271,8 @@ function openBscScan() {
     window.open('https://bscscan.com/address/' + currentAccount, '_blank');
   }
 }
+
+loadCompanyWalletConfig();
 
 if (typeof window.ethereum !== 'undefined') {
   window.ethereum.request({ method: 'eth_accounts' }).then(accounts => {
