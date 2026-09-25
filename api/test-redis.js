@@ -1,53 +1,34 @@
-// api/test-redis.js
+const ALLOWED_ORIGIN =
+  process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  
+  res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') return res.status(204).end();
+  if (req.method !== 'GET') return res.status(405).json({ success: false, error: 'Method not allowed' });
+
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  
-  const diag = {
-    url_exists: !!url,
-    url_length: url ? url.length : 0,
-    url_has_newline: url ? /[\r\n]/.test(url) : false,
-    token_exists: !!token,
-    token_length: token ? token.length : 0,
-    token_has_newline: token ? /[\r\n]/.test(token) : false,
-  };
-  
   if (!url || !token) {
-    return res.status(500).json({
-      success: false,
-      message: 'المتغيرات مفقودة',
-      diag
-    });
+    return res.status(503).json({ success: false, message: 'Redis غير مهيأ' });
   }
-  
+
   try {
-    const setRes = await fetch(`${url}/set/test-key?value=hello-aion`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` }
+    const response = await fetch(url + '/ping', {
+      headers: { Authorization: 'Bearer ' + token }
     });
-    const setData = await setRes.json();
-    
-    const getRes = await fetch(`${url}/get/test-key`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const getData = await getRes.json();
-    
-    return res.status(200).json({
-      success: true,
-      message: 'Redis يعمل بنجاح!',
-      diag,
-      set_result: setData,
-      get_result: getData,
-      stored_value: getData.result
-    });
-  } catch(e) {
-    return res.status(500).json({
-      success: false,
-      message: 'فشل الاتصال',
-      error: e.message,
-      diag
-    });
+    const data = await response.json();
+
+    if (!response.ok || data.error) {
+      return res.status(502).json({ success: false, message: 'Redis غير متاح' });
+    }
+
+    return res.status(200).json({ success: true, message: 'Redis يعمل بنجاح' });
+  } catch (error) {
+    console.error('AION Redis health error:', error);
+    return res.status(502).json({ success: false, message: 'فشل الاتصال بـ Redis' });
   }
 }

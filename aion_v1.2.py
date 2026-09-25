@@ -1,4 +1,10 @@
-==================================================
+"""AION OS v1.2 historical execution report.
+
+This file preserves the original v1.2 demonstration output as executable
+documentation so repository-wide Python syntax checks can include it.
+"""
+
+REPORT = """==================================================
 AION OS v1.2
 Guardrails + Human Approval
 ==================================================
@@ -47,3 +53,7 @@ AION OS v1.2 - GUARDRAILS + APPROVAL WORKING
 ==================================================
 
 === Code Execution Successful ===
+"""
+
+if __name__ == "__main__":
+    print(REPORT)

@@ -1,4 +1,3 @@
-```python
 # AION Core v1.3
 import logging
 
@@ -18,4 +17,3 @@ if __name__ == "__main__":
     aion = AIONCore()
     result = aion.execute({"type": "test", "query": "AION started"})
     print(result)
-```

@@ -684,7 +684,7 @@ async function payNow() {
     if (res.ok && data.id) {
       showStatus('سيتم توجيهك إلى PayPal...', 'success');
       setTimeout(function() {
-        sessionStorage.setItem('aion_pending_payment', JSON.stringify(currentService));
+        sessionStorage.setItem('aion_pending_payment', JSON.stringify({ ...currentService, verificationToken: data.verificationToken }));
         window.location.href = data.approvalUrl;
       }, 500);
     } else {
@@ -740,7 +740,7 @@ async function handlePayPalReturn() {
     const verifyRes = await fetch('/api/verify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderId: orderId })
+      body: JSON.stringify({ orderId: orderId, verificationToken: pending?.verificationToken || '' })
     });
     const verifyData = await verifyRes.json();
 

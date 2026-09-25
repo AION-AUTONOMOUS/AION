@@ -5,37 +5,42 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   compile:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
-
       - name: Install dependencies
         run: npm install
-
       - name: Compile contracts
         run: npx hardhat compile
-
       - name: Run Solidity tests
         run: npx hardhat test solidity
-
-      - name: Check API JavaScript syntax
+      - name: Check JavaScript syntax
         run: |
+          node --check config/aion-fleet.js
           node --check api/paypal/services.js
+          node --check api/paypal/verification.js
           node --check api/paypal/create-order.js
           node --check api/paypal/capture-order.js
           node --check api/verify.js
           node --check api/presale.js
           node --check api/chat.js
+          node --check api/paypal/client-id.js
+          node --check api/test-redis.js
+      - name: Check Python syntax
+        run: |
+          find . -name '*.py' -print0 | xargs -0 -n1 python -m py_compile
 
-      - name: Run API unit tests
-        run: node --test test/paypal-services.test.js
+      - name: Run Node tests
+        run: node --test test/paypal-services.test.js test/agent-fleet.test.js test/paypal-verification.test.js
