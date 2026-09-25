@@ -1,5 +1,6 @@
 import { dispatchTask } from './aion-workers.js';
-import { listTasks, resetStore } from './aion-ops-engine.js';
+import { resetStore } from './aion-ops-engine.js';
+import { listTasks } from './aion-ops-store.js';
 
 export const RUNTIME_VERSION = '1.0.0';
 export const MAX_CONCURRENCY = 20;
