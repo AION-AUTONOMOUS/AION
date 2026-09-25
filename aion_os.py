@@ -41,6 +41,12 @@ class PersistentStore:
 
 
 class AuditTrail:
+    @staticmethod
+    def _hash_entry(entry):
+        payload = {k: v for k, v in entry.items() if k != "hash"}
+        raw = json.dumps(payload, sort_keys=True, ensure_ascii=False).encode()
+        return hashlib.sha256(raw).hexdigest()[:16]
+
     def __init__(self, store):
         self.store = store
         self.chain = store.data.get("audit_log", [])
@@ -56,8 +62,7 @@ class AuditTrail:
             "data": data,
             "prev_hash": self.prev_hash
         }
-        raw = json.dumps(entry, sort_keys=True, ensure_ascii=False).encode()
-        entry["hash"] = hashlib.sha256(raw).hexdigest()[:16]
+        entry["hash"] = self._hash_entry(entry)
         self.prev_hash = entry["hash"]
         self.chain.append(entry)
         self.store.data["audit_log"] = self.chain
@@ -67,6 +72,8 @@ class AuditTrail:
         prev = "GENESIS"
         for entry in self.chain:
             if entry["prev_hash"] != prev:
+                return False
+            if entry["hash"] != self._hash_entry(entry):
                 return False
             prev = entry["hash"]
         return True
