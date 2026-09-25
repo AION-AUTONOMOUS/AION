@@ -27,3 +27,15 @@ jobs:
 
       - name: Run Solidity tests
         run: npx hardhat test solidity
+
+      - name: Check API JavaScript syntax
+        run: |
+          node --check api/paypal/services.js
+          node --check api/paypal/create-order.js
+          node --check api/paypal/capture-order.js
+          node --check api/verify.js
+          node --check api/presale.js
+          node --check api/chat.js
+
+      - name: Run API unit tests
+        run: node --test test/paypal-services.test.js
