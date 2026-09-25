@@ -1,0 +1,36 @@
+name: AION Security Shield
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: aion-security-shield
+  cancel-in-progress: true
+jobs:
+  shield:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Dependency vulnerability scan
+        run: npm audit --audit-level=high
+      - name: Secret-pattern scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE --exclude-dir=.git --exclude='package-lock.json' --exclude='*.md' '(BEGIN (RSA|EC|OPENSSH) PRIVATE KEY|AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]+)' .; then
+            echo 'Potential secret material detected'
+            exit 1
+          fi
+      - name: Validate JavaScript
+        run: find api config scripts test -type f -name '*.js' -print0 | xargs -0 -n1 node --check
+      - name: Solidity compile
+        run: npx hardhat compile
