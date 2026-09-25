@@ -467,29 +467,44 @@ function copyRef() {
 }
 
 // Presale Form
-function submitForm(e){
+async function submitForm(e){
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
   const msg = document.getElementById('msg');
   const name = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
   const amount = document.getElementById('amount').value;
+
   if (!name || !email) return;
+
   btn.disabled = true;
   btn.textContent = 'جاري الحجز...';
+  msg.style.display = 'none';
+
   try {
-    const list = JSON.parse(localStorage.getItem('aion_presale') || '[]');
-    list.push({name, email, amount, date: new Date().toISOString()});
-    localStorage.setItem('aion_presale', JSON.stringify(list));
-  } catch(e){}
-  setTimeout(function(){
-    btn.disabled = false;
-    btn.textContent = 'احجز الآن';
+    const res = await fetch('/api/presale', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, amount })
+    });
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || 'تعذر تسجيل الطلب');
+    }
+
     msg.className = 'msg success';
-    msg.textContent = 'تم حجزك بنجاح! سنتواصل معك عند الإطلاق.';
+    msg.textContent = 'تم تسجيل طلبك بنجاح! سنتواصل معك عند الإطلاق.';
     msg.style.display = 'block';
     document.getElementById('presaleForm').reset();
-  }, 800);
+  } catch (err) {
+    msg.className = 'msg error';
+    msg.textContent = err.message || 'حدث خطأ. حاول مرة أخرى.';
+    msg.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'احجز الآن';
+  }
 }
 </script>
 
