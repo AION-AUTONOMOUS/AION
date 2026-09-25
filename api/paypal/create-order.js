@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import { getService } from './services.js';
 
 const PAYPAL_BASE_URL = 'https://api-m.paypal.com';
@@ -74,8 +75,13 @@ export default async function handler(req, res) {
       ? orderData.links.find(link => link.rel === 'approve')?.href
       : null;
 
+    const verificationToken = crypto.createHmac('sha256', process.env.AION_VERIFY_SECRET || process.env.PAYPAL_SECRET)
+      .update([orderData.id, service.id, service.price.toFixed(2), 'AION-V1'].join('|'))
+      .digest('hex');
+
     return res.status(200).json({
       id: orderData.id,
+      verificationToken,
       serviceId: service.id,
       amount: service.price.toFixed(2),
       currency: 'USD',
