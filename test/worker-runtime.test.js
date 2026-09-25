@@ -16,5 +16,5 @@ test('runtime does not execute approval-gated work', async () => {
   const task = submitTask({ text: 'send payment to vendor' });
   assert.equal(task.action, 'await_human_approval');
   assert.equal((await processBatch(1)).length, 0);
-  assert.equal(workerRuntimeStatus().awaitingApproval, 1);
+  assert.equal((await workerRuntimeStatus()).awaitingApproval, 1);
 });
