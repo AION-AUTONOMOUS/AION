@@ -19,6 +19,6 @@ test('fleet agent IDs are unique and departments are balanced', () => {
 
 test('agent lookup is deterministic', () => {
   assert.equal(findAgent('engineering').department, 'engineering');
-  assert.equal(findAgent('AION-SEC-001').department, 'security');
+  assert.equal(findAgent('AION-SECU-001').department, 'security');
   assert.equal(findAgent('unknown').id, AGENTS[0].id);
 });
