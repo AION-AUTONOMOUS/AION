@@ -1,58 +1,44 @@
-!pip install groq -q
-
-from groq import Groq
+import os
 from datetime import datetime
+from groq import Groq
 
-client = Groq(api_key="ضع_المفتاح_هنا")
+def get_client():
+    api_key = os.environ.get("GROQ_API_KEY")
+    if not api_key:
+        raise RuntimeError("GROQ_API_KEY is required")
+    return Groq(api_key=api_key)
 
 def ask_agent(role, task):
     try:
-        response = client.chat.completions.create(
+        response = get_client().chat.completions.create(
             model="openai/gpt-oss-120b",
             messages=[
-                {"role": "system", "content": "You are a " + role + " agent at AION AUTONOMOUS. Answer in Arabic, briefly and professionally."},
-                {"role": "user", "content": task}
-            ]
+                {"role": "system", "content": f"You are a {role} agent at AION AUTONOMOUS. Answer in Arabic, briefly and professionally."},
+                {"role": "user", "content": task},
+            ],
         )
         return response.choices[0].message.content
-    except Exception as e:
-        return "ERROR: " + str(e)
-
+    except Exception as exc:
+        return "ERROR: " + str(exc)
 
 def execute_mission(mission):
     print("=" * 60)
-    print("MISSION: " + mission)
-    print("Time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    print("MISSION:", mission)
+    print("Time:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     print("=" * 60)
-    print()
-
     agents = [
         ("Researcher", "ابحث وحلل: " + mission),
         ("Marketer", "اقترح خطة تسويقية لـ: " + mission),
         ("Sales", "اقترح استراتيجية مبيعات لـ: " + mission),
-        ("Auditor", "راجع الخطة وأعطِ ملاحظات على: " + mission)
+        ("Auditor", "راجع الخطة وأعطِ ملاحظات على: " + mission),
     ]
-
     results = {}
     for role, task in agents:
-        print("[" + role + "]")
-        print("-" * 40)
+        print(f"[{role}]")
         result = ask_agent(role, task)
         print(result)
-        print()
         results[role] = result
-
     return results
 
-
-print("=" * 60)
-print("AION AUTONOMOUS - AI WORKFORCE v3.0")
-print("The AI Company That Never Sleeps")
-print("=" * 60)
-print()
-
-result = execute_mission("إطلاق AION في السوق النرويجي")
-
-print("=" * 60)
-print("MISSION COMPLETED")
-print("=" * 60)
+if __name__ == "__main__":
+    execute_mission("إطلاق AION في السوق النرويجي")
