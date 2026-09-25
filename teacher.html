@@ -674,10 +674,8 @@ async function payNow() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        amount: currentService.price,
-        currency: 'USD',
-        description: currentService.title,
-        details: prompt.slice(0, 200)
+        serviceTitle: currentService.title,
+        details: prompt.slice(0, 500)
       })
     });
 
@@ -686,7 +684,8 @@ async function payNow() {
     if (res.ok && data.id) {
       showStatus('سيتم توجيهك إلى PayPal...', 'success');
       setTimeout(function() {
-        window.location.href = 'https://www.paypal.com/checkoutnow?token=' + data.id;
+        sessionStorage.setItem('aion_pending_payment', JSON.stringify(currentService));
+        window.location.href = data.approvalUrl;
       }, 500);
     } else {
       showStatus('خطأ: ' + (data.error || 'فشل') + ' — استخدم الرابط البديل', 'error');
@@ -702,6 +701,65 @@ async function payNow() {
   }
 }
 
+async function handlePayPalReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get('paypal');
+  const orderId = params.get('token');
+
+  if (status === 'cancel') {
+    sessionStorage.removeItem('aion_pending_payment');
+    window.history.replaceState({}, document.title, window.location.pathname);
+    return;
+  }
+
+  if (status !== 'success' || !orderId) return;
+
+  let pending = null;
+  try {
+    pending = JSON.parse(sessionStorage.getItem('aion_pending_payment') || 'null');
+  } catch (e) {}
+
+  if (pending && pending.title) {
+    openPay(pending.title, pending.price, pending.desc);
+  }
+
+  showStatus('جاري تأكيد الدفع...', 'success');
+
+  try {
+    const captureRes = await fetch('/api/paypal/capture-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId: orderId })
+    });
+    const captureData = await captureRes.json();
+
+    if (!captureRes.ok || captureData.status !== 'COMPLETED') {
+      throw new Error(captureData.error || 'فشل إتمام الدفع');
+    }
+
+    const verifyRes = await fetch('/api/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId: orderId })
+    });
+    const verifyData = await verifyRes.json();
+
+    if (!verifyRes.ok || !verifyData.success) {
+      throw new Error(verifyData.error || 'تعذر التحقق من الدفع');
+    }
+
+    showStatus(
+      'تم الدفع بنجاح ✓ رقم العملية: ' + (verifyData.transactionId || orderId),
+      'success'
+    );
+    sessionStorage.removeItem('aion_pending_payment');
+  } catch (err) {
+    showStatus('تعذر تأكيد الدفع تلقائيًا: ' + (err.message || 'خطأ غير معروف'), 'error');
+  } finally {
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+}
+
 function copyDelivery() {
   const text = document.getElementById('dBody').textContent;
   navigator.clipboard.writeText(text).then(function() {
@@ -714,6 +772,7 @@ function copyDelivery() {
 document.addEventListener('DOMContentLoaded', function() {
   updateAllPrices();
   detectCountry();
+  handlePayPalReturn();
 });
 </script>
 
