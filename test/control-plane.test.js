@@ -7,7 +7,7 @@ test('control plane sees the full 10,000-agent fleet', () => {
   const health = controlPlaneHealth();
   assert.equal(health.fleet.total_agents, 10000);
   assert.equal(TOTAL_AGENTS, 10000);
-  assert.equal(AGENTS_PER_DEPARTMENT, 200);
+  assert.equal(AGENTS_PER_DEPARTMENT, 500);
 });
 
 test('ordinary engineering tasks can be routed autonomously', () => {
