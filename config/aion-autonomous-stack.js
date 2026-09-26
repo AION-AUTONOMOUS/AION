@@ -1,78 +1,29 @@
 import crypto from 'node:crypto';
 import { dispatchTask } from './aion-workers.js';
 import { AGENTS, DEPARTMENTS } from './aion-fleet.js';
+import { addToIndex, getJson, listIndexed, setJson, stackStorageHealth } from './aion-stack-store.js';
 
-export const AUTONOMOUS_STACK_VERSION = '1.0.0';
+export const AUTONOMOUS_STACK_VERSION = '1.1.0';
 
 export const CAPABILITIES = Object.freeze({
-  digitalMoney: {
-    id: 'digital-money',
-    name: 'Digital Money',
-    status: 'ledger-ready',
-    description: 'Internal machine-account ledger and payment-intent preparation. External money movement remains human-approved.'
-  },
-  tokenizedAssets: {
-    id: 'tokenized-assets',
-    name: 'Tokenized Assets',
-    status: process.env.AION_TOKEN_ADDRESS ? 'contract-configured' : 'adapter-ready',
-    description: 'EVM asset registry and tokenization lifecycle. Minting and settlement require explicit deployment configuration and approval.'
-  },
-  aiAgents: {
-    id: 'ai-agents',
-    name: 'AI Agents',
-    status: 'ready',
-    description: '10,000 deterministic roles coordinated by the Control Plane and Worker Runtime.'
-  },
-  autonomousOrganization: {
-    id: 'autonomous-organization',
-    name: 'Autonomous Organization',
-    status: 'governed',
-    description: 'Goal planning, delegated work, policy gates, audit events and human approvals.'
-  },
-  finance: {
-    id: 'ai-finance',
-    name: 'AI + Finance',
-    status: 'guarded',
-    description: 'Financial analysis and preparation with no autonomous money movement.'
-  },
-  robotics: {
-    id: 'robotics',
-    name: 'Robotics',
-    status: process.env.AION_ROBOT_EXECUTOR_URL ? 'adapter-configured' : 'adapter-ready',
-    description: 'Robot/device command preparation and guarded execution through an explicit adapter.'
-  },
-  scientificResearch: {
-    id: 'scientific-research',
-    name: 'Scientific Research',
-    status: 'ready',
-    description: 'Research planning, evidence gathering, synthesis and reproducible task delegation.'
-  },
-  frontierIntelligence: {
-    id: 'frontier-intelligence',
-    name: 'AGI / Superintelligence Research',
-    status: 'research-only',
-    description: 'Research track for frontier intelligence; AION does not claim AGI or superintelligence.'
-  }
+  digitalMoney: { id: 'digital-money', name: 'Digital Money', status: 'ledger-ready', description: 'Internal machine-account ledger and payment-intent preparation. External money movement remains human-approved.' },
+  tokenizedAssets: { id: 'tokenized-assets', name: 'Tokenized Assets', status: process.env.AION_TOKEN_ADDRESS ? 'contract-configured' : 'adapter-ready', description: 'EVM asset registry and tokenization lifecycle. Minting and settlement require explicit deployment configuration and approval.' },
+  aiAgents: { id: 'ai-agents', name: 'AI Agents', status: 'ready', description: '10,000 deterministic roles coordinated by the Control Plane and Worker Runtime.' },
+  autonomousOrganization: { id: 'autonomous-organization', name: 'Autonomous Organization', status: 'governed', description: 'Goal planning, delegated work, policy gates, audit events and human approvals.' },
+  finance: { id: 'ai-finance', name: 'AI + Finance', status: 'guarded', description: 'Financial analysis and preparation with no autonomous money movement.' },
+  robotics: { id: 'robotics', name: 'Robotics', status: process.env.AION_ROBOT_EXECUTOR_URL ? 'adapter-configured' : 'adapter-ready', description: 'Robot/device command preparation and guarded execution through an explicit adapter.' },
+  scientificResearch: { id: 'scientific-research', name: 'Scientific Research', status: 'ready', description: 'Research planning, evidence gathering, synthesis and reproducible task delegation.' },
+  frontierIntelligence: { id: 'frontier-intelligence', name: 'AGI / Superintelligence Research', status: 'research-only', description: 'Research track for frontier intelligence; AION does not claim AGI or superintelligence.' }
 });
 
-const ledger = new Map();
-const assets = new Map();
-const robots = new Map();
-
 const now = () => new Date().toISOString();
-const id = (prefix) => prefix + '-' + crypto.randomUUID();
-
-function account(accountId) {
-  const key = String(accountId || '').trim();
-  if (!key) throw new Error('accountId required');
-  if (!ledger.has(key)) ledger.set(key, { accountId: key, currency: 'AION-CREDIT', balance: 0, updatedAt: now() });
-  return ledger.get(key);
-}
+const id = prefix => prefix + '-' + crypto.randomUUID();
 
 export function stackHealth() {
   return {
     version: AUTONOMOUS_STACK_VERSION,
     status: 'ready',
+    storage: stackStorageHealth(),
     capabilities: Object.values(CAPABILITIES),
     fleet: { agents: AGENTS.length, departments: Object.keys(DEPARTMENTS).length },
     guards: {
@@ -89,16 +40,20 @@ export function stackHealth() {
 
 export function listCapabilities() { return Object.values(CAPABILITIES); }
 
-export function getLedger(accountId) {
-  return account(accountId);
+export async function getLedger(accountId) {
+  const key = String(accountId || '').trim();
+  if (!key) throw new Error('accountId required');
+  const existing = await getJson('ledger:' + key);
+  if (existing) return existing;
+  return setJson('ledger:' + key, { accountId: key, currency: 'AION-CREDIT', balance: 0, updatedAt: now() });
 }
 
-export function proposeLedgerTransfer({ from, to, amount, memo = '' }) {
+export async function proposeLedgerTransfer({ from, to, amount, memo = '' }) {
   const value = Number(amount);
   if (!Number.isFinite(value) || value <= 0) throw new Error('amount must be a positive number');
-  const source = account(from);
-  const destination = account(to);
-  return {
+  const source = await getLedger(from);
+  const destination = await getLedger(to);
+  const proposal = {
     id: id('AION-PAY'),
     type: 'ledger_transfer_proposal',
     status: 'awaiting_human_approval',
@@ -110,9 +65,11 @@ export function proposeLedgerTransfer({ from, to, amount, memo = '' }) {
     createdAt: now(),
     note: 'No external money moved. This is a guarded internal ledger proposal.'
   };
+  await setJson('proposal:' + proposal.id, proposal);
+  return proposal;
 }
 
-export function registerTokenizedAsset(input = {}) {
+export async function registerTokenizedAsset(input = {}) {
   const asset = {
     id: input.id || id('AION-ASSET'),
     name: String(input.name || '').trim(),
@@ -125,13 +82,14 @@ export function registerTokenizedAsset(input = {}) {
   if (!asset.name) throw new Error('asset name required');
   if (asset.contractAddress && !/^0x[a-fA-F0-9]{40}$/.test(asset.contractAddress)) throw new Error('invalid EVM contract address');
   if (asset.contractAddress) asset.status = 'contract-linked';
-  assets.set(asset.id, asset);
+  await setJson('assets:' + asset.id, asset);
+  await addToIndex('assets', asset.id);
   return asset;
 }
 
-export function listTokenizedAssets() { return [...assets.values()]; }
+export async function listTokenizedAssets() { return listIndexed('assets'); }
 
-export function registerRobot(input = {}) {
+export async function registerRobot(input = {}) {
   const robot = {
     id: input.id || id('AION-ROBOT'),
     name: String(input.name || '').trim(),
@@ -141,12 +99,13 @@ export function registerRobot(input = {}) {
     createdAt: now()
   };
   if (!robot.name) throw new Error('robot name required');
-  if (robot.executor && !/^https?:\\/\\//i.test(robot.executor)) throw new Error('executor must be an https/http URL');
-  robots.set(robot.id, robot);
+  if (robot.executor && !/^https?:\/\//i.test(robot.executor)) throw new Error('executor must be an https/http URL');
+  await setJson('robots:' + robot.id, robot);
+  await addToIndex('robots', robot.id);
   return robot;
 }
 
-export function listRobots() { return [...robots.values()]; }
+export async function listRobots() { return listIndexed('robots'); }
 
 export async function createAutonomousPlan(goal, options = {}) {
   const text = String(goal || '').trim();
@@ -178,7 +137,8 @@ export async function createAutonomousPlan(goal, options = {}) {
     });
     tasks.push({ ...routed.task, stage: stage.name, sensitive: stage.sensitive || routed.task.requiresHumanApproval });
   }
-  return {
+
+  const plan = {
     id: planId,
     goal: text,
     status: 'planned',
@@ -190,4 +150,9 @@ export async function createAutonomousPlan(goal, options = {}) {
       external_side_effects_require_real_adapter: true
     }
   };
+  await setJson('plans:' + plan.id, plan);
+  await addToIndex('plans', plan.id);
+  return plan;
 }
+
+export async function listAutonomousPlans() { return listIndexed('plans'); }
