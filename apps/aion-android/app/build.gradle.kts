@@ -22,5 +22,5 @@ android {
     buildFeatures { buildConfig = true }
 }
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.4.10")
 }
