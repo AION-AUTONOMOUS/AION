@@ -1,0 +1,1 @@
+# AION Mobile release rules
