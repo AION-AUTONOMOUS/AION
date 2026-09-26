@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { SERVICE_CATALOG, getService } from '../api/paypal/services.js';
+import { SERVICE_CATALOG, getService } from '../server-api/paypal/services.js';
 
 test('service catalog has unique ids and positive prices', () => {
   const entries = Object.entries(SERVICE_CATALOG);
