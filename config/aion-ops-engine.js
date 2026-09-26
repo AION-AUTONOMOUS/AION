@@ -7,7 +7,8 @@ export async function enqueueTask(input) {
   return {task:updated,route};
 }
 export async function runNextTask() {
-  const tasks=await listTasks(); const task=tasks.find(x=>x.status==='ready'); if(!task)return null;
+  const tasks=await listTasks(); const task=tasks.find(x=>x.status==='ready' && (x.requiresHumanApproval === false || x.approvedAt));
+  if(!task)return null;
   await updateTask(task.id,{status:'running',startedAt:new Date().toISOString()});
   return updateTask(task.id,{status:'completed',completedAt:new Date().toISOString()});
 }
