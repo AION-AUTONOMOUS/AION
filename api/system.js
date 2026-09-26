@@ -19,7 +19,8 @@ const HANDLERS = {
   'paypal-create-order': () => import('../server-api/paypal/create-order.js'),
   'paypal-capture-order': () => import('../server-api/paypal/capture-order.js'),
   'wallet-config': () => import('../server-api/wallet/config.js'),
-  'mobile': () => import('../server-api/mobile.js')
+  'mobile': () => import('../server-api/mobile.js'),
+  'autonomy': () => import('../server-api/autonomy.js')
 };
 
 export default async function handler(req, res) {
