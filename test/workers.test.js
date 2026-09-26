@@ -29,3 +29,16 @@ test('health reports worker fleet', async () => {
   assert.equal(workerCapabilities('security').includes('audit'), true);
   assert.equal((await opsHealth()).total_agents, 10000);
 });
+
+
+test('normal engineering work is autonomous without a human approval gate', async () => {
+  const result = await dispatchTask({ text: 'deploy the new API after tests pass' });
+  assert.equal(result.action, 'execute');
+  assert.equal(result.task.requiresHumanApproval, false);
+});
+
+test('sensitive asset operations remain approval-gated', async () => {
+  const result = await dispatchTask({ text: 'mint tokenized asset on mainnet' });
+  assert.equal(result.action, 'await_human_approval');
+  assert.equal(result.task.requiresHumanApproval, true);
+});
