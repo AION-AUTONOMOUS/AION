@@ -4,11 +4,11 @@ plugins {
 }
 android {
     namespace = "com.aion.autonomous.mobile"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
         applicationId = "com.aion.autonomous.mobile"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0.0"
         buildConfigField("String", "AION_API_BASE_URL", "\"https://aion-theta-eight.vercel.app/api/mobile\"")
