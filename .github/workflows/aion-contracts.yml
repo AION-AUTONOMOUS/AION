@@ -28,32 +28,9 @@ jobs:
         run: npx hardhat test solidity
       - name: Check JavaScript syntax
         run: |
-          node --check config/aion-fleet.js
-          node --check config/aion-control-plane.js
-          node --check api/orchestrator.js
-          node --check config/aion-ops-store.js
-          node --check config/aion-ops-engine.js
-          node --check api/ops.js
-          node --check config/aion-workers.js
-          node --check api/workers.js
-          node --check api/ops-health.js
-          node --check config/aion-daily-report.js
-          node --check api/daily-report.js
-          node --check config/aion-worker-runtime.js
-          node --check api/worker-runtime.js
-          node --check api/worker-runtime-health.js
-          node --check api/paypal/services.js
-          node --check api/paypal/verification.js
-          node --check api/paypal/create-order.js
-          node --check api/paypal/capture-order.js
-          node --check api/verify.js
-          node --check api/presale.js
-          node --check api/chat.js
-          node --check api/paypal/client-id.js
-          node --check api/test-redis.js
+          find api server-api config -name '*.js' -print0 | xargs -0 -n1 node --check
       - name: Check Python syntax
         run: |
           find . -name '*.py' -print0 | xargs -0 -n1 python -m py_compile
-
       - name: Run Node tests
-        run: node --test test/paypal-services.test.js test/agent-fleet.test.js test/paypal-verification.test.js test/control-plane.test.js test/ops-engine.test.js test/workers.test.js test/worker-runtime.test.js
+        run: node --test test/*.test.js
