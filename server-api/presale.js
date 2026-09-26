@@ -12,8 +12,14 @@ function setCors(res) {
 }
 
 async function redisCommand(command) {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  // Support both current Upstash names and the legacy Vercel KV names.
+  // This keeps the presale compatible with either Vercel/Upstash integration.
+  const url =
+    process.env.UPSTASH_REDIS_REST_URL ||
+    process.env.KV_REST_API_URL;
+  const token =
+    process.env.UPSTASH_REDIS_REST_TOKEN ||
+    process.env.KV_REST_API_TOKEN;
   if (!url || !token) throw new Error('Presale storage is not configured');
 
   const response = await fetch(url, {
@@ -24,7 +30,13 @@ async function redisCommand(command) {
     },
     body: JSON.stringify(command)
   });
-  const data = await response.json();
+  const text = await response.text();
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    throw new Error('Redis returned a non-JSON response');
+  }
   if (!response.ok || data.error) throw new Error(data.error || 'Redis request failed');
   return data.result;
 }
