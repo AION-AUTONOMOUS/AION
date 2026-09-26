@@ -1,6 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
+    { "source": "/api/mobile/:path*", "destination": "/api/system?route=mobile&path=:path*" },
     { "source": "/api/fleet", "destination": "/api/system?route=fleet" },
     { "source": "/api/chat", "destination": "/api/system?route=chat" },
     { "source": "/api/ops", "destination": "/api/system?route=ops" },
