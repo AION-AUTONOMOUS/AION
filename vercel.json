@@ -1,6 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
+    { "source": "/api/chat", "destination": "/api/system?route=chat" },
+    { "source": "/api/ops", "destination": "/api/system?route=ops" },
+    { "source": "/api/presale", "destination": "/api/system?route=presale" },
+    { "source": "/api/verify", "destination": "/api/system?route=verify" },
+    { "source": "/api/webhook", "destination": "/api/system?route=webhook" },
     { "source": "/api/daily-report", "destination": "/api/system?route=daily-report" },
     { "source": "/api/ops-health", "destination": "/api/system?route=ops-health" },
     { "source": "/api/orchestrator", "destination": "/api/system?route=orchestrator" },
@@ -8,6 +13,11 @@
     { "source": "/api/test-redis", "destination": "/api/system?route=test-redis" },
     { "source": "/api/worker-runtime-health", "destination": "/api/system?route=worker-runtime-health" },
     { "source": "/api/worker-runtime", "destination": "/api/system?route=worker-runtime" },
-    { "source": "/api/workers", "destination": "/api/system?route=workers" }
+    { "source": "/api/workers", "destination": "/api/system?route=workers" },
+    { "source": "/api/paypal/client-id", "destination": "/api/system?route=paypal-client-id" },
+    { "source": "/api/paypal/client-config", "destination": "/api/system?route=paypal-client-config" },
+    { "source": "/api/paypal/create-order", "destination": "/api/system?route=paypal-create-order" },
+    { "source": "/api/paypal/capture-order", "destination": "/api/system?route=paypal-capture-order" },
+    { "source": "/api/wallet/config", "destination": "/api/system?route=wallet-config" }
   ]
 }
