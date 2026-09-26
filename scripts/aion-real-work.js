@@ -1,7 +1,7 @@
 import { writeFileSync, mkdirSync } from 'node:fs';
 
 const department = process.argv[2] || 'operations';
-const baseUrl = String(process.env.AION_RUNTIME_URL || 'https://aion-theta-eight.vercel.app/api/runtime-dispatch').replace(/\\/$/, '');
+const baseUrl = String(process.env.AION_RUNTIME_URL || 'https://aion-theta-eight.vercel.app/api/runtime-dispatch').replace(/\/$/, '');
 const task = {
   department,
   type: 'operations',
