@@ -14,7 +14,10 @@ export default function handler(req, res) {
 
   return res.status(200).json({
     success: true,
-    fleet: {\n      ...fleetHealth(),\n      department_details: Object.values(DEPARTMENTS).map(({ id, name, count, mission, specialties }) => ({ id, name, count, mission, specialties }))\n    },
+    fleet: {
+      ...fleetHealth(),
+      department_details: Object.values(DEPARTMENTS).map(({ id, name, count, mission, specialties }) => ({ id, name, count, mission, specialties }))
+    },
     runtime: {
       model: 'shared-worker-runtime',
       serverless_entrypoints: 1,
