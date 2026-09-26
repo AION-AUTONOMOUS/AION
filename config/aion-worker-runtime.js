@@ -2,30 +2,80 @@ import { dispatchTask } from './aion-workers.js';
 import { resetStore } from './aion-ops-engine.js';
 import { listTasks, updateTask } from './aion-ops-store.js';
 
-export const RUNTIME_VERSION = '1.1.0';
+export const RUNTIME_VERSION = '1.2.0';
 export const MAX_CONCURRENCY = 20;
 const running = new Set();
 let actionExecutor = defaultActionExecutor;
 
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 async function defaultActionExecutor(task) {
   if (!process.env.GROQ_API_KEY) throw new Error('AI provider is not configured');
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: { Authorization: 'Bearer ' + process.env.GROQ_API_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'openai/gpt-oss-120b',
-      messages: [
-        { role: 'system', content: 'You are an AION worker. Analyze the registered task and return a concise actionable result. Never claim external side effects unless an execution adapter performed them.' },
-        { role: 'user', content: task.text }
-      ],
-      temperature: 0.2
-    })
-  });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data?.error?.message || 'AI provider error');
-  const output = data.choices?.[0]?.message?.content;
-  if (typeof output !== 'string' || !output.trim()) throw new Error('AI provider returned no worker result');
-  return { type: 'ai_analysis', output: output.trim(), model: 'openai/gpt-oss-120b' };
+
+  const model = process.env.AION_GROQ_MODEL || 'openai/gpt-oss-20b';
+  const maxCompletionTokens = Math.max(
+    128,
+    Math.min(Number(process.env.AION_GROQ_MAX_COMPLETION_TOKENS) || 600, 2048)
+  );
+
+  const maxAttempts = 4;
+  let lastError = 'AI provider error';
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + process.env.GROQ_API_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            {
+              role: 'system',
+              content: 'You are an AION worker. Analyze the registered task and return a concise actionable result. Never claim external side effects unless an execution adapter performed them. Keep the result under 400 words.'
+            },
+            { role: 'user', content: task.text }
+          ],
+          temperature: 0.2,
+          max_completion_tokens: maxCompletionTokens
+        })
+      });
+
+      const raw = await response.text();
+      let data;
+      try {
+        data = JSON.parse(raw);
+      } catch {
+        data = { error: { message: raw.slice(-2000) } };
+      }
+
+      if (response.ok) {
+        const output = data.choices?.[0]?.message?.content;
+        if (typeof output !== 'string' || !output.trim()) {
+          throw new Error('AI provider returned no worker result');
+        }
+        return { type: 'ai_analysis', output: output.trim(), model };
+      }
+
+      lastError = data?.error?.message || `AI provider HTTP ${response.status}`;
+      const retryable = [408, 429, 500, 502, 503, 504].includes(response.status);
+      if (!retryable || attempt === maxAttempts) throw new Error(lastError);
+
+      const retryAfter = Number(response.headers.get('retry-after'));
+      const delayMs = Number.isFinite(retryAfter) && retryAfter > 0
+        ? Math.min(retryAfter * 1000, 30000)
+        : Math.min(3000 * (2 ** (attempt - 1)), 30000);
+      await sleep(delayMs);
+    } catch (error) {
+      lastError = String(error?.message || error);
+      if (attempt === maxAttempts) throw new Error(lastError);
+      await sleep(Math.min(3000 * (2 ** (attempt - 1)), 30000));
+    }
+  }
+
+  throw new Error(lastError);
 }
 
 export function setActionExecutor(executor) {
