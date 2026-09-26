@@ -70,13 +70,14 @@ export function routeTask(task = {}) {
   const commanderKey = COMMANDER_BY_DEPARTMENT[department] || 'executive';
   const sensitive = department === 'finance' ||
     /payment|money|treasury|wallet|tokenized asset|tokenization|mainnet token|asset custody|asset transfer|stablecoin/.test(text);
+  const blocked = /political targeting|target voters|microtarget voters|استهداف سياسي|استهداف الناخبين/.test(text);
 
   return {
     task: task.id || null,
     department,
     commander: COMMANDERS[commanderKey],
     agent,
-    policy: { autonomous: true, requiresHumanApproval: sensitive }
+    policy: { autonomous: !blocked, requiresHumanApproval: sensitive, blocked }
   };
 }
 
