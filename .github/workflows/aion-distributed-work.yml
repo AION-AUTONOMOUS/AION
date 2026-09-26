@@ -2,6 +2,8 @@ name: AION Distributed Real Work
 on:
   schedule:
     - cron: '*/15 * * * *'
+  push:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
