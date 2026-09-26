@@ -1,4 +1,4 @@
-import { fleetHealth } from '../config/aion-fleet.js';
+import { fleetHealth, DEPARTMENTS } from '../config/aion-fleet.js';
 
 const ALLOWED_ORIGIN =
   process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
@@ -14,7 +14,10 @@ export default function handler(req, res) {
 
   return res.status(200).json({
     success: true,
-    fleet: fleetHealth(),
+    fleet: {
+      ...fleetHealth(),
+      department_details: Object.values(DEPARTMENTS).map(({ id, name, count, mission, specialties }) => ({ id, name, count, mission, specialties }))
+    },
     runtime: {
       model: 'shared-worker-runtime',
       serverless_entrypoints: 1,
