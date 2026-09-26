@@ -60,24 +60,7 @@ button.send:disabled{opacity:.5;cursor:not-allowed;transform:none}
 <h1>AION Chat</h1>
 <p class="sub">تحدث مع الجيش الذكي — اختر وكيلًا واكتب مهمتك</p>
 
-<select class="role-select" id="role">
-<option value="researcher">باحث — Researcher</option>
-<option value="analyst">محلل — Analyst</option>
-<option value="marketer">مسوق — Marketer</option>
-<option value="sales">مبيعات — Sales</option>
-<option value="coder">مبرمج — Coder</option>
-<option value="auditor">مدقق — Auditor</option>
-<option value="legal">قانوني — Legal</option>
-<optgroup label="────── الأقسام الكاملة ──────">
-<option value="research">قسم الأبحاث — 10 وكلاء</option>
-<option value="marketing">قسم التسويق — 10,000 دور ذكي</option>
-<option value="development">قسم التطوير — 15 وكيل</option>
-<option value="support">قسم الدعم — 15 وكيل</option>
-<option value="content">قسم المحتوى — 15 وكيل</option>
-<option value="analysis">قسم التحليل — 5 وكلاء</option>
-<option value="security">قسم الأمان — 5 وكلاء</option>
-</optgroup>
-</select>
+<select class="role-select" id="role" aria-label="اختر قسم AION"><option value="">جاري تحميل أقسام AION...</option></select>
 
 <div class="chat-box" id="chatBox">
 <div class="msg ai">
@@ -147,6 +130,11 @@ document.getElementById('input').addEventListener('keydown', function(e) {
   }
 });
 </script>
+
+<script src="lang.js"></script>
+
+</body>
+</html></script>
 
 <script src="lang.js"></script>
 
