@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createVerificationToken, verifyVerificationToken } from '../api/paypal/verification.js';
+import { createVerificationToken, verifyVerificationToken } from '../server-api/paypal/verification.js';
 
 process.env.AION_VERIFY_SECRET = 'test-secret';
 

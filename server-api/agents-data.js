@@ -1,4 +1,3 @@
-js
 const DEPARTMENTS = {
   research: {
     count: 10,
