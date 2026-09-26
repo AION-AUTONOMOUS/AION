@@ -1,0 +1,33 @@
+name: AION Android
+on:
+  push:
+    paths:
+      - "apps/aion-android/**"
+      - ".github/workflows/aion-android.yml"
+  pull_request:
+    paths:
+      - "apps/aion-android/**"
+      - ".github/workflows/aion-android.yml"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/aion-android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.10"
+      - run: gradle :app:assembleDebug
+      - run: gradle :app:bundleRelease
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aion-mobile-builds
+          path: |
+            apps/aion-android/app/build/outputs/apk/debug/*.apk
+            apps/aion-android/app/build/outputs/bundle/release/*.aab
