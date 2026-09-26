@@ -1,7 +1,7 @@
 {
-  "name": "AION — منصة الذكاء والتعليم",
-  "short_name": "AION",
-  "description": "منصة ذكاء اصطناعي متعددة الأقسام + تطبيق المعلم والطالب + Academy",
+  "name": "AION Autonomous — الشركة الرسمية",
+  "short_name": "AION Autonomous",
+  "description": "AION Autonomous — AI agents, Autonomous Stack, digital assets, research and company services",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -25,6 +25,13 @@
     }
   ],
   "shortcuts": [
+    {
+      "name": "Autonomous Stack",
+      "short_name": "Autonomous",
+      "description": "مركز التشغيل الذاتي والتحكم والحوكمة",
+      "url": "/autonomy.html",
+      "icons": [{"src": "/icons/aion-company.svg", "sizes": "any", "type": "image/svg+xml"}]
+    },
     {
       "name": "تطبيق المعلم",
       "short_name": "المعلم",
