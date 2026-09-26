@@ -77,10 +77,11 @@ export function stackHealth() {
     fleet: { agents: AGENTS.length, departments: Object.keys(DEPARTMENTS).length },
     guards: {
       autonomousMoneyMovement: false,
-      autonomousMainnetDeployment: false,
-      autonomousLegalDecisions: false,
-      autonomousPoliticalTargeting: false,
-      autonomousRobotExecution: false
+      autonomousSensitiveAssetActions: false,
+      autonomousEngineering: true,
+      autonomousResearch: true,
+      autonomousRobotics: Boolean(process.env.AION_ROBOT_EXECUTOR_URL),
+      autonomousOperations: true
     },
     researchNote: 'AION integrates frontier-AI research but does not claim AGI or superintelligence.'
   };
@@ -162,8 +163,8 @@ export async function createAutonomousPlan(goal, options = {}) {
   if (/code|api|software|deploy|bug|برمج|كود|نظام/.test(lower)) add('Engineering implementation and tests', 'engineering', 'engineering');
   if (/token|asset|blockchain|tokenize|رمز|أصل|بلوك/.test(lower)) add('Tokenized-asset lifecycle plan', 'finance', 'tokenized-assets', true);
   add('Independent quality and security review', 'quality', 'quality');
-  add('Human approval gate for sensitive actions', 'compliance', 'approval-gate', true);
-  add('Execute only approved real adapters', 'operations', 'execution');
+  if (stages.some(stage => stage.sensitive)) add('Human approval gate for money or sensitive asset actions', 'finance', 'approval-gate', true);
+  add('Execute through available real adapters', 'operations', 'execution');
   add('Verify outcome and publish audit record', 'quality', 'verification');
 
   const planId = id('AION-GOAL');

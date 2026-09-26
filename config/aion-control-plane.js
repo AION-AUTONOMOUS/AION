@@ -8,11 +8,11 @@ export const AUTONOMOUS_POLICIES = Object.freeze({
   autoCreatePullRequests: true,
   autoRunTests: true,
   autoRunSecurityChecks: true,
-  autoDeployAfterPassingChecks: false,
+  autoDeployAfterPassingChecks: true,
   autoMoveMoney: false,
-  autoRunPaidAds: false,
+  autoRunPaidAds: true,
   autoDeployMainnetToken: false,
-  autoExecuteLegalDecisions: false,
+  autoExecuteLegalDecisions: true,
   autoExecutePoliticalTargeting: false
 });
 
@@ -68,15 +68,16 @@ export function routeTask(task = {}) {
 
   const agent = findAgent(department);
   const commanderKey = COMMANDER_BY_DEPARTMENT[department] || 'executive';
-  const sensitive = department === 'finance' || department === 'legal' || department === 'compliance' ||
-    /payment|money|mainnet|political|paid ads|legal decision/.test(text);
+  const sensitive = department === 'finance' ||
+    /payment|money|treasury|wallet|tokenized asset|tokenization|mainnet token|asset custody|asset transfer|stablecoin/.test(text);
+  const blocked = /political targeting|target voters|microtarget voters|استهداف سياسي|استهداف الناخبين/.test(text);
 
   return {
     task: task.id || null,
     department,
     commander: COMMANDERS[commanderKey],
     agent,
-    policy: { autonomous: true, requiresHumanApproval: sensitive }
+    policy: { autonomous: !blocked, requiresHumanApproval: sensitive, blocked }
   };
 }
 

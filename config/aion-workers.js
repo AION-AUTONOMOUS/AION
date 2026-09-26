@@ -24,4 +24,4 @@ const WORKER_CAPABILITIES=Object.freeze({
   communications:['communications','press','outreach','public-relations']
 });
 export function workerCapabilities(department){return WORKER_CAPABILITIES[department]||['general'];}
-export async function dispatchTask(input={}){const result=await enqueueTask(input);const department=result.route.department;const task=result.task;if(task.status==='awaiting_approval')return {...result,worker:null,action:'await_human_approval'};return {...result,worker:{id:result.route.agent.id,department,capabilities:workerCapabilities(department),version:WORKER_VERSION},action:'queued_for_worker'};}
+export async function dispatchTask(input={}){const result=await enqueueTask(input);const department=result.route.department;const task=result.task;if(result.route.policy?.blocked)return {...result,worker:null,action:'blocked_by_policy'};if(task.status==='awaiting_approval')return {...result,worker:null,action:'await_human_approval'};return {...result,worker:{id:result.route.agent.id,department,capabilities:workerCapabilities(department),version:WORKER_VERSION},action:'queued_for_worker'};}

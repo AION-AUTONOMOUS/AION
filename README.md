@@ -50,6 +50,14 @@ Update 2026-09
 AION AUTONOMOUS 2026
 
 
+## Autonomous Delegation Policy
+
+AION operates under an explicit delegation boundary:
+- **Autonomous by default:** engineering, testing, research, DevOps, operations, product, content, growth, support, robotics when a real executor is configured, and other ordinary non-financial work.
+- **Human approval required:** movement of money and sensitive asset/tokenization/custody actions.
+- **No fake execution:** a missing provider or external adapter produces a failure/blocked result rather than a simulated success.
+- Political targeting remains disabled as an explicit governance boundary.
+
 ## AION Autonomous Stack — 2026
 
 AION now exposes a unified Autonomous Stack at `/autonomy.html` and `/api/autonomy`.
