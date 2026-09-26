@@ -1,5 +1,6 @@
 import { dispatchTask } from '../config/aion-workers.js';
 import { opsHealth } from '../config/aion-ops-engine.js';
+import { processBatch, workerRuntimeStatus } from '../config/aion-worker-runtime.js';
 
 const ALLOWED_ORIGIN =
   process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
@@ -25,6 +26,12 @@ export default async function handler(req, res) {
   }
 
   const dispatched = await dispatchTask(body);
-  const health = await opsHealth();
-  return res.status(201).json({ success: true, ...dispatched, health });
+  if (dispatched.action === 'await_human_approval') {
+    return res.status(202).json({ success: true, ...dispatched, health: await opsHealth(), runtime: await workerRuntimeStatus() });
+  }
+  const results = await processBatch(1);
+  const result = results[0];
+  if (!result) return res.status(409).json({ success: false, error: 'Worker did not claim task', runtime: await workerRuntimeStatus() });
+  if (result.status === 'failed') return res.status(502).json({ success: false, error: result.error, task: result, runtime: await workerRuntimeStatus() });
+  return res.status(200).json({ success: true, task: result, worker: dispatched.worker, action: 'executed', health: await opsHealth(), runtime: await workerRuntimeStatus() });
 }

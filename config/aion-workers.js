@@ -1,5 +1,4 @@
-import { getTask } from './aion-ops-store.js';
-import { enqueueTask, runNextTask } from './aion-ops-engine.js';
+import { enqueueTask } from './aion-ops-engine.js';
 
 export const WORKER_VERSION='1.2.0';
 const WORKER_CAPABILITIES=Object.freeze({
@@ -26,4 +25,3 @@ const WORKER_CAPABILITIES=Object.freeze({
 });
 export function workerCapabilities(department){return WORKER_CAPABILITIES[department]||['general'];}
 export async function dispatchTask(input={}){const result=await enqueueTask(input);const department=result.route.department;const task=result.task;if(task.status==='awaiting_approval')return {...result,worker:null,action:'await_human_approval'};return {...result,worker:{id:result.route.agent.id,department,capabilities:workerCapabilities(department),version:WORKER_VERSION},action:'queued_for_worker'};}
-export async function executeApprovedTask(id){const task=await getTask(id);if(!task)return null;if(task.status!=='ready'||!task.approvedAt)return null;return runNextTask();}
