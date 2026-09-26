@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>فريق AION | 100 وكيل ذكاء اصطناعي</title>
+<title>فريق AION | 10,000 دور ذكي</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',Arial,Tahoma,sans-serif;background:#020817;color:#fff;min-height:100vh;overflow-x:hidden}
@@ -63,11 +63,11 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(26px,4.5vw,42px);margin-botto
 </div>
 
 <h1>🤖 فريق AION الذكي</h1>
-<p class="sub">100 وكيل ذكاء اصطناعي متخصصون — يعملون على مدار الساعة</p>
+<p class="sub">10,000 دور ذكي عبر 20 قسمًا — يعملون عبر Runtime مشترك</p>
 
 <div class="stats">
-<div class="stat"><div class="num" id="totalAgents">100</div><div class="lbl">إجمالي الوكلاء</div></div>
-<div class="stat"><div class="num" id="totalDepts">8</div><div class="lbl">أقسام متخصصة</div></div>
+<div class="stat"><div class="num" id="totalAgents">—</div><div class="lbl">إجمالي الوكلاء</div></div>
+<div class="stat"><div class="num" id="totalDepts">—</div><div class="lbl">أقسام متخصصة</div></div>
 <div class="stat"><div class="num">24/7</div><div class="lbl">تشغيل مستمر</div></div>
 <div class="stat"><div class="num">AR/EN</div><div class="lbl">دعم ثنائي</div></div>
 </div>
@@ -86,83 +86,38 @@ aion.genesisss@gmail.com<br><br>
 </div>
 
 <script>
-const DEPARTMENTS = {
-  research: { nameAr:'قسم الأبحاث', icon:'🔬', count:10, specialties:['market research','competitor analysis','trend detection','data mining','industry reports','survey design','qualitative research','quantitative analysis','trend forecasting','source verification'] },
-  marketing: { nameAr:'قسم التسويق', icon:'📣', count:20, specialties:['twitter content','tiktok content','instagram reels','seo','email campaigns','ads copy','linkedin posts','content strategy','youtube scripts','influencer outreach','community building','brand voice','copywriting','campaign planning','analytics reporting','growth hacking','viral content','newsletter','landing pages','cta optimization'] },
-  sales: { nameAr:'قسم المبيعات', icon:'💼', count:15, specialties:['lead generation','cold outreach','negotiation','closing','proposals','discovery calls','objection handling','crm management','upselling','follow up sequences','pricing strategy','demo presentations','referral programs','pipeline management','contract drafting'] },
-  development: { nameAr:'قسم التطوير', icon:'💻', count:15, specialties:['frontend','backend','ai ml','mobile','devops','database design','api integration','security hardening','testing qa','code review','performance optimization','cloud architecture','ui ux','automation','documentation'] },
-  support: { nameAr:'قسم الدعم', icon:'🎧', count:15, specialties:['customer support','technical help','onboarding','faq','troubleshooting','live chat','email support','escalation','refunds','feedback collection','sla management','knowledge base','ticket triage','user training','retention'] },
-  content: { nameAr:'قسم المحتوى', icon:'✍️', count:15, specialties:['articles','translation','copywriting','scripts','documentation','blog posts','whitepapers','press releases','case studies','ebooks','product descriptions','video scripts','podcast outlines','infographics text','social captions'] },
-  analysis: { nameAr:'قسم التحليل', icon:'📊', count:5, specialties:['financial analysis','data science','reporting','forecasting','kpi tracking'] },
-  security: { nameAr:'قسم الأمان', icon:'🛡️', count:5, specialties:['audit','monitoring','threat detection','compliance','incident response'] }
-};
-
-const AGENTS = [];
-let counter = 1;
-Object.keys(DEPARTMENTS).forEach(function(dept){
-  const cfg = DEPARTMENTS[dept];
-  for (let i=0;i<cfg.count;i++){
-    const sp = cfg.specialties[i % cfg.specialties.length];
-    AGENTS.push({
-      id: 'AION-' + dept.slice(0,3).toUpperCase() + '-' + String(counter).padStart(4,'0'),
-      name: dept.charAt(0).toUpperCase() + dept.slice(1) + ' Agent ' + (i+1),
-      department: dept,
-      deptAr: cfg.nameAr,
-      icon: cfg.icon,
-      specialty: sp
-    });
-    counter++;
-  }
-});
-
-document.getElementById('totalAgents').textContent = AGENTS.length;
-document.getElementById('totalDepts').textContent = Object.keys(DEPARTMENTS).length;
-
+let FLEET = null;
+async function loadFleet(){
+  const res=await fetch('/api/fleet',{headers:{Accept:'application/json'}});
+  const data=await res.json();
+  if(!res.ok||!data.success) throw new Error(data.error||'Fleet unavailable');
+  FLEET=data.fleet;
+  document.getElementById('totalAgents').textContent=Number(FLEET.total_agents).toLocaleString('ar-SA');
+  document.getElementById('totalDepts').textContent=Number(FLEET.departments).toLocaleString('ar-SA');
+  render('');
+}
 function render(filter){
-  filter = (filter || '').toLowerCase();
-  const container = document.getElementById('agentsContainer');
-  container.innerHTML = '';
-
-  Object.keys(DEPARTMENTS).forEach(function(dept){
-    const cfg = DEPARTMENTS[dept];
-    const deptAgents = AGENTS.filter(function(a){
-      if (a.department !== dept) return false;
-      if (!filter) return true;
-      return a.name.toLowerCase().includes(filter) ||
-             a.id.toLowerCase().includes(filter) ||
-             a.specialty.toLowerCase().includes(filter) ||
-             cfg.nameAr.includes(filter);
-    });
-
-    if (deptAgents.length === 0) return;
-
-    const title = document.createElement('div');
-    title.className = 'dept-title';
-    title.innerHTML = cfg.icon + ' ' + cfg.nameAr + ' <span>(' + deptAgents.length + ' وكيل)</span>';
+  filter=(filter||'').toLowerCase();
+  const container=document.getElementById('agentsContainer');
+  container.innerHTML='';
+  Object.entries(FLEET.counts).forEach(function(entry){
+    const dept=entry[0], count=entry[1];
+    const match=!filter||dept.toLowerCase().includes(filter);
+    if(!match)return;
+    const title=document.createElement('div');
+    title.className='dept-title';
+    title.innerHTML='🤖 '+dept+' <span>('+Number(count).toLocaleString('ar-SA')+' دور مسجل)</span>';
     container.appendChild(title);
-
-    const grid = document.createElement('div');
-    grid.className = 'grid';
-    deptAgents.forEach(function(a){
-      const card = document.createElement('a');
-      card.className = 'agent-card';
-      card.href = 'chat.html';
-      card.innerHTML =
-        '<div class="avatar">' + cfg.icon + '</div>' +
-        '<div class="name">' + a.name + '</div>' +
-        '<div class="id">' + a.id + '</div>' +
-        '<div class="spec">' + a.specialty + '</div>' +
-        '<div class="badge">' + a.department + '</div>';
-      grid.appendChild(card);
-    });
-    container.appendChild(grid);
+    const note=document.createElement('div');
+    note.className='sub';
+    note.style.marginBottom='20px';
+    note.textContent='يتم اختيار الأدوار وتشغيل المهام عبر Control Plane وRuntime المشترك. لا يتم إنشاء Function مستقلة لكل دور.';
+    container.appendChild(note);
   });
 }
-
-render('');
-
-document.getElementById('search').addEventListener('input', function(e){
-  render(e.target.value);
+document.getElementById('search').addEventListener('input',function(e){render(e.target.value)});
+loadFleet().catch(function(error){
+  document.getElementById('agentsContainer').innerHTML='<div class="sub">تعذر تحميل بيانات Fleet الحية حاليًا.</div>';
 });
 </script>
 
