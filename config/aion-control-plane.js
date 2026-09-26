@@ -1,6 +1,6 @@
 import { AGENTS, DEPARTMENTS, TOTAL_AGENTS, findAgent, fleetHealth } from './aion-fleet.js';
 
-export const CONTROL_PLANE_VERSION = '1.0.0';
+export const CONTROL_PLANE_VERSION = '1.1.0';
 export const CONTROL_PLANE_STATUS = 'ready';
 
 export const AUTONOMOUS_POLICIES = Object.freeze({
@@ -23,30 +23,60 @@ export const COMMANDERS = Object.freeze({
   growth: { id: 'AION-GROW-001', mission: 'Coordinate marketing, sales and partnerships.' }
 });
 
+const DEPARTMENT_RULES = [
+  ['research', /research|source|competitor|trend|intelligence/],
+  ['engineering', /bug|code|api|software|compile|test|deploy|program/],
+  ['security', /security|secret|vulnerability|threat|hardening|incident/],
+  ['quality', /quality|qa|regression|reliability|release verification/],
+  ['devops', /devops|ci\/cd|pipeline|infrastructure|observability|deployment automation/],
+  ['product', /product|roadmap|requirement|prioritization|discovery/],
+  ['data', /data|analytics|metric|pipeline|reporting/],
+  ['finance', /finance|budget|invoice|unit economics|financial/],
+  ['legal', /legal|contract|law|attorney|document review/],
+  ['compliance', /compliance|regulatory|regulation|policy check|records/],
+  ['marketing', /seo|marketing|content marketing|campaign|brand|advert/],
+  ['growth', /growth|conversion|experiment|funnel|optimization/],
+  ['sales', /sales|customer|lead|prospect|crm|proposal/],
+  ['partnerships', /partnership|partner|ecosystem|integration/],
+  ['support', /support|customer service|onboarding|knowledge base|ticket/],
+  ['content', /content|article|documentation|script|localization|education/],
+  ['operations', /operations|schedule|procurement|process|workflow/],
+  ['people', /people|hiring|training|team operations|human resources|hr/],
+  ['strategy', /strategy|kpi|scenario|planning|business plan/],
+  ['communications', /communication|press|public relations|outreach|creator/]
+];
+
+const COMMANDER_BY_DEPARTMENT = Object.freeze({
+  research: 'executive', product: 'executive', data: 'executive', strategy: 'executive',
+  engineering: 'engineering', quality: 'engineering', devops: 'engineering',
+  security: 'security', legal: 'security', compliance: 'security',
+  marketing: 'growth', growth: 'growth', sales: 'growth', partnerships: 'growth',
+  support: 'growth', content: 'growth', operations: 'executive', people: 'executive',
+  communications: 'growth', finance: 'executive'
+});
+
 export function routeTask(task = {}) {
   const text = String(task.text || task.type || '').toLowerCase();
+  const requestedDepartment = String(task.department || task.type || '').toLowerCase();
+  let department = DEPARTMENTS[requestedDepartment] ? requestedDepartment : 'operations';
 
-  let department = 'operations';
-  if (/bug|code|api|software|compile|test|deploy/.test(text)) department = 'engineering';
-  else if (/security|secret|vulnerability|audit/.test(text)) department = 'security';
-  else if (/seo|marketing|content|campaign|advert/.test(text)) department = 'marketing';
-  else if (/sales|customer|lead/.test(text)) department = 'sales';
-  else if (/finance|budget|invoice/.test(text)) department = 'finance';
-  else if (/legal|contract|compliance/.test(text)) department = 'compliance';
+  if (department === 'operations') {
+    for (const [candidate, pattern] of DEPARTMENT_RULES) {
+      if (pattern.test(text)) { department = candidate; break; }
+    }
+  }
 
   const agent = findAgent(department);
+  const commanderKey = COMMANDER_BY_DEPARTMENT[department] || 'executive';
+  const sensitive = department === 'finance' || department === 'legal' || department === 'compliance' ||
+    /payment|money|mainnet|political|paid ads|legal decision/.test(text);
+
   return {
     task: task.id || null,
     department,
-    commander: Object.values(COMMANDERS).find(item => item.id.toLowerCase().includes(department.slice(0, 4))) || COMMANDERS.executive,
+    commander: COMMANDERS[commanderKey],
     agent,
-    policy: {
-      autonomous: true,
-      requiresHumanApproval:
-        department === 'finance' ||
-        department === 'compliance' ||
-        /payment|money|mainnet|legal|political|paid ads/.test(text)
-    }
+    policy: { autonomous: true, requiresHumanApproval: sensitive }
   };
 }
 
