@@ -2,7 +2,7 @@
   "name": "AION — منصة الذكاء والتعليم",
   "short_name": "AION",
   "description": "منصة ذكاء اصطناعي متعددة الأقسام + تطبيق المعلم والطالب + Academy",
-  "start_url": "/index.html",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
@@ -10,26 +10,18 @@
   "theme_color": "#00c8ff",
   "lang": "ar",
   "dir": "rtl",
-  "categories": ["education", "productivity", "business"],
+  "categories": [
+    "education",
+    "productivity",
+    "business"
+  ],
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "https://placehold.co/192x192/00c8ff/020817/png?text=A&font=Roboto",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://placehold.co/512x512/00c8ff/020817/png?text=A&font=Roboto",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://placehold.co/512x512/00c8ff/020817/png?text=A&font=Roboto",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "src": "/icons/aion-company.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ],
   "shortcuts": [
@@ -38,21 +30,39 @@
       "short_name": "المعلم",
       "description": "تطبيق المعلم والطالب",
       "url": "/teacher.html",
-      "icons": [{"src": "https://placehold.co/192x192/4ade80/020817/png?text=T&font=Roboto", "sizes": "192x192", "type": "image/png"}]
+      "icons": [
+        {
+          "src": "https://placehold.co/192x192/4ade80/020817/png?text=T&font=Roboto",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "AION Academy",
       "short_name": "Academy",
       "description": "منصة التعليم الذكية",
       "url": "/academy.html",
-      "icons": [{"src": "https://placehold.co/192x192/a78bfa/020817/png?text=A&font=Roboto", "sizes": "192x192", "type": "image/png"}]
+      "icons": [
+        {
+          "src": "https://placehold.co/192x192/a78bfa/020817/png?text=A&font=Roboto",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "AI Tutor",
       "short_name": "Tutor",
       "description": "تحدث مع الذكاء الاصطناعي",
       "url": "/chat.html",
-      "icons": [{"src": "https://placehold.co/192x192/00c8ff/020817/png?text=AI&font=Roboto", "sizes": "192x192", "type": "image/png"}]
+      "icons": [
+        {
+          "src": "https://placehold.co/192x192/00c8ff/020817/png?text=AI&font=Roboto",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }
