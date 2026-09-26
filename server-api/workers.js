@@ -11,7 +11,7 @@ function cors(res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   cors(res);
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method not allowed' });
@@ -24,9 +24,7 @@ export default function handler(req, res) {
     return res.status(413).json({ success: false, error: 'task too long' });
   }
 
-  return res.status(201).json({
-    success: true,
-    ...dispatchTask(body),
-    health: opsHealth()
-  });
+  const dispatched = await dispatchTask(body);
+  const health = await opsHealth();
+  return res.status(201).json({ success: true, ...dispatched, health });
 }
