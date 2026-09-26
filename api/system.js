@@ -12,6 +12,7 @@ const HANDLERS = {
   'test-redis': () => import('../server-api/test-redis.js'),
   'worker-runtime-health': () => import('../server-api/worker-runtime-health.js'),
   'worker-runtime': () => import('../server-api/worker-runtime.js'),
+  'ops-approve': () => import('../server-api/ops-approve.js'),
   'workers': () => import('../server-api/workers.js'),
   'paypal-client-id': () => import('../server-api/paypal/client-id.js'),
   'paypal-client-config': () => import('../server-api/paypal/client-config.js'),
