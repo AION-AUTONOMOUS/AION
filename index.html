@@ -431,6 +431,23 @@ aion.genesisss@gmail.com<br><br>
 <script src="lang.js"></script>
 
 <script>
+(function(){
+  const menu=document.getElementById('lang-menu');
+  const open=document.getElementById('language-button');
+  const close=document.getElementById('lang-close');
+  if(!open||!menu||!close) return;
+  open.addEventListener('click',()=>{menu.classList.add('open');menu.setAttribute('aria-hidden','false')});
+  close.addEventListener('click',()=>{menu.classList.remove('open');menu.setAttribute('aria-hidden','true')});
+  menu.addEventListener('click',e=>{if(e.target===menu) close.click()});
+  menu.querySelectorAll('.lang-option').forEach(btn=>btn.addEventListener('click',()=>{
+    const lang=btn.dataset.lang;
+    localStorage.setItem('aion-language',lang);
+    document.documentElement.lang=lang;
+    if(lang==='en'){document.documentElement.dir='ltr';}else{document.documentElement.dir='rtl';}
+    menu.classList.remove('open');menu.setAttribute('aria-hidden','true');
+  }));
+})();
+
 (async function loadFleet(){
   const total=document.getElementById('fleet-total'), depts=document.getElementById('fleet-depts'), list=document.getElementById('fleet-departments'), status=document.getElementById('fleet-status');
   try{
