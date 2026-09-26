@@ -1,4 +1,4 @@
-const HANDLERS = {
+const HANDLERS = {\n  'fleet': () => import('../server-api/fleet.js'),
   'chat': () => import('../server-api/chat.js'),
   'ops': () => import('../server-api/ops.js'),
   'presale': () => import('../server-api/presale.js'),
