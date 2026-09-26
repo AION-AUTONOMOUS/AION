@@ -3,8 +3,10 @@
   "version": "1.0.1",
   "private": true,
   "type": "module",
-  "engines": {
-    "node": "24.x"
+  "engines": { "node": "24.x" },
+  "scripts": {
+    "test": "node --test tests/**/*.test.js",
+    "test:core": "node --test tests/aion-core.test.js"
   },
   "devDependencies": {
     "hardhat": "^3.18.0",
