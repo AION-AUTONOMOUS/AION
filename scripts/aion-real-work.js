@@ -10,40 +10,60 @@ const task = {
 };
 
 const startedAt = new Date().toISOString();
+const maxAttempts = 4;
 let report;
-try {
-  const response = await fetch(baseUrl, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(task)
-  });
-  const raw = await response.text();
-  let body;
-  try { body = JSON.parse(raw); } catch { body = { raw: raw.slice(-4000) }; }
-  report = {
-    department,
-    endpoint: baseUrl,
-    startedAt,
-    completedAt: new Date().toISOString(),
-    httpStatus: response.status,
-    ok: response.ok || response.status === 202,
-    action: body?.action || null,
-    task: body?.task || null,
-    worker: body?.worker || null,
-    runtime: body?.runtime || null,
-    error: body?.error || null,
-    response: body
-  };
-} catch (error) {
-  report = {
-    department,
-    endpoint: baseUrl,
-    startedAt,
-    completedAt: new Date().toISOString(),
-    httpStatus: 0,
-    ok: false,
-    error: String(error?.message || error)
-  };
+
+for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+  try {
+    const response = await fetch(baseUrl, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(task)
+    });
+    const raw = await response.text();
+    let body;
+    try { body = JSON.parse(raw); } catch { body = { raw: raw.slice(-4000) }; }
+
+    const retryable = [429, 502, 503, 504].includes(response.status);
+    const ok = response.ok || response.status === 202;
+
+    report = {
+      department,
+      endpoint: baseUrl,
+      startedAt,
+      completedAt: new Date().toISOString(),
+      attempts: attempt,
+      httpStatus: response.status,
+      ok,
+      action: body?.action || null,
+      task: body?.task || null,
+      worker: body?.worker || null,
+      runtime: body?.runtime || null,
+      error: body?.error || null,
+      response: body
+    };
+
+    if (ok || !retryable || attempt === maxAttempts) break;
+
+    const retryAfter = Number(response.headers.get('retry-after'));
+    const delayMs = Number.isFinite(retryAfter) && retryAfter > 0
+      ? Math.min(retryAfter * 1000, 15000)
+      : Math.min(7000 * attempt, 15000);
+    await new Promise(resolve => setTimeout(resolve, delayMs));
+  } catch (error) {
+    report = {
+      department,
+      endpoint: baseUrl,
+      startedAt,
+      completedAt: new Date().toISOString(),
+      attempts: attempt,
+      httpStatus: 0,
+      ok: false,
+      error: String(error?.message || error)
+    };
+    if (attempt === maxAttempts) break;
+    await new Promise(resolve => setTimeout(resolve, Math.min(4000 * attempt, 12000)));
+  }
 }
 
 mkdirSync('reports', { recursive: true });
