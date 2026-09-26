@@ -7,7 +7,11 @@
     { "source": "/api/verify", "destination": "/api/system?route=verify" },
     { "source": "/api/webhook", "destination": "/api/system?route=webhook" },
     { "source": "/api/daily-report", "destination": "/api/system?route=daily-report" },
-    { "source": "/api/ops-health", "destination": "/api/system?route=ops-health" },
+    { "source": "/api/ops-approve",
+      "destination": "/api/system?route=ops-approve"
+    },
+    {
+      "source": "/api/ops-health", "destination": "/api/system?route=ops-health" },
     { "source": "/api/orchestrator", "destination": "/api/system?route=orchestrator" },
     { "source": "/api/runtime-dispatch", "destination": "/api/system?route=runtime-dispatch" },
     { "source": "/api/test-redis", "destination": "/api/system?route=test-redis" },
