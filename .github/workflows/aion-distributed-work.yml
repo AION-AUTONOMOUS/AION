@@ -10,13 +10,17 @@ permissions:
 concurrency:
   group: aion-distributed-work
   cancel-in-progress: true
+
+env:
+  AION_COMPANY_RUNTIME: production
 jobs:
   workers:
     name: Worker group
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 2
       matrix:
         department: [research, engineering, security, quality, devops, product, data, finance, legal, compliance, marketing, growth, sales, partnerships, support, content, operations, people, strategy, communications]
     steps:
