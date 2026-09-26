@@ -1,12 +1,14 @@
 // AION Academy — Service Worker for PWA
-const CACHE_NAME = 'aion-academy-v1';
+const CACHE_NAME = 'aion-autonomous-v2';
 
 const urlsToCache = [
   '/',
   '/index.html',
   '/academy.html',
   '/chat.html',
-  '/manifest.json'
+  '/autonomy.html',
+  '/manifest.json',
+  '/icons/aion-company.svg'
 ];
 
 // Install
