@@ -188,7 +188,7 @@ a{text-decoration:none;color:inherit}
 .chat-bubble{width:38px;height:38px;font-size:18px}
 .nav-links a{font-size:11px}
 }
-</style>
+.fleet-section{margin-bottom:20px;padding:28px 20px;background:linear-gradient(180deg,rgba(0,180,255,.10),rgba(2,8,23,.94));border:2px solid rgba(0,200,255,.45);border-radius:22px}.fleet-head{text-align:center;margin-bottom:20px}.fleet-head h2{font-size:clamp(22px,3vw,30px);font-weight:900}.fleet-head h2 span{color:#00c8ff}.fleet-head p{color:#aebbd0;font-size:12px;margin-top:7px}.fleet-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}.fleet-kpi{padding:16px;text-align:center;background:rgba(0,180,255,.05);border:1px solid rgba(0,200,255,.22);border-radius:14px}.fleet-kpi .n{font-size:25px;font-weight:900;color:#f5c542}.fleet-kpi .l{font-size:10px;color:#aebbd0;margin-top:4px}.fleet-departments{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}.fleet-dept{padding:11px 12px;background:rgba(2,15,40,.8);border:1px solid rgba(0,180,255,.18);border-radius:11px;display:flex;justify-content:space-between;gap:10px}.fleet-dept .name{font-size:11px;color:#dfe8f5;font-weight:800}.fleet-dept .count{font-size:11px;color:#00c8ff;font-weight:900}.fleet-status{margin-top:14px;text-align:center;color:#4ade80;font-size:11px;font-weight:900}.fleet-error{color:#f87171}.fleet-loading{color:#aebbd0}@media(max-width:600px){.fleet-summary{grid-template-columns:1fr}.fleet-departments{grid-template-columns:1fr 1fr}}</style>
 </head>
 <body>
 <div class="container">
@@ -325,6 +325,17 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 
+<div class="fleet-section" id="fleet">
+<div class="fleet-head"><h2>🌐 شبكة <span>AION الحية</span></h2><p>بيانات الـFleet من Control Plane — الأدوار المسجلة لا تعني وظائف Serverless مستقلة.</p></div>
+<div class="fleet-summary">
+<div class="fleet-kpi"><div class="n" id="fleet-total">—</div><div class="l">إجمالي الأدوار</div></div>
+<div class="fleet-kpi"><div class="n" id="fleet-depts">—</div><div class="l">الأقسام</div></div>
+<div class="fleet-kpi"><div class="n" id="fleet-workers">1</div><div class="l">نقطة Serverless مشتركة</div></div>
+</div>
+<div class="fleet-departments" id="fleet-departments"><div class="fleet-loading">جاري تحميل شبكة AION…</div></div>
+<div class="fleet-status" id="fleet-status">● Control Plane</div>
+</div>
+
 <div class="band">
 <div class="band-tag">AION AUTONOMOUS</div>
 <h2>نحول أفكارك إلى <span>واقع</span> .. بسرعة، بكفاءة، وذكاء</h2>
@@ -409,5 +420,23 @@ aion.genesisss@gmail.com<br><br>
 
 <script src="lang.js"></script>
 
+<script>
+(async function loadFleet(){
+  const total=document.getElementById('fleet-total'), depts=document.getElementById('fleet-depts'), list=document.getElementById('fleet-departments'), status=document.getElementById('fleet-status');
+  try{
+    const response=await fetch('/api/fleet',{headers:{Accept:'application/json'}});
+    const data=await response.json();
+    if(!response.ok||!data.success) throw new Error(data.error||'Fleet API error');
+    total.textContent=Number(data.fleet.total_agents).toLocaleString('ar-SA');
+    depts.textContent=Number(data.fleet.departments).toLocaleString('ar-SA');
+    list.innerHTML=Object.entries(data.fleet.counts).map(([id,count])=>'<div class="fleet-dept"><span class="name">'+id+'</span><span class="count">'+Number(count).toLocaleString('ar-SA')+'</span></div>').join('');
+    status.textContent='● Control Plane متصل — '+data.runtime.model;
+  }catch(error){
+    list.innerHTML='<div class="fleet-error">تعذر تحميل بيانات الـFleet حاليًا.</div>';
+    status.textContent='● Fleet API غير متاح';
+    status.classList.add('fleet-error');
+  }
+})();
+</script>
 </body>
 </html>
