@@ -9,6 +9,7 @@ export default async function handler(req,res){
   const body=req.body||{};
   if(typeof body.text!=='string'||!body.text.trim()||body.text.length>4000)return res.status(400).json({success:false,error:'Invalid task'});
   const routed=await dispatchTask(body);
+  if(routed.action==='blocked_by_policy')return res.status(403).json({success:false,task:routed.task,route:routed.route,action:routed.action,runtime:await workerRuntimeStatus()});
   if(routed.action==='await_human_approval')return res.status(202).json({success:true,task:routed.task,route:routed.route,action:routed.action,worker:null,runtime:await workerRuntimeStatus()});
   const results=await processBatch(1);
   const result=results[0];
