@@ -188,7 +188,7 @@ a{text-decoration:none;color:inherit}
 .chat-bubble{width:38px;height:38px;font-size:18px}
 .nav-links a{font-size:11px}
 }
-.fleet-section{margin-bottom:20px;padding:28px 20px;background:linear-gradient(180deg,rgba(0,180,255,.10),rgba(2,8,23,.94));border:2px solid rgba(0,200,255,.45);border-radius:22px}.fleet-head{text-align:center;margin-bottom:20px}.fleet-head h2{font-size:clamp(22px,3vw,30px);font-weight:900}.fleet-head h2 span{color:#00c8ff}.fleet-head p{color:#aebbd0;font-size:12px;margin-top:7px}.fleet-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}.fleet-kpi{padding:16px;text-align:center;background:rgba(0,180,255,.05);border:1px solid rgba(0,200,255,.22);border-radius:14px}.fleet-kpi .n{font-size:25px;font-weight:900;color:#f5c542}.fleet-kpi .l{font-size:10px;color:#aebbd0;margin-top:4px}.fleet-departments{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}.fleet-dept{padding:11px 12px;background:rgba(2,15,40,.8);border:1px solid rgba(0,180,255,.18);border-radius:11px;display:flex;justify-content:space-between;gap:10px}.fleet-dept .name{font-size:11px;color:#dfe8f5;font-weight:800}.fleet-dept .count{font-size:11px;color:#00c8ff;font-weight:900}.fleet-status{margin-top:14px;text-align:center;color:#4ade80;font-size:11px;font-weight:900}.fleet-error{color:#f87171}.fleet-loading{color:#aebbd0}@media(max-width:600px){.fleet-summary{grid-template-columns:1fr}.fleet-departments{grid-template-columns:1fr 1fr}}</style>
+.mobile-download{margin:0 0 20px;padding:26px 20px;border:2px solid rgba(245,197,66,.55);border-radius:22px;background:linear-gradient(135deg,rgba(245,197,66,.10),rgba(0,140,255,.08));text-align:center}.mobile-download h2{font-size:24px;margin-bottom:7px}.mobile-download h2 span{color:#f5c542}.mobile-download p{color:#aebbd0;font-size:12px;margin-bottom:17px}.mobile-download .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.mobile-download a,.mobile-download button{display:inline-flex;align-items:center;justify-content:center;padding:12px 22px;border:0;border-radius:40px;font:inherit;font-weight:900;text-decoration:none;cursor:pointer}.mobile-download .primary{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817}.mobile-download .secondary{background:linear-gradient(135deg,#0099ff,#0077cc);color:#fff}.lang-menu{position:fixed;inset:0;background:rgba(0,0,0,.58);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:10000}.lang-menu.open{display:flex}.lang-box{width:min(360px,calc(100% - 32px));padding:22px;border:1px solid rgba(0,200,255,.45);border-radius:20px;background:#06152d;box-shadow:0 20px 70px rgba(0,0,0,.55)}.lang-box h3{margin:0 0 14px;color:#fff}.lang-option{display:block;width:100%;padding:12px;margin:7px 0;border:1px solid rgba(0,180,255,.25);border-radius:12px;background:rgba(0,180,255,.06);color:#dfe8f5;font:inherit;cursor:pointer;text-align:right}.lang-option:hover{border-color:#00c8ff;background:rgba(0,180,255,.14)}.lang-close{margin-top:10px;width:100%;padding:10px;border:0;border-radius:12px;background:#17243b;color:#aebbd0;cursor:pointer}.fleet-section{margin-bottom:20px;padding:28px 20px;background:linear-gradient(180deg,rgba(0,180,255,.10),rgba(2,8,23,.94));border:2px solid rgba(0,200,255,.45);border-radius:22px}.fleet-head{text-align:center;margin-bottom:20px}.fleet-head h2{font-size:clamp(22px,3vw,30px);font-weight:900}.fleet-head h2 span{color:#00c8ff}.fleet-head p{color:#aebbd0;font-size:12px;margin-top:7px}.fleet-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}.fleet-kpi{padding:16px;text-align:center;background:rgba(0,180,255,.05);border:1px solid rgba(0,200,255,.22);border-radius:14px}.fleet-kpi .n{font-size:25px;font-weight:900;color:#f5c542}.fleet-kpi .l{font-size:10px;color:#aebbd0;margin-top:4px}.fleet-departments{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}.fleet-dept{padding:11px 12px;background:rgba(2,15,40,.8);border:1px solid rgba(0,180,255,.18);border-radius:11px;display:flex;justify-content:space-between;gap:10px}.fleet-dept .name{font-size:11px;color:#dfe8f5;font-weight:800}.fleet-dept .count{font-size:11px;color:#00c8ff;font-weight:900}.fleet-status{margin-top:14px;text-align:center;color:#4ade80;font-size:11px;font-weight:900}.fleet-error{color:#f87171}.fleet-loading{color:#aebbd0}@media(max-width:600px){.fleet-summary{grid-template-columns:1fr}.fleet-departments{grid-template-columns:1fr 1fr}}</style>
 </head>
 <body>
 <div class="container">
@@ -222,7 +222,7 @@ a{text-decoration:none;color:inherit}
 <a href="intelligence.html" class="intel">🧠 Intelligence</a>
 </div>
 <div class="nav-cta">
-<span class="lang-btn">🌐 اللغات</span>
+<button class="lang-btn" id="language-button" type="button">🌐 اللغات</button>
 <a href="chat.html" class="btn-start">→ ابدأ الآن</a>
 </div>
 </div>
@@ -417,6 +417,16 @@ aion.genesisss@gmail.com<br><br>
 <div class="chat-text">تحدث مع AI</div>
 <div class="chat-pulse"></div>
 </a>
+
+<div class="lang-menu" id="lang-menu" aria-hidden="true">
+<div class="lang-box" role="dialog" aria-modal="true" aria-labelledby="lang-title">
+<h3 id="lang-title">اختيار اللغة</h3>
+<button class="lang-option" data-lang="ar">العربية</button>
+<button class="lang-option" data-lang="en">English</button>
+<button class="lang-option" data-lang="fr">Français</button>
+<button class="lang-close" id="lang-close" type="button">إغلاق</button>
+</div>
+</div>
 
 <script src="lang.js"></script>
 
