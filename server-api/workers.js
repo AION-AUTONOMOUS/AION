@@ -26,6 +26,9 @@ export default async function handler(req, res) {
   }
 
   const dispatched = await dispatchTask(body);
+  if (dispatched.action === 'blocked_by_policy') {
+    return res.status(403).json({ success: false, ...dispatched, health: await opsHealth(), runtime: await workerRuntimeStatus() });
+  }
   if (dispatched.action === 'await_human_approval') {
     return res.status(202).json({ success: true, ...dispatched, health: await opsHealth(), runtime: await workerRuntimeStatus() });
   }
