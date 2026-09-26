@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { getService } from './services.js';
+import { getService } from '../../server-api/paypal/services.js';
 
 const PAYPAL_BASE_URL = 'https://api-m.paypal.com';
 const ALLOWED_ORIGIN = process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
