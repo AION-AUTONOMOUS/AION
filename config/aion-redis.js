@@ -58,6 +58,22 @@ export async function railwayRedisCommand(command) {
     }
     case 'RPUSH':
       return client.rPush(rawArgs[0], rawArgs.slice(1));
+    case 'LPUSH':
+      return client.lPush(rawArgs[0], rawArgs.slice(1));
+    case 'LREM':
+      return client.lRem(rawArgs[0], Number(rawArgs[1]), rawArgs[2]);
+    case 'HSET': {
+      const values = rawArgs.slice(1);
+      const hash = {};
+      for (let index = 0; index < values.length; index += 2) hash[values[index]] = values[index + 1];
+      return client.hSet(rawArgs[0], hash);
+    }
+    case 'HGETALL':
+      return client.hGetAll(rawArgs[0]);
+    case 'BLMOVE': {
+      const timeout = Math.max(1, Number(rawArgs[5]) || 1);
+      return client.blMove(rawArgs[0], rawArgs[1], rawArgs[2], rawArgs[3], timeout);
+    }
     default:
       throw new Error('Unsupported Railway Redis command: ' + name);
   }
