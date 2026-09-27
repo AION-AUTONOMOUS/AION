@@ -23,6 +23,6 @@ test('comparison reports deltas only for measured common metrics', () => {
   const a = createEvaluationRun({ benchmark, results: { reasoning: 0.6 } });
   const b = createEvaluationRun({ benchmark, results: { reasoning: 0.8 } });
   const result = compareEvaluationRuns(a, b);
-  assert.equal(result.metrics.reasoning.delta, 0.2);
+  assert.ok(Math.abs(result.metrics.reasoning.delta - 0.2) < 1e-12);
   assert.equal(result.status, 'compared');
 });
