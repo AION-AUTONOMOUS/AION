@@ -69,7 +69,7 @@ export function routeTask(task = {}) {
   const agent = findAgent(department);
   const commanderKey = COMMANDER_BY_DEPARTMENT[department] || 'executive';
   const sensitive = ['finance', 'legal'].includes(department) ||
-    /payment|money|treasury|wallet|tokenized asset|tokenization|mainnet token|asset custody|asset transfer|stablecoin|paid ads|paid advertising/.test(text);
+    /payment|money|treasury|wallet|tokenized asset|tokenization|mainnet token|token.*mainnet|asset custody|asset transfer|stablecoin|paid ads|paid advertising/.test(text);
   const blocked = /political targeting|target voters|microtarget voters|استهداف سياسي|استهداف الناخبين/.test(text);
 
   return {
