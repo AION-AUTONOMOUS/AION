@@ -1,0 +1,29 @@
+{
+  "chain": "AION",
+  "protocol": "AION Proof-of-Value Ledger",
+  "version": "0.1.0",
+  "network": "testnet",
+  "monetaryPolicy": {
+    "symbol": "AION",
+    "decimals": 8,
+    "maxSupply": "21000000",
+    "smallestUnit": "neuro",
+    "maxSupplyNeuro": "2100000000000000",
+    "genesisMinting": "disabled-for-mainnet",
+    "testnetFaucet": "development-only"
+  },
+  "security": {
+    "minimumIndependentValidators": 3,
+    "sybilResistance": "validator-bonding-and-identity-attestation-to-be-specified-before-mainnet",
+    "slashing": "to-be-specified-after-economic-simulation",
+    "finality": "not-defined-in-v0.1-reference-ledger"
+  },
+  "allocationPolicy": {
+    "networkContribution": "50%",
+    "securityAndValidators": "20%",
+    "ecosystem": "15%",
+    "protocolTreasury": "10%",
+    "foundingAllocation": "5%",
+    "vestingRequired": true
+  }
+}
