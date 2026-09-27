@@ -64,6 +64,16 @@ export class AionChain {
   }
 
   balance(address) { return this.state.get(address) || 0n; }
+
+  issueNeuro(amountNeuro, recipient) {
+    const amount = BigInt(amountNeuro);
+    if (amount <= 0n) throw new RangeError("issuance must be positive");
+    if (!recipient) throw new TypeError("recipient required");
+    if (this.totalSupplyNeuro + amount > CHAIN.maxSupplyNeuro) throw new RangeError("max supply exceeded");
+    this.state.set(recipient, this.balance(recipient) + amount);
+    this.totalSupplyNeuro += amount;
+    return Object.freeze({ recipient, amountNeuro: amount, totalSupplyNeuro: this.totalSupplyNeuro });
+  }
   nonce(address) { return this.nonces.get(address) || 0; }
   latestBlock() { return this.blocks[this.blocks.length - 1]; }
 
