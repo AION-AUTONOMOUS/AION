@@ -1,8 +1,9 @@
 import { expect } from "chai";
-import { ethers } from "hardhat";
+import { network } from "hardhat";
 
 describe("AIONAssetRegistry", function () {
   it("registers and controls a tokenized-asset record", async function () {
+    const { ethers } = await network.create();
     const [owner] = await ethers.getSigners();
     const Registry = await ethers.getContractFactory("AIONAssetRegistry");
     const registry = await Registry.deploy(owner.address);
