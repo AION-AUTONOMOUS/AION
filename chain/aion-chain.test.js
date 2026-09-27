@@ -50,3 +50,12 @@ test("genesis cannot exceed the protocol supply cap", () => {
     genesisSupplyNeuro: CHAIN.maxSupplyNeuro + 1n
   }), /invalid genesis supply/);
 });
+
+
+test("issuance cannot exceed the 10B AION hard cap", () => {
+  const chain = new AionChain({ genesisBalances: { genesis: 1n }, genesisSupplyNeuro: 1n });
+  const remaining = CHAIN.maxSupplyNeuro - chain.totalSupplyNeuro;
+  chain.issueNeuro(remaining, "treasury");
+  assert.equal(chain.totalSupplyNeuro, CHAIN.maxSupplyNeuro);
+  assert.throws(() => chain.issueNeuro(1n, "treasury"), /max supply exceeded/);
+});
