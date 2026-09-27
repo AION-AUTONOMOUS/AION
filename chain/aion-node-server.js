@@ -131,6 +131,8 @@ async function handle(req,res) {
     const result=finalizeBlock(block,Object.keys(VALIDATORS),attestations,validatorKeys);
     if (!result.finalized) return json(res,409,result);
     const txs=body.transactions||[];
+    if (txs.map(t=>t.txHash).join(",") !== (block.txHashes || []).join(",")) return json(res,400,{error:"transaction_set_mismatch"});
+    if (block.previousHash !== chain.latestBlock().blockHash || block.height !== chain.latestBlock().height + 1) return json(res,409,{error:"stale_block"});
     const publicKeys = new Map(SENDER_PUBLIC_KEYS);
     for (const [sender, key] of Object.entries(body.publicKeys || {})) publicKeys.set(sender, key);
     if (txs.length) {
