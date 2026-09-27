@@ -5,27 +5,21 @@ import {
   scheduleFleetTask
 } from '../config/aion-company-operating-system.js';
 
-export async function handleCompanyOs(request) {
-  const url = new URL(request.url || 'http://localhost');
-  const method = String(request.method || 'GET').toUpperCase();
+export default async function companyOsHandler(req, res) {
+  const path = String(req.query?.path || '').replace(/^\//, '');
+  const method = String(req.method || 'GET').toUpperCase();
 
-  if (method === 'GET' && url.pathname.endsWith('/health')) {
-    return Response.json(companyOperatingSystemHealth());
+  if (method === 'GET' && (path === 'health' || !path)) {
+    return res.status(200).json(companyOperatingSystemHealth());
   }
-
-  if (method === 'GET' && url.pathname.endsWith('/departments')) {
-    return Response.json({ departments: listCompanyDepartments() });
+  if (method === 'GET' && path === 'departments') {
+    return res.status(200).json({ departments: listCompanyDepartments() });
   }
-
-  if (method === 'POST' && url.pathname.endsWith('/schedule')) {
-    const body = await request.json();
-    return Response.json(scheduleFleetTask(body));
+  if (method === 'POST' && path === 'schedule') {
+    return res.status(200).json(scheduleFleetTask(req.body || {}));
   }
-
-  if (method === 'POST' && url.pathname.endsWith('/cycle')) {
-    const body = await request.json();
-    return Response.json(scheduleCompanyCycle(body));
+  if (method === 'POST' && path === 'cycle') {
+    return res.status(200).json(scheduleCompanyCycle(req.body || {}));
   }
-
-  return Response.json({ error: 'Not found' }, { status: 404 });
+  return res.status(404).json({ error: 'not_found' });
 }
