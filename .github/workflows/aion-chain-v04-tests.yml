@@ -1,0 +1,25 @@
+name: AION v0.4 Network Tests
+
+on:
+  pull_request:
+    paths:
+      - "chain/**"
+      - "protocol/**"
+  push:
+    branches:
+      - main
+      - "feat/aion-chain-v0.4-p2p-mempool-signatures"
+    paths:
+      - "chain/**"
+      - "protocol/**"
+
+jobs:
+  network:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --test protocol/aion-value-ledger.test.js
+      - run: node --test chain/aion-chain.test.js chain/aion-consensus.test.js chain/aion-persistence.test.js chain/aion-mempool.test.js chain/aion-p2p.test.js chain/aion-validator-crypto.test.js
