@@ -1,81 +1,41 @@
 import { dispatchTask } from './aion-workers.js';
 import { resetStore } from './aion-ops-engine.js';
 import { listTasks, updateTask } from './aion-ops-store.js';
+import { runOpenAI } from './aion-openai-gateway.js';
 
-export const RUNTIME_VERSION = '1.2.0';
+export const RUNTIME_VERSION = '1.3.0';
 export const MAX_CONCURRENCY = 20;
 const running = new Set();
 let actionExecutor = defaultActionExecutor;
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
 async function defaultActionExecutor(task) {
-  if (!process.env.GROQ_API_KEY) throw new Error('AI provider is not configured');
+  const result = await runOpenAI({
+    prompt: task.text,
+    mode: task.mode || 'frontier',
+    model: task.model,
+    instructions: 'You are an AION Worker. Return an evidence-oriented, actionable result. Distinguish verified facts from assumptions. Never claim an external side effect occurred unless a registered executor confirms it.'
+  });
 
-  const model = process.env.AION_GROQ_MODEL || 'openai/gpt-oss-20b';
-  const maxCompletionTokens = Math.max(
-    128,
-    Math.min(Number(process.env.AION_GROQ_MAX_COMPLETION_TOKENS) || 600, 2048)
-  );
-
-  const maxAttempts = 4;
-  let lastError = 'AI provider error';
-
-  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-    try {
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          Authorization: 'Bearer ' + process.env.GROQ_API_KEY,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model,
-          messages: [
-            {
-              role: 'system',
-              content: 'You are an AION worker. Analyze the registered task and return a concise actionable result. Never claim external side effects unless an execution adapter performed them. Keep the result under 400 words.'
-            },
-            { role: 'user', content: task.text }
-          ],
-          temperature: 0.2,
-          max_completion_tokens: maxCompletionTokens
-        })
-      });
-
-      const raw = await response.text();
-      let data;
-      try {
-        data = JSON.parse(raw);
-      } catch {
-        data = { error: { message: raw.slice(-2000) } };
-      }
-
-      if (response.ok) {
-        const output = data.choices?.[0]?.message?.content;
-        if (typeof output !== 'string' || !output.trim()) {
-          throw new Error('AI provider returned no worker result');
-        }
-        return { type: 'ai_analysis', output: output.trim(), model };
-      }
-
-      lastError = data?.error?.message || `AI provider HTTP ${response.status}`;
-      const retryable = [408, 429, 500, 502, 503, 504].includes(response.status);
-      if (!retryable || attempt === maxAttempts) throw new Error(lastError);
-
-      const retryAfter = Number(response.headers.get('retry-after'));
-      const delayMs = Number.isFinite(retryAfter) && retryAfter > 0
-        ? Math.min(retryAfter * 1000, 30000)
-        : Math.min(3000 * (2 ** (attempt - 1)), 30000);
-      await sleep(delayMs);
-    } catch (error) {
-      lastError = String(error?.message || error);
-      if (attempt === maxAttempts) throw new Error(lastError);
-      await sleep(Math.min(3000 * (2 ** (attempt - 1)), 30000));
+  const evidence = {
+    type: 'openai-response',
+    provider: 'OpenAI',
+    responseId: result.responseId,
+    requestId: result.requestId,
+    model: result.model,
+    measured: true
+  };
+  const verification = {
+    status: result.responseId && result.text ? 'verified-output' : 'verification-failed',
+    checks: {
+      providerResponseId: Boolean(result.responseId),
+      nonEmptyOutput: Boolean(result.text)
     }
+  };
+  if (verification.status !== 'verified-output') {
+    throw new Error('worker result failed evidence verification');
   }
 
-  throw new Error(lastError);
+  return { ...result, evidence, verification };
 }
 
 export function setActionExecutor(executor) {
@@ -93,7 +53,7 @@ export async function workerRuntimeStatus() {
     version: RUNTIME_VERSION,
     maxConcurrency: MAX_CONCURRENCY,
     activeWorkers: running.size,
-    ready: tasks.filter(t => t.status === 'ready').length,
+    ready: tasks.filter(t => t.status === 'ready' || t.status === 'queued').length,
     running: tasks.filter(t => t.status === 'running').length,
     completed: tasks.filter(t => t.status === 'completed').length,
     failed: tasks.filter(t => t.status === 'failed').length,
@@ -103,7 +63,8 @@ export async function workerRuntimeStatus() {
 
 export async function processOne() {
   const task = (await listTasks()).find(item =>
-    item.status === 'ready' && (!item.requiresHumanApproval || item.approvedAt)
+    (item.status === 'ready' || item.status === 'queued') &&
+    (!item.requiresHumanApproval || item.approvedAt)
   );
   if (!task || running.size >= MAX_CONCURRENCY) return null;
 
@@ -115,12 +76,21 @@ export async function processOne() {
     return await updateTask(task.id, {
       status: 'completed',
       result,
+      evidence: result?.evidence || null,
+      verification: result?.verification || null,
+      outcome: {
+        status: 'completed',
+        recordedAt: new Date().toISOString(),
+        evidenceBacked: Boolean(result?.evidence && result?.verification?.status === 'verified-output')
+      },
       completedAt: new Date().toISOString(),
       durationMs: Date.now() - started
     });
   } catch (error) {
     return await updateTask(task.id, {
       status: 'failed',
+      verification: { status: 'failed', reason: String(error?.message || error) },
+      outcome: { status: 'failed', recordedAt: new Date().toISOString() },
       error: String(error?.message || error),
       failedAt: new Date().toISOString(),
       durationMs: Date.now() - started
