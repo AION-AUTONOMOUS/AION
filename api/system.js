@@ -28,6 +28,7 @@ const HANDLERS = {
   'economic-intelligence': () => import('../server-api/economic-intelligence.js'),
   'continuous-intelligence': () => import('../server-api/continuous-intelligence.js'),
   'customer-revenue': () => import('../server-api/customer-revenue.js'),
+  'intelligence-core': () => import('../server-api/intelligence-core.js'),
   'openai-intelligence': () => import('../server-api/openai-intelligence.js')
 };
 
