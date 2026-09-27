@@ -109,6 +109,40 @@ export async function workerRuntimeStatus() {
   };
 }
 
+
+export async function activateFleetCycle(goal, options = {}) {
+  const text = String(goal || '').trim();
+  if (!text) throw new Error('goal required');
+  const limit = Math.max(1, Math.min(Number(options.limit) || TOTAL_AGENTS, TOTAL_AGENTS));
+  const chunkSize = Math.max(1, Math.min(Number(options.chunkSize) || 100, 250));
+  let queued = 0;
+  let awaitingApproval = 0;
+  let blocked = 0;
+  for (let start = 0; start < limit; start += chunkSize) {
+    const batch = AGENTS.slice(start, Math.min(start + chunkSize, limit));
+    const results = await Promise.all(batch.map(agent => dispatchTask({
+      type: agent.department,
+      department: agent.department,
+      agentId: agent.id,
+      role: agent.id,
+      text: text + '\nAssigned role: ' + agent.id + '. Specialty: ' + agent.specialty
+    })));
+    queued += results.filter(item => item.action === 'queued_for_worker').length;
+    awaitingApproval += results.filter(item => item.action === 'await_human_approval').length;
+    blocked += results.filter(item => item.action === 'blocked_by_policy').length;
+  }
+  return {
+    status: 'activated',
+    requestedRoles: limit,
+    totalRegisteredRoles: TOTAL_AGENTS,
+    queuedForWorkers: queued,
+    awaitingOwnerApproval: awaitingApproval,
+    blockedByPolicy: blocked,
+    durableQueue: hasRailwayRedis(),
+    workerConcurrency: MAX_CONCURRENCY
+  };
+}
+
 export async function processOne() {
   if (running.size >= MAX_CONCURRENCY) return null;
 
