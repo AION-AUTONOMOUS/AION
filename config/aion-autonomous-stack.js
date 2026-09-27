@@ -4,6 +4,7 @@ import { AGENTS, DEPARTMENTS } from './aion-fleet.js';
 import { addToIndex, getJson, listIndexed, setJson, stackStorageHealth } from './aion-stack-store.js';
 import { frontierHealth } from './aion-frontier.js';
 import { ownerGovernanceHealth } from './aion-owner-governance.js';
+import { intelligenceHealth } from './aion-intelligence-engine.js';
 
 export const AUTONOMOUS_STACK_VERSION = '1.1.0';
 
@@ -28,6 +29,7 @@ export function stackHealth() {
     storage: stackStorageHealth(),
     frontier: frontierHealth(),
     governance: ownerGovernanceHealth(),
+    intelligence: intelligenceHealth(),
     capabilities: Object.values(CAPABILITIES),
     fleet: { agents: AGENTS.length, departments: Object.keys(DEPARTMENTS).length },
     guards: {
