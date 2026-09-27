@@ -61,3 +61,13 @@ test('worker records executor failures as failed, never fake success', async () 
   setActionExecutor(async () => { throw new Error('test executor not configured'); });
   await resetStore();
 });
+
+
+test('stack health exposes frontier and owner-only governance', async () => {
+  const { stackHealth } = await import('../config/aion-autonomous-stack.js');
+  const health = stackHealth();
+  assert.equal(health.frontier.status, 'research-ready');
+  assert.equal(health.frontier.agiClaim, false);
+  assert.equal(health.governance.mode, 'owner-only');
+  assert.equal(health.governance.ordinaryWorkAutonomous, true);
+});
