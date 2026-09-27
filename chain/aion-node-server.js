@@ -131,11 +131,15 @@ async function handle(req,res) {
     const result=finalizeBlock(block,Object.keys(VALIDATORS),attestations,validatorKeys);
     if (!result.finalized) return json(res,409,result);
     const txs=body.transactions||[];
+    if (txs.map(t=>t.txHash).join(",") !== (block.txHashes || []).join(",")) return json(res,400,{error:"transaction_set_mismatch"});
+    if (block.previousHash !== chain.latestBlock().blockHash || block.height !== chain.latestBlock().height + 1) return json(res,409,{error:"stale_block"});
     const publicKeys = new Map(SENDER_PUBLIC_KEYS);
     for (const [sender, key] of Object.entries(body.publicKeys || {})) publicKeys.set(sender, key);
     if (txs.length) {
       for (const tx of txs) if (!publicKeys.get(tx.sender)) return json(res,400,{error:"missing_sender_public_key",sender:tx.sender});
-      chain.commitBlock(txs,block.proposer,block.timestamp,publicKeys);
+      const committedBlock = chain.commitBlock(txs,block.proposer,block.timestamp,publicKeys);
+      if (committedBlock.blockHash !== block.blockHash || committedBlock.stateRoot !== block.stateRoot) return json(res,409,{error:"committed_block_mismatch"});
+      for (const tx of txs) mempool.remove(tx.txHash);
     }
     writeState();
     return json(res,200,{finalized:true,certificateHash:result.certificateHash,height:chain.latestBlock().height});
