@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import { getJson, setJson, addToIndex, listIndexed } from './aion-stack-store.js';
 
 export const SPACE_COMMERCE_VERSION='1.0.0';
-export const SPACE_TREASURY_WALLET='AION-COMPANY-WALLET';
+export const SPACE_TREASURY_WALLET=process.env.AION_COMPANY_WALLET||'AION-COMPANY-WALLET';
 const CATALOG=Object.freeze([
  {id:'orbit-intelligence',name:'AION Orbit Intelligence',category:'earth-observation',priceAion:120,unit:'per-analysis',description:'AI analysis of licensed Earth-observation data.'},
  {id:'space-weather',name:'AION Space Weather Shield',category:'space-weather',priceAion:180,unit:'per-report',description:'Space-weather risk brief with measured alerts and evidence.'},
