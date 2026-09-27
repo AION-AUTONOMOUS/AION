@@ -1,5 +1,5 @@
 import {
-  stackHealth, listCapabilities, createAutonomousPlan,
+  stackHealth, listCapabilities, createAutonomousPlan, listAutonomousPlans,
   getLedger, proposeLedgerTransfer,
   registerTokenizedAsset, listTokenizedAssets,
   registerRobot, listRobots
@@ -15,6 +15,19 @@ function cors(res) {
   res.setHeader('Cache-Control', 'no-store');
 }
 
+function readBody(req) {
+  if (req.body && typeof req.body === 'object') return req.body;
+  return new Promise((resolve, reject) => {
+    let raw = '';
+    req.on('data', chunk => { raw += chunk; });
+    req.on('end', () => {
+      if (!raw) return resolve({});
+      try { resolve(JSON.parse(raw)); } catch { reject(new Error('Invalid JSON body')); }
+    });
+    req.on('error', reject);
+  });
+}
+
 export default async function handler(req, res) {
   cors(res);
   if (req.method === 'OPTIONS') return res.status(204).end();
@@ -24,12 +37,13 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'GET' && path === 'health') return res.status(200).json({ success: true, ...stackHealth() });
     if (req.method === 'GET' && path === 'capabilities') return res.status(200).json({ success: true, capabilities: listCapabilities() });
+    if (req.method === 'GET' && path === 'plans') return res.status(200).json({ success: true, plans: await listAutonomousPlans() });
     if (req.method === 'GET' && path === 'ledger') return res.status(200).json({ success: true, ledger: await getLedger(url.searchParams.get('account')) });
     if (req.method === 'GET' && path === 'assets') return res.status(200).json({ success: true, assets: await listTokenizedAssets() });
     if (req.method === 'GET' && path === 'robots') return res.status(200).json({ success: true, robots: await listRobots() });
 
     if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method not allowed' });
-    const body = req.body || {};
+    const body = await readBody(req);
 
     if (path === 'plan') {
       const plan = await createAutonomousPlan(body.goal, body);
