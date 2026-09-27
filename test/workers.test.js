@@ -33,7 +33,7 @@ test('health reports worker fleet', async () => {
 
 test('normal engineering work is autonomous without a human approval gate', async () => {
   const result = await dispatchTask({ text: 'deploy the new API after tests pass' });
-  assert.equal(result.action, 'execute');
+  assert.equal(result.action, 'queued_for_worker');
   assert.equal(result.task.requiresHumanApproval, false);
 });
 
