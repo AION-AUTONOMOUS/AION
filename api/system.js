@@ -22,6 +22,7 @@ const HANDLERS = {
   'space-commerce': () => import('../server-api/space-commerce.js'),
   'live-space': () => import('../server-api/live-space.js'),
   'leo-orchestrator': () => import('../server-api/leo-orchestrator.js'),
+  'leo-exchange': () => import('../server-api/leo-intelligence-exchange.js'),
   'mobile': () => import('../server-api/mobile.js'),
   'autonomy': () => import('../server-api/autonomy.js')
 };
