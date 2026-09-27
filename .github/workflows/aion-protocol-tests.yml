@@ -1,0 +1,26 @@
+name: AION Protocol Tests
+
+on:
+  pull_request:
+    paths:
+      - "protocol/**"
+      - "AION_PROTOCOL_V0.1.md"
+      - "AION_TOKENOMICS_V0.1.md"
+      - "package.json"
+  push:
+    branches:
+      - main
+      - "feat/aion-povl-protocol-v0.1"
+    paths:
+      - "protocol/**"
+
+jobs:
+  protocol-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Run AION Proof-of-Value tests
+        run: node --test protocol/aion-value-ledger.test.js
