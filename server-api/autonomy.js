@@ -1,5 +1,5 @@
 import {
-  stackHealth, listCapabilities, createAutonomousPlan, listAutonomousPlans,
+  stackHealth, listCapabilities, createAutonomousPlan, getAutonomousPlan, listAutonomousPlans,
   getLedger, proposeLedgerTransfer,
   registerTokenizedAsset, listTokenizedAssets,
   registerRobot, listRobots
@@ -38,6 +38,11 @@ export default async function handler(req, res) {
     if (req.method === 'GET' && path === 'health') return res.status(200).json({ success: true, ...stackHealth() });
     if (req.method === 'GET' && path === 'capabilities') return res.status(200).json({ success: true, capabilities: listCapabilities() });
     if (req.method === 'GET' && path === 'plans') return res.status(200).json({ success: true, plans: await listAutonomousPlans() });
+    if (req.method === 'GET' && path === 'plan') {
+      const plan = await getAutonomousPlan(url.searchParams.get('id'));
+      if (!plan) return res.status(404).json({ success: false, error: 'plan not found' });
+      return res.status(200).json({ success: true, plan });
+    }
     if (req.method === 'GET' && path === 'ledger') return res.status(200).json({ success: true, ledger: await getLedger(url.searchParams.get('account')) });
     if (req.method === 'GET' && path === 'assets') return res.status(200).json({ success: true, assets: await listTokenizedAssets() });
     if (req.method === 'GET' && path === 'robots') return res.status(200).json({ success: true, robots: await listRobots() });
