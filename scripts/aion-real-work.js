@@ -13,6 +13,23 @@ const startedAt = new Date().toISOString();
 const maxAttempts = 4;
 let report;
 
+const parseRetryDelay = (response, body, attempt) => {
+  const retryAfter = Number(response.headers.get('retry-after'));
+  if (Number.isFinite(retryAfter) && retryAfter > 0) {
+    return Math.min(retryAfter * 1000, 180000);
+  }
+
+  const message = String(body?.error || body?.message || body?.response?.error || '');
+  const match = message.match(/try again in\s+(?:(\d+)m)?\s*(?:(\d+(?:\.\d+)?)s)?/i);
+  if (match) {
+    const minutes = Number(match[1] || 0);
+    const seconds = Number(match[2] || 0);
+    return Math.min((minutes * 60 + seconds) * 1000, 180000);
+  }
+
+  return Math.min(7000 * attempt, 30000);
+};
+
 for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
   try {
     const response = await fetch(baseUrl, {
@@ -45,10 +62,7 @@ for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
 
     if (ok || !retryable || attempt === maxAttempts) break;
 
-    const retryAfter = Number(response.headers.get('retry-after'));
-    const delayMs = Number.isFinite(retryAfter) && retryAfter > 0
-      ? Math.min(retryAfter * 1000, 15000)
-      : Math.min(7000 * attempt, 15000);
+    const delayMs = parseRetryDelay(response, body, attempt);
     await new Promise(resolve => setTimeout(resolve, delayMs));
   } catch (error) {
     report = {
@@ -62,7 +76,7 @@ for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
       error: String(error?.message || error)
     };
     if (attempt === maxAttempts) break;
-    await new Promise(resolve => setTimeout(resolve, Math.min(4000 * attempt, 12000)));
+    await new Promise(resolve => setTimeout(resolve, Math.min(4000 * attempt, 30000)));
   }
 }
 
