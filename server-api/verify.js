@@ -1,6 +1,8 @@
 import { SERVICE_CATALOG } from '../server-api/paypal/services.js';
 
-const PAYPAL_BASE_URL = 'https://api-m.paypal.com';
+import { paypalBaseUrl, paypalClientId, paypalClientSecret } from './config.js';
+
+const PAYPAL_BASE_URL = paypalBaseUrl();
 const ALLOWED_ORIGIN = process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
 
 function setCors(res) {
@@ -11,8 +13,8 @@ function setCors(res) {
 }
 
 async function getAccessToken() {
-  const clientId = process.env.PAYPAL_CLIENT_ID;
-  const secret = process.env.PAYPAL_SECRET;
+  const clientId = paypalClientId();
+  const secret = paypalClientSecret();
   if (!clientId || !secret) throw new Error('PayPal configuration is incomplete');
 
   const auth = Buffer.from(clientId + ':' + secret).toString('base64');
