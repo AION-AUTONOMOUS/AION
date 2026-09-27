@@ -75,3 +75,6 @@ AION now exposes a unified Autonomous Stack at `/autonomy.html` and `/api/autono
 ### Execution invariant
 A task is never marked `completed` merely because it was queued. The Worker Runtime must call a real executor; provider/adaptor failures become `failed`. Sensitive work remains behind the human approval gate.
 
+
+### Railway runtime migration
+The Railway service is the production runtime target for the AION core; Vercel remains a non-destructive fallback until route parity and smoke tests are verified.
