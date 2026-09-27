@@ -1,7 +1,7 @@
 import http from "node:http";
 import { listAgents, listServices } from "./agents.js";
 import { controlPlaneHealth } from "../../../config/aion-control-plane.js";
-import { stackHealth, createAutonomousPlan, listAutonomousPlans } from "../../../config/aion-autonomous-stack.js";
+import { stackHealth, createAutonomousPlan, getAutonomousPlan, listAutonomousPlans } from "../../../config/aion-autonomous-stack.js";
 import { processBatch, workerRuntimeStatus } from "../../../config/aion-worker-runtime.js";
 
 const port = Number(process.env.PORT || 8787);
@@ -115,6 +115,13 @@ const server = http.createServer(async (req,res) => {
 
   if (req.method === "GET" && url.pathname === "/plans") {
     return send(res,200,{success:true,plans:await listAutonomousPlans()});
+  }
+
+  if (req.method === "GET" && url.pathname === "/plan") {
+    const planId = url.searchParams.get("id");
+    const plan = await getAutonomousPlan(planId);
+    if (!plan) return send(res,404,{success:false,error:"plan not found"});
+    return send(res,200,{success:true,plan});
   }
 
   if (req.method === "POST" && url.pathname === "/plan") {
