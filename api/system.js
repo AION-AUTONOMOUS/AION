@@ -24,7 +24,9 @@ const HANDLERS = {
   'leo-orchestrator': () => import('../server-api/leo-orchestrator.js'),
   'leo-exchange': () => import('../server-api/leo-intelligence-exchange.js'),
   'mobile': () => import('../server-api/mobile.js'),
-  'autonomy': () => import('../server-api/autonomy.js')
+  'autonomy': () => import('../server-api/autonomy.js'),
+  'economic-intelligence': () => import('../server-api/economic-intelligence.js'),
+  'continuous-intelligence': () => import('../server-api/continuous-intelligence.js')
 };
 
 export default async function handler(req, res) {
