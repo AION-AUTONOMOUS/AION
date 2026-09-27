@@ -1,9 +1,21 @@
 import { routeTask, controlPlaneHealth } from './aion-control-plane.js';
 import { createTask, updateTask, listTasks, recentEvents, resetStore, opsStorageHealth } from './aion-ops-store.js';
+import { hasRailwayRedis, railwayRedisCommand } from './aion-redis.js';
+
+const WORKER_QUEUE = 'aion:worker:pending';
+
+async function enqueueDurableWorker(task) {
+  if (!hasRailwayRedis() || !task || task.status !== 'ready') return null;
+  const payload = JSON.stringify({ taskId: task.id, enqueuedAt: new Date().toISOString() });
+  await railwayRedisCommand(['HSET', 'aion:worker:job:' + task.id, 'taskId', task.id, 'payload', payload, 'status', 'pending', 'attempts', '0', 'enqueuedAt', String(Date.now())]);
+  await railwayRedisCommand(['LPUSH', WORKER_QUEUE, task.id]);
+  return task.id;
+}
 
 export async function enqueueTask(input) {
   const task=await createTask(input); const route=routeTask(task);
   const updated=await updateTask(task.id,{department:route.department,agentId:route.agent.id,commanderId:route.commander.id,requiresHumanApproval:route.policy.requiresHumanApproval,status:route.policy.requiresHumanApproval?'awaiting_approval':'ready'});
+  if (updated?.status === 'ready') await enqueueDurableWorker(updated);
   return {task:updated,route};
 }
 export async function approveTask(id){const task=(await listTasks()).find(x=>x.id===id);if(!task||task.status!=='awaiting_approval')return null;return updateTask(id,{status:'ready',approvedAt:new Date().toISOString()});}
