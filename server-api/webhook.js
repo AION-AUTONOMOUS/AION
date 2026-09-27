@@ -1,4 +1,6 @@
-module.exports = async function handler(req, res) {
+import { paypalBaseUrl, paypalClientId, paypalClientSecret } from './paypal/config.js';
+
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({
       success: false,
@@ -20,8 +22,8 @@ module.exports = async function handler(req, res) {
     const webhookEvent = req.body;
     const headers = req.headers;
 
-    const clientId = process.env.PAYPAL_CLIENT_ID;
-    const secret = process.env.PAYPAL_SECRET;
+    const clientId = paypalClientId();
+    const secret = paypalClientSecret();
 
     if (!clientId || !secret) {
       return res.status(500).json({
@@ -35,7 +37,7 @@ module.exports = async function handler(req, res) {
     ).toString('base64');
 
     const verificationResponse = await fetch(
-      'https://api-m.paypal.com/v1/notifications/verify-webhook-signature',
+      paypalBaseUrl() + '/v1/notifications/verify-webhook-signature',
       {
         method: 'POST',
         headers: {
