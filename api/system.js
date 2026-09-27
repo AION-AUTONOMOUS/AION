@@ -26,7 +26,8 @@ const HANDLERS = {
   'mobile': () => import('../server-api/mobile.js'),
   'autonomy': () => import('../server-api/autonomy.js'),
   'economic-intelligence': () => import('../server-api/economic-intelligence.js'),
-  'continuous-intelligence': () => import('../server-api/continuous-intelligence.js')
+  'continuous-intelligence': () => import('../server-api/continuous-intelligence.js'),
+  'customer-revenue': () => import('../server-api/customer-revenue.js')
 };
 
 export default async function handler(req, res) {
