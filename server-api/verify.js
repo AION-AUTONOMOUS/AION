@@ -1,6 +1,6 @@
 import { SERVICE_CATALOG } from '../server-api/paypal/services.js';
 
-import { paypalBaseUrl, paypalClientId, paypalClientSecret } from './config.js';
+import { paypalBaseUrl, paypalClientId, paypalClientSecret } from './paypal/config.js';
 
 const PAYPAL_BASE_URL = paypalBaseUrl();
 const ALLOWED_ORIGIN = process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
