@@ -92,6 +92,10 @@
     {
       "source": "/api/space-commerce",
       "destination": "/api/system?route=space-commerce"
+    },
+    {
+      "source": "/api/live-space",
+      "destination": "/api/system?route=live-space"
     }
   ]
 }
