@@ -4,6 +4,7 @@
     { "path": "/api/continuous-intelligence", "schedule": "0 3 * * *" }
   ],
   "rewrites": [
+    { "source": "/api/customer-revenue/:path*", "destination": "/api/system?route=customer-revenue&path=:path*" },
     { "source": "/api/autonomy", "destination": "/api/system?route=autonomy" },
     { "source": "/api/mobile/:path*", "destination": "/api/system?route=mobile&path=:path*" },
     { "source": "/api/fleet", "destination": "/api/system?route=fleet" },
