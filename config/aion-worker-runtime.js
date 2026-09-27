@@ -29,6 +29,8 @@ function modeFor(task) {
   return MODE_BY_DEPARTMENT[task?.department] || 'frontier';
 }
 
+let actionExecutor = executeTask;
+
 async function executeTask(task) {
   const mode = modeFor(task);
   const result = await runOpenAI({
@@ -187,7 +189,7 @@ export async function processOne() {
   const started = Date.now();
   try {
     await updateTask(task.id, { status: 'running', startedAt: new Date().toISOString(), workerRuntimeVersion: RUNTIME_VERSION });
-    const result = await executeTask(task);
+    const result = await actionExecutor(task);
     const completed = await updateTask(task.id, {
       status: 'completed',
       result,
