@@ -10,7 +10,7 @@ export const AUTONOMOUS_POLICIES = Object.freeze({
   autoRunSecurityChecks: true,
   autoDeployAfterPassingChecks: true,
   autoMoveMoney: false,
-  autoRunPaidAds: true,
+  autoRunPaidAds: false,
   autoDeployMainnetToken: false,
   autoExecuteLegalDecisions: true,
   autoExecutePoliticalTargeting: false
