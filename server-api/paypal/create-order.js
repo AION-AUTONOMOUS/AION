@@ -1,7 +1,9 @@
 import crypto from 'node:crypto';
 import { getService } from '../../server-api/paypal/services.js';
 
-const PAYPAL_BASE_URL = 'https://api-m.paypal.com';
+import { paypalBaseUrl, paypalClientId, paypalClientSecret } from './config.js';
+
+const PAYPAL_BASE_URL = paypalBaseUrl();
 const ALLOWED_ORIGIN = process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
 
 function setCors(res) {
@@ -12,8 +14,8 @@ function setCors(res) {
 }
 
 async function getAccessToken() {
-  const clientId = process.env.PAYPAL_CLIENT_ID;
-  const clientSecret = process.env.PAYPAL_SECRET;
+  const clientId = paypalClientId();
+  const clientSecret = paypalClientSecret();
   if (!clientId || !clientSecret) throw new Error('PayPal configuration is incomplete');
 
   const auth = Buffer.from(clientId + ':' + clientSecret).toString('base64');
@@ -82,7 +84,7 @@ export default async function handler(req, res) {
       ? orderData.links.find(link => link.rel === 'approve')?.href
       : null;
 
-    const verificationToken = crypto.createHmac('sha256', process.env.AION_VERIFY_SECRET || process.env.PAYPAL_SECRET)
+    const verificationToken = crypto.createHmac('sha256', process.env.AION_VERIFY_SECRET || paypalClientSecret())
       .update([orderData.id, service.id, service.price.toFixed(2), 'AION-V1'].join('|'))
       .digest('hex');
 
