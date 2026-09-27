@@ -2,6 +2,8 @@ import crypto from 'node:crypto';
 import { dispatchTask } from './aion-workers.js';
 import { AGENTS, DEPARTMENTS } from './aion-fleet.js';
 import { addToIndex, getJson, listIndexed, setJson, stackStorageHealth } from './aion-stack-store.js';
+import { frontierHealth } from './aion-frontier.js';
+import { ownerGovernanceHealth } from './aion-owner-governance.js';
 
 export const AUTONOMOUS_STACK_VERSION = '1.1.0';
 
@@ -24,6 +26,8 @@ export function stackHealth() {
     version: AUTONOMOUS_STACK_VERSION,
     status: 'ready',
     storage: stackStorageHealth(),
+    frontier: frontierHealth(),
+    governance: ownerGovernanceHealth(),
     capabilities: Object.values(CAPABILITIES),
     fleet: { agents: AGENTS.length, departments: Object.keys(DEPARTMENTS).length },
     guards: {
