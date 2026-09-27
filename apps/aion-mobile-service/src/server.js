@@ -3,10 +3,11 @@ import { listAgents, listServices } from "./agents.js";
 import { controlPlaneHealth } from "../../../config/aion-control-plane.js";
 import { stackHealth, createAutonomousPlan, getAutonomousPlan, listAutonomousPlans } from "../../../config/aion-autonomous-stack.js";
 import { processBatch, workerRuntimeStatus } from "../../../config/aion-worker-runtime.js";
+import { aionReadiness } from "../../../config/aion-readiness.js";
 
 const port = Number(process.env.PORT || 8787);
 const serviceName = "AION Autonomous Core";
-const VERSION = "1.3.0";
+const VERSION = "1.4.0";
 const WORKER_TICK_MS = Math.max(5000, Number(process.env.AION_WORKER_TICK_MS || 5000));
 const CHAT_MODEL = process.env.AION_GROQ_CHAT_MODEL || process.env.AION_GROQ_MODEL || "openai/gpt-oss-120b";
 const MAX_CHAT_RETRIES = 4;
@@ -93,14 +94,21 @@ const server = http.createServer(async (req,res) => {
   if (req.method === "OPTIONS") return send(res,204,{});
 
   if (req.method === "GET" && url.pathname === "/health") {
-    return send(res,200,{
-      success:true,
+    const readiness = aionReadiness();
+    return send(res,readiness.status === "ready" ? 200 : 503,{
+      success:readiness.status === "ready",
       service:serviceName,
       version:VERSION,
-      status:"ready",
+      status:readiness.status,
       controlPlane:controlPlaneHealth().status,
-      stack:stackHealth().status
+      stack:stackHealth().status,
+      readiness
     });
+  }
+
+  if (req.method === "GET" && url.pathname === "/readiness") {
+    const readiness = aionReadiness();
+    return send(res,readiness.status === "ready" ? 200 : 503,{success:readiness.status === "ready",readiness});
   }
 
   if (req.method === "GET" && url.pathname === "/autonomy") {
@@ -159,4 +167,4 @@ const server = http.createServer(async (req,res) => {
   return send(res,404,{success:false,error:"Not found"});
 });
 
-server.listen(port,()=>console.log(serviceName+" v"+VERSION+" listening on "+port+"; control plane ready; worker runtime active"));
+server.listen(port,()=>console.log(serviceName+" v"+VERSION+" listening on "+port+"; control plane ready; worker runtime active; readiness contract enabled"));
