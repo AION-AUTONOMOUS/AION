@@ -35,31 +35,31 @@ export async function createCustomerOrder(input={}){
   if(!offer)throw new Error('unknown offer');
   if(!customerId)throw new Error('customerId required');
   const order={id:id('AION-ORDER'),offerId:offer.id,customerId,amountAion:offer.priceAion,currency:'AION-CREDIT',status:'awaiting-payment',paymentStatus:'unpaid',deliveryStatus:'not-started',revenueRecognized:false,createdAt:new Date().toISOString()};
-  await setJson('customer-order:'+order.id,order); await addToIndex('customer-orders',order.id);
+  await setJson('customer-orders:'+order.id,order); await addToIndex('customer-orders',order.id);
   return order;
 }
 export async function confirmCustomerPayment(orderId,input={}){
-  const order=await getJson('customer-order:'+text(orderId));
+  const order=await getJson('customer-orders:'+text(orderId));
   if(!order) return null;
   if(text(input.paymentReference)==='') throw new Error('paymentReference required');
   const updated={...order,status:'paid',paymentStatus:'confirmed',paymentReference:text(input.paymentReference),revenueRecognized:true,paidAt:new Date().toISOString()};
-  await setJson('customer-order:'+order.id,updated);
+  await setJson('customer-orders:'+order.id,updated);
   const revenue={id:id('AION-REV'),orderId:order.id,customerId:order.customerId,amountAion:order.amountAion,currency:order.currency,paymentReference:updated.paymentReference,recognizedAt:updated.paidAt,source:'confirmed-payment'};
   await setJson('customer-revenue:'+revenue.id,revenue); await addToIndex('customer-revenue',revenue.id);
   return updated;
 }
 export async function recordDelivery(orderId,input={}){
-  const order=await getJson('customer-order:'+text(orderId));
+  const order=await getJson('customer-orders:'+text(orderId));
   if(!order) return null;
   if(order.paymentStatus!=='confirmed') throw new Error('delivery blocked until payment is confirmed');
   const evidence=text(input.evidence);
   if(!evidence) throw new Error('delivery evidence required');
   const updated={...order,status:'delivered',deliveryStatus:'delivered',deliveryEvidence:evidence,deliveredAt:new Date().toISOString()};
-  await setJson('customer-order:'+order.id,updated);
+  await setJson('customer-orders:'+order.id,updated);
   return updated;
 }
 export async function recordOutcome(orderId,input={}){
-  const order=await getJson('customer-order:'+text(orderId));
+  const order=await getJson('customer-orders:'+text(orderId));
   if(!order) return null;
   const baseline=Number(input.baselineValue);
   const result=Number(input.resultValue);
