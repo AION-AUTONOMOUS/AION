@@ -106,8 +106,9 @@ async function failDurableJob(job, error) {
   await railwayRedisCommand(['HSET', JOB(job.id), 'status', 'failed', 'lastError', message, 'failedAt', String(Date.now())]);
 }
 
-export function setActionExecutor() {
-  throw new Error('Action executor override is disabled: production runtime uses the OpenAI Intelligence Core.');
+export function setActionExecutor(executor) {
+  if (typeof executor !== 'function') throw new TypeError('executor must be a function');
+  actionExecutor = executor;
 }
 
 export async function submitTask(input = {}) {
