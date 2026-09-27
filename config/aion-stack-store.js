@@ -5,7 +5,8 @@ const prefix = 'aion:stack:';
 const indexes = {
   assets: 'aion:stack:assets:index',
   robots: 'aion:stack:robots:index',
-  plans: 'aion:stack:plans:index'
+  plans: 'aion:stack:plans:index',
+  cycles: 'aion:stack:cycles:index'
 };
 
 function config() {
@@ -58,19 +59,23 @@ export async function setJson(key, value) {
 }
 
 export async function addToIndex(indexName, id) {
+  const indexKey = indexes[indexName];
+  if (!indexKey) throw new Error('Unknown stack index: ' + indexName);
   if (!config()) return id;
-  await command(['SADD', indexes[indexName], id]);
+  await command(['SADD', indexKey, id]);
   return id;
 }
 
 export async function listIndexed(indexName) {
+  const indexKey = indexes[indexName];
+  if (!indexKey) throw new Error('Unknown stack index: ' + indexName);
   if (!config()) {
     const prefixKey = indexName + ':';
     return [...memory.entries()]
       .filter(([key]) => key.startsWith(prefixKey))
       .map(([, value]) => value);
   }
-  const ids = await command(['SMEMBERS', indexes[indexName]]);
+  const ids = await command(['SMEMBERS', indexKey]);
   if (!Array.isArray(ids) || ids.length === 0) return [];
   const values = await Promise.all(ids.map(id => getJson(indexName + ':' + id)));
   return values.filter(Boolean);
