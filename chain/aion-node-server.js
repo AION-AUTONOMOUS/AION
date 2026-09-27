@@ -19,6 +19,7 @@ const PUBLIC_KEY = process.env.VALIDATOR_PUBLIC_KEY || "";
 
 const chain = new AionChain({ genesisBalances: GENESIS });
 const mempool = new AionMempool();
+const SENDER_PUBLIC_KEYS = new Map();
 
 function writeState() {
   const snapshot = {
@@ -75,6 +76,7 @@ async function handle(req,res) {
     if (!crypto.verify(null,Buffer.from(canonicalJson(stripSignature(tx))),publicKey,Buffer.from(tx.signature||"","base64"))) return json(res,400,{error:"invalid_signature"});
     const r=mempool.add(tx);
     if (!r.accepted) return json(res,409,r);
+    SENDER_PUBLIC_KEYS.set(tx.sender, publicKey);
     for (const peer of PEERS) await post(peer+"/p2p/transaction",{transaction:tx,publicKey});
     return json(res,202,{accepted:true,txHash:tx.txHash});
   }
@@ -85,6 +87,7 @@ async function handle(req,res) {
     if (("aion1"+sha256(publicKey).slice(0,40))!==tx.sender) return json(res,400,{error:"sender_key_mismatch"});
     if (!crypto.verify(null,Buffer.from(canonicalJson(stripSignature(tx))),publicKey,Buffer.from(tx.signature||"","base64"))) return json(res,400,{error:"invalid_signature"});
     const r=mempool.add(tx);
+    if (r.accepted) SENDER_PUBLIC_KEYS.set(tx.sender, publicKey);
     return json(res,r.accepted?202:409,r);
   }
 
@@ -93,7 +96,7 @@ async function handle(req,res) {
     if (!block) return json(res,400,{error:"block_required"});
     const proposerKey=VALIDATORS[block.proposer];
     if (!proposerKey) return json(res,403,{error:"unknown_proposer"});
-    if (sha256(block)!==block.blockHash) return json(res,400,{error:"invalid_block_hash"});
+    if (sha256(blockHeader(block))!==block.blockHash) return json(res,400,{error:"invalid_block_hash"});
     if (!PRIVATE_KEY) return json(res,503,{error:"validator_key_missing"});
     const att=createAttestation({validatorId:NODE_ID,block,signature:signValidatorAttestation({validatorId:NODE_ID,blockHash:block.blockHash,proposalDigest:proposalDigest(block)},PRIVATE_KEY)});
     await post(body.replyTo+"/p2p/attestation",{attestation:att});
@@ -111,7 +114,7 @@ async function handle(req,res) {
   if (u.pathname==="/rpc/propose") {
     if (NODE_ID!==Object.keys(VALIDATORS).sort()[0]) return json(res,403,{error:"not_leader"});
     const txs=mempool.list({limit:100});
-    const block=chain._makeBlock(txs,NODE_ID,new Date().toISOString(),chain.latestBlock().blockHash,sha256({balances:[...chain.state.entries()].sort(),nonces:[...chain.nonces.entries()].sort()}));
+    const block=chain._makeBlock(txs,NODE_ID,new Date().toISOString(),chain.latestBlock().blockHash,previewStateRoot(txs));
     const attestations=[];
     if (PRIVATE_KEY) attestations.push(createAttestation({validatorId:NODE_ID,block,signature:signValidatorAttestation({validatorId:NODE_ID,blockHash:block.blockHash,proposalDigest:proposalDigest(block)},PRIVATE_KEY)}));
     for (const peer of PEERS) {
@@ -123,16 +126,54 @@ async function handle(req,res) {
 
   if (u.pathname==="/rpc/commit") {
     const block=body.block, attestations=body.attestations||[];
-    const result=finalizeBlock(block,Object.keys(VALIDATORS),attestations);
+    if (!block || sha256(blockHeader(block)) !== block.blockHash) return json(res,400,{error:"invalid_block_hash"});
+    const validatorKeys=new Map(Object.entries(VALIDATORS));
+    const result=finalizeBlock(block,Object.keys(VALIDATORS),attestations,validatorKeys);
     if (!result.finalized) return json(res,409,result);
-    const keys=new Map(Object.entries(VALIDATORS).map(([id,key])=>[id,key]));
     const txs=body.transactions||[];
-    if (txs.length) chain.commitBlock(txs,block.proposer,block.timestamp,new Map());
+    const publicKeys = new Map(SENDER_PUBLIC_KEYS);
+    for (const [sender, key] of Object.entries(body.publicKeys || {})) publicKeys.set(sender, key);
+    if (txs.length) {
+      for (const tx of txs) if (!publicKeys.get(tx.sender)) return json(res,400,{error:"missing_sender_public_key",sender:tx.sender});
+      chain.commitBlock(txs,block.proposer,block.timestamp,publicKeys);
+    }
     writeState();
     return json(res,200,{finalized:true,certificateHash:result.certificateHash,height:chain.latestBlock().height});
   }
 
   return json(res,404,{error:"not_found"});
+}
+
+function blockHeader(block) {
+  return {
+    version: block.version,
+    height: block.height,
+    previousHash: block.previousHash,
+    timestamp: block.timestamp,
+    proposer: block.proposer,
+    txHashes: block.txHashes,
+    stateRoot: block.stateRoot
+  };
+}
+
+function previewStateRoot(transactions) {
+  const balances = new Map(chain.state);
+  const nonces = new Map(chain.nonces);
+  for (const tx of transactions) {
+    const publicKey = SENDER_PUBLIC_KEYS.get(tx.sender);
+    if (!publicKey) throw new Error("missing_sender_public_key");
+    if (!crypto.verify(null,Buffer.from(canonicalJson(stripSignature(tx))),publicKey,Buffer.from(tx.signature||"","base64"))) throw new Error("invalid_signature");
+    if (sha256(stripSignature(tx)) !== tx.txHash) throw new Error("invalid_tx_hash");
+    const expectedNonce = nonces.get(tx.sender) || 0;
+    if (tx.nonce !== expectedNonce) throw new Error("invalid_nonce");
+    const total = BigInt(tx.amountNeuro) + BigInt(tx.feeNeuro);
+    const balance = balances.get(tx.sender) || 0n;
+    if (balance < total) throw new Error("insufficient_balance");
+    balances.set(tx.sender, balance - total);
+    balances.set(tx.recipient, (balances.get(tx.recipient) || 0n) + BigInt(tx.amountNeuro));
+    nonces.set(tx.sender, expectedNonce + 1);
+  }
+  return sha256({balances:[...balances.entries()].sort(),nonces:[...nonces.entries()].sort()});
 }
 
 function publicBase() {
