@@ -12,7 +12,7 @@ export const AUTONOMOUS_POLICIES = Object.freeze({
   autoMoveMoney: false,
   autoRunPaidAds: false,
   autoDeployMainnetToken: false,
-  autoExecuteLegalDecisions: true,
+  autoExecuteLegalDecisions: false,
   autoExecutePoliticalTargeting: false
 });
 
