@@ -98,6 +98,10 @@
       "destination": "/api/system?route=live-space"
     },
     {
+      "source": "/api/leo-exchange/:path*",
+      "destination": "/api/system?route=leo-exchange&path=:path*"
+    },
+    {
       "source": "/api/leo-orchestrator/:path*",
       "destination": "/api/system?route=leo-orchestrator&path=:path*"
     }
