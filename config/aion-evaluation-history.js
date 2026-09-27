@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
-import { addToIndex, getJson, setJson } from './aion-stack-store.js';
+import { getJson, setJson } from './aion-stack-store.js';
 
-export const EVALUATION_HISTORY_VERSION = '1.0.0';
+export const EVALUATION_HISTORY_VERSION = '1.0.1';
 
 function text(value) {
   return String(value ?? '').trim();
@@ -33,7 +33,9 @@ export async function recordEvaluation(benchmarkId, evaluation = {}) {
   };
 
   await setJson('evaluation:' + record.id, record);
-  await addToIndex('evaluations:' + id, record.id);
+  const indexKey = 'index:evaluations:' + id;
+  const ids = await getJson(indexKey);
+  await setJson(indexKey, [...(Array.isArray(ids) ? ids : []), record.id]);
   return record;
 }
 
