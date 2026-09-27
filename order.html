@@ -148,6 +148,13 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(24px,4vw,36px);margin-bottom:
 </select>
 </div>
 
+<div id="requestedService" style="display:none;margin:0 auto 20px;max-width:900px;padding:18px 20px;background:linear-gradient(135deg,rgba(245,197,66,.12),rgba(0,80,150,.18));border:2px solid #f5c542;border-radius:18px;text-align:center">
+  <div style="color:#f5c542;font-weight:900;font-size:12px;margin-bottom:7px">🛰️ الخدمة المطلوبة</div>
+  <div id="requestedServiceTitle" style="color:#fff;font-size:22px;font-weight:900;margin-bottom:6px"></div>
+  <div id="requestedServiceDesc" style="color:#c8d5e7;font-size:12px;margin-bottom:12px"></div>
+  <button id="requestedServicePay" class="pay-btn" style="max-width:360px;margin:auto">💳 متابعة الدفع</button>
+</div>
+
 <p class="sub">اضغط على الخدمة → ادفع بأمان عبر PayPal أو البطاقة</p>
 
 <div class="grid">
@@ -444,6 +451,120 @@ async function changeCurrency(currency) {
     exchangeRates = await fetchRates();
   }
   updateCardPrices();
+}
+
+
+const REQUESTED_SERVICES = {
+  'Satellite Data': {
+    title: 'تحليل بيانات الأقمار الصناعية',
+    price: 35,
+    desc: 'تحليل صور الأقمار الصناعية بالذكاء الاصطناعي — زراعة، بيئة، مدن، بحار.'
+  },
+  'Remote Sensing': {
+    title: 'تحليل الاستشعار عن بعد',
+    price: 30,
+    desc: 'تحليل صور الأقمار الصناعية لأغراض زراعية، بيئية وعمرانية.'
+  },
+  'Space Reports': {
+    title: 'تقارير قطاع الفضاء',
+    price: 25,
+    desc: 'تقرير عن قطاع الفضاء العالمي: الشركات، الاستثمارات والاتجاهات.'
+  },
+  'Space Consulting': {
+    title: 'استشارات فضائية',
+    price: 40,
+    desc: 'استشارة استراتيجية لشركات الفضاء أو المستثمرين في القطاع.'
+  },
+  'Satellite Monitoring': {
+    title: 'مراقبة الأقمار الصناعية',
+    price: 99,
+    desc: 'مراقبة دورية للأقمار الصناعية مع تنبيهات وتقارير.'
+  },
+  'Launch Planning': {
+    title: 'خطط إطلاق الأقمار',
+    price: 150,
+    desc: 'دراسة جدوى لمشروع إطلاق قمر صناعي — التكاليف والمواعيد والشركاء.'
+  }
+};
+
+function getRequestedService() {
+  const params = new URLSearchParams(window.location.search);
+  const service = params.get('service');
+  const price = Number(params.get('price'));
+  if (!service || !REQUESTED_SERVICES[service]) return null;
+  const item = REQUESTED_SERVICES[service];
+  return {
+    ...item,
+    price: Number.isFinite(price) && price > 0 ? price : item.price
+  };
+}
+
+function renderRequestedService() {
+  const item = getRequestedService();
+  const box = document.getElementById('requestedService');
+  if (!item || !box) return;
+
+  document.getElementById('requestedServiceTitle').textContent = item.title;
+  document.getElementById('requestedServiceDesc').textContent = item.desc + ' — 
+  document.getElementById('mTitle').textContent = title;
+  document.getElementById('mDesc').textContent = desc;
+  document.getElementById('mPayLink').href = PAYPAL_LINK;
+  
+  // السعر المحلي (فوق)
+  const localPriceEl = document.getElementById('mLocalPrice');
+  const local = formatLocalPrice(price);
+  if (local) {
+    localPriceEl.textContent = local;
+    localPriceEl.style.display = 'block';
+  } else {
+    localPriceEl.textContent = '$' + price;
+    localPriceEl.style.display = 'block';
+  }
+  
+  // السعر بالدولار (تحت)
+  document.getElementById('mUsdPrice').textContent = '$' + price + ' USD';
+  
+  document.getElementById('payModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('payModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('payModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+renderRequestedService();
+
+(async function init() {
+  const country = await detectCountry();
+  userCurrency = countryToCurrency[country] || 'USD';
+  
+  const select = document.getElementById('currencySelect');
+  if (select && countryToCurrency[country]) {
+    select.value = countryToCurrency[country];
+  }
+  
+  if (userCurrency !== 'USD') {
+    exchangeRates = await fetchRates();
+  }
+  updateCardPrices();
+})();
+</script>
+
+<script src="lang.js"></script>
+
+</body>
+</html>
+ + item.price + ' USD';
+  document.getElementById('requestedServicePay').onclick = () => openPay(item.title, item.price, item.desc);
+  box.style.display = 'block';
+
+  // اجعل الخدمة المطلوبة أول ما يراه العميل بدل أن يبدأ بقائمة الخدمات العامة.
+  box.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 function openPay(title, price, desc) {
