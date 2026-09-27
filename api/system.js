@@ -28,7 +28,8 @@ const HANDLERS = {
   'economic-intelligence': () => import('../server-api/economic-intelligence.js'),
   'continuous-intelligence': () => import('../server-api/continuous-intelligence.js'),
   'customer-revenue': () => import('../server-api/customer-revenue.js'),
-  'openai-intelligence': () => import('../server-api/openai-intelligence.js')
+  'openai-intelligence': () => import('../server-api/openai-intelligence.js'),
+  'company-os': () => import('../server-api/company-os.js')
 };
 
 export default async function handler(req, res) {
