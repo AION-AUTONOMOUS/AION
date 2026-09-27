@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import { hasRailwayRedis, railwayRedisCommand, redisStorageMode } from './aion-redis.js';
 
 const tasks = new Map();
 const events = [];
@@ -6,9 +7,10 @@ const PREFIX = 'aion:ops:task:';
 const INDEX = 'aion:ops:index';
 
 function redisConfig() {
+  if (hasRailwayRedis()) return { kind: 'railway' };
   const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
-  return url && token ? { url, token } : null;
+  return url && token ? { kind: 'upstash', url, token } : null;
 }
 
 function redisConfigured() {
@@ -18,6 +20,7 @@ function redisConfigured() {
 async function redis(command) {
   const config = redisConfig();
   if (!config) return null;
+  if (config.kind === 'railway') return railwayRedisCommand(command);
 
   const response = await fetch(config.url, {
     method: 'POST',
@@ -116,7 +119,7 @@ export async function resetStore() {
 
 export function opsStorageHealth() {
   return {
-    mode: redisConfigured() ? 'upstash-redis' : 'memory-fallback',
+    mode: redisConfigured() ? (redisStorageMode() || 'upstash-redis') : 'memory-fallback',
     durable: redisConfigured(),
     configured: redisConfigured()
   };
