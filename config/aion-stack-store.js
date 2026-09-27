@@ -1,3 +1,5 @@
+import { hasRailwayRedis, railwayRedisCommand, redisStorageMode } from './aion-redis.js';
+
 const memory = new Map();
 const prefix = 'aion:stack:';
 const indexes = {
@@ -7,14 +9,15 @@ const indexes = {
 };
 
 function config() {
+  if (hasRailwayRedis()) return { kind: 'railway' };
   const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
-  return url && token ? { url, token } : null;
+  return url && token ? { kind: 'upstash', url, token } : null;
 }
 
 export function stackStorageHealth() {
   return {
-    mode: config() ? 'upstash-redis' : 'memory-fallback',
+    mode: config() ? (redisStorageMode() || 'upstash-redis') : 'memory-fallback',
     durable: Boolean(config()),
     configured: Boolean(config())
   };
@@ -23,6 +26,7 @@ export function stackStorageHealth() {
 async function command(command) {
   const cfg = config();
   if (!cfg) return null;
+  if (cfg.kind === 'railway') return railwayRedisCommand(command);
   const response = await fetch(cfg.url, {
     method: 'POST',
     headers: {
