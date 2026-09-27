@@ -1,0 +1,25 @@
+name: AION v0.3 Chain Tests
+
+on:
+  pull_request:
+    paths:
+      - "chain/**"
+      - "protocol/**"
+  push:
+    branches:
+      - main
+      - "feat/aion-chain-v0.3-consensus-persistence"
+    paths:
+      - "chain/**"
+      - "protocol/**"
+
+jobs:
+  chain-v03:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --test protocol/aion-value-ledger.test.js
+      - run: node --test chain/aion-chain.test.js chain/aion-consensus.test.js chain/aion-persistence.test.js
