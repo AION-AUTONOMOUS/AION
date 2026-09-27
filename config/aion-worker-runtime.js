@@ -3,6 +3,7 @@ import { resetStore } from './aion-ops-engine.js';
 import { getTask, listTasks, updateTask } from './aion-ops-store.js';
 import { hasRailwayRedis, railwayRedisCommand } from './aion-redis.js';
 import { runOpenAI, selectOpenAIModel } from './aion-openai-gateway.js';
+import { AGENTS, TOTAL_AGENTS } from './aion-fleet.js';
 
 export const RUNTIME_VERSION = '2.0.0';
 export const MAX_CONCURRENCY = Math.max(1, Math.min(Number(process.env.AION_MAX_ACTIVE_WORKERS) || 20, 1000));
