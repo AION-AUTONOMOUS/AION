@@ -257,16 +257,55 @@
     document.body.appendChild(box);
   }
 
-  function translatePage(languageCode) {
-    var select = document.querySelector(".goog-te-combo");
+  var pendingLanguage = null;
+  var translationTimer = null;
 
-    if (!select) {
-      alert("جارٍ تحميل نظام الترجمة، حاول مرة أخرى بعد لحظات.");
-      return;
-    }
+  function getTranslateSelect() {
+    return document.querySelector(".goog-te-combo");
+  }
+
+  function setTranslationStatus(message) {
+    var title = document.querySelector("#aion-language-box h3");
+    if (title) title.textContent = message;
+  }
+
+  function applyTranslation(languageCode) {
+    var select = getTranslateSelect();
+    if (!select) return false;
 
     select.value = languageCode;
-    select.dispatchEvent(new Event("change"));
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+
+    try {
+      document.cookie =
+        "googtrans=/ar/" + languageCode + ";path=/;max-age=31536000;SameSite=Lax";
+    } catch (e) {}
+
+    pendingLanguage = null;
+    setTranslationStatus("🌐 اختر لغة AION");
+    return true;
+  }
+
+  function translatePage(languageCode) {
+    pendingLanguage = languageCode;
+
+    if (applyTranslation(languageCode)) return;
+
+    setTranslationStatus("⏳ جاري تشغيل الترجمة...");
+
+    if (translationTimer) clearInterval(translationTimer);
+    var attempts = 0;
+
+    translationTimer = setInterval(function () {
+      attempts += 1;
+      if (applyTranslation(languageCode) || attempts >= 30) {
+        clearInterval(translationTimer);
+        translationTimer = null;
+        if (attempts >= 30 && pendingLanguage) {
+          setTranslationStatus("⚠️ تعذر تحميل الترجمة — أعد المحاولة");
+        }
+      }
+    }, 500);
   }
 
   function createGoogleTranslate() {
@@ -274,10 +313,14 @@
 
     var hiddenContainer = document.createElement("div");
     hiddenContainer.id = "google_translate_element";
-    hiddenContainer.style.cssText = 'display:none !important; position:absolute; left:-9999px; top:-9999px;';
+    hiddenContainer.setAttribute("aria-hidden", "true");
+    hiddenContainer.style.cssText =
+      "position:fixed;left:-10000px;top:-10000px;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;";
     document.body.appendChild(hiddenContainer);
 
     window.googleTranslateElementInit = function () {
+      if (!window.google || !google.translate) return;
+
       new google.translate.TranslateElement(
         {
           pageLanguage: "ar",
@@ -291,12 +334,26 @@
       );
 
       forceHideBanner();
+
+      var readyAttempts = 0;
+      var readyTimer = setInterval(function () {
+        readyAttempts += 1;
+        if (getTranslateSelect()) {
+          clearInterval(readyTimer);
+          if (pendingLanguage) applyTranslation(pendingLanguage);
+        } else if (readyAttempts >= 20) {
+          clearInterval(readyTimer);
+        }
+      }, 250);
     };
 
     var script = document.createElement("script");
     script.src =
       "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
     script.async = true;
+    script.onerror = function () {
+      setTranslationStatus("⚠️ خدمة الترجمة غير متاحة الآن");
+    };
 
     document.body.appendChild(script);
   }
