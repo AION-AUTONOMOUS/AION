@@ -1,9 +1,9 @@
 import crypto from 'node:crypto';
 import { AGENTS, DEPARTMENTS, TOTAL_AGENTS } from './aion-fleet.js';
-import { routeTask } from './aion-control-plane.js';
-import { runOpenAI, openAIConfigured, selectOpenAIModel } from './aion-openai-gateway.js';
+import { dispatchTask } from './aion-workers.js';
+import { openAIConfigured, selectOpenAIModel } from './aion-openai-gateway.js';
 
-export const COMPANY_ORCHESTRATOR_VERSION = '2.0.0';
+export const COMPANY_ORCHESTRATOR_VERSION = '2.1.0';
 
 const MODE_BY_DEPARTMENT = Object.freeze({
   research:'research', data:'research',
@@ -22,7 +22,7 @@ export function companyOrchestratorHealth() {
     registeredAgentRoles: TOTAL_AGENTS,
     roleRegistryIntegrity: AGENTS.length === TOTAL_AGENTS,
     modelRouting: MODE_BY_DEPARTMENT,
-    execution: 'real OpenAI calls + registered worker adapters',
+    execution: 'dispatchTask -> durable queue -> Worker Runtime -> OpenAI',
     completionPolicy: 'evidence-required',
     fakeCompletion: false
   };
@@ -36,40 +36,42 @@ export function planCompanyWork(input = {}) {
     : Object.keys(DEPARTMENTS).map(department => ({ department, text: goal }));
 
   return tasks.map((task, index) => {
-    const route = routeTask(task);
-    const mode = MODE_BY_DEPARTMENT[route.department] || 'frontier';
+    const department = String(task.department || '').trim() || undefined;
+    const mode = MODE_BY_DEPARTMENT[department] || 'frontier';
     return {
       id: 'AION-WORK-' + crypto.randomUUID(),
       sequence: index + 1,
-      department: route.department,
-      agentRole: route.agent,
-      commander: route.commander,
+      department: department || null,
       mode,
       model: selectOpenAIModel(mode),
-      policy: route.policy,
-      status: route.policy.blocked ? 'blocked-by-policy' :
-        route.policy.requiresHumanApproval ? 'awaiting-owner-approval' : 'planned'
+      status: 'ready-for-dispatch'
     };
   });
 }
 
 export async function executeCompanyTask(input = {}) {
-  const route = routeTask(input);
-  if (route.policy.blocked) {
-    return { status:'blocked-by-policy', route, fakeCompletion:false };
-  }
-  if (route.policy.requiresHumanApproval && !input.ownerApproval) {
-    return { status:'awaiting-owner-approval', route, fakeCompletion:false };
-  }
-  const mode = MODE_BY_DEPARTMENT[route.department] || 'frontier';
-  const result = await runOpenAI({ ...input, mode });
-  return {
-    status:'completed',
-    workId:'AION-WORK-' + crypto.randomUUID(),
-    route,
+  const goal = String(input.text || input.prompt || '').trim();
+  if (!goal) throw new Error('task text required');
+
+  const mode = MODE_BY_DEPARTMENT[String(input.department || '').trim()] || 'frontier';
+  const dispatched = await dispatchTask({
+    ...input,
+    text: goal,
     mode,
-    result,
-    evidence:{ openAIResponseId: result.responseId, measured: true },
-    fakeCompletion:false
+    model: input.model || selectOpenAIModel(mode),
+    source: 'company-orchestrator-v2'
+  });
+
+  return {
+    ...dispatched,
+    workId: dispatched.task?.id || 'AION-WORK-' + crypto.randomUUID(),
+    status: dispatched.action === 'queued_for_worker'
+      ? 'queued'
+      : dispatched.action === 'await_human_approval'
+        ? 'awaiting-owner-approval'
+        : dispatched.action === 'blocked_by_policy'
+          ? 'blocked-by-policy'
+          : dispatched.task?.status || 'queued',
+    fakeCompletion: false
   };
 }
