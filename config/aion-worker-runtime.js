@@ -38,6 +38,24 @@ async function executeTask(task) {
     instructions:
       'You are an AION production worker. Execute the assigned analytical/software task using the information available to you. Distinguish evidence from assumptions. Never claim an external action occurred unless an AION execution adapter confirms it. Return a concise result with findings, actions proposed or performed, evidence, and next step.'
   });
+  const evidence = {
+    type: 'openai-response',
+    provider: 'OpenAI',
+    responseId: result.responseId,
+    requestId: result.requestId,
+    model: result.model,
+    measured: true
+  };
+  const verification = {
+    status: result.responseId && result.text ? 'verified-output' : 'verification-failed',
+    checks: {
+      providerResponseId: Boolean(result.responseId),
+      nonEmptyOutput: Boolean(result.text)
+    }
+  };
+  if (verification.status !== 'verified-output') {
+    throw new Error('worker result failed evidence verification');
+  }
   return {
     type: 'openai_worker_result',
     output: result.text,
@@ -45,6 +63,8 @@ async function executeTask(task) {
     mode,
     openAIResponseId: result.responseId,
     usage: result.usage,
+    evidence,
+    verification,
     measured: true
   };
 }
@@ -170,6 +190,13 @@ export async function processOne() {
     const completed = await updateTask(task.id, {
       status: 'completed',
       result,
+      evidence: result?.evidence || null,
+      verification: result?.verification || null,
+      outcome: {
+        status: 'completed',
+        recordedAt: new Date().toISOString(),
+        evidenceBacked: Boolean(result?.evidence && result?.verification?.status === 'verified-output')
+      },
       completedAt: new Date().toISOString(),
       durationMs: Date.now() - started
     });
@@ -178,6 +205,8 @@ export async function processOne() {
   } catch (error) {
     const failed = await updateTask(task.id, {
       status: 'failed',
+      verification: { status: 'failed', reason: String(error?.message || error) },
+      outcome: { status: 'failed', recordedAt: new Date().toISOString() },
       error: String(error?.message || error),
       failedAt: new Date().toISOString(),
       durationMs: Date.now() - started
