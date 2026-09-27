@@ -1,0 +1,28 @@
+name: AION Chain Simulator Tests
+
+on:
+  pull_request:
+    paths:
+      - "chain/**"
+      - "protocol/**"
+      - "package.json"
+  push:
+    branches:
+      - main
+      - "feat/aion-chain-simulator-v0.2"
+    paths:
+      - "chain/**"
+      - "protocol/**"
+
+jobs:
+  chain-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Test protocol ledger
+        run: node --test protocol/aion-value-ledger.test.js
+      - name: Test chain state machine
+        run: node --test chain/aion-chain.test.js
