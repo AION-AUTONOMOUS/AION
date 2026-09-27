@@ -1,8 +1,9 @@
 import { sha256 } from "../protocol/aion-value-ledger.js";
+import { verifyValidatorAttestation } from "./aion-validator-crypto.js";
 
 export const CONSENSUS = Object.freeze({
   name: "AION Byzantine Quorum Finality",
-  version: "0.3.0",
+  version: "0.4.1",
   quorumNumerator: 2n,
   quorumDenominator: 3n
 });
@@ -34,13 +35,17 @@ export function createAttestation({ validatorId, block, signature }) {
   });
 }
 
-export function finalizeBlock(block, validatorSet, attestations) {
+export function finalizeBlock(block, validatorSet, attestations, publicKeys = null) {
   const allowed = new Set(validatorSet);
   const seen = new Set();
   const accepted = [];
   for (const a of attestations || []) {
-    if (!allowed.has(a.validatorId) || seen.has(a.validatorId)) continue;
+    if (!allowed.has(a?.validatorId) || seen.has(a.validatorId)) continue;
     if (a.blockHash !== block.blockHash || a.proposalDigest !== proposalDigest(block)) continue;
+    if (publicKeys) {
+      const key = publicKeys.get ? publicKeys.get(a.validatorId) : publicKeys[a.validatorId];
+      if (!key || !verifyValidatorAttestation(a, key)) continue;
+    }
     seen.add(a.validatorId);
     accepted.push(a);
   }
@@ -49,10 +54,13 @@ export function finalizeBlock(block, validatorSet, attestations) {
     finalized: accepted.length >= required,
     required,
     attestations: accepted,
-    certificateHash: accepted.length >= required ? sha256(accepted.map(a => ({
-      validatorId: a.validatorId,
-      blockHash: a.blockHash,
-      proposalDigest: a.proposalDigest
-    })).sort((a,b)=>a.validatorId.localeCompare(b.validatorId))) : null
+    certificateHash: accepted.length >= required
+      ? sha256(accepted.map(a => ({
+          validatorId: a.validatorId,
+          blockHash: a.blockHash,
+          proposalDigest: a.proposalDigest,
+          signature: a.signature
+        })).sort((a,b)=>a.validatorId.localeCompare(b.validatorId)))
+      : null
   });
 }

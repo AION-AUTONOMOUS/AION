@@ -1,88 +1,62 @@
-# AION Economic Model v0.1
+# AION Economic Model v0.2 — 10 Billion Supply + Proof-of-Intelligence
 
-## Objective
-
-Design AION around durable network demand rather than a promised market price.
-
-### Supply
-
-- Maximum: 21,000,000 AION
+## Supply
+- Maximum: **10,000,000,000 AION**
 - Precision: 8 decimals
-- Smallest unit: neuro
+- Smallest unit: **1 neuro = 0.00000001 AION**
+- Maximum base units: **1,000,000,000,000,000,000 neuro**
 
-### Demand sources
+## Core demand mechanism
 
-AION is intended to be required for protocol-level economic activity:
+AION is intended to settle objectively measurable work performed by AI agents, compute providers, data processors and other permitted machine-economy participants.
 
-- transaction fees
-- compute/service settlement
-- validator security
-- machine/agent payments
-- protocol services
-- future application execution fees
+The intended path is:
 
-Demand must emerge from actual usage; it must not be manufactured by a promised price floor.
+**Task → Execution → Evidence → Independent Verification → PoI Score → AION Settlement**
 
-### Initial design allocation
+PoI is not a claim that a model is "intelligent" in the abstract. It is a protocol measurement of a verifiable contribution: task correctness/quality, reproducibility, resource usage and cryptographic evidence.
+
+## Supply allocation target
 
 | Pool | % | AION |
 |---|---:|---:|
-| Network contribution | 50% | 10,500,000 |
-| Security & validators | 20% | 4,200,000 |
-| Ecosystem | 15% | 3,150,000 |
-| Protocol treasury | 10% | 2,100,000 |
-| Founding allocation | 5% | 1,050,000 |
+| Network contribution | 50% | 5,000,000,000 |
+| Security & validators | 20% | 2,000,000,000 |
+| Ecosystem | 15% | 1,500,000,000 |
+| Protocol treasury | 10% | 1,000,000,000 |
+| Founding allocation | 5% | 500,000,000 |
 
-All allocations are design targets pending governance and legal review. Vesting and release schedules must be encoded on-chain before any mainnet distribution.
+These are protocol-design targets, not a promise of market value. Vesting and release schedules must be enforced on-chain before mainnet distribution.
 
-### Fees
+## Fees and settlement
 
-The protocol should separate three concepts:
+1. Network fee — transaction processing.
+2. Verification fee — validator verification.
+3. Application/service fee — actual service provider.
+4. PoI settlement — bounded reward for accepted verified work.
 
-1. **Network fee** — paid to process a transaction.
-2. **Verification fee** — paid to validators for verification work.
-3. **Application/service fee** — optional fee paid to the provider of an actual service.
+No component may mint above the protocol maximum.
 
-A future fee market can route a defined portion to security and optionally burn a defined portion. Burn must never be the only reason to expect appreciation.
+## Anti-inflation invariant
 
-### Issuance discipline
+The state machine must reject:
 
-No component may mint beyond the protocol supply cap.
+`totalSupplyNeuro + issuanceNeuro > 1,000,000,000,000,000,000`
 
-The future chain state machine must reject:
+A fee burn may be added later only as an explicit economic parameter; it is not a guaranteed price mechanism.
 
-`totalSupply + issuance > MAX_SUPPLY`
+## Adversarial economic tests
 
-### Validator economics
-
-Validators should earn for honest availability and verification, and face deterministic penalties for provable protocol violations.
-
-The exact inflation/emission curve is intentionally left to economic simulation rather than invented now.
-
-### Why this model is different
-
-The thesis is:
-
-`Real usage → real settlement demand → security demand → network effects`
-
-not:
-
-`Marketing → speculative demand → promised price`
-
-### Mainnet economic tests
-
-Before launch, simulate at minimum:
-
-- 10x demand growth
+Before mainnet, simulate:
+- 10x demand
 - 90% demand collapse
 - validator cartel
 - Sybil flood
-- evidence forgery
-- duplicate contribution
-- dishonest majority
-- fee market congestion
-- treasury concentration
+- forged evidence
+- duplicate work
+- dishonest validators
 - reward concentration
-- maximum supply exhaustion
+- treasury concentration
+- supply-cap exhaustion
 
-No mainnet launch should occur until the protocol remains economically coherent under adverse scenarios.
+No price target is encoded in the protocol.

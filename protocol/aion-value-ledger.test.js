@@ -30,7 +30,7 @@ function validators(record) {
 test("protocol constants define a bounded monetary supply", () => {
   assert.equal(PROTOCOL.symbol, "AION");
   assert.equal(PROTOCOL.decimals, 8);
-  assert.equal(PROTOCOL.maxSupplyNeuro, 21_000_000n * 10n ** 8n);
+  assert.equal(PROTOCOL.maxSupplyNeuro, 10_000_000_000n * 10n ** 8n);
 });
 
 test("value records are deterministic and hash-bound", () => {

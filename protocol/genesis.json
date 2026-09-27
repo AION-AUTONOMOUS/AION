@@ -1,22 +1,33 @@
 {
   "chain": "AION",
-  "protocol": "AION Proof-of-Value Ledger",
-  "version": "0.1.0",
+  "protocol": "AION Proof-of-Intelligence Network",
+  "version": "0.2.0",
   "network": "testnet",
   "monetaryPolicy": {
     "symbol": "AION",
     "decimals": 8,
-    "maxSupply": "21000000",
+    "maxSupply": "10000000000",
     "smallestUnit": "neuro",
-    "maxSupplyNeuro": "2100000000000000",
+    "maxSupplyNeuro": "1000000000000000000",
     "genesisMinting": "disabled-for-mainnet",
+    "issuanceRule": "totalSupply + issuance <= maxSupplyNeuro",
     "testnetFaucet": "development-only"
   },
-  "security": {
+  "proofOfIntelligence": {
     "minimumIndependentValidators": 3,
+    "minimumQualityBps": 7000,
+    "minimumReproducibilityBps": 7000,
+    "duplicateContributionProtection": true,
+    "evidenceDigest": "sha256"
+  },
+  "security": {
+    "classicalSignature": "Ed25519",
+    "postQuantumSignature": "ML-DSA-65",
+    "postQuantumStandard": "NIST FIPS 204",
+    "hybridMigration": true,
     "sybilResistance": "validator-bonding-and-identity-attestation-to-be-specified-before-mainnet",
     "slashing": "to-be-specified-after-economic-simulation",
-    "finality": "not-defined-in-v0.1-reference-ledger"
+    "finality": "2/3 Byzantine quorum"
   },
   "allocationPolicy": {
     "networkContribution": "50%",

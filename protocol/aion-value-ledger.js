@@ -1,11 +1,11 @@
 import crypto from "node:crypto";
 
 export const PROTOCOL = Object.freeze({
-  name: "AION Proof-of-Value Ledger",
-  version: "0.1.0",
+  name: "AION Proof-of-Intelligence Ledger",
+  version: "0.2.0",
   symbol: "AION",
   decimals: 8,
-  maxSupplyNeuro: 21_000_000n * 10n ** 8n,
+  maxSupplyNeuro: 10_000_000_000n * 10n ** 8n,
   minValidators: 3,
   maxVerificationAgeSeconds: 86400
 });
@@ -25,7 +25,7 @@ export function sha256(value) {
 export function createValueRecord(input, now = Date.now()) {
   validateValueRecordInput(input);
   const record = {
-    schema: "aion.value-record/0.1",
+    schema: "aion.value-record/0.2",
     recordId: input.recordId || crypto.randomUUID(),
     subject: input.subject,
     contributor: input.contributor,
@@ -37,37 +37,25 @@ export function createValueRecord(input, now = Date.now()) {
     expiresAt: input.expiresAt || null,
     metadata: input.metadata || {}
   };
-  return Object.freeze({
-    ...record,
-    recordHash: sha256(record)
-  });
+  return Object.freeze({ ...record, recordHash: sha256(record) });
 }
 
 export function verifyValueRecord(record, validators, now = Date.now()) {
   const errors = [];
-  if (!record || record.schema !== "aion.value-record/0.1") errors.push("invalid_schema");
+  if (!record || !["aion.value-record/0.1","aion.value-record/0.2"].includes(record.schema)) errors.push("invalid_schema");
   if (record.recordHash !== sha256(stripHash(record))) errors.push("invalid_record_hash");
   if (!Array.isArray(record.evidence) || record.evidence.length === 0) errors.push("missing_evidence");
   if (!Array.isArray(validators) || validators.length < PROTOCOL.minValidators) errors.push("insufficient_validators");
-
   const uniqueValidators = new Set();
   for (const v of validators || []) {
     if (!v?.validatorId || !v?.signature || !v?.attestationHash) continue;
     uniqueValidators.add(v.validatorId);
   }
   if (uniqueValidators.size < PROTOCOL.minValidators) errors.push("validator_diversity_failed");
-
   const age = now - Date.parse(record.createdAt || "");
   if (!Number.isFinite(age) || age < 0) errors.push("invalid_timestamp");
   if (age > PROTOCOL.maxVerificationAgeSeconds * 1000) errors.push("record_too_old");
-
-  const accepted = errors.length === 0;
-  return Object.freeze({
-    accepted,
-    recordHash: record.recordHash,
-    validatorCount: uniqueValidators.size,
-    errors
-  });
+  return Object.freeze({ accepted: errors.length === 0, recordHash: record.recordHash, validatorCount: uniqueValidators.size, errors });
 }
 
 export function calculateValueScore(record, verification) {
@@ -83,23 +71,13 @@ export function calculateSettlement(record, verification, policy = {}) {
   const rewardPerUnitNeuro = BigInt(policy.rewardPerUnitNeuro ?? 1n);
   const capNeuro = BigInt(policy.recordCapNeuro ?? 100_000n);
   const reward = score * rewardPerUnitNeuro;
-  return Object.freeze({
-    valueScore: score,
-    grossRewardNeuro: reward > capNeuro ? capNeuro : reward,
-    currency: PROTOCOL.symbol,
-    unit: "neuro"
-  });
+  return Object.freeze({ valueScore: score, grossRewardNeuro: reward > capNeuro ? capNeuro : reward, currency: PROTOCOL.symbol, unit: "neuro" });
 }
 
 export function settleValueRecord(record, validators, policy = {}, now = Date.now()) {
   const verification = verifyValueRecord(record, validators, now);
   const settlement = calculateSettlement(record, verification, policy);
-  return Object.freeze({
-    recordHash: record.recordHash,
-    verification,
-    settlement,
-    settledAt: new Date(now).toISOString()
-  });
+  return Object.freeze({ recordHash: record.recordHash, verification, settlement, settledAt: new Date(now).toISOString() });
 }
 
 export function stripHash(record) {

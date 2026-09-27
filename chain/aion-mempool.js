@@ -1,9 +1,10 @@
 import { sha256 } from "../protocol/aion-value-ledger.js";
 
 function unsignedTx(tx) {
-  const { signature, txHash, ...unsigned } = tx;
+  const { signature, txHash, expectedUnsignedHash, ...unsigned } = tx;
   return unsigned;
 }
+
 export class AionMempool {
   constructor({ maxTransactions = 10_000 } = {}) {
     this.maxTransactions = maxTransactions;
@@ -17,6 +18,7 @@ export class AionMempool {
     const key = `${tx.sender}:${tx.nonce}`;
     if (this.bySenderNonce.has(key)) return { accepted: false, reason: "nonce_conflict" };
     const expectedHash = sha256(unsignedTx(tx));
+    if (tx.txHash !== sha256(unsignedTx(tx))) return { accepted: false, reason: "invalid_tx_hash" };
     if (tx.expectedUnsignedHash && tx.expectedUnsignedHash !== expectedHash) return { accepted: false, reason: "invalid_hash" };
     this.byHash.set(tx.txHash, tx);
     this.bySenderNonce.set(key, tx.txHash);

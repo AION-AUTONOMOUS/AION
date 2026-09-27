@@ -1,0 +1,19 @@
+name: AION PoI + PQC Tests
+on:
+  push:
+    paths:
+      - "protocol/**"
+      - ".github/workflows/aion-poi-pqc-tests.yml"
+  pull_request:
+    paths:
+      - "protocol/**"
+      - ".github/workflows/aion-poi-pqc-tests.yml"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --test protocol/aion-proof-of-intelligence.test.js protocol/aion-pqc.test.js protocol/aion-value-ledger.test.js
