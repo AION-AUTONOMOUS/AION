@@ -37,8 +37,30 @@ async function getClient() {
 export async function railwayRedisCommand(command) {
   const client = await getClient();
   if (!client) return null;
-  const args = command.map((argument) => String(argument));
-  return client.sendCommand(args);
+
+  const [name, ...rawArgs] = command.map(argument => String(argument));
+  switch (name) {
+    case 'GET':
+      return client.get(rawArgs[0]);
+    case 'SET':
+      return client.set(rawArgs[0], rawArgs[1]);
+    case 'SADD':
+      return client.sAdd(rawArgs[0], rawArgs.slice(1));
+    case 'SMEMBERS':
+      return client.sMembers(rawArgs[0]);
+    case 'ZADD':
+      return client.zAdd(rawArgs[0], [{ score: Number(rawArgs[1]), value: rawArgs[2] }]);
+    case 'ZRANGE': {
+      const start = Number(rawArgs[1]);
+      const stop = Number(rawArgs[2]);
+      const options = rawArgs[3] === 'REV' ? { REV: true } : undefined;
+      return client.zRange(rawArgs[0], start, stop, options);
+    }
+    case 'RPUSH':
+      return client.rPush(rawArgs[0], rawArgs.slice(1));
+    default:
+      throw new Error('Unsupported Railway Redis command: ' + name);
+  }
 }
 
 export async function railwayRedisPing() {
