@@ -21,6 +21,7 @@ const HANDLERS = {
   'wallet-config': () => import('../server-api/wallet/config.js'),
   'space-commerce': () => import('../server-api/space-commerce.js'),
   'live-space': () => import('../server-api/live-space.js'),
+  'leo-orchestrator': () => import('../server-api/leo-orchestrator.js'),
   'mobile': () => import('../server-api/mobile.js'),
   'autonomy': () => import('../server-api/autonomy.js')
 };
