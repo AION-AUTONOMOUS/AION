@@ -237,7 +237,9 @@ const runWorkerTick = async () => {
   finally { workerTickBusy = false; }
 };
 const workerInterval = setInterval(runWorkerTick, WORKER_TICK_MS);
-workerInterval.unref?.();
+// Keep the worker runtime referenced so the Node process cannot exit naturally.
+// Railway must be able to keep this service alive even while the durable queue is idle.
+workerInterval.ref?.();
 
 const server = http.createServer(async (req,res) => {
   const url = new URL(req.url || "/", "http://aion.railway");
@@ -313,5 +315,12 @@ const server = http.createServer(async (req,res) => {
 
   return send(res,404,{success:false,error:"Not found"});
 });
+
+server.on("close", () => console.error("AION HTTP server closed unexpectedly"));
+server.on("error", error => console.error("AION HTTP server error:", error?.message || error));
+process.on("SIGTERM", () => console.error("AION process received SIGTERM from the runtime"));
+process.on("SIGINT", () => console.error("AION process received SIGINT"));
+process.on("uncaughtException", error => console.error("AION uncaught exception:", error?.stack || error));
+process.on("unhandledRejection", error => console.error("AION unhandled rejection:", error?.stack || error));
 
 server.listen(port,()=>console.log(serviceName+" v"+VERSION+" listening on "+port+"; control plane ready; worker runtime active"));
