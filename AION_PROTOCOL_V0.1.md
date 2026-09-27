@@ -28,7 +28,7 @@ AION uses a migration-ready hybrid signature design:
 - 2/3 Byzantine quorum for block finality.
 - duplicate/replay protection at the contribution and transaction layers.
 
-NIST standardized ML-DSA in FIPS 204 as a post-quantum digital-signature standard. Node.js 24.6+ exposes ML-DSA key generation/signing/verification support, subject to the underlying crypto build. citeturn0search0turn0search12
+NIST standardized ML-DSA in FIPS 204 as a post-quantum digital-signature standard. Node.js 24.6+ exposes ML-DSA key generation/signing/verification support, subject to the underlying crypto build.
 
 ## Monetary policy
 
