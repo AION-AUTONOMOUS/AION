@@ -5,7 +5,13 @@ const prefix = 'aion:stack:';
 const indexes = {
   assets: 'aion:stack:assets:index',
   robots: 'aion:stack:robots:index',
-  plans: 'aion:stack:plans:index'
+  plans: 'aion:stack:plans:index',
+  'enterprise-products': 'aion:stack:enterprise-products:index',
+  'service-contracts': 'aion:stack:service-contracts:index',
+  'interplanetary-providers': 'aion:stack:interplanetary-providers:index',
+  'mars-services': 'aion:stack:mars-services:index',
+  'interplanetary-jobs': 'aion:stack:interplanetary-jobs:index',
+  'space-payments': 'aion:stack:space-payments:index'
 };
 
 function config() {
