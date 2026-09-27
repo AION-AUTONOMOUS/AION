@@ -1,86 +1,92 @@
 import { dispatchTask } from './aion-workers.js';
 import { resetStore } from './aion-ops-engine.js';
-import { listTasks, updateTask } from './aion-ops-store.js';
+import { getTask, listTasks, updateTask } from './aion-ops-store.js';
+import { hasRailwayRedis, railwayRedisCommand } from './aion-redis.js';
+import { runOpenAI, selectOpenAIModel } from './aion-openai-gateway.js';
 
-export const RUNTIME_VERSION = '1.2.0';
-export const MAX_CONCURRENCY = 20;
+export const RUNTIME_VERSION = '2.0.0';
+export const MAX_CONCURRENCY = Math.max(1, Math.min(Number(process.env.AION_MAX_ACTIVE_WORKERS) || 20, 1000));
 const running = new Set();
-let actionExecutor = defaultActionExecutor;
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const MODE_BY_DEPARTMENT = Object.freeze({
+  research:'research', data:'research',
+  engineering:'engineering', security:'engineering', quality:'engineering', devops:'engineering',
+  strategy:'frontier', product:'frontier', finance:'frontier', legal:'frontier', compliance:'frontier',
+  marketing:'volume', growth:'volume', sales:'volume', partnerships:'volume',
+  support:'volume', content:'volume', operations:'volume', people:'volume', communications:'volume'
+});
 
-async function defaultActionExecutor(task) {
-  if (!process.env.GROQ_API_KEY) throw new Error('AI provider is not configured');
+const PENDING = 'aion:worker:pending';
+const PROCESSING = 'aion:worker:processing';
+const JOB = id => 'aion:worker:job:' + id;
 
-  const model = process.env.AION_GROQ_MODEL || 'openai/gpt-oss-20b';
-  const maxCompletionTokens = Math.max(
-    128,
-    Math.min(Number(process.env.AION_GROQ_MAX_COMPLETION_TOKENS) || 600, 2048)
-  );
-
-  const maxAttempts = 4;
-  let lastError = 'AI provider error';
-
-  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-    try {
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          Authorization: 'Bearer ' + process.env.GROQ_API_KEY,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model,
-          messages: [
-            {
-              role: 'system',
-              content: 'You are an AION worker. Analyze the registered task and return a concise actionable result. Never claim external side effects unless an execution adapter performed them. Keep the result under 400 words.'
-            },
-            { role: 'user', content: task.text }
-          ],
-          temperature: 0.2,
-          max_completion_tokens: maxCompletionTokens
-        })
-      });
-
-      const raw = await response.text();
-      let data;
-      try {
-        data = JSON.parse(raw);
-      } catch {
-        data = { error: { message: raw.slice(-2000) } };
-      }
-
-      if (response.ok) {
-        const output = data.choices?.[0]?.message?.content;
-        if (typeof output !== 'string' || !output.trim()) {
-          throw new Error('AI provider returned no worker result');
-        }
-        return { type: 'ai_analysis', output: output.trim(), model };
-      }
-
-      lastError = data?.error?.message || `AI provider HTTP ${response.status}`;
-      const retryable = [408, 429, 500, 502, 503, 504].includes(response.status);
-      if (!retryable || attempt === maxAttempts) throw new Error(lastError);
-
-      const retryAfter = Number(response.headers.get('retry-after'));
-      const delayMs = Number.isFinite(retryAfter) && retryAfter > 0
-        ? Math.min(retryAfter * 1000, 30000)
-        : Math.min(3000 * (2 ** (attempt - 1)), 30000);
-      await sleep(delayMs);
-    } catch (error) {
-      lastError = String(error?.message || error);
-      if (attempt === maxAttempts) throw new Error(lastError);
-      await sleep(Math.min(3000 * (2 ** (attempt - 1)), 30000));
-    }
-  }
-
-  throw new Error(lastError);
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export function setActionExecutor(executor) {
-  if (typeof executor !== 'function') throw new TypeError('executor must be a function');
-  actionExecutor = executor;
+function modeFor(task) {
+  return MODE_BY_DEPARTMENT[task?.department] || 'frontier';
+}
+
+async function executeTask(task) {
+  const mode = modeFor(task);
+  const result = await runOpenAI({
+    prompt: task.text,
+    mode,
+    model: selectOpenAIModel(mode),
+    instructions:
+      'You are an AION production worker. Execute the assigned analytical/software task using the information available to you. Distinguish evidence from assumptions. Never claim an external action occurred unless an AION execution adapter confirms it. Return a concise result with findings, actions proposed or performed, evidence, and next step.'
+  });
+  return {
+    type: 'openai_worker_result',
+    output: result.text,
+    model: result.model,
+    mode,
+    openAIResponseId: result.responseId,
+    usage: result.usage,
+    measured: true
+  };
+}
+
+async function claimDurableJob() {
+  if (!hasRailwayRedis()) return null;
+  const id = await railwayRedisCommand(['BLMOVE', PENDING, PROCESSING, 'LEFT', 'RIGHT', '1']);
+  if (!id) return null;
+  const raw = await railwayRedisCommand(['HGETALL', JOB(id)]);
+  const meta = raw && !Array.isArray(raw) ? raw : {};
+  const attempts = Number(meta.attempts || 0) + 1;
+  await railwayRedisCommand([
+    'HSET', JOB(id),
+    'status', 'processing',
+    'attempts', String(attempts),
+    'claimedAt', String(Date.now())
+  ]);
+  return { id, attempts, taskId: meta.taskId || id };
+}
+
+async function finishDurableJob(job, result) {
+  await railwayRedisCommand(['LREM', PROCESSING, '1', job.id]);
+  await railwayRedisCommand([
+    'HSET', JOB(job.id),
+    'status', 'completed',
+    'result', JSON.stringify(result),
+    'completedAt', String(Date.now())
+  ]);
+}
+
+async function failDurableJob(job, error) {
+  const message = String(error?.message || error);
+  await railwayRedisCommand(['LREM', PROCESSING, '1', job.id]);
+  if (job.attempts < 4) {
+    await railwayRedisCommand(['HSET', JOB(job.id), 'status', 'pending', 'lastError', message]);
+    await railwayRedisCommand(['LPUSH', PENDING, job.id]);
+    return;
+  }
+  await railwayRedisCommand(['HSET', JOB(job.id), 'status', 'failed', 'lastError', message, 'failedAt', String(Date.now())]);
+}
+
+export function setActionExecutor() {
+  throw new Error('Action executor override is disabled: production runtime uses the OpenAI Intelligence Core.');
 }
 
 export async function submitTask(input = {}) {
@@ -93,6 +99,7 @@ export async function workerRuntimeStatus() {
     version: RUNTIME_VERSION,
     maxConcurrency: MAX_CONCURRENCY,
     activeWorkers: running.size,
+    durableQueue: hasRailwayRedis(),
     ready: tasks.filter(t => t.status === 'ready').length,
     running: tasks.filter(t => t.status === 'running').length,
     completed: tasks.filter(t => t.status === 'completed').length,
@@ -102,29 +109,46 @@ export async function workerRuntimeStatus() {
 }
 
 export async function processOne() {
-  const task = (await listTasks()).find(item =>
-    item.status === 'ready' && (!item.requiresHumanApproval || item.approvedAt)
-  );
-  if (!task || running.size >= MAX_CONCURRENCY) return null;
+  if (running.size >= MAX_CONCURRENCY) return null;
+
+  let durableJob = await claimDurableJob();
+  let task = null;
+
+  if (durableJob) {
+    task = await getTask(durableJob.taskId);
+    if (!task || task.status !== 'ready') {
+      await finishDurableJob(durableJob, { skipped: true, reason: 'task-not-ready-or-already-completed' });
+      return null;
+    }
+  } else {
+    task = (await listTasks()).find(item =>
+      item.status === 'ready' && (!item.requiresHumanApproval || item.approvedAt)
+    );
+    if (!task) return null;
+  }
 
   running.add(task.id);
   const started = Date.now();
   try {
-    await updateTask(task.id, { status: 'running', startedAt: new Date().toISOString() });
-    const result = await actionExecutor(task);
-    return await updateTask(task.id, {
+    await updateTask(task.id, { status: 'running', startedAt: new Date().toISOString(), workerRuntimeVersion: RUNTIME_VERSION });
+    const result = await executeTask(task);
+    const completed = await updateTask(task.id, {
       status: 'completed',
       result,
       completedAt: new Date().toISOString(),
       durationMs: Date.now() - started
     });
+    if (durableJob) await finishDurableJob(durableJob, result);
+    return completed;
   } catch (error) {
-    return await updateTask(task.id, {
+    const failed = await updateTask(task.id, {
       status: 'failed',
       error: String(error?.message || error),
       failedAt: new Date().toISOString(),
       durationMs: Date.now() - started
     });
+    if (durableJob) await failDurableJob(durableJob, error);
+    return failed;
   } finally {
     running.delete(task.id);
   }
@@ -135,6 +159,19 @@ export async function processBatch(limit = MAX_CONCURRENCY) {
   const jobs = [];
   for (let i = 0; i < count; i += 1) jobs.push(processOne());
   return (await Promise.all(jobs)).filter(Boolean);
+}
+
+export async function runWorkerLoop(options = {}) {
+  const intervalMs = Math.max(250, Number(options.intervalMs) || 1000);
+  const batchSize = Math.max(1, Math.min(Number(options.batchSize) || MAX_CONCURRENCY, MAX_CONCURRENCY));
+  let cycles = 0;
+  while (options.signal?.aborted !== true) {
+    await processBatch(batchSize);
+    cycles += 1;
+    if (options.once === true || cycles >= Number(options.maxCycles || 0) && Number(options.maxCycles || 0) > 0) break;
+    await sleep(intervalMs);
+  }
+  return workerRuntimeStatus();
 }
 
 export { resetStore };
