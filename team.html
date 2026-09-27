@@ -32,6 +32,16 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(26px,4.5vw,42px);margin-botto
 .dept-title{color:#00c8ff;font-size:22px;margin:30px 0 15px;padding:10px 15px;background:rgba(0,180,255,.08);border-right:4px solid #00c8ff;border-radius:8px}
 .dept-title span{color:#aebbd0;font-size:14px;font-weight:normal}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px;margin-bottom:20px}
+.dept-card{padding:18px;background:linear-gradient(180deg,rgba(2,15,40,.94),rgba(2,8,23,.82));border:1px solid rgba(0,180,255,.28);border-radius:15px;box-shadow:0 0 22px rgba(0,150,255,.08);transition:.3s}
+.dept-card:hover{border-color:#00c8ff;box-shadow:0 0 28px rgba(0,200,255,.24);transform:translateY(-2px)}
+.dept-card .head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.dept-card .name{color:#f5c542;font-size:17px;font-weight:900}
+.dept-card .count{color:#00c8ff;font-size:12px;font-weight:900}
+.dept-card .mission{color:#dfe8f5;font-size:12px;line-height:1.7;margin-bottom:10px}
+.dept-card .tags{display:flex;flex-wrap:wrap;gap:5px}
+.dept-card .tag{padding:4px 7px;border-radius:12px;background:rgba(122,75,255,.14);border:1px solid rgba(122,75,255,.35);color:#cfc7ff;font-size:9px}
+.section-status{text-align:center;color:#4ade80;font-weight:900;font-size:12px;margin:8px 0 18px}
+
 .agent-card{padding:18px;background:linear-gradient(180deg,rgba(2,15,40,.9),rgba(2,8,23,.7));border:1px solid rgba(0,180,255,.25);border-radius:15px;transition:.3s;cursor:pointer;text-decoration:none;color:#fff;display:block}
 .agent-card:hover{border-color:#00c8ff;box-shadow:0 0 25px rgba(0,200,255,.4);transform:translateY(-3px)}
 .agent-card .avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#7A4BFF,#f5c542);display:grid;place-items:center;font-size:22px;margin-bottom:12px;box-shadow:0 0 20px rgba(122,75,255,.4)}
@@ -69,7 +79,7 @@ h1{color:#00c8ff;text-align:center;font-size:clamp(26px,4.5vw,42px);margin-botto
 <div class="stat"><div class="num" id="totalAgents">—</div><div class="lbl">إجمالي الوكلاء</div></div>
 <div class="stat"><div class="num" id="totalDepts">—</div><div class="lbl">أقسام متخصصة</div></div>
 <div class="stat"><div class="num">24/7</div><div class="lbl">تشغيل مستمر</div></div>
-<div class="stat"><div class="num">AR/EN</div><div class="lbl">دعم ثنائي</div></div>
+<div class="stat"><div class="num">38</div><div class="lbl">لغة عالمية</div></div>
 </div>
 
 <input type="text" class="search-box" id="search" placeholder="🔍 ابحث عن وكيل... (اسم، قسم، تخصص)">
@@ -97,24 +107,61 @@ async function loadFleet(){
   render('');
 }
 function render(filter){
-  filter=(filter||'').toLowerCase();
+  filter=(filter||'').trim().toLowerCase();
   const container=document.getElementById('agentsContainer');
   container.innerHTML='';
-  Object.entries(FLEET.counts).forEach(function(entry){
-    const dept=entry[0], count=entry[1];
-    const match=!filter||dept.toLowerCase().includes(filter);
-    if(!match)return;
-    const title=document.createElement('div');
-    title.className='dept-title';
-    title.innerHTML='🤖 '+dept+' <span>('+Number(count).toLocaleString('ar-SA')+' دور مسجل)</span>';
-    container.appendChild(title);
-    const note=document.createElement('div');
-    note.className='sub';
-    note.style.marginBottom='20px';
-    note.textContent='يتم اختيار الأدوار وتشغيل المهام عبر Control Plane وRuntime المشترك. لا يتم إنشاء Function مستقلة لكل دور.';
-    container.appendChild(note);
+  const departments=Array.isArray(FLEET.department_details)?FLEET.department_details:[];
+  const visible=departments.filter(function(dept){
+    const haystack=[
+      dept.id, dept.name, dept.mission,
+      ...(Array.isArray(dept.specialties)?dept.specialties:[])
+    ].join(' ').toLowerCase();
+    return !filter || haystack.includes(filter);
+  });
+
+  const status=document.createElement('div');
+  status.className='section-status';
+  status.textContent='✓ '+visible.length+' / '+departments.length+' أقسام الشركة متاحة الآن — '+Number(FLEET.total_agents).toLocaleString('ar-SA')+' دور مسجل';
+  container.appendChild(status);
+
+  const grid=document.createElement('div');
+  grid.className='grid';
+
+  visible.forEach(function(dept){
+    const card=document.createElement('article');
+    card.className='dept-card';
+
+    const head=document.createElement('div');
+    head.className='head';
+    head.innerHTML='<div class="name">🤖 '+escapeHtml(dept.name)+'</div><div class="count">'+Number(dept.count).toLocaleString('ar-SA')+' دور</div>';
+    card.appendChild(head);
+
+    const mission=document.createElement('div');
+    mission.className='mission';
+    mission.textContent=dept.mission || '';
+    card.appendChild(mission);
+
+    const tags=document.createElement('div');
+    tags.className='tags';
+    (dept.specialties||[]).forEach(function(specialty){
+      const tag=document.createElement('span');
+      tag.className='tag';
+      tag.textContent=specialty;
+      tags.appendChild(tag);
+    });
+    card.appendChild(tags);
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
+}
+
+function escapeHtml(value){
+  return String(value||'').replace(/[&<>"']/g,function(char){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char];
   });
 }
+
 document.getElementById('search').addEventListener('input',function(e){render(e.target.value)});
 loadFleet().catch(function(error){
   document.getElementById('agentsContainer').innerHTML='<div class="sub">تعذر تحميل بيانات Fleet الحية حاليًا.</div>';
