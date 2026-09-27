@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createBenchmark } from '../config/aion-frontier-evaluation.js';
-import { comparison, createEvaluationRun, evaluationLoopHealth } from '../config/aion-evaluation-loop.js';
+import { compareEvaluationRuns, createEvaluationRun, evaluationLoopHealth } from '../config/aion-evaluation-loop.js';
 
 test('evaluation loop is continuous and evidence gated', () => {
   const health = evaluationLoopHealth();
@@ -22,7 +22,7 @@ test('comparison reports deltas only for measured common metrics', () => {
   const benchmark = createBenchmark({ name: 'compare', metrics: ['reasoning'] });
   const a = createEvaluationRun({ benchmark, results: { reasoning: 0.6 } });
   const b = createEvaluationRun({ benchmark, results: { reasoning: 0.8 } });
-  const result = comparison(a, b);
+  const result = compareEvaluationRuns(a, b);
   assert.equal(result.metrics.reasoning.delta, 0.2);
   assert.equal(result.status, 'compared');
 });
