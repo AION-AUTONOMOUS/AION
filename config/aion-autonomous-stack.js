@@ -155,4 +155,10 @@ export async function createAutonomousPlan(goal, options = {}) {
   return plan;
 }
 
+export async function getAutonomousPlan(planId) {
+  const key = String(planId || '').trim();
+  if (!key) throw new Error('planId required');
+  return getJson('plans:' + key);
+}
+
 export async function listAutonomousPlans() { return listIndexed('plans'); }
