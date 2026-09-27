@@ -11,12 +11,19 @@ const PROVIDERS=Object.freeze([
 ]);
 
 function text(v){return String(v??'').trim();}
+
+export function commercialLeoAdapterStatus(){
+ const baseUrl=text(process.env.AION_LEO_COMMERCIAL_API_URL);
+ const apiKey=Boolean(text(process.env.AION_LEO_COMMERCIAL_API_KEY));
+ return {provider:'commercial-leo',configured:Boolean(baseUrl&&apiKey),baseUrlConfigured:Boolean(baseUrl),credentialsConfigured:apiKey,authorization:'required',directSpacecraftControl:false};
+}
 function id(p){return p+'-'+crypto.randomUUID();}
 
 export function leoOrchestratorHealth(){
  return {version:LEO_ORCHESTRATOR_VERSION,status:'operational-data-ready',providers:PROVIDERS.length,
   publicProviders:3,commercialAdapters:1,realData:true,spacecraftControl:false,
   spectrumInterference:false,externalMoney:false,mainnet:false,credentialsRequired:['commercial-leo'],
+  commercialAdapter:commercialLeoAdapterStatus(),
   routing:'policy-and-evidence-driven'};
 }
 export function listLeoProviders(){return PROVIDERS.map(x=>({...x}));}
@@ -46,6 +53,12 @@ export async function discoverEarthObservation(input={}){
  const response=await fetch('https://stac.dataspace.copernicus.eu/v1/search',{method:'POST',headers:{'content-type':'application/json',accept:'application/geo+json'},body:JSON.stringify(body)});
  if(!response.ok)throw new Error('Copernicus STAC request failed: '+response.status);
  return {provider:'Copernicus Data Space',retrievedAt:new Date().toISOString(),data:await response.json()};
+}
+
+export async function queryCommercialLeo(input={}){
+ const adapter=commercialLeoAdapterStatus();
+ if(!adapter.configured) return {status:'credentials-required',provider:'commercial-leo',message:'Set AION_LEO_COMMERCIAL_API_URL and AION_LEO_COMMERCIAL_API_KEY after an authorized provider agreement.'};
+ return {status:'adapter-configured',provider:'commercial-leo',baseUrl:adapter.baseUrlConfigured,requestPath:text(input.path)||'/',message:'Provider-specific request schema must be implemented only after the authorized vendor API contract is known.',directSpacecraftControl:false};
 }
 
 export async function routeLeoJob(input={}){
