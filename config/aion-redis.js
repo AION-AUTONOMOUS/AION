@@ -37,7 +37,8 @@ async function getClient() {
 export async function railwayRedisCommand(command) {
   const client = await getClient();
   if (!client) return null;
-  return client.sendCommand(command);
+  const args = command.map((argument) => String(argument));
+  return client.sendCommand(args);
 }
 
 export async function railwayRedisPing() {
