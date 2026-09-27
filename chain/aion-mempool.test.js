@@ -18,7 +18,7 @@ test("mempool rejects duplicate hashes and sender nonce conflicts", () => {
 
 test("mempool orders transactions deterministically", () => {
   const pool = new AionMempool();
-  pool.add(tx(2, "tx-2"));
-  pool.add(tx(0, "tx-0"));
+  pool.add(tx(2));
+  pool.add(tx(0));
   assert.deepEqual(pool.list().map(x => x.nonce), [0,2]);
 });
