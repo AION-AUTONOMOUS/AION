@@ -1,0 +1,24 @@
+name: AION Coin Testnet Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: aion-coin-testnet
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run compile:coin
+      - run: npm run test:coin
+      - name: Deploy AION Coin to BNB Testnet
+        env:
+          BSC_TESTNET_RPC_URL: ${{ secrets.BSC_TESTNET_RPC_URL }}
+          DEPLOYER_PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+          AION_COIN_OWNER: ${{ secrets.AION_COIN_OWNER }}
+        run: npm run deploy:coin:testnet
