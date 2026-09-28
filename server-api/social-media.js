@@ -29,7 +29,6 @@ export function createSocialJob(input = {}) {
   const text = typeof input.text === "string" ? input.text.trim() : "";
   if (!text) throw new Error("text required");
   if (text.length > 10000) throw new Error("text too long");
-
   return {
     id: "social_" + crypto.randomUUID(),
     platform: platform.id,
@@ -48,15 +47,24 @@ export function createSocialJob(input = {}) {
 
 export async function executeSocialJob(job) {
   if (job.status === "blocked_not_connected") {
-    return {
-      ...job,
-      status: "blocked_not_connected",
-      error: "Official account connection is not configured for this platform"
-    };
+    return { ...job, status: "blocked_not_connected", error: "Official account connection is not configured for this platform" };
   }
-  return {
-    ...job,
-    status: "ready_for_worker_executor",
-    note: "Provider-specific publish adapter must be enabled before external posting."
-  };
+  return { ...job, status: "ready_for_worker_executor", note: "Provider-specific publish adapter must be enabled before external posting." };
+}
+
+export default async function handler(req, res) {
+  if (req.method === "GET") {
+    res.status(200).json({ success: true, platforms: listSocialPlatforms() });
+    return;
+  }
+  if (req.method !== "POST") {
+    res.status(405).json({ success: false, error: "method not allowed" });
+    return;
+  }
+  try {
+    const result = await executeSocialJob(createSocialJob(req.body || {}));
+    res.status(result.status === "blocked_not_connected" ? 202 : 200).json({ success: result.status !== "blocked_not_connected", job: result });
+  } catch (error) {
+    res.status(400).json({ success: false, error: String(error?.message || error) });
+  }
 }
