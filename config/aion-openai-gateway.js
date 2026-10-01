@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 
-export const OPENAI_GATEWAY_VERSION = '1.0.0';
+export const OPENAI_GATEWAY_VERSION = '2.0.0';
 export const OPENAI_DEFAULT_MODEL = process.env.OPENAI_MODEL || 'gpt-5.6';
 
 const MODEL_BY_MODE = Object.freeze({
@@ -26,6 +26,15 @@ export function selectOpenAIModel(mode = 'frontier') {
   return MODEL_BY_MODE[key];
 }
 
+export function availableOpenAITools() {
+  const tools = [];
+  if (process.env.OPENAI_ENABLE_WEB_SEARCH !== 'false') tools.push('web_search');
+  if (clean(process.env.OPENAI_VECTOR_STORE_ID)) tools.push('file_search');
+  if (process.env.OPENAI_ENABLE_FUNCTIONS !== 'false') tools.push('function_calling');
+  if (process.env.OPENAI_ENABLE_COMPUTER_USE === 'true') tools.push('computer_use');
+  return tools;
+}
+
 export function openAIGatewayHealth() {
   return {
     version: OPENAI_GATEWAY_VERSION,
@@ -34,8 +43,8 @@ export function openAIGatewayHealth() {
     api: 'Responses API',
     defaultModel: OPENAI_DEFAULT_MODEL,
     modes: MODES,
+    tools: availableOpenAITools(),
     multimodal: true,
-    toolReady: ['functions', 'web-search', 'file-search', 'computer-use'],
     durableMemory: 'AION stack store',
     evaluation: 'AION Frontier Intelligence Lab',
     fakeCompletion: false,
@@ -53,6 +62,18 @@ function extractText(response) {
     }
   }
   return parts.join('\n').trim();
+}
+
+function buildTools(input) {
+  const tools = [];
+  if (input.webSearch !== false && process.env.OPENAI_ENABLE_WEB_SEARCH !== 'false') {
+    tools.push({ type: 'web_search' });
+  }
+  const vectorStoreId = clean(input.vectorStoreId, process.env.OPENAI_VECTOR_STORE_ID);
+  if (vectorStoreId) {
+    tools.push({ type: 'file_search', vector_store_ids: [vectorStoreId] });
+  }
+  return tools;
 }
 
 export async function runOpenAI(input = {}) {
@@ -76,8 +97,10 @@ export async function runOpenAI(input = {}) {
       model,
       input: prompt,
       instructions: clean(input.instructions,
-        'You are the AION Intelligence Core. Reason carefully, distinguish evidence from assumptions, use measurable criteria, and never claim an action happened unless a registered AION worker or adapter confirms it.'
+        'You are the AION Intelligence Core. Distinguish evidence from assumptions, prefer current evidence when available, and never claim an external action occurred unless an AION worker or adapter confirms it.'
       ),
+      tools: buildTools(input),
+      tool_choice: input.toolChoice || 'auto',
       max_output_tokens: Number.isInteger(input.maxOutputTokens) ? input.maxOutputTokens : 4096
     })
   });
@@ -96,6 +119,7 @@ export async function runOpenAI(input = {}) {
     text: extractText(body),
     responseId: body.id || null,
     usage: body.usage || null,
+    tools: buildTools(input).map(tool => tool.type),
     measured: true
   };
 }
