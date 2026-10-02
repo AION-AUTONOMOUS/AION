@@ -7,7 +7,7 @@
   "scripts": {
     "test": "node --test tests/*.test.js",
     "test:core": "node --test tests/aion-core.test.js",
-    "test:coin": "hardhat test tests/aion-coin.test.js",
+    "test:coin": "hardhat test test/aion-coin.test.js",
     "compile:coin": "hardhat compile",
     "deploy:coin:testnet": "hardhat run scripts/deploy-aion-coin.js --network bscTestnet",
     "deploy:coin:mainnet": "hardhat run scripts/deploy-aion-coin.js --network bsc"
