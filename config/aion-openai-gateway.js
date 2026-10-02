@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 
 export const OPENAI_GATEWAY_VERSION = '1.0.0';
-export const OPENAI_DEFAULT_MODEL = process.env.OPENAI_MODEL || 'gpt-5.6';
+export const OPENAI_DEFAULT_MODEL = process.env.OPENAI_MODEL || 'gpt-5.6-sol';
 
 const MODEL_BY_MODE = Object.freeze({
   frontier: process.env.OPENAI_FRONTIER_MODEL || OPENAI_DEFAULT_MODEL,
