@@ -35,7 +35,7 @@ jobs:
         run: node scripts/aion-real-work.js '${{ matrix.department }}'
       - name: Upload worker evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: worker-${{ matrix.department }}
           path: reports/worker-result.json
@@ -77,7 +77,7 @@ jobs:
         run: node scripts/aion-global-project-work.js "${{ matrix.product }}"
       - name: Upload project evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: global-project-${{ matrix.product }}
           path: reports/global-project-result.json
