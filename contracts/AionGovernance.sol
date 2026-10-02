@@ -8,7 +8,7 @@ pragma solidity ^0.8.20;
 contract AionGovernance {
     
     // تثبيت محفظتك الشخصية كمالك ومستلم للأرباح
-    address public constant HUMAN_OWNER = 0xCeDA87eaB15e5cdD34597a2678110033F55890f8;
+    address public constant HUMAN_OWNER = 0xCEdA87eaB15e5cdD34597a2678110033F55890f8;
     
     // المحافظ التشغيلية والخيرية (يتم تحديدها عند الإطلاق)
     address public charityWallet;     // محفظة مخصصة لجمع أموال الأعمال الخيرية (15%)
