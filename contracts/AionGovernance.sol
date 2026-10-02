@@ -24,8 +24,8 @@ contract AionGovernance {
     event FundsDistributed(uint256 toOwner, uint256 toCharity, uint256 toSystem);
 
     constructor(address _charityWallet, address _autonomousWallet) {
-        require(_charityWallet != address(0), "محفظة الأعمال الخيرية غير صالحة");
-        require(_autonomousWallet != address(0), "محفظة النظام غير صالحة");
+        require(_charityWallet != address(0), "Invalid charity wallet");
+        require(_autonomousWallet != address(0), "Invalid autonomous wallet");
         charityWallet = _charityWallet;
         autonomousWallet = _autonomousWallet;
     }
@@ -47,7 +47,7 @@ contract AionGovernance {
      * @dev التقسيم البرمجي الفوري للأموال لمنع أي خسائر أو احتجاز مالي
      */
     function _splitFunds(uint256 _amount) private {
-        require(_amount > 0, "المبلغ يجب أن يكون أكبر من صفر");
+        require(_amount > 0, "Amount must be greater than zero");
 
         // حساب الحصص بالمعادلات الرقمية الدقيقة
         uint256 ownerShare = (_amount * OWNER_SHARE_PERCENTAGE) / 100;
