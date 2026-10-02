@@ -44,7 +44,7 @@ jobs:
           } > reports/aion-maintenance.md
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: aion-maintenance-report
           path: reports/aion-maintenance.md
