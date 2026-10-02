@@ -39,3 +39,45 @@ jobs:
         with:
           name: worker-${{ matrix.department }}
           path: reports/worker-result.json
+
+  global_projects:
+    name: AION global project
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        product:
+          - world-engine
+          - reality-passport
+          - life-engine
+          - world-cup-autonomous-layer
+          - world-cup-nervous-system
+          - world-link
+          - world-link-engine
+          - agent-trust-network
+          - global-business-network
+          - global-financial-network
+          - space-energy-network
+          - world-network
+          - global-launch
+          - reality-to-action
+          - global-markets-network
+          - alwakend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install --no-audit --no-fund
+      - name: Execute AION global project
+        run: node scripts/aion-global-project-work.js "${{ matrix.product }}"
+      - name: Upload project evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-project-${{ matrix.product }}
+          path: reports/global-project-result.json
