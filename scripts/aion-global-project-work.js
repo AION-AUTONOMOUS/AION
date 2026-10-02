@@ -1,4 +1,4 @@
-import { writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { submitTask, processOne } from '../config/aion-worker-runtime.js';
 import { getProduct } from '../config/aion-global-platform.js';
 
@@ -41,5 +41,6 @@ const report = {
   recordedAt: new Date().toISOString()
 };
 
+await mkdir('reports', { recursive: true });
 await writeFile('reports/global-project-result.json', JSON.stringify(report, null, 2));
 if (!report.ok) process.exit(1);
