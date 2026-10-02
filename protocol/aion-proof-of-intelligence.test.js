@@ -19,7 +19,7 @@ test("PoI accepts independently attested quality work", () => {
   }));
   const verification = verifyPoIRecord(record, attestations, {}, Date.parse("2026-09-27T01:00:00Z"));
   assert.equal(verification.accepted, true);
-  assert.ok(settlePoI(record, attestations).rewardNeuro > 0n);
+  assert.ok(settlePoI(record, attestations, {}, Date.parse("2026-09-27T01:00:00Z")).rewardNeuro > 0n);
 });
 
 test("PoI rejects duplicate validator identity", () => {
