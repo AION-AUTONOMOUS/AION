@@ -1,0 +1,59 @@
+name: AION 16 Global Projects Execution
+on:
+  push:
+    branches: [main]
+    paths:
+      - "config/aion-global-platform.js"
+      - "config/aion-worker-runtime.js"
+      - "scripts/aion-global-project-work.js"
+      - ".github/workflows/aion-16-projects.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: aion-16-global-projects
+  cancel-in-progress: false
+env:
+  AION_COMPANY_RUNTIME: production
+jobs:
+  project:
+    name: Global project
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        product:
+          - world-engine
+          - reality-passport
+          - life-engine
+          - world-cup-autonomous-layer
+          - world-cup-nervous-system
+          - world-link
+          - world-link-engine
+          - agent-trust-network
+          - global-business-network
+          - global-financial-network
+          - space-energy-network
+          - world-network
+          - global-launch
+          - reality-to-action
+          - global-markets-network
+          - alwakend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install --no-audit --no-fund
+      - name: Execute project
+        run: node scripts/aion-global-project-work.js "${{ matrix.product }}"
+      - name: Upload project evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-${{ matrix.product }}
+          path: reports/global-project-result.json
