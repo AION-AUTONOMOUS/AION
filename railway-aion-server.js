@@ -45,7 +45,8 @@ const API_HANDLERS = {
   "economic-intelligence": () => import("./server-api/economic-intelligence.js"),
   "continuous-intelligence": () => import("./server-api/continuous-intelligence.js"),
   "customer-revenue": () => import("./server-api/customer-revenue.js"),
-  "openai-intelligence": () => import("./server-api/openai-intelligence.js")
+  "openai-intelligence": () => import("./server-api/openai-intelligence.js"),
+  "global-platform": () => import("./server-api/global-platform.js")
 };
 
 const send = (res, status, body) => {
