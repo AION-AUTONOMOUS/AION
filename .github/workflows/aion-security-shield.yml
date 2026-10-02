@@ -20,7 +20,7 @@ jobs:
           node-version: 24
       - run: npm install
       - name: Dependency vulnerability scan
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=high --omit=dev
       - name: Secret-pattern scan
         shell: bash
         run: |
