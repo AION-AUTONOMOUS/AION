@@ -40,6 +40,7 @@ export function createPoIRecord(input, now = Date.now()) {
   if (!Number.isFinite(Number(input.resourceUnits?.quantity)) || Number(input.resourceUnits.quantity) <= 0) {
     throw new TypeError("resourceUnits.quantity must be positive");
   }
+  const normalizedEvidence = input.evidence.map(x => typeof x === "string" ? x : canonicalJson(x)).sort();
   const record = {
     schema: "aion.poi-record/0.1",
     recordId: input.recordId || crypto.randomUUID(),
@@ -54,8 +55,8 @@ export function createPoIRecord(input, now = Date.now()) {
       reproducibilityBps: Math.max(0, Math.min(POI.maxReproducibilityBps, Number(input.outcome?.reproducibilityBps ?? 0))),
       latencyMs: Number(input.outcome?.latencyMs ?? 0)
     },
-    evidence: input.evidence.map(x => typeof x === "string" ? x : canonicalJson(x)).sort(),
-    evidenceDigest: evidenceDigest(input.evidence),
+    evidence: normalizedEvidence,
+    evidenceDigest: evidenceDigest(normalizedEvidence),
     contributionFingerprint: contributionFingerprint(input),
     createdAt: input.createdAt || new Date(now).toISOString(),
     metadata: input.metadata || {}
