@@ -36,11 +36,13 @@ const report = {
     status: result.status,
     responseId: result.result?.openAIResponseId || null,
     verification: result.verification || null,
-    outcome: result.outcome || null
+    outcome: result.outcome || null,
+    error: result.error || null
   } : null,
   recordedAt: new Date().toISOString()
 };
 
 await mkdir('reports', { recursive: true });
+console.log(JSON.stringify(report, null, 2));
 await writeFile('reports/global-project-result.json', JSON.stringify(report, null, 2));
 if (!report.ok) process.exit(1);
