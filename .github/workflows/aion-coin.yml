@@ -6,7 +6,7 @@ on:
       - "aion_coin.sol"
       - "hardhat.config.js"
       - "scripts/deploy-aion-coin.js"
-      - "tests/aion-coin.test.js"
+      - "test/aion-coin.test.js"
       - "package.json"
       - "package-lock.json"
       - ".github/workflows/aion-coin.yml"
@@ -28,7 +28,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
       - run: npm ci
       - run: npm run compile:coin
       - run: npm run test:coin
