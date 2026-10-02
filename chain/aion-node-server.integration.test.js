@@ -82,7 +82,8 @@ test("validator node completes transaction -> proposal -> 2/3 quorum -> commit",
     proposalDigest: proposalDigest(block)
   };
   const secondAtt = createAttestation({
-    ...secondUnsigned,
+    validatorId: ids[1],
+    block,
     signature: signValidatorAttestation(secondUnsigned, validators[1].privateKey)
   });
 
