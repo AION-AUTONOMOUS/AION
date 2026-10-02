@@ -1,7 +1,7 @@
 
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createAttestation, finalizeBlock, quorumRequired } from "./aion-consensus.js";
+import { createAttestation, finalizeBlock, quorumRequired, proposalDigest } from "./aion-consensus.js";
 import { generateValidatorKey, signValidatorAttestation, verifyValidatorAttestation } from "./aion-validator-crypto.js";
 
 test("real validator quorum uses 2/3",()=>assert.equal(quorumRequired(3),2));
