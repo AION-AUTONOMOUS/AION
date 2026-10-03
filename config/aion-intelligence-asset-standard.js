@@ -4,9 +4,15 @@ export const AION_INTELLIGENCE_ASSET_STANDARD_VERSION = '1.0.0';
 
 export const INTELLIGENCE_EVIDENCE_SOURCES = Object.freeze(['issuer','regulated-custodian','official-registry','signed-license','independent-audit','reproducible-benchmark','customer-contract','public-primary-source']);
 
+export const INTELLIGENCE_VALUE_DIMENSIONS = Object.freeze({
+  capability:0.25, performance:0.25, reproducibility:0.15,
+  scarcity:0.10, rights:0.10, verification:0.15
+});
+
 export const INTELLIGENCE_ASSET_TYPES = Object.freeze([
   'ai-model','ai-agent','software','dataset','research','patent-ip',
-  'knowledge-base','algorithm','workflow','verified-performance'
+  'knowledge-base','algorithm','workflow','verified-performance',
+  'frontier-intelligence-system','verified-ai-capability'
 ]);
 
 const REQUIRED_EVIDENCE = Object.freeze([
@@ -34,6 +40,38 @@ export function intelligenceAssetFingerprint(input={}){
     valuationDate:required(input.valuationDate,'valuationDate')
   });
   return crypto.createHash('sha256').update(canonical).digest('hex');
+}
+
+export function createIntelligenceValueProfile(input={}) {
+  const assetValidation=validateIntelligenceAsset(input);
+  if(!assetValidation.valid) throw new Error(assetValidation.errors.join('; '));
+  const dimensions=Object.keys(INTELLIGENCE_VALUE_DIMENSIONS);
+  const scores={};
+  for(const key of dimensions){
+    const value=Number(input.valueScores?.[key]);
+    if(!Number.isFinite(value) || value<0 || value>100) throw new Error('valueScores.'+key+' must be a number from 0 to 100');
+    scores[key]=value;
+  }
+  const score=Number(dimensions.reduce((sum,key)=>sum+(scores[key]*INTELLIGENCE_VALUE_DIMENSIONS[key]),0).toFixed(2));
+  return {
+    assetId:required(input.assetId,'assetId'),
+    assetFingerprint:intelligenceAssetFingerprint(input),
+    valueType:'verified-intelligence-capability',
+    intelligenceValueScore:score,
+    scoreScale:'0-100',
+    dimensions:scores,
+    weights:INTELLIGENCE_VALUE_DIMENSIONS,
+    economicValue:input.valuation ?? null,
+    economicValueCurrency:String(input.valuationCurrency || 'USD'),
+    economicValueSource:required(input.valuationSource,'valuationSource'),
+    economicValueDate:required(input.valuationDate,'valuationDate'),
+    isEconomicAsset:true,
+    valuationIsNotCash:true,
+    valuationIsNotRevenue:true,
+    fakeValue:false,
+    evidenceBound:true,
+    verified:true
+  };
 }
 
 export function validateIntelligenceAsset(input={}){
