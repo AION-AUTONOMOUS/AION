@@ -2,6 +2,8 @@ import crypto from 'node:crypto';
 
 export const AION_INTELLIGENCE_ASSET_STANDARD_VERSION = '1.0.0';
 
+export const INTELLIGENCE_EVIDENCE_SOURCES = Object.freeze(['issuer','regulated-custodian','official-registry','signed-license','independent-audit','reproducible-benchmark','customer-contract','public-primary-source']);
+
 export const INTELLIGENCE_ASSET_TYPES = Object.freeze([
   'ai-model','ai-agent','software','dataset','research','patent-ip',
   'knowledge-base','algorithm','workflow','verified-performance'
@@ -9,7 +11,7 @@ export const INTELLIGENCE_ASSET_TYPES = Object.freeze([
 
 const REQUIRED_EVIDENCE = Object.freeze([
   'assetId','sourceRef','evidenceRef','rightsRef','performanceRef',
-  'verificationRef','valuationSource'
+  'verificationRef','valuationSource','evidenceSource','valuationDate'
 ]);
 
 function required(value,name){
@@ -27,7 +29,9 @@ export function intelligenceAssetFingerprint(input={}){
     rightsRef:required(input.rightsRef,'rightsRef'),
     performanceRef:required(input.performanceRef,'performanceRef'),
     verificationRef:required(input.verificationRef,'verificationRef'),
-    valuationSource:required(input.valuationSource,'valuationSource')
+    valuationSource:required(input.valuationSource,'valuationSource'),
+    evidenceSource:required(input.evidenceSource,'evidenceSource'),
+    valuationDate:required(input.valuationDate,'valuationDate')
   });
   return crypto.createHash('sha256').update(canonical).digest('hex');
 }
@@ -35,6 +39,7 @@ export function intelligenceAssetFingerprint(input={}){
 export function validateIntelligenceAsset(input={}){
   const errors=[];
   if(!INTELLIGENCE_ASSET_TYPES.includes(String(input.assetType))) errors.push('unsupported assetType');
+  if(!INTELLIGENCE_EVIDENCE_SOURCES.includes(String(input.evidenceSource||''))) errors.push('unsupported evidenceSource');
   for(const key of REQUIRED_EVIDENCE){
     if(!String(input[key]??'').trim()) errors.push(key+' required');
   }
@@ -64,6 +69,8 @@ export function createIntelligenceAsset(input={}){
     performanceRef:required(input.performanceRef,'performanceRef'),
     verificationRef:required(input.verificationRef,'verificationRef'),
     valuationSource:required(input.valuationSource,'valuationSource'),
+    evidenceSource:required(input.evidenceSource,'evidenceSource'),
+    valuationDate:required(input.valuationDate,'valuationDate'),
     valuation: input.valuation ?? null,
     valuationCurrency: String(input.valuationCurrency || 'USD'),
     verified:true,
@@ -87,7 +94,7 @@ export async function registerIntelligenceAsset(asset={}){
     externalReference:asset.sourceRef,
     currency:asset.valuationCurrency || 'USD',
     valuation:asset.valuation ?? null,
-    evidenceRefs:[record.evidenceRef,record.sourceRef,record.rightsRef,record.performanceRef,record.verificationRef,record.valuationSource],
+    evidenceRefs:[record.evidenceRef,record.sourceRef,record.rightsRef,record.performanceRef,record.verificationRef,record.valuationSource,record.evidenceSource,record.valuationDate],
     rights:[record.rightsRef],
     risk:asset.risk ?? null,
     cashFlow:null,
