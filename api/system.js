@@ -20,6 +20,7 @@ const HANDLERS = {
   'paypal-capture-order': () => import('../server-api/paypal/capture-order.js'),
   'wallet-config': () => import('../server-api/wallet/config.js'),
   'space-commerce': () => import('../server-api/space-commerce.js'),
+  'space-planet': () => import('../server-api/space-planet.js'),
   'live-space': () => import('../server-api/live-space.js'),
   'leo-orchestrator': () => import('../server-api/leo-orchestrator.js'),
   'leo-exchange': () => import('../server-api/leo-intelligence-exchange.js'),
