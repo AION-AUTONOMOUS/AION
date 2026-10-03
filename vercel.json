@@ -29,6 +29,7 @@
     { "source": "/api/paypal/capture-order", "destination": "/api/system?route=paypal-capture-order" },
     { "source": "/api/wallet/config", "destination": "/api/system?route=wallet-config" },
     { "source": "/api/space-commerce", "destination": "/api/system?route=space-commerce" },
+    { "source": "/api/space-planet/:path*", "destination": "/api/system?route=space-planet&path=:path*" },
     { "source": "/api/live-space", "destination": "/api/system?route=live-space" },
     { "source": "/api/leo-exchange/:path*", "destination": "/api/system?route=leo-exchange&path=:path*" },
     { "source": "/api/leo-orchestrator/:path*", "destination": "/api/system?route=leo-orchestrator&path=:path*" },
