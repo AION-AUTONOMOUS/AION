@@ -12,7 +12,7 @@ export default async function handler(req,res){
     if(req.method==='GET'&&path==='orders')return res.status(200).json({success:true,orders:await listCustomerOrders()});
     if(req.method==='GET'&&path==='revenue')return res.status(200).json({success:true,revenue:await listRevenue()});
     if(req.method==='POST'&&path==='order')return res.status(201).json({success:true,order:await createCustomerOrder(await body())});
-    if(req.method==='POST'&&path==='payment'){const b=await body();return res.status(200).json({success:true,order:await confirmCustomerPayment(b.orderId,b)})}
+    if(req.method==='POST'&&path==='payment'){const b=await body(); if(String(b.paymentProvider||'').toLowerCase()!=='paypal'||String(b.verificationStatus||'').toUpperCase()!=='SUCCESS'||!b.providerEventId) return res.status(400).json({success:false,error:'verified PayPal payment evidence required'}); return res.status(200).json({success:true,order:await confirmCustomerPayment(b.orderId,b)})}
     if(req.method==='POST'&&path==='delivery'){const b=await body();return res.status(200).json({success:true,order:await recordDelivery(b.orderId,b)})}
     if(req.method==='POST'&&path==='outcome'){const b=await body();return res.status(200).json({success:true,outcome:await recordOutcome(b.orderId,b)})}
     if(req.method==='GET'&&path==='offer')return res.status(200).json({success:true,offer:getOffer(url.searchParams.get('id'))});
