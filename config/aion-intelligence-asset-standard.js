@@ -74,6 +74,25 @@ export function createIntelligenceAsset(input={}){
   };
 }
 
+export async function registerIntelligenceAsset(asset={}){
+  const record=createIntelligenceAsset(asset);
+  const { registerAsset } = await import('./aion-global-asset-vault.js');
+  return registerAsset({
+    assetType:'intelligence',
+    legalOwner:required(asset.legalOwner,'legalOwner'),
+    jurisdiction:required(asset.jurisdiction,'jurisdiction'),
+    custodian:asset.custodian,
+    externalReference:asset.sourceRef,
+    currency:asset.valuationCurrency || 'USD',
+    valuation:asset.valuation ?? null,
+    evidenceRefs:[record.evidenceRef,record.sourceRef,record.rightsRef,record.performanceRef,record.verificationRef,record.valuationSource],
+    rights:[record.rightsRef],
+    risk:asset.risk ?? null,
+    cashFlow:null,
+    intelligenceAsset:record
+  });
+}
+
 export function intelligenceAssetVaultRecord(asset){
   const record=createIntelligenceAsset(asset);
   return {
