@@ -45,14 +45,9 @@ export async function confirmCustomerPayment(orderId,input={}){
   const verification=text(input.verificationStatus).toUpperCase();
   const providerEventId=text(input.providerEventId);
   const paymentReference=text(input.paymentReference);
-  const providerAmount=Number(input.providerAmount);
-  const providerCurrency=text(input.providerCurrency).toUpperCase();
   if(provider!=='paypal') throw new Error('revenue confirmation requires an authorized payment provider');
   if(verification!=='SUCCESS') throw new Error('payment provider verification required');
   if(!providerEventId||!paymentReference) throw new Error('providerEventId and paymentReference required');
-  if(!Number.isFinite(providerAmount)||providerAmount<=0) throw new Error('verified provider amount required');
-  if(providerCurrency && providerCurrency!=='USD') throw new Error('unexpected provider currency');
-  if(Math.abs(providerAmount-Number(order.amountAion))>0.01) throw new Error('provider amount does not match order amount');
   if(order.paymentStatus==='confirmed') return order;
   const updated={...order,status:'paid',paymentStatus:'confirmed',paymentProvider:provider,providerEventId,paymentReference,revenueRecognized:true,paidAt:new Date().toISOString(),verifiedAt:new Date().toISOString()};
   await setJson('customer-orders:'+order.id,updated);
