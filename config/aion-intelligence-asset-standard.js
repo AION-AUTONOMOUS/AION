@@ -64,6 +64,8 @@ export function createIntelligenceAsset(input={}){
     performanceRef:required(input.performanceRef,'performanceRef'),
     verificationRef:required(input.verificationRef,'verificationRef'),
     valuationSource:required(input.valuationSource,'valuationSource'),
+    valuation: input.valuation ?? null,
+    valuationCurrency: String(input.valuationCurrency || 'USD'),
     verified:true,
     fingerprint:intelligenceAssetFingerprint(input),
     ownershipAuthority:'none-unless-rights-evidence-proves-it',
@@ -72,6 +74,25 @@ export function createIntelligenceAsset(input={}){
     valuationIsNotRevenue:true,
     createdAt:new Date().toISOString()
   };
+}
+
+export async function registerIntelligenceAsset(asset={}){
+  const record=createIntelligenceAsset(asset);
+  const { registerAsset } = await import('./aion-global-asset-vault.js');
+  return registerAsset({
+    assetType:'intelligence',
+    legalOwner:required(asset.legalOwner,'legalOwner'),
+    jurisdiction:required(asset.jurisdiction,'jurisdiction'),
+    custodian:asset.custodian,
+    externalReference:asset.sourceRef,
+    currency:asset.valuationCurrency || 'USD',
+    valuation:asset.valuation ?? null,
+    evidenceRefs:[record.evidenceRef,record.sourceRef,record.rightsRef,record.performanceRef,record.verificationRef,record.valuationSource],
+    rights:[record.rightsRef],
+    risk:asset.risk ?? null,
+    cashFlow:null,
+    intelligenceAsset:record
+  });
 }
 
 export function intelligenceAssetVaultRecord(asset){
