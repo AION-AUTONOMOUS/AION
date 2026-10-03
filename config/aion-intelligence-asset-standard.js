@@ -1,0 +1,84 @@
+import crypto from 'node:crypto';
+
+export const AION_INTELLIGENCE_ASSET_STANDARD_VERSION = '1.0.0';
+
+export const INTELLIGENCE_ASSET_TYPES = Object.freeze([
+  'ai-model','ai-agent','software','dataset','research','patent-ip',
+  'knowledge-base','algorithm','workflow','verified-performance'
+]);
+
+const REQUIRED_EVIDENCE = Object.freeze([
+  'assetId','sourceRef','evidenceRef','rightsRef','performanceRef',
+  'verificationRef','valuationSource'
+]);
+
+function required(value,name){
+  const v=String(value??'').trim();
+  if(!v) throw new Error(name+' required');
+  return v;
+}
+
+export function intelligenceAssetFingerprint(input={}){
+  const canonical = JSON.stringify({
+    assetId:required(input.assetId,'assetId'),
+    assetType:required(input.assetType,'assetType'),
+    sourceRef:required(input.sourceRef,'sourceRef'),
+    evidenceRef:required(input.evidenceRef,'evidenceRef'),
+    rightsRef:required(input.rightsRef,'rightsRef'),
+    performanceRef:required(input.performanceRef,'performanceRef'),
+    verificationRef:required(input.verificationRef,'verificationRef'),
+    valuationSource:required(input.valuationSource,'valuationSource')
+  });
+  return crypto.createHash('sha256').update(canonical).digest('hex');
+}
+
+export function validateIntelligenceAsset(input={}){
+  const errors=[];
+  if(!INTELLIGENCE_ASSET_TYPES.includes(String(input.assetType))) errors.push('unsupported assetType');
+  for(const key of REQUIRED_EVIDENCE){
+    if(!String(input[key]??'').trim()) errors.push(key+' required');
+  }
+  if(input.verified !== true) errors.push('verified must be true');
+  return {
+    standard:AION_INTELLIGENCE_ASSET_STANDARD_VERSION,
+    valid:errors.length===0,
+    errors,
+    realAssetRequiresEvidence:true,
+    legalRightsMustBeProven:true,
+    independentVerificationRequired:true,
+    independentValuationRequired:true,
+    fakeValue:false,
+    fakeOwnership:false
+  };
+}
+
+export function createIntelligenceAsset(input={}){
+  const validation=validateIntelligenceAsset(input);
+  if(!validation.valid) throw new Error(validation.errors.join('; '));
+  return {
+    id:required(input.assetId,'assetId'),
+    assetType:String(input.assetType),
+    sourceRef:required(input.sourceRef,'sourceRef'),
+    evidenceRef:required(input.evidenceRef,'evidenceRef'),
+    rightsRef:required(input.rightsRef,'rightsRef'),
+    performanceRef:required(input.performanceRef,'performanceRef'),
+    verificationRef:required(input.verificationRef,'verificationRef'),
+    valuationSource:required(input.valuationSource,'valuationSource'),
+    verified:true,
+    fingerprint:intelligenceAssetFingerprint(input),
+    ownershipAuthority:'none-unless-rights-evidence-proves-it',
+    financialAuthority:'none',
+    valuationIsNotCash:true,
+    valuationIsNotRevenue:true,
+    createdAt:new Date().toISOString()
+  };
+}
+
+export function intelligenceAssetVaultRecord(asset){
+  const record=createIntelligenceAsset(asset);
+  return {
+    ...record,
+    vaultType:'intelligence-asset',
+    vaultEligibility:true
+  };
+}
