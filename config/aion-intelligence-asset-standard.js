@@ -29,7 +29,9 @@ export function intelligenceAssetFingerprint(input={}){
     rightsRef:required(input.rightsRef,'rightsRef'),
     performanceRef:required(input.performanceRef,'performanceRef'),
     verificationRef:required(input.verificationRef,'verificationRef'),
-    valuationSource:required(input.valuationSource,'valuationSource')
+    valuationSource:required(input.valuationSource,'valuationSource'),
+    evidenceSource:required(input.evidenceSource,'evidenceSource'),
+    valuationDate:required(input.valuationDate,'valuationDate')
   });
   return crypto.createHash('sha256').update(canonical).digest('hex');
 }
@@ -92,7 +94,7 @@ export async function registerIntelligenceAsset(asset={}){
     externalReference:asset.sourceRef,
     currency:asset.valuationCurrency || 'USD',
     valuation:asset.valuation ?? null,
-    evidenceRefs:[record.evidenceRef,record.sourceRef,record.rightsRef,record.performanceRef,record.verificationRef,record.valuationSource],
+    evidenceRefs:[record.evidenceRef,record.sourceRef,record.rightsRef,record.performanceRef,record.verificationRef,record.valuationSource,record.evidenceSource,record.valuationDate],
     rights:[record.rightsRef],
     risk:asset.risk ?? null,
     cashFlow:null,
