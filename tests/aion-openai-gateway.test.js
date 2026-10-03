@@ -16,9 +16,9 @@ test('OpenAI gateway exposes a safe health contract without requiring a secret',
 });
 
 test('OpenAI gateway routes intelligence modes to configured models', () => {
-  assert.equal(selectOpenAIModel('frontier'), process.env.OPENAI_FRONTIER_MODEL || 'gpt-5.6');
-  assert.equal(selectOpenAIModel('engineering'), process.env.OPENAI_ENGINEERING_MODEL || 'gpt-5.6');
-  assert.equal(selectOpenAIModel('research'), process.env.OPENAI_RESEARCH_MODEL || 'gpt-5.6');
+  assert.equal(selectOpenAIModel('frontier'), process.env.OPENAI_FRONTIER_MODEL || 'gpt-5.6-sol');
+  assert.equal(selectOpenAIModel('engineering'), process.env.OPENAI_ENGINEERING_MODEL || 'gpt-5.6-sol');
+  assert.equal(selectOpenAIModel('research'), process.env.OPENAI_RESEARCH_MODEL || 'gpt-5.6-sol');
   assert.equal(selectOpenAIModel('volume'), process.env.OPENAI_VOLUME_MODEL || 'gpt-5.6-luna');
-  assert.equal(selectOpenAIModel('unknown'), process.env.OPENAI_MODEL || 'gpt-5.6');
+  assert.equal(selectOpenAIModel('unknown'), process.env.OPENAI_MODEL || 'gpt-5.6-sol');
 });
