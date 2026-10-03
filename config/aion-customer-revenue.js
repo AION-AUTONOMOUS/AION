@@ -41,8 +41,15 @@ export async function createCustomerOrder(input={}){
 export async function confirmCustomerPayment(orderId,input={}){
   const order=await getJson('customer-orders:'+text(orderId));
   if(!order) return null;
-  if(text(input.paymentReference)==='') throw new Error('paymentReference required');
-  const updated={...order,status:'paid',paymentStatus:'confirmed',paymentReference:text(input.paymentReference),revenueRecognized:true,paidAt:new Date().toISOString()};
+  const provider=text(input.paymentProvider).toLowerCase();
+  const verification=text(input.verificationStatus).toUpperCase();
+  const providerEventId=text(input.providerEventId);
+  const paymentReference=text(input.paymentReference);
+  if(provider!=='paypal') throw new Error('revenue confirmation requires an authorized payment provider');
+  if(verification!=='SUCCESS') throw new Error('payment provider verification required');
+  if(!providerEventId||!paymentReference) throw new Error('providerEventId and paymentReference required');
+  if(order.paymentStatus==='confirmed') return order;
+  const updated={...order,status:'paid',paymentStatus:'confirmed',paymentProvider:provider,providerEventId,paymentReference,revenueRecognized:true,paidAt:new Date().toISOString(),verifiedAt:new Date().toISOString()};
   await setJson('customer-orders:'+order.id,updated);
   const revenue={id:id('AION-REV'),orderId:order.id,customerId:order.customerId,amountAion:order.amountAion,currency:order.currency,paymentReference:updated.paymentReference,recognizedAt:updated.paidAt,source:'confirmed-payment'};
   await setJson('customer-revenue:'+revenue.id,revenue); await addToIndex('customer-revenue',revenue.id);
