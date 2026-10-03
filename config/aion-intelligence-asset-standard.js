@@ -83,6 +83,38 @@ export function createIntelligenceAsset(input={}){
   };
 }
 
+export function createVerifiedAssetCertificate(assetInput={}){
+  const asset=createIntelligenceAsset(assetInput);
+  const certificatePayload={
+    certificateVersion:'1.0.0',
+    certificateType:'AION-VERIFIED-INTELLIGENCE-ASSET',
+    assetId:asset.id,
+    assetType:asset.assetType,
+    fingerprint:asset.fingerprint,
+    evidenceSource:asset.evidenceSource,
+    sourceRef:asset.sourceRef,
+    evidenceRef:asset.evidenceRef,
+    rightsRef:asset.rightsRef,
+    performanceRef:asset.performanceRef,
+    verificationRef:asset.verificationRef,
+    valuationSource:asset.valuationSource,
+    valuationDate:asset.valuationDate
+  };
+  const certificateId='AION-CERT-'+crypto.createHash('sha256')
+    .update(JSON.stringify(certificatePayload)).digest('hex').slice(0,24).toUpperCase();
+  return {
+    certificateId,
+    ...certificatePayload,
+    status:'VERIFIED',
+    attestation:'AION registry attestation based on supplied evidence',
+    legalTitleProven:false,
+    legalOwnershipRequiresExternalRightsEvidence:true,
+    valuationIsNotCash:true,
+    valuationIsNotRevenue:true,
+    issuedAt:new Date().toISOString()
+  };
+}
+
 export async function registerIntelligenceAsset(asset={}){
   const record=createIntelligenceAsset(asset);
   const { registerAsset } = await import('./aion-global-asset-vault.js');
