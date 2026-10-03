@@ -38,3 +38,13 @@ AION accepts an intelligence asset as vault-eligible only when its evidence sour
 
 ## Exclusivity Rule
 AION can enforce unique asset IDs and reject duplicate claims inside its own vault. It must not claim that AION is the world's sole owner of an asset unless authoritative external ownership evidence proves that fact.
+
+
+## Verified Asset Certificate
+Each admitted intelligence asset can produce an `AION-VERIFIED-INTELLIGENCE-ASSET` certificate. The certificate is deterministically bound to the asset fingerprint and records the source, evidence, rights, performance, verification, and valuation references. It is an AION registry attestation; it does not by itself constitute legal title.
+
+## Duplicate-Claim Protection
+The Global Asset Vault stores an asset fingerprint index. Intelligence registrations carrying the same fingerprint are rejected rather than creating a second independent vault record. This prevents duplicate registry claims while preserving the distinction between registry uniqueness and external legal ownership.
+
+## Cryptographic Canonicalization
+Vault record hashing recursively canonicalizes nested objects and arrays before SHA-256 hashing. Verification therefore checks the complete structured record rather than relying on shallow key ordering.
