@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {validateFinancialAsset,createFinancialAssetEvidenceRecord} from '../config/aion-financial-asset-evidence.js';
+const base={assetId:'AION-SEC-TEST-001',assetType:'bond',issuer:'TEST-ISSUER',officialIdentifier:'ISIN-TEST-001',sourceRef:'issuer://test',ownershipEvidenceRef:'custody://ownership-test',custodyEvidenceRef:'custody://test',valuationSource:'valuation://independent',valuationDate:'2026-10-04',evidenceSource:'regulated-custodian',verificationRef:'verification://audit',legalOwner:'AION AUTONOMOUS',jurisdiction:'TEST',verified:true,valuationVerified:true,ownershipVerified:true,custodyVerified:true};
+assert.equal(validateFinancialAsset(base).valid,true);
+const record=createFinancialAssetEvidenceRecord(base);
+assert.match(record.fingerprint,/^[a-f0-9]{64}$/);
+assert.equal(record.fakeOwnership,false);
+assert.equal(validateFinancialAsset({...base,ownershipVerified:false}).valid,false);
+assert.equal(validateFinancialAsset({...base,evidenceSource:'random-site'}).valid,false);
+console.log('AION Financial Asset Evidence tests passed');
