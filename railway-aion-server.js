@@ -46,7 +46,8 @@ const API_HANDLERS = {
   "continuous-intelligence": () => import("./server-api/continuous-intelligence.js"),
   "customer-revenue": () => import("./server-api/customer-revenue.js"),
   "openai-intelligence": () => import("./server-api/openai-intelligence.js"),
-  "global-platform": () => import("./server-api/global-platform.js")
+  "global-platform": () => import("./server-api/global-platform.js"),
+  "space-sentinel": () => import("./server-api/space-sentinel.js")
 };
 
 const send = (res, status, body) => {
@@ -206,7 +207,8 @@ async function dispatchLegacyApi(req, res, url) {
       "leo-exchange":"leo-exchange",
       "leo-orchestrator":"leo-orchestrator",
       "economic-intelligence":"economic-intelligence",
-      "continuous-intelligence":"continuous-intelligence"
+      "continuous-intelligence":"continuous-intelligence",
+      "space-sentinel":"space-sentinel"
     };
     route = direct[tail] || null;
   }
