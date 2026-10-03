@@ -10,6 +10,8 @@ export const AUTONOMOUS_POLICIES = Object.freeze({
   autoRunSecurityChecks: true,
   autoDeployAfterPassingChecks: true,
   autoMoveMoney: false,
+  aiOperateAllNonFinancialDomains: true,
+  humanApprovalBoundary: 'money-only',
   autoRunPaidAds: false,
   autoDeployMainnetToken: false,
   autoExecuteLegalDecisions: false,
@@ -69,8 +71,8 @@ export function routeTask(task = {}) {
   const requestedAgentId = String(task.agentId || task.role || '').trim();
   const agent = AGENTS.find(candidate => candidate.id === requestedAgentId) || findAgent(department);
   const commanderKey = COMMANDER_BY_DEPARTMENT[department] || 'executive';
-  const sensitive = ['finance', 'legal'].includes(department) ||
-    /payment|money|treasury|wallet|tokenized asset|tokenization|mainnet token|token.*mainnet|asset custody|asset transfer|stablecoin|paid ads|paid advertising/.test(text);
+  const moneySensitive = department === 'finance' || /payment|money|treasury|wallet|tokenized asset|tokenization|mainnet token|token.*mainnet|asset custody|asset transfer|stablecoin|paid ads|paid advertising/.test(text);
+  const legalExternalBoundary = department === 'legal' || department === 'compliance';
   const blocked = /political targeting|target voters|microtarget voters|استهداف سياسي|استهداف الناخبين/.test(text);
 
   return {
@@ -78,7 +80,7 @@ export function routeTask(task = {}) {
     department,
     commander: COMMANDERS[commanderKey],
     agent,
-    policy: { autonomous: !blocked, requiresHumanApproval: sensitive, blocked }
+    policy: { autonomous: !blocked && !moneySensitive, requiresHumanApproval: moneySensitive, externalLegalBoundary: legalExternalBoundary, blocked }
   };
 }
 
