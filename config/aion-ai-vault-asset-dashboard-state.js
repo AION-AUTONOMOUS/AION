@@ -13,7 +13,7 @@ export async function buildVaultAiAssetState({limit=100}={}) {
     rows.push({
       assetId: asset.id,
       assetClass: asset.assetClass || asset.type || null,
-      verified: verification?.verified === true,
+      verified: verification?.valid === true,
       verificationReason: verification?.reason || null,
       aiValueUnitId: asset.aiValueUnitId || null,
       aiValueUsd: Number(asset.aiValueUsd || 0),
