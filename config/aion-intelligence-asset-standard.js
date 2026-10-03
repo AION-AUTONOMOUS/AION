@@ -124,6 +124,7 @@ export async function registerIntelligenceAsset(asset={}){
     jurisdiction:required(asset.jurisdiction,'jurisdiction'),
     custodian:asset.custodian,
     externalReference:asset.sourceRef,
+    assetFingerprint:record.fingerprint,
     currency:asset.valuationCurrency || 'USD',
     valuation:asset.valuation ?? null,
     evidenceRefs:[record.evidenceRef,record.sourceRef,record.rightsRef,record.performanceRef,record.verificationRef,record.valuationSource,record.evidenceSource,record.valuationDate],
