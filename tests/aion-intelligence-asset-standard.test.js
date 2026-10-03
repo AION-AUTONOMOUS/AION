@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { createIntelligenceAsset, validateIntelligenceAsset } from '../config/aion-intelligence-asset-standard.js';
+import { createIntelligenceAsset, createVerifiedAssetCertificate, validateIntelligenceAsset } from '../config/aion-intelligence-asset-standard.js';
 
 const base={
  assetId:'AION-INT-TEST-001',assetType:'ai-model',sourceRef:'source://aion',
@@ -13,3 +13,9 @@ assert.throws(()=>createIntelligenceAsset({...base,evidenceRef:''}));
 console.log('AION Intelligence Asset Standard tests passed');
 
 assert.equal(validateIntelligenceAsset({...base,evidenceSource:'random-site'}).valid,false);
+
+const certificate=createVerifiedAssetCertificate(base);
+assert.equal(certificate.status,'VERIFIED');
+assert.equal(certificate.assetId,base.assetId);
+assert.equal(certificate.legalTitleProven,false);
+assert.match(certificate.certificateId,/^AION-CERT-[A-F0-9]{24}$/);
