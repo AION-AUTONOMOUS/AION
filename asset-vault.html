@@ -1,1 +1,54 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AION Global Asset Vault</title><style>body{font-family:system-ui,sans-serif;margin:0;background:#0b1020;color:#eef2ff}main{max-width:1100px;margin:auto;padding:32px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}.card{background:#151c31;border:1px solid #2a3555;border-radius:16px;padding:20px}.value{font-size:28px;font-weight:700}small{color:#9aa7c7}.status{margin:20px 0;padding:14px;border-radius:12px;background:#121a2d}table{width:100%;border-collapse:collapse;margin-top:20px}td,th{text-align:left;padding:10px;border-bottom:1px solid #27324d}</style></head><body><main><h1>AION GLOBAL ASSET VAULT</h1><p><small>Real assets • evidence • verification • AI intelligence</small></p><div id="status" class="status">Loading live vault state…</div><section class="grid"><div class="card"><small>Verified Value</small><div id="value" class="value">$0</div></div><div class="card"><small>Verified Assets</small><div id="assets" class="value">0</div></div><div class="card"><small>AI Value Units</small><div id="units" class="value">0</div></div><div class="card"><small>Target Valuation</small><div class="value">$10,000,000</div></div></section><table><thead><tr><th>Asset</th><th>Class</th><th>Verified</th><th>AI Unit</th><th>Verified Value</th></tr></thead><tbody id="rows"></tbody></table><script>async function load(){const s=document.getElementById('status');try{const r=await fetch('/api/asset-vault-ai-state');const d=await r.json();if(!r.ok)throw Error(d.error||'Unauthorized');document.getElementById('value').textContent='$'+Number(d.verifiedValueUsd||0).toLocaleString();document.getElementById('assets').textContent=d.verifiedAssetCount||0;document.getElementById('units').textContent=d.linkedAiValueUnitCount||0;s.textContent='Live status: '+(d.valueStatus?.status||'UNKNOWN');document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>'<tr><td>'+String(x.assetId)+'</td><td>'+String(x.assetClass||'—')+'</td><td>'+String(x.verified)+'</td><td>'+String(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString()+'</td></tr>').join('')}catch(e){s.textContent='Live vault state unavailable: '+e.message}}load()</script></main></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AION Global Asset Vault — الخزنة العالمية للأصول</title>
+<meta name="description" content="AION Global Asset Vault — سجل رقمي موثوق للأصول الحقيقية، الأدلة، التحقق، والتقييمات المستقلة.">
+<style>
+*{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;margin:0;background:#050914;color:#eef2ff}
+main{max-width:1180px;margin:auto;padding:24px}.nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.nav a{padding:10px 15px;border:1px solid #2a4568;border-radius:999px;color:#dbeafe;text-decoration:none;background:#0c1628}.nav a:hover{border-color:#35c7ff}
+h1{margin:8px 0;color:#fff}.lead{color:#9fb0ca;line-height:1.8}.trust{margin:20px 0;padding:18px;border:1px solid #275174;border-radius:16px;background:#0b1729}
+.trust strong{color:#4ade80}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.card{background:#0c1527;border:1px solid #243754;border-radius:16px;padding:18px}.value{font-size:28px;font-weight:800;margin-top:6px}
+small{color:#8fa1bc}.status{margin:20px 0;padding:14px;border-radius:12px;background:#0d1a2d;border:1px solid #263d5c}
+table{width:100%;border-collapse:collapse;margin-top:20px;background:#0b1322;border-radius:12px;overflow:hidden}td,th{text-align:right;padding:11px;border-bottom:1px solid #22334c;font-size:13px}
+.note{color:#8fa1bc;font-size:12px;line-height:1.7;margin-top:16px}.ok{color:#4ade80}.warn{color:#f5c542}
+</style></head>
+<body><main>
+<nav class="nav" aria-label="AION navigation">
+<a href="/">← AION الرئيسية</a><a href="asset-vault.html">🏦 خزنة الأصول</a><a href="space.html">🛰️ AION Space</a><a href="intelligence.html">🧠 Intelligence</a><a href="coin.html">🪙 AION Coin</a>
+</nav>
+<h1>🏦 AION GLOBAL ASSET VAULT</h1>
+<p class="lead">سجل رقمي للأصول الحقيقية المرتبطة بمصدر خارجي وأدلة قابلة للتدقيق. هذه الصفحة لا تنشئ أصلًا أو ملكية أو قيمة نقدية من تلقاء نفسها.</p>
+<section class="trust">
+<strong>قاعدة الثقة:</strong> لا تدخل قيمة في «القيمة الموثوقة» إلا إذا كان هناك أصل حقيقي محدد + مرجع دليل + مصدر تقييم مستقل + حالة تحقق ناجحة. تسجيل السجل الرقمي وحده ليس إثباتًا قانونيًا للملكية.
+</section>
+<div id="status" class="status">جاري تحميل حالة الخزنة الحية…</div>
+<section class="grid">
+<div class="card"><small>Verified Value — القيمة الموثقة</small><div id="value" class="value">$0</div></div>
+<div class="card"><small>Verified Assets — الأصول الموثقة</small><div id="assets" class="value">0</div></div>
+<div class="card"><small>AI Value Units — وحدات القيمة</small><div id="units" class="value">0</div></div>
+<div class="card"><small>Target Valuation — الهدف النظري</small><div class="value">$10,000,000</div></div>
+</section>
+<table><thead><tr><th>الأصل</th><th>الفئة</th><th>التحقق</th><th>وحدة AI</th><th>القيمة الموثقة</th></tr></thead><tbody id="rows"></tbody></table>
+<p class="note">الهدف البالغ 10 ملايين دولار هو هدف تقييم لوحدات الذكاء المسجلة، وليس رصيدًا نقديًا أو أصولًا مملوكة حاليًا. تبدأ القيمة الحية من صفر حتى تتوفر أدلة ومصادر تقييم حقيقية وتنجح عملية التحقق.</p>
+<script>
+async function load(){
+ const s=document.getElementById('status');
+ try{
+  const r=await fetch('/api/asset-vault-ai-state',{headers:{Accept:'application/json'}});
+  const d=await r.json();
+  if(!r.ok) throw Error(d.error||'Unauthorized');
+  document.getElementById('value').textContent='$'+Number(d.verifiedValueUsd||0).toLocaleString('en-US');
+  document.getElementById('assets').textContent=Number(d.verifiedAssetCount||0).toLocaleString('en-US');
+  document.getElementById('units').textContent=Number(d.linkedAiValueUnitCount||0).toLocaleString('en-US');
+  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
+  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
+   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
+  ).join('');
+ }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+load();
+</script></main></body></html>
