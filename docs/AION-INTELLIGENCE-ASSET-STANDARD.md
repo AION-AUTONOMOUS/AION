@@ -26,3 +26,8 @@ A valuation is an evidence-backed assessment, not cash and not revenue. Ownershi
 
 ## Vault integration
 Validated records expose `vaultType: intelligence-asset` and `vaultEligibility: true`, allowing the existing Asset Vault / AI Value Unit pipeline to consume them without inventing value.
+
+## Global Vault API
+Authenticated `POST /api/asset-vault/intelligence` registers a verified intelligence asset directly into the durable Global Asset Vault. Required legalOwner and jurisdiction remain explicit; the standard does not infer ownership.
+
+The vault dashboard state now exposes `verifiedIntelligenceAssetCount`, `verifiedIntelligenceValueUsd`, and `intelligenceAssetStatus`. Only cryptographically verified vault records carrying the Intelligence Asset Standard metadata are included.

@@ -9,7 +9,7 @@ import { processBatch, workerRuntimeStatus } from "./config/aion-worker-runtime.
 
 const port = Number(process.env.PORT || 8787);
 const serviceName = "AION Autonomous Core";
-const VERSION = "1.6.0";
+const VERSION = "1.7.0";
 const WORKER_TICK_MS = Math.max(5000, Number(process.env.AION_WORKER_TICK_MS || 5000));
 const CHAT_MODEL = process.env.AION_GROQ_CHAT_MODEL || process.env.AION_GROQ_MODEL || "openai/gpt-oss-120b";
 const MAX_CHAT_RETRIES = 4;
@@ -49,6 +49,7 @@ const API_HANDLERS = {
   "global-platform": () => import("./server-api/global-platform.js"),
   "space-sentinel": () => import("./server-api/space-sentinel.js"),
   "asset-vault": () => import("./server-api/asset-vault.js"),
+  "asset-vault-intelligence": () => import("./server-api/asset-vault-intelligence.js"),
   "asset-vault-ai-state": () => import("./server-api/asset-vault-ai-state.js")
 };
 
@@ -212,6 +213,7 @@ async function dispatchLegacyApi(req, res, url) {
       "continuous-intelligence":"continuous-intelligence",
       "space-sentinel":"space-sentinel",
       "asset-vault":"asset-vault",
+      "asset-vault/intelligence":"asset-vault-intelligence",
       "asset-vault-ai-state":"asset-vault-ai-state"
     };
     route = direct[tail] || null;
