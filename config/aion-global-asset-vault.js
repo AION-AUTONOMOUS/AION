@@ -5,9 +5,16 @@ export const ASSET_VAULT_VERSION = '1.0.0';
 const INDEX = 'aion:asset-vault:index';
 const ITEM = id => 'aion:asset-vault:asset:' + id;
 const HEAD = 'aion:asset-vault:head';
+const FINGERPRINT = fp => 'aion:asset-vault:fingerprint:' + fp;
 
 function now(){ return new Date().toISOString(); }
-function canonical(value){ return JSON.stringify(value, Object.keys(value).sort()); }
+function canonical(value){
+  if(Array.isArray(value)) return '['+value.map(canonical).join(',')+']';
+  if(value && typeof value === 'object'){
+    return '{'+Object.keys(value).sort().map(key=>JSON.stringify(key)+':'+canonical(value[key])).join(',')+'}';
+  }
+  return JSON.stringify(value);
+}
 function hash(value){ return crypto.createHash('sha256').update(canonical(value)).digest('hex'); }
 
 function requiredString(value,name){
@@ -30,6 +37,11 @@ export function assetVaultHealth(){
 
 export async function registerAsset(input={}){
   if(!hasRailwayRedis()) throw new Error('Asset vault requires durable Redis storage');
+  const uniquenessKey = String(input.assetFingerprint || input.intelligenceAsset?.fingerprint || '').trim();
+  if(uniquenessKey){
+    const existingId = await railwayRedisCommand(['GET',FINGERPRINT(uniquenessKey)]);
+    if(existingId) throw new Error('asset already registered for fingerprint: '+uniquenessKey);
+  }
   const id = 'AION-ASSET-' + crypto.randomUUID();
   const previousHash = String(await railwayRedisCommand(['GET',HEAD]) || '');
   const asset = {
@@ -46,6 +58,7 @@ export async function registerAsset(input={}){
     rights: Array.isArray(input.rights) ? input.rights.map(String) : [],
     risk: input.risk ?? null,
     cashFlow: input.cashFlow ?? null,
+    assetFingerprint: uniquenessKey || null,
     status: 'registered',
     createdAt: now()
   };
@@ -54,6 +67,7 @@ export async function registerAsset(input={}){
   await railwayRedisCommand(['HSET',ITEM(id),'data',JSON.stringify(record),'hash',recordHash]);
   await railwayRedisCommand(['LPUSH',INDEX,id]);
   await railwayRedisCommand(['SET',HEAD,recordHash]);
+  if(uniquenessKey) await railwayRedisCommand(['SET',FINGERPRINT(uniquenessKey),id]);
   return record;
 }
 
@@ -65,6 +79,7 @@ export async function getAsset(id){
 }
 
 export async function listAssets(limit=100){
+  if(limit && typeof limit === 'object') limit=limit.limit ?? 100;
   if(!hasRailwayRedis()) throw new Error('Asset vault storage unavailable');
   const ids=await railwayRedisCommand(['LRANGE',INDEX,'0',String(Math.max(0,Math.min(Number(limit)||100,500)-1))]);
   const list=Array.isArray(ids)?ids:[];
