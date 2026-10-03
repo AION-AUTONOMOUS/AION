@@ -64,6 +64,8 @@ export function createIntelligenceAsset(input={}){
     performanceRef:required(input.performanceRef,'performanceRef'),
     verificationRef:required(input.verificationRef,'verificationRef'),
     valuationSource:required(input.valuationSource,'valuationSource'),
+    valuation: input.valuation ?? null,
+    valuationCurrency: String(input.valuationCurrency || 'USD'),
     verified:true,
     fingerprint:intelligenceAssetFingerprint(input),
     ownershipAuthority:'none-unless-rights-evidence-proves-it',
