@@ -39,6 +39,7 @@ export default async function handler(req, res) {
   if (!service) return res.status(400).json({ error: 'Invalid service' });
 
   const details = typeof body.details === 'string' ? body.details.slice(0, 500) : '';
+  const aionOrderId = typeof body.orderId === 'string' ? body.orderId.trim() : '';
 
   try {
     const accessToken = await getAccessToken();
@@ -69,8 +70,8 @@ export default async function handler(req, res) {
         },
         purchase_units: [{
           reference_id: service.id,
-          invoice_id: invoiceId,
-          custom_id: service.id,
+          invoice_id: aionOrderId || invoiceId,
+          custom_id: aionOrderId || service.id,
           description: service.description,
           amount: { currency_code: 'USD', value: service.price.toFixed(2) }
         }]

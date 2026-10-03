@@ -1,4 +1,5 @@
 import { paypalBaseUrl, paypalClientId, paypalClientSecret } from './paypal/config.js';
+import { confirmCustomerPayment } from '../config/aion-customer-revenue.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -56,13 +57,9 @@ export default async function handler(req, res) {
       }
     );
 
-    const verificationResult =
-      await verificationResponse.json();
+    const verificationResult = await verificationResponse.json();
 
-    if (
-      !verificationResponse.ok ||
-      verificationResult.verification_status !== 'SUCCESS'
-    ) {
+    if (!verificationResponse.ok || verificationResult.verification_status !== 'SUCCESS') {
       console.error(
         'PayPal signature verification failed:',
         verificationResult
@@ -71,6 +68,26 @@ export default async function handler(req, res) {
       return res.status(400).json({
         success: false,
         error: 'Invalid signature'
+      });
+    }
+
+    const eventType = String(webhookEvent?.event_type || '');
+    const resource = webhookEvent?.resource || {};
+    const capture = Array.isArray(resource?.purchase_units)
+      ? resource.purchase_units[0]?.payments?.captures?.[0]
+      : null;
+    const captureStatus = String(capture?.status || '').toUpperCase();
+    const orderId = String(resource?.custom_id || '').trim();
+
+    if (eventType === 'PAYMENT.CAPTURE.COMPLETED' && captureStatus === 'COMPLETED') {
+      if (!orderId || !webhookEvent?.id || !capture?.id) {
+        return res.status(400).json({ success: false, error: 'Verified payment event is missing AION order mapping' });
+      }
+      await confirmCustomerPayment(orderId, {
+        paymentProvider: 'paypal',
+        verificationStatus: 'SUCCESS',
+        providerEventId: webhookEvent.id,
+        paymentReference: capture.id
       });
     }
 
