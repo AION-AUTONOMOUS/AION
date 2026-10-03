@@ -1,1 +1,18 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AION Global Platform</title><style>body{font-family:system-ui;background:#050816;color:#fff;margin:0;padding:30px}main{max-width:1100px;margin:auto}h1{font-size:48px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.card{padding:18px;border:1px solid #29405a;border-radius:14px;background:#0b1422}.n{color:#67d8ff}.s{color:#7ee2a8;font-size:12px}</style></head><body><main><h1>AION Global Platform</h1><p>AION AUTONOMOUS — administrative owner and operating layer for 16 products.</p><div id="grid" class="grid"></div></main><script>const p=["AION WORLD ENGINE","AION REALITY / REALITY PASSPORT","AION LIFE ENGINE","AION WORLD CUP AUTONOMOUS LAYER","AION WORLD CUP NERVOUS SYSTEM","AION WORLD LINK","AION WORLD LINK + AION WORLD ENGINE","AION AGENT TRUST NETWORK","AION GLOBAL BUSINESS NETWORK","AION GLOBAL FINANCIAL NETWORK","AION SPACE + ENERGY NETWORK","AION WORLD NETWORK","AION GLOBAL LAUNCH","AION REALITY-TO-ACTION ENGINE","AION GLOBAL MARKETS NETWORK","ALWAKEND"];document.getElementById("grid").innerHTML=p.map((x,i)=>'<article class="card"><div class="n">PROJECT '+(i+1)+'</div><h2>'+x+'</h2><div class="s">implemented foundation</div></article>').join("")</script></main></body></html>
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AION Global Platform — مركز المشاريع</title><style>
+body{font-family:system-ui,Segoe UI,Arial;background:#050816;color:#fff;margin:0;padding:24px}main{max-width:1200px;margin:auto}h1{font-size:42px;margin-bottom:8px}h1 span{color:#67d8ff}.lead{color:#b8c7d9;line-height:1.8}.group{margin:28px 0}.group h2{font-size:20px;color:#f5c542;border-bottom:1px solid #263a52;padding-bottom:10px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}.card{display:block;padding:18px;border:1px solid #29405a;border-radius:14px;background:#0b1422;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#67d8ff}.n{color:#67d8ff;font-size:12px;font-weight:800}.s{color:#9fb1c7;font-size:12px;margin-top:8px}.back{display:inline-block;margin-bottom:20px;padding:10px 16px;border:1px solid #29405a;border-radius:999px}</style></head><body><main>
+<a class="back" href="/">← AION الرئيسية</a><h1>AION <span>Global Platform</span></h1><p class="lead">مركز تنظيم المشاريع. الـ16 مشروعًا موجودة هنا ضمن مجالات واضحة؛ الصفحة الرئيسية تعرض بوابات AION الأساسية فقط.</p>
+<div class="group"><h2>🌐 World & Reality</h2><div class="grid" id="world"></div></div>
+<div class="group"><h2>🤖 Autonomous Intelligence</h2><div class="grid" id="ai"></div></div>
+<div class="group"><h2>💼 Business & Finance</h2><div class="grid" id="finance"></div></div>
+<div class="group"><h2>🛰️ Space, Energy & Networks</h2><div class="grid" id="space"></div></div>
+<div class="group"><h2>🚀 Global Expansion</h2><div class="grid" id="global"></div></div>
+<script>
+const groups={
+world:["AION WORLD ENGINE","AION REALITY / REALITY PASSPORT","AION LIFE ENGINE","AION WORLD CUP AUTONOMOUS LAYER","AION WORLD CUP NERVOUS SYSTEM"],
+ai:["AION WORLD LINK","AION WORLD LINK + AION WORLD ENGINE","AION AGENT TRUST NETWORK","AION REALITY-TO-ACTION ENGINE"],
+finance:["AION GLOBAL BUSINESS NETWORK","AION GLOBAL FINANCIAL NETWORK","AION GLOBAL MARKETS NETWORK"],
+space:["AION SPACE + ENERGY NETWORK","AION WORLD NETWORK"],
+global:["AION GLOBAL LAUNCH","ALWAKEND"]
+};
+Object.entries(groups).forEach(([id,items])=>document.getElementById(id).innerHTML=items.map((x,i)=>'<article class="card"><div class="n">PROJECT</div><h3>'+x+'</h3><div class="s">بوابة المشروع داخل مركز AION — لا يعني هذا السجل وحده أن المشروع أو الأصل أو الإيراد قائم تجاريًا.</div></article>').join(""));
+</script></main></body></html>
