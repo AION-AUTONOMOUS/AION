@@ -181,3 +181,26 @@ export function intelligenceAssetVaultRecord(asset){
     vaultEligibility:true
   };
 }
+
+
+export function intelligenceEconomicAssetRecord(input={}) {
+  const asset=createIntelligenceAsset(input);
+  const valueProfile=createIntelligenceValueProfile(input);
+  return {
+    assetId:asset.id,
+    assetType:asset.assetType,
+    intelligenceValueScore:valueProfile.intelligenceValueScore,
+    valueDimensions:valueProfile.dimensions,
+    economicValue:valueProfile.economicValue,
+    economicValueCurrency:valueProfile.economicValueCurrency,
+    economicValueSource:valueProfile.economicValueSource,
+    economicValueDate:valueProfile.economicValueDate,
+    fingerprint:asset.fingerprint,
+    evidenceBound:true,
+    verified:true,
+    isEconomicAsset:true,
+    valuationIsNotCash:true,
+    valuationIsNotRevenue:true,
+    fakeValue:false
+  };
+}
