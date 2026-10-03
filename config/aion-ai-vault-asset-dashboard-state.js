@@ -39,6 +39,10 @@ export async function buildVaultAiAssetState({limit=100}={}) {
   const verifiedIntelligenceValueUsd = verifiedIntelligenceAssets.reduce((sum,x) =>
     sum + Number(x.intelligenceAsset?.valuation?.valueUsd || x.aiValueUsd || 0), 0
   );
+  const verifiedFinancialAssets = rows.filter(x => x.verified && x.financialAssetEvidence?.verified === true);
+  const verifiedFinancialValueUsd = verifiedFinancialAssets.reduce((sum,x) => sum + Number(x.financialAssetEvidence?.valuation?.valueUsd || 0), 0);
+  const verifiedFinancialAssetCount = verifiedFinancialAssets.length;
+  const verifiedTotalAssetValueUsd = verifiedIntelligenceValueUsd + verifiedFinancialValueUsd;
   const verifiedIntelligenceValueScore = verifiedIntelligenceAssets.length
     ? Number((verifiedIntelligenceAssets.reduce((sum,x)=>sum+Number(x.intelligenceValueScore||0),0)/verifiedIntelligenceAssets.length).toFixed(2))
     : 0;
@@ -57,6 +61,10 @@ export async function buildVaultAiAssetState({limit=100}={}) {
     verifiedIntelligenceAssetCount: verifiedIntelligenceAssets.length,
     verifiedIntelligenceValueUsd,
     verifiedIntelligenceValueScore,
+    verifiedFinancialAssetCount,
+    verifiedFinancialValueUsd,
+    verifiedFinancialAssetStatus: verifiedFinancialAssetCount > 0 ? 'VERIFIED' : 'NO_VERIFIED_FINANCIAL_ASSETS',
+    verifiedTotalAssetValueUsd,
     intelligenceAssetStatus: verifiedIntelligenceAssets.length > 0 ? 'VERIFIED' : 'NO_VERIFIED_INTELLIGENCE_ASSETS',
     valueStatus: valueStatus({verifiedUnits})
   };
