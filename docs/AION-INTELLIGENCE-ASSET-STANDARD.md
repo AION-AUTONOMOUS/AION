@@ -31,3 +31,10 @@ Validated records expose `vaultType: intelligence-asset` and `vaultEligibility: 
 Authenticated `POST /api/asset-vault/intelligence` registers a verified intelligence asset directly into the durable Global Asset Vault. Required legalOwner and jurisdiction remain explicit; the standard does not infer ownership.
 
 The vault dashboard state now exposes `verifiedIntelligenceAssetCount`, `verifiedIntelligenceValueUsd`, and `intelligenceAssetStatus`. Only cryptographically verified vault records carrying the Intelligence Asset Standard metadata are included.
+
+
+## Real-Asset Evidence Gate
+AION accepts an intelligence asset as vault-eligible only when its evidence source is one of: issuer, regulated custodian, official registry, signed license, independent audit, reproducible benchmark, customer contract, or public primary source. AION's registry can establish an auditable digital record and uniqueness inside AION; it cannot by itself create legal ownership of a bond, security, commodity, property, or other real-world asset. Real-world ownership/custody must be proven by the relevant issuer, regulated custodian, official registry, or legally enforceable rights document.
+
+## Exclusivity Rule
+AION can enforce unique asset IDs and reject duplicate claims inside its own vault. It must not claim that AION is the world's sole owner of an asset unless authoritative external ownership evidence proves that fact.
