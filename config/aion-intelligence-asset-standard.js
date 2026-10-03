@@ -117,7 +117,8 @@ export function createIntelligenceAsset(input={}){
     financialAuthority:'none',
     valuationIsNotCash:true,
     valuationIsNotRevenue:true,
-    createdAt:new Date().toISOString()
+    createdAt:new Date().toISOString(),
+    vaultEligibility:true
   };
 }
 
