@@ -25,7 +25,8 @@ const indexes = {
   'customer-revenue': 'aion:stack:customer-revenue:index',
   'customer-outcomes': 'aion:stack:customer-outcomes:index',
   'customer-leads': 'aion:stack:customer-leads:index',
-  'demand-signals': 'aion:stack:demand-signals:index'
+  'demand-signals': 'aion:stack:demand-signals:index',
+  'distressed-opportunities': 'aion:stack:distressed-opportunities:index'
 };
 
 function config() {
