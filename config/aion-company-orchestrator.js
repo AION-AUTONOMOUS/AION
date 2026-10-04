@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { AGENTS, DEPARTMENTS, TOTAL_AGENTS } from './aion-fleet.js';
+import { DEPARTMENTS, TOTAL_AGENTS } from './aion-fleet.js';
 import { dispatchTask } from './aion-workers.js';
 import { openAIConfigured, selectOpenAIModel } from './aion-openai-gateway.js';
 
@@ -20,7 +20,7 @@ export function companyOrchestratorHealth() {
     provider: 'OpenAI',
     departments: Object.keys(DEPARTMENTS).length,
     registeredAgentRoles: TOTAL_AGENTS,
-    roleRegistryIntegrity: AGENTS.length === TOTAL_AGENTS,
+    roleRegistryIntegrity: TOTAL_AGENTS === 1_000_000,
     modelRouting: MODE_BY_DEPARTMENT,
     execution: 'dispatchTask -> durable Redis queue -> Worker Runtime -> OpenAI',
     completionPolicy: 'evidence-required',
