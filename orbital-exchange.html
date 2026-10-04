@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AION Orbital Capacity Exchange | Satellite Capacity & Space Intelligence</title>
+<meta name="description" content="AION Orbital Capacity Exchange connects qualified commercial demand with authorized satellite, Earth-observation and space-service providers through an AI-assisted RFQ and matching workflow.">
+<link rel="canonical" href="https://aionautonomous.devs.surf/orbital-exchange.html">
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,sans-serif}body{margin:0;background:#050816;color:#eef4ff}main{max-width:1100px;margin:auto;padding:72px 22px}h1{font-size:clamp(42px,7vw,78px);line-height:.95;margin:10px 0 22px}h2{margin-top:48px}p{color:#b8c7df;line-height:1.7}.eyebrow{letter-spacing:.18em;text-transform:uppercase;color:#66d9ff}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.card{background:#0b1225;border:1px solid #1d3150;border-radius:18px;padding:22px}.pill{display:inline-block;padding:8px 12px;border:1px solid #2b4567;border-radius:999px;color:#8ee7ff}.cta{display:inline-block;margin-top:18px;padding:14px 20px;border-radius:12px;background:#eaf7ff;color:#06101f;text-decoration:none;font-weight:800}.muted{font-size:13px;color:#8295b2}
+</style></head><body><main>
+<div class="eyebrow">AION AUTONOMOUS · SPACE COMMERCE</div>
+<h1>Orbital Capacity Exchange</h1>
+<p style="font-size:21px">AI-assisted matching between qualified commercial demand and authorized satellite, Earth-observation and space-service providers.</p>
+<span class="pill">5% success fee target</span>
+<h2>How it works</h2><div class="grid">
+<div class="card"><b>01 · Define</b><p>Customer submits coverage, capacity, geography, timing, vertical and service requirements.</p></div>
+<div class="card"><b>02 · Match</b><p>AION normalizes requirements against provider capabilities and prepares a qualified shortlist.</p></div>
+<div class="card"><b>03 · Verify</b><p>Provider availability, authority, licensing, technical terms and commercial conditions are verified before representation.</p></div>
+<div class="card"><b>04 · Close</b><p>AION records the introduction and, where contractually agreed, earns a 5% success fee on qualifying contract value.</p></div>
+</div>
+<h2>Priority demand</h2><div class="grid"><div class="card">Energy</div><div class="card">Mining</div><div class="card">Agriculture</div><div class="card">Insurance</div><div class="card">Maritime</div><div class="card">Aviation</div><div class="card">Telecom</div><div class="card">Infrastructure</div><div class="card">Logistics</div><div class="card">Climate & Research</div><div class="card">Emergency Response</div><div class="card">Enterprise Connectivity</div></div>
+<h2>Request a space capacity match</h2>
+<p>Send a commercial requirement. AION will record the RFQ for qualification; this form does not create a satellite contract or represent any provider as a confirmed partner.</p>
+<form id="rfq" class="card" style="display:grid;gap:12px;max-width:700px">
+<input name="customer" placeholder="Your name" required style="padding:13px;border-radius:9px;border:1px solid #29405f;background:#070d1c;color:white">
+<input name="company" placeholder="Company" style="padding:13px;border-radius:9px;border:1px solid #29405f;background:#070d1c;color:white">
+<input name="email" type="email" placeholder="Business email" required style="padding:13px;border-radius:9px;border:1px solid #29405f;background:#070d1c;color:white">
+<select name="vertical" style="padding:13px;border-radius:9px;background:#070d1c;color:white"><option>energy</option><option>mining</option><option>agriculture</option><option>insurance</option><option>maritime</option><option>aviation</option><option>telecom</option><option>infrastructure</option><option>logistics</option><option>climate</option><option>research</option><option>emergency-response</option></select>
+<textarea name="objective" placeholder="What space capability do you need?" required rows="5" style="padding:13px;border-radius:9px;border:1px solid #29405f;background:#070d1c;color:white"></textarea>
+<button class="cta" type="submit">Submit RFQ</button><div id="msg" class="muted"></div>
+</form>
+<p class="muted">AION is an orchestration and commercial-introduction layer. No spacecraft control, regulated financial transfer, licensing approval, or provider partnership is implied by this page.</p>
+<script>
+document.querySelector('#rfq').addEventListener('submit',async e=>{e.preventDefault();const f=new FormData(e.currentTarget);const body=Object.fromEntries(f.entries());const msg=document.querySelector('#msg');msg.textContent='Submitting…';try{const r=await fetch('/api/orbital-exchange?path=rfqs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json();msg.textContent=d.success?'RFQ received. Reference: '+d.data.id:'Unable to submit RFQ.';if(d.success)e.currentTarget.reset()}catch{msg.textContent='Submission unavailable. Please try again later.'}});
+</script></main></body></html>
