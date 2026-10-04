@@ -26,7 +26,8 @@ const indexes = {
   'customer-outcomes': 'aion:stack:customer-outcomes:index',
   'customer-leads': 'aion:stack:customer-leads:index',
   'demand-signals': 'aion:stack:demand-signals:index',
-  'distressed-opportunities': 'aion:stack:distressed-opportunities:index'
+  'distressed-opportunities': 'aion:stack:distressed-opportunities:index',
+  'global-distressed-opportunities': 'aion:stack:global-distressed-opportunities:index'
 };
 
 function config() {
