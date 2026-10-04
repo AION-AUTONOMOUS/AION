@@ -3,7 +3,7 @@ import { meshHealth, meshStatus, registerNode, heartbeatNode, logicalAgent, shar
 const TOKEN=()=>String(process.env.AION_MESH_TOKEN||'').trim();
 function authorized(req){
   const configured=TOKEN();
-  const supplied=String(req.headers.authorization||'').replace(/^Bearer\\s+/i,'').trim();
+  const supplied=String(req.headers.authorization||'').replace(/^Bearer\s+/i,'').trim();
   return Boolean(configured&&supplied&&supplied===configured);
 }
 export default async function handler(req,res){
