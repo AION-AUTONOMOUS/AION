@@ -25,7 +25,12 @@
 <article class="card"><div class="icon">🛰️</div><h2>LEO Situational Awareness</h2><p>Orbital awareness using public operational space-data sources.</p><div class="price">$250</div><button class="choose" onclick="pick('leo-situational-awareness','LEO Situational Awareness')">Request</button></article>
 <article class="card"><div class="icon">🚨</div><h2>Rapid Disaster Intelligence</h2><p>Fast evidence-backed incident intelligence for assessment and decision support.</p><div class="price">$350</div><button class="choose" onclick="pick('disaster-intelligence','Rapid Disaster Intelligence')">Request</button></article>
 </section>
-<section class="formbox" id="request"><h2>Global request desk</h2><form id="leadForm"><div class="formgrid">
+<section style="margin:26px 0;padding:24px;border:1px solid #16466d;border-radius:18px;background:#06152a">
+<h2 style="margin-top:0;color:#f5c542">Industry routes</h2>
+<p style="color:#aebbd0;line-height:1.7">Choose the business problem closest to your need. AION routes the request to the appropriate intelligence or digital-service workflow.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
+<button onclick="sector('Energy & infrastructure')" style="padding:13px;border-radius:12px;border:1px solid #28577d;background:#030b1d;color:#fff;cursor:pointer;font-weight:800">Energy & infrastructure</button><button onclick="sector('Mining & resources')" style="padding:13px;border-radius:12px;border:1px solid #28577d;background:#030b1d;color:#fff;cursor:pointer;font-weight:800">Mining & resources</button><button onclick="sector('Agriculture & climate')" style="padding:13px;border-radius:12px;border:1px solid #28577d;background:#030b1d;color:#fff;cursor:pointer;font-weight:800">Agriculture & climate</button><button onclick="sector('Maritime & aviation')" style="padding:13px;border-radius:12px;border:1px solid #28577d;background:#030b1d;color:#fff;cursor:pointer;font-weight:800">Maritime & aviation</button><button onclick="sector('Insurance & risk')" style="padding:13px;border-radius:12px;border:1px solid #28577d;background:#030b1d;color:#fff;cursor:pointer;font-weight:800">Insurance & risk</button><button onclick="sector('Logistics & supply chain')" style="padding:13px;border-radius:12px;border:1px solid #28577d;background:#030b1d;color:#fff;cursor:pointer;font-weight:800">Logistics & supply chain</button><button onclick="sector('Research & technology')" style="padding:13px;border-radius:12px;border:1px solid #28577d;background:#030b1d;color:#fff;cursor:pointer;font-weight:800">Research & technology</button><button onclick="sector('Enterprise AI')" style="padding:13px;border-radius:12px;border:1px solid #28577d;background:#030b1d;color:#fff;cursor:pointer;font-weight:800">Enterprise AI</button>
+</div></section><section class="formbox" id="request"><h2>Global request desk</h2><form id="leadForm"><div class="formgrid">
 <div class="field"><label>Name</label><input id="name" required maxlength="160"></div>
 <div class="field"><label>Email</label><input id="email" type="email" required maxlength="320"></div>
 <div class="field"><label>Company / organization (optional)</label><input id="company" maxlength="200"></div>
@@ -35,6 +40,7 @@
 <div class="trust">Digital delivery • Evidence-backed outputs • Payment confirmation required before revenue recognition • No political targeting</div>
 </div>
 <script>
+function sector(name){document.getElementById('requestText').value='Industry: '+name+'\\n\\nBusiness need: ';document.getElementById('request').scrollIntoView({behavior:'smooth'});}
 function pick(id,title){document.getElementById('offer').value=id;document.getElementById('requestText').value='I am interested in '+title+'. ';document.getElementById('request').scrollIntoView({behavior:'smooth'});}
 document.getElementById('leadForm').addEventListener('submit',async e=>{
  e.preventDefault();const msg=document.getElementById('msg');msg.textContent='Submitting…';
