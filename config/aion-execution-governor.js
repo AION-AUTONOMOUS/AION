@@ -11,7 +11,10 @@ export function classifyExecution(task = {}) {
   const clientOrigin = ['client','customer','external','public'].includes(source);
   const highImpact = HIGH_IMPACT.test(text);
   const blocked = BLOCKED.test(text);
-  const requiresOwnerApproval = !blocked && (clientOrigin || highImpact);
+  // Customer-origin alone is NOT an approval boundary. AION may autonomously
+  // evaluate and execute ordinary, reversible, low-risk customer work.
+  // Owner approval remains mandatory only for sensitive/high-impact side effects.
+  const requiresOwnerApproval = !blocked && highImpact;
   return Object.freeze({
     source,
     clientOrigin,
@@ -24,5 +27,5 @@ export function classifyExecution(task = {}) {
 }
 
 export function executionGovernorHealth() {
-  return { version: EXECUTION_GOVERNOR_VERSION, status: 'ready', model: 'client-approval / autonomous-internal', failClosed: true };
+  return { version: EXECUTION_GOVERNOR_VERSION, status: 'ready', model: 'autonomous-by-default / safeguarded-high-impact', failClosed: true };
 }
