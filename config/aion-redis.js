@@ -60,6 +60,8 @@ export async function railwayRedisCommand(command) {
       return client.rPush(rawArgs[0], rawArgs.slice(1));
     case 'LPUSH':
       return client.lPush(rawArgs[0], rawArgs.slice(1));
+    case 'LRANGE':
+      return client.lRange(rawArgs[0], Number(rawArgs[1]), Number(rawArgs[2]));
     case 'LREM':
       return client.lRem(rawArgs[0], Number(rawArgs[1]), rawArgs[2]);
     case 'HSET': {
