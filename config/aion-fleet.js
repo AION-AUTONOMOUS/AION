@@ -1,6 +1,6 @@
-// AION Autonomous Fleet — deterministic 10,000-agent registry.
-// These are software-agent roles, not 4,000 continuously running model instances.
-// Runtime workers can be scaled horizontally from this registry.
+// AION Autonomous Fleet — one-million logical-agent registry.
+// Logical agents are deterministic roles; only agents assigned to real worker
+// nodes consume compute/model capacity.
 
 const DEPARTMENT_NAMES = [
   ['research', 'Research', 'Collect sources, market intelligence, competitor and trend analysis.'],
@@ -25,7 +25,7 @@ const DEPARTMENT_NAMES = [
   ['communications', 'Communications', 'Public company communications, press materials and creator/business outreach.']
 ];
 
-export const AGENTS_PER_DEPARTMENT = 500;
+export const AGENTS_PER_DEPARTMENT = 50_000;
 export const TOTAL_AGENTS = DEPARTMENT_NAMES.length * AGENTS_PER_DEPARTMENT;
 
 export const DEPARTMENTS = Object.fromEntries(
@@ -44,28 +44,47 @@ export const DEPARTMENTS = Object.fromEntries(
   ])
 );
 
-export const AGENTS = DEPARTMENT_NAMES.flatMap(([id, name, mission]) =>
-  Array.from({ length: AGENTS_PER_DEPARTMENT }, (_, index) => {
-    const number = index + 1;
-    const specialty = DEPARTMENTS[id].specialties[index % DEPARTMENTS[id].specialties.length];
-    return {
-      id: `AION-${id.slice(0, 4).toUpperCase()}-${String(number).padStart(3, '0')}`,
-      name: `${name} Agent ${number}`,
-      department: id,
-      specialty,
-      mission
-    };
-  })
-);
+function normalizeIndex(index) {
+  const n = Number(index);
+  if (!Number.isInteger(n) || n < 0 || n >= TOTAL_AGENTS) {
+    throw new Error('agent index out of range');
+  }
+  return n;
+}
+
+export function agentAt(index) {
+  const n = normalizeIndex(index);
+  const departmentIndex = Math.floor(n / AGENTS_PER_DEPARTMENT);
+  const localIndex = n % AGENTS_PER_DEPARTMENT;
+  const [id, name, mission] = DEPARTMENT_NAMES[departmentIndex];
+  const specialty = DEPARTMENTS[id].specialties[localIndex % DEPARTMENTS[id].specialties.length];
+  return {
+    id: `AION-${id.slice(0, 4).toUpperCase()}-${String(localIndex + 1).padStart(5, '0')}`,
+    name: `${name} Agent ${localIndex + 1}`,
+    department: id,
+    specialty,
+    mission,
+    index: n
+  };
+}
+
+export function* iterateAgents(start = 0, limit = 1000) {
+  const first = Math.max(0, Math.floor(Number(start) || 0));
+  const count = Math.max(0, Math.min(10000, Math.floor(Number(limit) || 0)));
+  const end = Math.min(TOTAL_AGENTS, first + count);
+  for (let index = first; index < end; index += 1) yield agentAt(index);
+}
 
 export function findAgent(role = '') {
   const normalized = String(role).trim().toLowerCase();
-  return (
-    AGENTS.find(agent => agent.id.toLowerCase() === normalized) ||
-    AGENTS.find(agent => agent.department === normalized) ||
-    AGENTS.find(agent => agent.name.toLowerCase() === normalized) ||
-    AGENTS[0]
-  );
+  if (/^\\d+$/.test(normalized)) return agentAt(Number(normalized));
+  const exactDepartment = DEPARTMENT_NAMES.find(([id]) => id === normalized);
+  if (exactDepartment) return agentAt(DEPARTMENT_NAMES.indexOf(exactDepartment) * AGENTS_PER_DEPARTMENT);
+  for (let i = 0; i < DEPARTMENT_NAMES.length; i += 1) {
+    const [id, name] = DEPARTMENT_NAMES[i];
+    if (name.toLowerCase() === normalized || id === normalized) return agentAt(i * AGENTS_PER_DEPARTMENT);
+  }
+  return agentAt(0);
 }
 
 export function fleetHealth() {
@@ -73,10 +92,11 @@ export function fleetHealth() {
     total_agents: TOTAL_AGENTS,
     departments: DEPARTMENT_NAMES.length,
     agents_per_department: AGENTS_PER_DEPARTMENT,
+    materialization: 'lazy-deterministic',
     counts: Object.fromEntries(DEPARTMENT_NAMES.map(([id]) => [id, DEPARTMENTS[id].count]))
   };
 }
 
-if (TOTAL_AGENTS !== 10000) {
-  throw new Error(`AION fleet misconfigured: expected 10000, got ${TOTAL_AGENTS}`);
+if (TOTAL_AGENTS !== 1_000_000) {
+  throw new Error(`AION fleet misconfigured: expected 1000000, got ${TOTAL_AGENTS}`);
 }
