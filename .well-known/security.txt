@@ -1,0 +1,3 @@
+Contact: mailto:aion.genesisss@gmail.com
+Canonical: https://aionautonomous.devs.surf/.well-known/security.txt
+Policy: https://aion-production-fbf3.up.railway.app/terms.html
