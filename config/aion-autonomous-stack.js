@@ -1,17 +1,17 @@
 import crypto from 'node:crypto';
 import { dispatchTask } from './aion-workers.js';
-import { AGENTS, DEPARTMENTS } from './aion-fleet.js';
+import { TOTAL_AGENTS, DEPARTMENTS } from './aion-fleet.js';
 import { addToIndex, getJson, listIndexed, setJson, stackStorageHealth } from './aion-stack-store.js';
 import { frontierHealth } from './aion-frontier.js';
 import { ownerGovernanceHealth } from './aion-owner-governance.js';
 import { intelligenceHealth } from './aion-intelligence-engine.js';
 
-export const AUTONOMOUS_STACK_VERSION = '1.1.0';
+export const AUTONOMOUS_STACK_VERSION = '1.1.1';
 
 export const CAPABILITIES = Object.freeze({
   digitalMoney: { id: 'digital-money', name: 'Digital Money', status: 'ledger-ready', description: 'Internal machine-account ledger and payment-intent preparation. External money movement remains human-approved.' },
   tokenizedAssets: { id: 'tokenized-assets', name: 'Tokenized Assets', status: process.env.AION_TOKEN_ADDRESS ? 'contract-configured' : 'adapter-ready', description: 'EVM asset registry and tokenization lifecycle. Minting and settlement require explicit deployment configuration and approval.' },
-  aiAgents: { id: 'ai-agents', name: 'AI Agents', status: 'ready', description: '10,000 deterministic roles coordinated by the Control Plane and Worker Runtime.' },
+  aiAgents: { id: 'ai-agents', name: 'AI Agents', status: 'ready', description: 'one-million deterministic logical roles coordinated by the Control Plane and Worker Runtime.' },
   autonomousOrganization: { id: 'autonomous-organization', name: 'Autonomous Organization', status: 'governed', description: 'Goal planning, delegated work, policy gates, audit events and human approvals.' },
   finance: { id: 'ai-finance', name: 'AI + Finance', status: 'guarded', description: 'Financial analysis and preparation with no autonomous money movement.' },
   robotics: { id: 'robotics', name: 'Robotics', status: process.env.AION_ROBOT_EXECUTOR_URL ? 'adapter-configured' : 'adapter-ready', description: 'Robot/device command preparation and guarded execution through an explicit adapter.' },
@@ -31,7 +31,7 @@ export function stackHealth() {
     governance: ownerGovernanceHealth(),
     intelligence: intelligenceHealth(),
     capabilities: Object.values(CAPABILITIES),
-    fleet: { agents: AGENTS.length, departments: Object.keys(DEPARTMENTS).length },
+    fleet: { agents: TOTAL_AGENTS, departments: Object.keys(DEPARTMENTS).length },
     guards: {
       autonomousMoneyMovement: false,
       autonomousSensitiveAssetActions: false,
