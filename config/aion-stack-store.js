@@ -16,7 +16,10 @@ const indexes = {
   'intelligence-evidence': 'aion:stack:intelligence-evidence:index',
   'intelligence-products': 'aion:stack:intelligence-products:index',
   'intelligence-metrics': 'aion:stack:intelligence-metrics:index',
-  'economic-events': 'aion:stack:economic-events:index'
+  'economic-events': 'aion:stack:economic-events:index',
+  'space-rfqs': 'aion:stack:space-rfqs:index',
+  'space-commissions': 'aion:stack:space-commissions:index',
+  'digital-contracts': 'aion:stack:digital-contracts:index'
 };
 
 function config() {
