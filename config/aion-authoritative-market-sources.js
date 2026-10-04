@@ -19,7 +19,6 @@ export async function fetchUsTreasuryYield({maturity='10 Yr'}={}) {
   }
   if(!response) throw new Error('US Treasury data unavailable');
   if(!response.ok) throw new Error('US Treasury data HTTP '+response.status);
-  const xml=await response.text();
   const escaped=maturity.replace(/[.*+?^()|[\\]\\\\]/g,'\\\\$&');
   const tagRe=new RegExp('<'+escaped+'>([^<]+)</');
   const dateRe=/<d:NEW_DATE>([^<]+)</;
