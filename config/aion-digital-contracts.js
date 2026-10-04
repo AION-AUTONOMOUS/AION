@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import { getJson, setJson, addToIndex, listIndexed } from './aion-stack-store.js';
 
 export const DIGITAL_CONTRACTS_VERSION = '1.1.0';
-export const CONTRACT_LIFECYCLE = Object.freeze(['draft','issued','partially-accepted','executed','declined','void']);
+export const CONTRACT_LIFECYCLE = Object.freeze(['draft','issued','partially-accepted','awaiting-trust-provider','executed','declined','void']);
 
 function text(v){ return String(v ?? '').trim(); }
 function id(prefix){ return prefix + '-' + crypto.randomUUID(); }
@@ -130,30 +130,52 @@ export async function approveAionSignature(input={}){
   const approverName=text(input.approverName);
   const approverEmail=text(input.approverEmail);
   if(!approverName || !approverEmail || !approverEmail.includes('@')) throw new Error('approver identity required');
+
   const approvalBase={type:'owner-approved',approvalId:approval.id,contractId:contract.id,contractHash:contract.contentHash,approverName,approverEmail,consent,at:new Date().toISOString(),method:'explicit-electronic-approval'};
-  const executionBase={
-    type:'aion-electronic-execution',
-    contractId:contract.id,contractVersion:contract.version,contractHash:contract.contentHash,
-    signer:'AION AUTONOMOUS', signerRole:'authorized-company-electronic-execution',
-    authorizationEventId:id('AION-EVENT'), approvedAt:approvalBase.at,
-    method:'AION-electronic-execution-seal',
-    legalSignatureProviderConfigured:Boolean(process.env.AION_E_SIGNATURE_PROVIDER)
-  };
   const approvalEvent={...approvalBase,id:id('AION-EVENT'),eventHash:hash(approvalBase)};
-  const executionEvent={...executionBase,id:id('AION-EVENT')};
-  executionEvent.executionHash=hash(executionBase);
   requestEvent.resolved=true;
   requestEvent.approval={...approval,status:'approved',approvedAt:approvalBase.at,approverName,approverEmail};
-  contract.events.push(approvalEvent,executionEvent);
-  contract.status='partially-accepted';
-  const requiredRoles=new Set(contract.payload.parties.map(p=>p.role).filter(Boolean));
-  const acceptedRoles=new Set(contract.events.filter(e=>e.type==='accepted').map(e=>e.partyRole));
-  if(requiredRoles.size>0 && [...requiredRoles].every(r=>acceptedRoles.has(r) || r==='aion')) contract.status='executed';
+  contract.events.push(approvalEvent);
+
+  // Fail closed: owner approval authorizes AION to seek the corporate trust signature,
+  // but never fabricates a qualified/trusted signature when no real provider is configured.
+  const providerConfigured=Boolean(text(process.env.AION_E_SIGNATURE_PROVIDER));
+  const providerReady=providerConfigured && Boolean(text(process.env.AION_E_SIGNATURE_API_BASE)) && Boolean(text(process.env.AION_E_SIGNATURE_API_KEY));
+  const executionBase={
+    type:'aion-signature-authorized',
+    contractId:contract.id,contractVersion:contract.version,contractHash:contract.contentHash,
+    signer:'AION AUTONOMOUS',signerRole:'authorized-company-electronic-execution',
+    authorizationEventId:approvalEvent.id,approvedAt:approvalBase.at,
+    method:'owner-approved-trust-signature-request',
+    trustProviderConfigured:providerConfigured,
+    trustProviderReady:providerReady
+  };
+  const executionEvent={...executionBase,id:id('AION-EVENT')};
+  executionEvent.executionHash=hash(executionBase);
+  contract.events.push(executionEvent);
+
+  if(!providerReady){
+    contract.status='awaiting-trust-provider';
+    contract.updatedAt=new Date().toISOString();
+    await setJson('digital-contracts:'+contract.id,contract);
+    return {
+      contract, approval:requestEvent.approval, executionEvent,
+      execution:{status:'awaiting-trust-provider',qualified:false,reason:'A real Trust Service Provider account/certificate/API credentials are required before AION can create a qualified/trusted signature or corporate seal.'},
+      verification:verifyDigitalContract(contract)
+    };
+  }
+
+  // Provider integration is deliberately not guessed: each qualified/trusted provider
+  // has its own API, certificate custody, identity and evidence protocol.
+  contract.status='awaiting-trust-provider';
   contract.updatedAt=new Date().toISOString();
   await setJson('digital-contracts:'+contract.id,contract);
-  return {contract,approval:requestEvent.approval,executionEvent,verification:verifyDigitalContract(contract)};
+  return {
+    contract, approval:requestEvent.approval, executionEvent,
+    execution:{status:'provider-configured-adapter-pending',qualified:false,reason:'Provider-specific signing adapter must be configured and verified before legal execution.'},
+    verification:verifyDigitalContract(contract)
+  };
 }
-
 export async function voidDigitalContract(contractId, reason=''){
   const contract=await getDigitalContract(contractId);
   if(!contract) throw new Error('contract not found');
