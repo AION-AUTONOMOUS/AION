@@ -44,6 +44,43 @@ export async function createSpaceRFQ(input={}){
 export async function listSpaceRFQs(){return listIndexed('space-rfqs');}
 export async function getSpaceRFQ(rfqId){return getJson('space-rfqs:'+text(rfqId));}
 
+export async function createOrbitalContractForRFQ(input={}){
+ const rfq=await getSpaceRFQ(input.rfqId);
+ if(!rfq) throw new Error('RFQ not found');
+ const providerId=text(input.providerId);
+ if(!providerId) throw new Error('providerId required');
+ const provider=PROVIDERS.find(p=>p.id===providerId);
+ if(!provider) throw new Error('provider not found');
+ const { createDigitalContract }=await import('./aion-digital-contracts.js');
+ const contract=await createDigitalContract({
+  contractType:'orbital-capacity-exchange-success-fee',
+  title:text(input.title)||('AION Orbital Exchange Agreement - '+rfq.id),
+  subject:rfq.objective,
+  parties:[
+   {role:'aion',legalName:'AION AUTONOMOUS',email:text(input.aionEmail),authority:text(input.aionAuthority)},
+   {role:'customer',legalName:rfq.company||rfq.customer,email:rfq.email,authority:text(input.customerAuthority)},
+   {role:'provider',legalName:provider.name,email:text(input.providerEmail),authority:text(input.providerAuthority)}
+  ],
+  commercialTerms:{
+   rfqId:rfq.id,providerId,contractValue:input.contractValue||null,currency:text(input.currency)||'USD',
+   service:rfq.objective,geography:rfq.geography,coverage:rfq.coverage,requiredCapacity:rfq.requiredCapacity,timing:rfq.timing
+  },
+  feeTerms:{rate:SUCCESS_FEE_RATE,basis:'qualifying contract value introduced or materially facilitated by AION',payer:text(input.feePayer)||'provider-or-customer-as-signed'},
+  term:{start:text(input.startDate),end:text(input.endDate)},
+  obligations:[
+   'Provider confirms lawful authority and availability of the offered service.',
+   'Customer confirms its authority to procure the service.',
+   'AION records the introduction, contract evidence and success-fee entitlement.',
+   'All applicable licensing, sanctions, export-control and regulatory requirements remain with the responsible parties.'
+  ],
+  governingLaw:text(input.governingLaw),
+  disputeResolution:text(input.disputeResolution)
+ });
+ rfq.status='contract-issued'; rfq.contractId=contract.id; rfq.providerId=providerId; rfq.updatedAt=new Date().toISOString();
+ await setJson('space-rfqs:'+rfq.id,rfq);
+ return contract;
+}
+
 export async function createCommissionRecord(input={}){
  const contractValue=Number(input.contractValue);
  if(!Number.isFinite(contractValue)||contractValue<=0)throw new Error('positive contractValue required');
