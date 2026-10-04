@@ -6,8 +6,18 @@ export const AUTHORITATIVE_MARKET_SOURCES=Object.freeze({
 });
 
 export async function fetchUsTreasuryYield({maturity='10 Yr'}={}) {
-  const url='https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=all&page=1';
-  const response=await fetch(url,{headers:{Accept:'application/xml,text/xml'}});
+  const year=new Date().getUTCFullYear();
+  const urls=[
+    `https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=${year}`,
+    'https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=all&page=0'
+  ];
+  let response=null;
+  let xml='';
+  for(const url of urls){
+    const candidate=await fetch(url,{headers:{Accept:'application/xml,text/xml'}});
+    if(candidate.ok){ xml=await candidate.text(); response=candidate; if(xml.includes('<entry>')) break; }
+  }
+  if(!response) throw new Error('US Treasury data unavailable');
   if(!response.ok) throw new Error('US Treasury data HTTP '+response.status);
   const xml=await response.text();
   const escaped=maturity.replace(/[.*+?^()|[\\]\\\\]/g,'\\\\$&');
