@@ -4,10 +4,10 @@ import { addToIndex, getJson, listIndexed, setJson } from './aion-stack-store.js
 export const CUSTOMER_REVENUE_VERSION = '1.0.0';
 
 const OFFERS = Object.freeze([
-  { id:'earth-change-intelligence', name:'AION Earth Change Intelligence', priceAion:250, delivery:'verified-analysis', evidence:'Copernicus Sentinel-2' },
-  { id:'space-weather-brief', name:'AION Space Weather Risk Brief', priceAion:180, delivery:'verified-report', evidence:'NOAA SWPC' },
-  { id:'leo-situational-awareness', name:'AION LEO Situational Awareness', priceAion:250, delivery:'verified-intelligence', evidence:'CelesTrak + operational space data' },
-  { id:'disaster-intelligence', name:'AION Rapid Disaster Intelligence', priceAion:350, delivery:'incident-brief', evidence:'Copernicus + NASA GIBS' }
+  { id:'earth-change-intelligence', name:'AION Earth Change Intelligence', priceUsd:250, delivery:'verified-analysis', evidence:'Copernicus Sentinel-2' },
+  { id:'space-weather-brief', name:'AION Space Weather Risk Brief', priceUsd:180, delivery:'verified-report', evidence:'NOAA SWPC' },
+  { id:'leo-situational-awareness', name:'AION LEO Situational Awareness', priceUsd:250, delivery:'verified-intelligence', evidence:'CelesTrak + operational space data' },
+  { id:'disaster-intelligence', name:'AION Rapid Disaster Intelligence', priceUsd:350, delivery:'incident-brief', evidence:'Copernicus + NASA GIBS' }
 ]);
 
 function text(v){return String(v??'').trim();}
@@ -26,7 +26,7 @@ export function customerRevenueHealth(){
     noFakeRevenue:true
   };
 }
-export function listOffers(){return OFFERS.map(o=>({...o,currency:'AION-CREDIT',status:'available'}));}
+export function listOffers(){return OFFERS.map(o=>({...o,currency:'USD',paymentProvider:'PayPal',status:'available'}));}
 export function getOffer(offerId){return OFFERS.find(o=>o.id===text(offerId))||null;}
 
 export async function createCustomerOrder(input={}){
@@ -34,7 +34,7 @@ export async function createCustomerOrder(input={}){
   const customerId=text(input.customerId);
   if(!offer)throw new Error('unknown offer');
   if(!customerId)throw new Error('customerId required');
-  const order={id:id('AION-ORDER'),offerId:offer.id,customerId,amountAion:offer.priceAion,currency:'AION-CREDIT',status:'awaiting-payment',paymentStatus:'unpaid',deliveryStatus:'not-started',revenueRecognized:false,createdAt:new Date().toISOString()};
+  const order={id:id('AION-ORDER'),offerId:offer.id,customerId,amountUsd:offer.priceUsd,currency:'USD',paymentProvider:'PayPal',status:'awaiting-payment',paymentStatus:'unpaid',deliveryStatus:'not-started',revenueRecognized:false,createdAt:new Date().toISOString()};
   await setJson('customer-orders:'+order.id,order); await addToIndex('customer-orders',order.id);
   return order;
 }
@@ -51,7 +51,7 @@ export async function confirmCustomerPayment(orderId,input={}){
   if(order.paymentStatus==='confirmed') return order;
   const updated={...order,status:'paid',paymentStatus:'confirmed',paymentProvider:provider,providerEventId,paymentReference,revenueRecognized:true,paidAt:new Date().toISOString(),verifiedAt:new Date().toISOString()};
   await setJson('customer-orders:'+order.id,updated);
-  const revenue={id:id('AION-REV'),orderId:order.id,customerId:order.customerId,amountAion:order.amountAion,currency:order.currency,paymentReference:updated.paymentReference,recognizedAt:updated.paidAt,source:'confirmed-payment'};
+  const revenue={id:id('AION-REV'),orderId:order.id,customerId:order.customerId,amountUsd:order.amountUsd,currency:order.currency,paymentReference:updated.paymentReference,recognizedAt:updated.paidAt,source:'confirmed-payment'};
   await setJson('customer-revenue:'+revenue.id,revenue); await addToIndex('customer-revenue',revenue.id);
   return updated;
 }
