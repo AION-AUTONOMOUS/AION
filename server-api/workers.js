@@ -3,7 +3,7 @@ import { opsHealth } from '../config/aion-ops-engine.js';
 import { processBatch, workerRuntimeStatus } from '../config/aion-worker-runtime.js';
 
 const ALLOWED_ORIGIN =
-  process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
+  process.env.AION_PUBLIC_ORIGIN || 'https://aion-production-fbf3.up.railway.app';
 
 function cors(res) {
   res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);

@@ -11,12 +11,12 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0.0"
-        buildConfigField("String", "AION_API_BASE_URL", "\"https://aion-theta-eight.vercel.app/api/mobile\"")
+        buildConfigField("String", "AION_API_BASE_URL", "\"https://aion-production-fbf3.up.railway.app/api/mobile\"")
     }
     buildTypes {
         release {
             isMinifyEnabled = false
-            buildConfigField("String", "AION_API_BASE_URL", "\"https://aion-theta-eight.vercel.app/api/mobile\"")
+            buildConfigField("String", "AION_API_BASE_URL", "\"https://aion-production-fbf3.up.railway.app/api/mobile\"")
         }
     }
     buildFeatures { buildConfig = true }

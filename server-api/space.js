@@ -6,7 +6,7 @@ import {
 } from '../config/aion-space-network.js';
 
 function cors(res) {
-  res.setHeader('Access-Control-Allow-Origin', process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app');
+  res.setHeader('Access-Control-Allow-Origin', process.env.AION_PUBLIC_ORIGIN || 'https://aion-production-fbf3.up.railway.app');
   res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
