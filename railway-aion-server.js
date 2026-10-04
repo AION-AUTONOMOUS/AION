@@ -257,13 +257,13 @@ const server = http.createServer(async (req,res) => {
   if (req.method === "OPTIONS") return send(res,204,{});
 
   if (req.method === "GET" && url.pathname === "/health") {
+    // Railway deploy healthchecks must stay lightweight and independent of
+    // downstream providers/storage. Deep readiness is exposed separately.
     return send(res,200,{
       success:true,
       service:serviceName,
       version:VERSION,
-      status:"ready",
-      controlPlane:controlPlaneHealth().status,
-      stack:stackHealth().status
+      status:"ready"
     });
   }
 
