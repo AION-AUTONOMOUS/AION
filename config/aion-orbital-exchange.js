@@ -21,7 +21,7 @@ function cleanList(v){return Array.isArray(v)?v.map(text).filter(Boolean).slice(
 export function orbitalExchangeHealth(){
  return {version:ORBITAL_EXCHANGE_VERSION,status:'rfq-ready',successFeeRate:SUCCESS_FEE_RATE,providerRegistry:PROVIDERS.length,
   verticals:VERTICALS.length,verifiedProviders:PROVIDERS.filter(p=>p.status==='verified').length,
-  targetProviders:PROVIDERS.filter(p=>p.status==='target').length,realContracts:0,
+  targetProviders:PROVIDERS.filter(p=>p.status==='target').length,realContracts:0,storage:'stack-store',
   contractAuthority:'provider-confirmation-required',externalMoney:false,spacecraftControl:false};
 }
 export function listProviders(){return PROVIDERS.map(p=>({...p}));}
@@ -39,10 +39,10 @@ export async function createSpaceRFQ(input={}){
   timing:text(input.timing),budget:text(input.budget),status:'received',providerStatus:'not-yet-verified',
   successFeeRate:SUCCESS_FEE_RATE,successFeeBasis:'qualifying contract value introduced or materially facilitated by AION; payable only under signed agreement',
   createdAt:new Date().toISOString()};
- await setJson('space-rfq:'+rfq.id,rfq); await addToIndex('space-rfqs',rfq.id); return rfq;
+ await setJson('space-rfqs:'+rfq.id,rfq); await addToIndex('space-rfqs',rfq.id); return rfq;
 }
 export async function listSpaceRFQs(){return listIndexed('space-rfqs');}
-export async function getSpaceRFQ(rfqId){return getJson('space-rfq:'+text(rfqId));}
+export async function getSpaceRFQ(rfqId){return getJson('space-rfqs:'+text(rfqId));}
 
 export async function createCommissionRecord(input={}){
  const contractValue=Number(input.contractValue);
@@ -51,6 +51,6 @@ export async function createCommissionRecord(input={}){
   customer:text(input.customer),contractValue,feeRate:SUCCESS_FEE_RATE,commissionAmount:Number((contractValue*SUCCESS_FEE_RATE).toFixed(2)),
   currency:text(input.currency)||'USD',status:'receivable-pending-contract-verification',
   createdAt:new Date().toISOString()};
- await setJson('space-commission:'+record.id,record); await addToIndex('space-commissions',record.id); return record;
+ await setJson('space-commissions:'+record.id,record); await addToIndex('space-commissions',record.id); return record;
 }
 export async function listCommissionRecords(){return listIndexed('space-commissions');}
