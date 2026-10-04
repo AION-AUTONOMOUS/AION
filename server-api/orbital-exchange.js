@@ -1,4 +1,4 @@
-import { orbitalExchangeHealth,listProviders,createSpaceRFQ,listSpaceRFQs,getSpaceRFQ,createOrbitalContractForRFQ,createCommissionRecord,listCommissionRecords } from '../config/aion-orbital-exchange.js';
+import { orbitalExchangeHealth,listProviders,createSpaceRFQ,listSpaceRFQs,getSpaceRFQ,createOrbitalContractForRFQ,createCommissionRecord,settleCommissionToTreasury,listCommissionRecords } from '../config/aion-orbital-exchange.js';
 
 function json(res,status,payload){return res.status(status).json(payload);}
 function token(req){return String(req.headers?.authorization||'').replace(/^Bearer\s+/i,'').trim();}
@@ -22,6 +22,7 @@ export default async function handler(req,res){
   }
   if(req.method==='GET'&&path==='commissions')return json(res,200,{success:true,data:await listCommissionRecords()});
   if(req.method==='POST'&&path==='commissions')return json(res,201,{success:true,data:await createCommissionRecord(req.body||{})});
+  if(req.method==='POST'&&path==='commissions/treasury')return json(res,200,{success:true,data:await settleCommissionToTreasury(req.body||{})});
   return json(res,404,{success:false,error:'Unknown orbital exchange route'});
  }catch(error){return json(res,400,{success:false,error:error.message||'Orbital exchange error'});}
 }
