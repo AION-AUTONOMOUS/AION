@@ -3,7 +3,7 @@
 > AION Network (AION AUTONOMOUS) is a digital-first AI platform operated online and designed to provide AI-powered software, analytics, education, research and automation services.
 
 ## Primary website
-- Production: https://aion-production-fbf3.up.railway.app/
+- Production: https://aionautonomous.devs.surf/
 - Official domain: https://aionautonomous.devs.surf/
 
 ## Core public services
@@ -18,13 +18,13 @@
 - AION Autonomous Stack — orchestration, worker runtime and autonomous software operations.
 
 ## Public documentation and trust
-- About: https://aion-production-fbf3.up.railway.app/about.html
-- Services: https://aion-production-fbf3.up.railway.app/services.html
-- Privacy: https://aion-production-fbf3.up.railway.app/privacy.html
-- Terms: https://aion-production-fbf3.up.railway.app/terms.html
-- Whitepaper: https://aion-production-fbf3.up.railway.app/whitepaper.html
-- Sitemap: https://aion-production-fbf3.up.railway.app/sitemap.xml
-- Robots: https://aion-production-fbf3.up.railway.app/robots.txt
+- About: https://aionautonomous.devs.surf/about.html
+- Services: https://aionautonomous.devs.surf/services.html
+- Privacy: https://aionautonomous.devs.surf/privacy.html
+- Terms: https://aionautonomous.devs.surf/terms.html
+- Whitepaper: https://aionautonomous.devs.surf/whitepaper.html
+- Sitemap: https://aionautonomous.devs.surf/sitemap.xml
+- Robots: https://aionautonomous.devs.surf/robots.txt
 - GitHub: https://github.com/AION-AUTONOMOUS/AION
 
 ## Important distinction
