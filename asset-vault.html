@@ -29,20 +29,20 @@ table{width:100%;border-collapse:collapse;margin-top:20px;background:#0b1322;bor
 <div class="card"><small>Verified Value — القيمة الموثقة</small><div id="value" class="value">$0</div></div>
 <div class="card"><small>Verified Assets — الأصول الموثقة</small><div id="assets" class="value">0</div></div>
 <div class="card"><small>AI Value Units — وحدات القيمة</small><div id="units" class="value">0</div></div>
-<div class="card"><small>Target Valuation — الهدف النظري</small><div class="value">$10,000,000</div></div>
+<div class="card"><small>Verified Intelligence — الذكاء الموثق</small><div id="intelligence-value" class="value">$0</div></div><div class="card"><small>Verified Financial — الأصول المالية الموثقة</small><div id="financial-value" class="value">$0</div></div><div class="card"><small>Verified Total — الإجمالي الموثق</small><div id="total-value" class="value">$0</div></div><div class="card"><small>Target Valuation — الهدف النظري</small><div class="value">$10,000,000</div></div>
 </section>
 <section class="trust" style="margin-top:18px">
 <h2 style="margin:0 0 10px">📈 سعر السوق — Market Quote</h2>
 <p class="lead">استعلم عن سعر من مزود AION المتصل. السعر لا يظهر إلا مع المصدر ووقت الاقتباس؛ إذا لم يكن المزود مضبوطًا فستظهر الحالة بوضوح.</p>
 <form id="quote-form" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
 <input id="quote-symbol" required maxlength="80" placeholder="Symbol / الرمز (مثال: AAPL)" style="flex:1;min-width:160px;padding:12px;border-radius:9px;border:1px solid #2a4568;background:#071225;color:#fff">
-<select id="quote-type" style="padding:12px;border-radius:9px;border:1px solid #2a4568;background:#071225;color:#fff">
+<select id="quote-source" style="padding:12px;border-radius:9px;border:1px solid #2a4568;background:#071225;color:#fff"><option value="provider">مزود سوق مرخص / Licensed Provider</option><option value="treasury">U.S. Treasury الرسمي</option><option value="fred">FRED الرسمي</option></select><select id="quote-type" style="padding:12px;border-radius:9px;border:1px solid #2a4568;background:#071225;color:#fff">
 <option value="equity">سهم / Equity</option><option value="fund">صندوق / Fund</option><option value="bond">سند / Bond</option><option value="treasury-security">ورقة خزانة / Treasury</option><option value="commodity">سلعة / Commodity</option><option value="real-estate">عقار / Real Estate</option><option value="energy-infrastructure">طاقة / Infrastructure</option><option value="tokenized-rwa">Tokenized RWA</option>
-</select>
+</select><input id="quote-series" maxlength="40" placeholder="FRED Series ID (لـ FRED فقط)" style="flex:1;min-width:170px;padding:12px;border-radius:9px;border:1px solid #2a4568;background:#071225;color:#fff">
 <button type="submit" style="padding:12px 18px;border:0;border-radius:9px;background:#087db7;color:white;font-weight:800">جلب السعر</button>
 </form><div id="quote-result" class="status" aria-live="polite">لم يتم طلب سعر بعد.</div>
 </section>
-<table><thead><tr><th>الأصل</th><th>الفئة</th><th>التحقق</th><th>وحدة AI</th><th>القيمة الموثقة</th></tr></thead><tbody id="rows"></tbody></table>
+<table><thead><tr><th>الأصل</th><th>الفئة</th><th>التحقق</th><th>وحدة AI</th><th>القيمة الموثقة</th><th>سعر السوق</th><th>المصدر</th></tr></thead><tbody id="rows"></tbody></table>
 <p class="note">الهدف البالغ 10 ملايين دولار هو هدف تقييم لوحدات الذكاء المسجلة، وليس رصيدًا نقديًا أو أصولًا مملوكة حاليًا. تبدأ القيمة الحية من صفر حتى تتوفر أدلة ومصادر تقييم حقيقية وتنجح عملية التحقق.</p>
 <script>
 document.getElementById('quote-form').addEventListener('submit',async e=>{
@@ -50,9 +50,11 @@ document.getElementById('quote-form').addEventListener('submit',async e=>{
  const box=document.getElementById('quote-result');
  const symbol=document.getElementById('quote-symbol').value.trim();
  const assetType=document.getElementById('quote-type').value;
- box.textContent='جارٍ طلب السعر من مصدر البيانات…';
+ const source=document.getElementById('quote-source').value;
+ const seriesId=document.getElementById('quote-series').value.trim();
+ box.textContent='جارٍ طلب البيانات مباشرة من المصدر…';
  try{
-  const r=await fetch('/api/market-quote?symbol='+encodeURIComponent(symbol)+'&assetType='+encodeURIComponent(assetType),{headers:{Accept:'application/json'}});
+  let url='/api/market-quote?source='+encodeURIComponent(source)+'&symbol='+encodeURIComponent(symbol)+'&assetType='+encodeURIComponent(assetType); if(source==='fred') url+='&seriesId='+encodeURIComponent(seriesId); if(source==='treasury') url+='&maturity=10%20Yr'; const r=await fetch(url,{headers:{Accept:'application/json'}});
   const d=await r.json();
   if(!r.ok||!d.success)throw Error(d.error||'market_quote_unavailable');
   const q=d.record;
@@ -68,6 +70,71 @@ async function load(){
   document.getElementById('value').textContent='$'+Number(d.verifiedValueUsd||0).toLocaleString('en-US');
   document.getElementById('assets').textContent=Number(d.verifiedAssetCount||0).toLocaleString('en-US');
   document.getElementById('units').textContent=Number(d.linkedAiValueUnitCount||0).toLocaleString('en-US');
+  document.getElementById('intelligence-value').textContent='
+  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
+  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
+   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>
+  ).join('');
+ }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+load();
+</script></main></body></html>+Number(d.verifiedIntelligenceValueUsd||0).toLocaleString('en-US');
+  document.getElementById('financial-value').textContent='
+  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
+  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
+   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
+  ).join('');
+ }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+load();
+</script></main></body></html>+Number(d.verifiedFinancialValueUsd||0).toLocaleString('en-US');
+  document.getElementById('total-value').textContent='
+  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
+  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
+   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
+  ).join('');
+ }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+load();
+</script></main></body></html>+Number(d.verifiedTotalAssetValueUsd||0).toLocaleString('en-US');
+  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
+  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
+   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
+  ).join('');
+ }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+load();
+</script></main></body></html>+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td><td>'+esc(x.marketPrice??'—')+'</td><td>'+esc(x.marketPriceSource||'—')+'</td></tr>'
+  ).join('');
+ }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+load();
+</script></main></body></html>+Number(d.verifiedIntelligenceValueUsd||0).toLocaleString('en-US');
+  document.getElementById('financial-value').textContent='
+  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
+  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
+   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
+  ).join('');
+ }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+load();
+</script></main></body></html>+Number(d.verifiedFinancialValueUsd||0).toLocaleString('en-US');
+  document.getElementById('total-value').textContent='
+  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
+  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
+   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
+  ).join('');
+ }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+load();
+</script></main></body></html>+Number(d.verifiedTotalAssetValueUsd||0).toLocaleString('en-US');
   s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
   document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
    '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
