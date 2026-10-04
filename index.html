@@ -257,9 +257,153 @@ a{text-decoration:none;color:inherit}
 .nav-links a{font-size:11px}
 }
 .fleet-section{margin-bottom:20px;padding:28px 20px;background:linear-gradient(180deg,rgba(0,180,255,.10),rgba(2,8,23,.94));border:2px solid rgba(0,200,255,.45);border-radius:22px}.fleet-head{text-align:center;margin-bottom:20px}.fleet-head h2{font-size:clamp(22px,3vw,30px);font-weight:900}.fleet-head h2 span{color:#00c8ff}.fleet-head p{color:#aebbd0;font-size:12px;margin-top:7px}.fleet-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}.fleet-kpi{padding:16px;text-align:center;background:rgba(0,180,255,.05);border:1px solid rgba(0,200,255,.22);border-radius:14px}.fleet-kpi .n{font-size:25px;font-weight:900;color:#f5c542}.fleet-kpi .l{font-size:10px;color:#aebbd0;margin-top:4px}.fleet-departments{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}.fleet-dept{padding:11px 12px;background:rgba(2,15,40,.8);border:1px solid rgba(0,180,255,.18);border-radius:11px;display:flex;justify-content:space-between;gap:10px}.fleet-dept .name{font-size:11px;color:#dfe8f5;font-weight:800}.fleet-dept .count{font-size:11px;color:#00c8ff;font-weight:900}.fleet-status{margin-top:14px;text-align:center;color:#4ade80;font-size:11px;font-weight:900}.fleet-error{color:#f87171}.fleet-loading{color:#aebbd0}@media(max-width:600px){.fleet-summary{grid-template-columns:1fr}.fleet-departments{grid-template-columns:1fr 1fr}}</style>
-</head>
+
+<style id="aion-command-map-v2">
+.aion-command-map{margin:0 0 20px;padding:14px;background:linear-gradient(145deg,#020817,#031b3b 48%,#020817);border:1px solid rgba(0,200,255,.5);border-radius:24px;box-shadow:0 0 70px rgba(0,120,255,.18),inset 0 0 60px rgba(0,120,255,.08);position:relative;overflow:hidden}
+.aion-command-map:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(0,200,255,.22),transparent 34%),linear-gradient(90deg,transparent 49.8%,rgba(0,200,255,.06) 50%,transparent 50.2%);pointer-events:none}
+.aion-map-head{text-align:center;position:relative;z-index:2;padding:10px 8px 14px}
+.aion-map-head .eyebrow{color:#00c8ff;font-size:10px;font-weight:900;letter-spacing:4px}
+.aion-map-head h2{font-size:clamp(22px,3vw,34px);margin:5px 0;color:#fff;font-weight:900}
+.aion-map-head h2 span{color:#f5c542;text-shadow:0 0 20px rgba(245,197,66,.55)}
+.aion-map-head p{color:#aebbd0;font-size:12px;max-width:850px;margin:auto;line-height:1.7}
+.aion-map-stage{position:relative;min-height:680px;display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:14px;align-items:center;padding:10px}
+.aion-map-side{display:flex;flex-direction:column;gap:10px;z-index:3}
+.aion-map-panel{background:rgba(2,10,28,.86);border:1px solid rgba(0,180,255,.3);border-radius:15px;padding:12px;backdrop-filter:blur(12px);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.aion-map-panel h3{font-size:13px;color:#00c8ff;margin-bottom:9px}.aion-map-panel h3.gold{color:#f5c542}
+.aion-map-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.aion-hotspot{appearance:none;border:1px solid rgba(0,180,255,.2);background:rgba(0,130,220,.07);color:#e8f4ff;border-radius:10px;padding:9px 7px;font:700 10px/1.25 inherit;cursor:pointer;transition:.22s}
+.aion-hotspot:hover,.aion-hotspot:focus-visible{border-color:#00c8ff;background:rgba(0,180,255,.16);transform:translateY(-2px);outline:none;box-shadow:0 0 18px rgba(0,200,255,.22)}
+.aion-hotspot.gold{border-color:rgba(245,197,66,.28);background:rgba(245,197,66,.06)}.aion-hotspot.gold:hover{border-color:#f5c542;background:rgba(245,197,66,.14)}
+.aion-hotspot.green{border-color:rgba(74,222,128,.28);background:rgba(74,222,128,.06)}
+.aion-map-core{min-height:640px;display:grid;place-items:center;position:relative;z-index:2}
+.aion-orbit{width:min(100%,470px);aspect-ratio:1;border-radius:50%;position:relative;display:grid;place-items:center;background:radial-gradient(circle,rgba(0,200,255,.12),transparent 52%);box-shadow:0 0 80px rgba(0,150,255,.2)}
+.aion-orbit:before,.aion-orbit:after{content:"";position:absolute;border:1px solid rgba(0,200,255,.34);border-radius:50%;inset:4%;animation:aionSpin 28s linear infinite}
+.aion-orbit:after{inset:17%;border-style:dashed;animation-duration:20s;animation-direction:reverse}
+@keyframes aionSpin{to{transform:rotate(360deg)}}
+.aion-core-button{width:190px;height:190px;border-radius:50%;border:2px solid #f5c542;background:radial-gradient(circle at 35% 30%,#fff7c7 0,#f5c542 20%,#7d5600 58%,#041326 100%);color:#020817;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 35px rgba(245,197,66,.75),0 0 100px rgba(0,200,255,.35);transition:.25s;font-family:inherit}
+.aion-core-button:hover{transform:scale(1.04);box-shadow:0 0 55px rgba(245,197,66,.95),0 0 130px rgba(0,200,255,.5)}
+.aion-core-button strong{font-size:30px;letter-spacing:4px}.aion-core-button span{font-size:10px;font-weight:900;margin-top:4px}
+.aion-orbit-label{position:absolute;top:7%;left:50%;transform:translateX(-50%);color:#00c8ff;font-size:9px;font-weight:900;letter-spacing:3px;white-space:nowrap}
+.aion-orbit-node{position:absolute;width:84px;height:84px;border-radius:50%;display:grid;place-items:center;text-align:center;font-size:9px;font-weight:900;color:#fff;background:linear-gradient(145deg,rgba(0,110,190,.95),rgba(2,15,40,.96));border:1px solid rgba(0,200,255,.7);box-shadow:0 0 20px rgba(0,160,255,.25);cursor:pointer;transition:.22s;font-family:inherit}
+.aion-orbit-node:hover{transform:scale(1.08);border-color:#f5c542;box-shadow:0 0 30px rgba(245,197,66,.35)}
+.n1{top:8%;left:50%;transform:translateX(-50%)}.n2{top:25%;right:4%}.n3{bottom:25%;right:4%}.n4{bottom:8%;left:50%;transform:translateX(-50%)}.n5{bottom:25%;left:4%}.n6{top:25%;left:4%}
+.aion-pipeline{position:relative;z-index:3;margin-top:5px;background:rgba(2,8,23,.8);border:1px solid rgba(245,197,66,.3);border-radius:16px;padding:14px}
+.aion-pipeline h3{text-align:center;color:#f5c542;font-size:14px;margin-bottom:10px}.aion-pipeline-row{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.aion-pipe{border:1px solid rgba(0,180,255,.22);background:rgba(0,140,230,.06);border-radius:9px;padding:9px 5px;text-align:center;color:#dbeafe;font-size:9px;cursor:pointer;transition:.2s}.aion-pipe:hover{border-color:#00c8ff;background:rgba(0,180,255,.13)}
+.aion-map-modal{position:fixed;inset:0;background:rgba(0,5,15,.76);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}.aion-map-modal.open{display:flex}
+.aion-map-dialog{width:min(720px,100%);max-height:90vh;overflow:auto;background:linear-gradient(180deg,#061a35,#020817);border:1px solid rgba(0,200,255,.55);border-radius:20px;padding:24px;box-shadow:0 25px 100px rgba(0,0,0,.65)}
+.aion-map-dialog h3{color:#f5c542;font-size:22px;margin-bottom:8px}.aion-map-dialog p{color:#c8d5e7;line-height:1.8;font-size:13px}.aion-dialog-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.aion-dialog-actions a,.aion-dialog-actions button{padding:10px 15px;border-radius:10px;border:1px solid rgba(0,200,255,.35);background:rgba(0,180,255,.1);color:#fff;font-weight:900;text-decoration:none;cursor:pointer;font-family:inherit}.aion-dialog-actions .primary{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border:none}
+@media(max-width:1050px){.aion-map-stage{grid-template-columns:1fr;min-height:0}.aion-map-core{min-height:500px;order:-1}.aion-map-side{display:grid;grid-template-columns:1fr 1fr}.aion-pipeline-row{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:600px){.aion-map-side{grid-template-columns:1fr}.aion-map-core{min-height:420px}.aion-orbit{width:350px;max-width:95vw}.aion-core-button{width:145px;height:145px}.aion-core-button strong{font-size:24px}.aion-orbit-node{width:67px;height:67px;font-size:8px}.aion-pipeline-row{grid-template-columns:repeat(2,1fr)}}
+</style></head>
 <body>
 <div class="container">
+<section class="aion-command-map" id="aion-command-map" aria-labelledby="aion-map-title">
+  <div class="aion-map-head">
+    <div class="eyebrow">AION • GLOBAL AUTONOMOUS COMPANY</div>
+    <h2 id="aion-map-title">الخريطة التنفيذية التفاعلية لـ <span>AION</span></h2>
+    <p>واجهة واحدة تجمع المعلم، الخزنة الرقمية، شبكة الوكلاء، الأقسام العشرون، والمشاريع والخدمات. كل عقدة أدناه قابلة للتفاعل وتفتح الوحدة المرتبطة بها.</p>
+  </div>
+  <div class="aion-map-stage">
+    <div class="aion-map-side">
+      <div class="aion-map-panel">
+        <h3>🧠 القيادة والذكاء</h3>
+        <div class="aion-map-grid">
+          <button class="aion-hotspot gold" data-aion-panel="teacher">👨‍🏫 المعلم</button>
+          <button class="aion-hotspot" data-aion-panel="intelligence">🧠 Intelligence</button>
+          <button class="aion-hotspot" data-aion-panel="research">🔎 Research</button>
+          <button class="aion-hotspot" data-aion-panel="strategy">🎯 Strategy</button>
+        </div>
+      </div>
+      <div class="aion-map-panel">
+        <h3>⚙️ الهندسة والتشغيل</h3>
+        <div class="aion-map-grid">
+          <button class="aion-hotspot" data-aion-panel="engineering">💻 Engineering</button>
+          <button class="aion-hotspot" data-aion-panel="operations">⚙️ Operations</button>
+          <button class="aion-hotspot" data-aion-panel="security">🛡️ Security</button>
+          <button class="aion-hotspot" data-aion-panel="data">📊 Data & Analytics</button>
+          <button class="aion-hotspot green" data-aion-panel="agent-mesh">🤖 Agent Mesh</button>
+          <button class="aion-hotspot" data-aion-panel="devops">☁️ DevOps</button>
+        </div>
+      </div>
+      <div class="aion-map-panel">
+        <h3 class="gold">💰 المال والعقود</h3>
+        <div class="aion-map-grid">
+          <button class="aion-hotspot gold" data-aion-panel="vault">🏦 Digital Vault</button>
+          <button class="aion-hotspot gold" data-aion-panel="treasury">💰 Treasury</button>
+          <button class="aion-hotspot" data-aion-panel="contracts">📜 Legal & Contracts</button>
+          <button class="aion-hotspot" data-aion-panel="payments">💳 Payments</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="aion-map-core">
+      <div class="aion-orbit">
+        <div class="aion-orbit-label">EXECUTIVE INTELLIGENCE</div>
+        <button class="aion-core-button" data-aion-panel="core"><strong>AION</strong><span>EXECUTIVE INTELLIGENCE</span><span>المدير التنفيذي الذكي</span></button>
+        <button class="aion-orbit-node n1" data-aion-panel="agent-mesh">Agent<br>Mesh</button>
+        <button class="aion-orbit-node n2" data-aion-panel="sales">Sales<br>& Growth</button>
+        <button class="aion-orbit-node n3" data-aion-panel="marketing">Marketing<br>& SEO/GEO</button>
+        <button class="aion-orbit-node n4" data-aion-panel="security">Security<br>& Trust</button>
+        <button class="aion-orbit-node n5" data-aion-panel="data">Data<br>& Analytics</button>
+        <button class="aion-orbit-node n6" data-aion-panel="research">Research<br>& Intelligence</button>
+      </div>
+    </div>
+
+    <div class="aion-map-side">
+      <div class="aion-map-panel">
+        <h3>🌐 النمو والسوق</h3>
+        <div class="aion-map-grid">
+          <button class="aion-hotspot" data-aion-panel="sales">📈 Sales</button>
+          <button class="aion-hotspot" data-aion-panel="marketing">📣 Marketing & SEO/GEO</button>
+          <button class="aion-hotspot" data-aion-panel="commerce">🛒 Autonomous Commerce</button>
+          <button class="aion-hotspot" data-aion-panel="support">🤝 Customer Support</button>
+        </div>
+      </div>
+      <div class="aion-map-panel">
+        <h3>🛰️ المشاريع العالمية</h3>
+        <div class="aion-map-grid">
+          <button class="aion-hotspot" data-aion-panel="space">🛰️ Space</button>
+          <button class="aion-hotspot" data-aion-panel="orbital">🚀 Orbital Exchange</button>
+          <button class="aion-hotspot" data-aion-panel="earth">🌍 Earth Intelligence</button>
+          <button class="aion-hotspot" data-aion-panel="climate">🌱 Climate</button>
+          <button class="aion-hotspot" data-aion-panel="digital-assets">💎 Digital Assets</button>
+          <button class="aion-hotspot" data-aion-panel="future-labs">🧪 Future Labs</button>
+        </div>
+      </div>
+      <div class="aion-map-panel">
+        <h3>🎓 المحتوى والخدمات</h3>
+        <div class="aion-map-grid">
+          <button class="aion-hotspot" data-aion-panel="academy">🎓 AION Academy</button>
+          <button class="aion-hotspot" data-aion-panel="reports">📄 Reports</button>
+          <button class="aion-hotspot" data-aion-panel="partnerships">🤝 Partnerships</button>
+          <button class="aion-hotspot" data-aion-panel="education">📚 Education</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="aion-pipeline">
+    <h3>⚡ محرك الإيرادات العالمي — من الفرصة إلى الإيراد الحقيقي</h3>
+    <div class="aion-pipeline-row">
+      <button class="aion-pipe" data-aion-panel="discover">1. اكتشاف الفرص</button>
+      <button class="aion-pipe" data-aion-panel="qualify">2. تأهيل العميل</button>
+      <button class="aion-pipe" data-aion-panel="offer">3. العرض</button>
+      <button class="aion-pipe" data-aion-panel="contracts">4. العقد والتوقيع</button>
+      <button class="aion-pipe" data-aion-panel="payments">5. PayPal</button>
+      <button class="aion-pipe" data-aion-panel="delivery">6. التسليم</button>
+      <button class="aion-pipe" data-aion-panel="roi">7. قياس ROI</button>
+      <button class="aion-pipe" data-aion-panel="recurring">8. الإيرادات المتكررة</button>
+    </div>
+  </div>
+</section>
+<div class="aion-map-modal" id="aion-map-modal" role="dialog" aria-modal="true" aria-labelledby="aion-dialog-title">
+  <div class="aion-map-dialog">
+    <h3 id="aion-dialog-title">AION</h3>
+    <p id="aion-dialog-text"></p>
+    <div class="aion-dialog-actions" id="aion-dialog-actions"></div>
+  </div>
+</div>
 
 <div class="topnav">
 <div class="brand">
@@ -541,5 +685,59 @@ aion.genesisss@gmail.com<br><br>
   }
 })();
 </script>
-</body>
+
+<script id="aion-command-map-script">
+(function(){
+ const modal=document.getElementById('aion-map-modal'), title=document.getElementById('aion-dialog-title'), text=document.getElementById('aion-dialog-text'), actions=document.getElementById('aion-dialog-actions');
+ const map={
+  core:['AION Executive Intelligence','المركز التنفيذي الذي ينسّق الوحدات ويعرض الحالة والقرارات والعمليات من واجهة واحدة.',['chat.html','تحدث مع AION']],
+  teacher:['AION Teacher','تطبيق المعلم والطالب لخدمات التعليم الذكي.',['teacher.html','فتح المعلم']],
+  academy:['AION Academy','منصة التعليم الذكي والمسارات التعليمية.',['academy.html','فتح Academy']],
+  intelligence:['AION Intelligence','تحليل الأعمال والمنافسة والبيانات ومخرجات الذكاء.',['intelligence.html','فتح Intelligence']],
+  research:['Research & Intelligence','البحث والتحليل وجمع الأدلة قبل اتخاذ القرار.',['intelligence.html','فتح Intelligence']],
+  strategy:['Strategy','التخطيط، الأولويات، وتحويل الأهداف إلى مسارات تنفيذ.',['aion-global-platform.html','فتح منصة AION']],
+  engineering:['Engineering','الهندسة والتطوير وبناء المنتجات والخدمات الرقمية.',['aion-global-platform.html','فتح المنصة']],
+  operations:['Operations','تشغيل المنتجات والخدمات ومتابعة تدفق العمل.',['aion-global-platform.html','فتح المنصة']],
+  security:['Security','الأمن والموثوقية وحماية الأنظمة والعمليات.',['aion-global-platform.html','فتح المنصة']],
+  data:['Data & Analytics','البيانات، القياس، المؤشرات، وتحليل النتائج.',['reports.html','فتح التقارير']],
+  'agent-mesh':['AION Agent Mesh','شبكة الوكلاء المنطقية والتنسيق بين الأدوار والأقسام.',['aion-global-platform.html','فتح المنصة']],
+  devops:['DevOps & Infrastructure','البنية التحتية والنشر والاعتمادية.',['aion-global-platform.html','فتح المنصة']],
+  vault:['AION Digital Vault','خزنة الأصول والأدلة والحقوق الرقمية.',['asset-vault.html','فتح الخزنة']],
+  treasury:['AION Treasury Intelligence','ذكاء الخزينة وسجل الإيرادات والرقابة المالية.',['aion-global-platform.html','فتح المنصة']],
+  contracts:['Legal & Contracts','العقود وسير التوقيع والامتثال.',['order.html','فتح الطلبات']],
+  payments:['Payments','مسار الدفع والتحقق من مزود الدفع قبل الاعتراف بالإيراد.',['order.html','فتح الطلب']],
+  sales:['Sales & Growth','المبيعات وتأهيل الفرص والنمو.',['order.html','فتح الطلب']],
+  marketing:['Marketing & SEO/GEO','اكتشاف AION عالميًا عبر البحث وواجهات الذكاء.',['portfolio.html','فتح الأعمال']],
+  commerce:['Autonomous Commerce','تدفق المنتجات والخدمات والطلبات الرقمية.',['order.html','اطلب خدمة']],
+  support:['Customer Support','دعم العملاء ومتابعة الطلبات والخدمات.',['chat.html','تواصل مع AION']],
+  space:['AION Space','خدمات الفضاء والوعي المداري والاستخبارات الفضائية.',['space.html','فتح Space']],
+  orbital:['AION Orbital Exchange','سوق خدمات فضائية بنظام طلب وعروض ورسوم نجاح، مع الامتثال المطلوب للفرص المنظمة.',['space.html','فتح Space']],
+  earth:['AION Earth Intelligence','تحليلات الأرض والاستشعار عن بعد.',['climate.html','فتح Earth/Climate']],
+  climate:['AION Climate','تحليلات المناخ والاستدامة.',['climate.html','فتح Climate']],
+  'digital-assets':['AION Digital Asset Network','بنية الأصول الرقمية والخدمات المرتبطة بها ضمن الضوابط.',['asset-vault.html','فتح الخزنة']],
+  'future-labs':['AION Future Labs','البحث والتجريب وتطوير المنتجات المستقبلية.',['labs.html','فتح Labs']],
+  reports:['Professional Reports','تقارير استخباراتية وتحليلية قابلة للتسليم.',['reports.html','فتح التقارير']],
+  partnerships:['Partnerships','إدارة الفرص والشراكات ومطابقة الطلب مع مقدمي الخدمات.',['aion-global-platform.html','فتح المنصة']],
+  education:['Education & Academy','المحتوى والتعليم والأدوات التعليمية الذكية.',['academy.html','فتح Academy']],
+  discover:['Revenue Discovery','اكتشاف الطلب والفرص المدفوعة.',['order.html','ابدأ الطلب']],
+  qualify:['Customer Qualification','تأهيل العميل وتحديد الحاجة والقيمة.',['order.html','تأهيل وطلب']],
+  offer:['Offer','اختيار العرض المدفوع المناسب.',['order.html','العروض']],
+  delivery:['Delivery','تسليم المخرجات مع دليل التسليم.',['reports.html','التقارير']],
+  roi:['ROI','قياس النتيجة والعائد مقابل خط الأساس.',['reports.html','النتائج']],
+  recurring:['Recurring Revenue','تحويل النتائج الناجحة إلى عقود/إيرادات متكررة عندما تتوفر الأدلة.',['order.html','ابدأ طلبًا']],
+  education:['Education','التعليم والمحتوى الأكاديمي الذكي.',['academy.html','فتح Academy']]
+ };
+ function openPanel(id){
+  const item=map[id]||['AION','هذه الوحدة جزء من البنية التنفيذية لـ AION.',['aion-global-platform.html','فتح المنصة']];
+  title.textContent=item[0]; text.textContent=item[1];
+  actions.innerHTML='<a class="primary" href="'+item[2][0]+'">'+item[2][1]+' →</a><button type="button" id="aion-close">إغلاق</button>';
+  modal.classList.add('open'); document.body.style.overflow='hidden'; document.getElementById('aion-close').focus();
+ }
+ document.querySelectorAll('[data-aion-panel]').forEach(el=>el.addEventListener('click',()=>openPanel(el.dataset.aionPanel)));
+ modal.addEventListener('click',e=>{if(e.target===modal)closePanel()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanel()});
+ function closePanel(){modal.classList.remove('open');document.body.style.overflow='';}
+ document.addEventListener('click',e=>{if(e.target.id==='aion-close')closePanel()});
+})();
+</script></body>
 </html>
