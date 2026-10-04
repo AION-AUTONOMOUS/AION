@@ -1,0 +1,34 @@
+# AION Network
+
+> AION Network (AION AUTONOMOUS) is a digital-first AI platform operated online and designed to provide AI-powered software, analytics, education, research and automation services.
+
+## Primary website
+- Production: https://aion-production-fbf3.up.railway.app/
+- Official domain: https://aionautonomous.devs.surf/
+
+## Core public services
+- AION Intelligence — Arabic-first business intelligence and analysis.
+- AION Academy — AI-assisted learning and tutoring.
+- AION Teacher — tools for teachers and students.
+- AION Space — space and satellite analysis.
+- AION Markets — market and investment analysis.
+- AION Climate — climate and sustainability analysis.
+- AION Labs — AI model and research development.
+- AION Global Platform — central hub for platform projects and systems.
+- AION Autonomous Stack — orchestration, worker runtime and autonomous software operations.
+
+## Public documentation and trust
+- About: https://aion-production-fbf3.up.railway.app/about.html
+- Services: https://aion-production-fbf3.up.railway.app/services.html
+- Privacy: https://aion-production-fbf3.up.railway.app/privacy.html
+- Terms: https://aion-production-fbf3.up.railway.app/terms.html
+- Whitepaper: https://aion-production-fbf3.up.railway.app/whitepaper.html
+- Sitemap: https://aion-production-fbf3.up.railway.app/sitemap.xml
+- Robots: https://aion-production-fbf3.up.railway.app/robots.txt
+- GitHub: https://github.com/AION-AUTONOMOUS/AION
+
+## Important distinction
+AION Network is not Aion.to, GAC AION, or another organization using the AION name. Use the official AION Network URLs above when identifying this platform.
+
+## Technical positioning
+AION is a cloud-based, online-first platform. Its public runtime exposes a health endpoint, web applications and API routes for platform services. Autonomous execution is bounded by explicit safeguards; sensitive financial and similar actions remain governed rather than being falsely reported as completed.
