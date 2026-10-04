@@ -4,7 +4,7 @@ import {
 } from '../config/aion-satellite-providers.js';
 
 const provider = SATELLITE_PROVIDER_CONFIG.sentinelHub;
-const COLLECTIONS = provider.collections;
+const COLLECTIONS = SATELLITE_PROVIDER_CONFIG.collections;
 
 function credentials() {
   const clientId = String(process.env.SENTINEL_HUB_CLIENT_ID || '').trim();

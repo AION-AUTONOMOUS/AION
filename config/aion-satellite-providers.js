@@ -16,6 +16,7 @@ export const SATELLITE_PROVIDER_CONFIG = Object.freeze({
 
 export function satelliteProviderHealth() {
   const p = SATELLITE_PROVIDER_CONFIG.sentinelHub;
+  const collections = SATELLITE_PROVIDER_CONFIG.collections;
   const configured = Boolean(
     String(process.env.SENTINEL_HUB_CLIENT_ID || '').trim() &&
     String(process.env.SENTINEL_HUB_CLIENT_SECRET || '').trim()
@@ -27,6 +28,6 @@ export function satelliteProviderHealth() {
     execution: configured ? 'ready-for-live-provider-api' : 'authorization-gated',
     dataSource: 'Copernicus Data Space Ecosystem',
     mock: false,
-    supportedCollections: Object.values(p.collections)
+    supportedCollections: Object.values(collections)
   };
 }
