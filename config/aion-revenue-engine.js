@@ -52,7 +52,7 @@ export async function revenueDashboard(){
   ]);
   const paidOrders = orders.filter(x=>x.paymentStatus==='confirmed');
   const delivered = orders.filter(x=>x.deliveryStatus==='delivered');
-  const recognized = revenue.reduce((sum,x)=>sum + Number(x.amountAion||0),0);
+  const recognized = revenue.reduce((sum,x)=>sum + Number(x.amountUsd||0),0);
   return {
     health:revenueEngineHealth(),
     offers,
@@ -61,7 +61,7 @@ export async function revenueDashboard(){
       paidOrders:paidOrders.length,
       deliveredOrders:delivered.length,
       recognizedRevenue:recognized,
-      currency:'AION-CREDIT',
+      currency:'USD',
       revenueRecords:revenue.length
     },
     nextActions:[
