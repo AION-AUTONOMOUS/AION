@@ -1,4 +1,5 @@
 import { customerRevenueHealth, listOffers, getOffer, createCustomerOrder, confirmCustomerPayment, recordDelivery, recordOutcome, listCustomerOrders, listRevenue } from '../config/aion-customer-revenue.js';
+import { revenueEngineHealth, revenueStrategy, revenueDashboard } from '../config/aion-revenue-engine.js';
 export default async function handler(req,res){
   res.setHeader('Access-Control-Allow-Origin',process.env.AION_PUBLIC_ORIGIN||'*');
   res.setHeader('Access-Control-Allow-Methods','GET,POST,OPTIONS');
@@ -7,7 +8,9 @@ export default async function handler(req,res){
   const url=new URL(req.url||'/','http://aion.local'), path=url.searchParams.get('path')||'health';
   const body=async()=>req.body&&typeof req.body==='object'?req.body:new Promise((resolve,reject)=>{let r='';req.on('data',c=>r+=c);req.on('end',()=>{try{resolve(r?JSON.parse(r):{})}catch(e){reject(e)}});req.on('error',reject)});
   try{
-    if(req.method==='GET'&&path==='health')return res.status(200).json({success:true,...customerRevenueHealth()});
+    if(req.method==='GET'&&path==='health')return res.status(200).json({success:true,...customerRevenueHealth(),revenueEngine:revenueEngineHealth()});
+    if(req.method==='GET'&&path==='strategy')return res.status(200).json({success:true,...revenueStrategy()});
+    if(req.method==='GET'&&path==='dashboard')return res.status(200).json({success:true,...await revenueDashboard()});
     if(req.method==='GET'&&path==='offers')return res.status(200).json({success:true,offers:listOffers()});
     if(req.method==='GET'&&path==='orders')return res.status(200).json({success:true,orders:await listCustomerOrders()});
     if(req.method==='GET'&&path==='revenue')return res.status(200).json({success:true,revenue:await listRevenue()});
