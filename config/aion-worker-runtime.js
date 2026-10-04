@@ -3,7 +3,7 @@ import { resetStore } from './aion-ops-engine.js';
 import { getTask, listTasks, updateTask } from './aion-ops-store.js';
 import { hasRailwayRedis, railwayRedisCommand } from './aion-redis.js';
 import { runOpenAI, selectOpenAIModel } from './aion-openai-gateway.js';
-import { AGENTS, TOTAL_AGENTS } from './aion-fleet.js';
+import { TOTAL_AGENTS, iterateAgents } from './aion-fleet.js';
 
 export const RUNTIME_VERSION = '2.0.0';
 export const MAX_CONCURRENCY = Math.max(1, Math.min(Number(process.env.AION_MAX_ACTIVE_WORKERS) || 20, 1000));
@@ -142,7 +142,7 @@ export async function activateFleetCycle(goal, options = {}) {
   let awaitingApproval = 0;
   let blocked = 0;
   for (let start = 0; start < limit; start += chunkSize) {
-    const batch = AGENTS.slice(start, Math.min(start + chunkSize, limit));
+    const batch = [...iterateAgents(start, Math.min(chunkSize, limit - start))];
     const results = await Promise.all(batch.map(agent => dispatchTask({
       type: agent.department,
       department: agent.department,
