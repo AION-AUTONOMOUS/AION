@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { describe, it } from 'node:test';
 import { buildValueUnitPlan, buildVerifiedValuePortfolio, valuePortfolioTruth } from '../config/aion-ai-vault-value-portfolio.js';
 
 describe('AION AI Vault Value Portfolio', () => {
