@@ -53,6 +53,7 @@ const API_HANDLERS = {
   "asset-vault-ai-state": () => import("./server-api/asset-vault-ai-state.js"),
   "agent-mesh": () => import("./server-api/agent-mesh.js"),
   "digital-treasury": () => import("./server-api/digital-treasury.js"),
+  "orbital-exchange": () => import("./server-api/orbital-exchange.js"),
   "market-quote": () => import("./server-api/market-quote.js")
 };
 
@@ -220,6 +221,7 @@ async function dispatchLegacyApi(req, res, url) {
       "asset-vault-ai-state":"asset-vault-ai-state",
       "agent-mesh":"agent-mesh",
       "digital-treasury":"digital-treasury",
+      "orbital-exchange":"orbital-exchange",
       "market-quote":"market-quote"
     };
     route = direct[tail] || null;
