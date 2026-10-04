@@ -1,4 +1,6 @@
 import { orbitalExchangeHealth,listProviders,createSpaceRFQ,listSpaceRFQs,getSpaceRFQ,createOrbitalContractForRFQ,createCommissionRecord,settleCommissionToTreasury,listCommissionRecords } from '../config/aion-orbital-exchange.js';
+import { requestAionSignature } from '../config/aion-digital-contracts.js';
+import { createDealRoom, updateDealRoom } from '../config/aion-deal-room.js';
 
 function json(res,status,payload){return res.status(status).json(payload);}
 function token(req){return String(req.headers?.authorization||'').replace(/^Bearer\s+/i,'').trim();}
@@ -12,7 +14,7 @@ export default async function handler(req,res){
   if(req.method==='GET'&&path==='health')return json(res,200,{success:true,data:orbitalExchangeHealth()});
   if(req.method==='GET'&&path==='providers')return json(res,200,{success:true,data:listProviders()});
   if(req.method==='POST'&&path==='rfqs')return json(res,201,{success:true,data:await createSpaceRFQ(req.body||{})});
-  if(req.method==='POST'&&path==='contracts')return json(res,201,{success:true,data:await createOrbitalContractForRFQ(req.body||{})});
+  if(req.method==='POST'&&path==='contracts'){const contract=await createOrbitalContractForRFQ(req.body||{});const approval=await requestAionSignature(contract.id,{});const deal=await createDealRoom({rfqId:req.body?.rfqId,providerId:req.body?.providerId,contractId:contract.id,status:'contract-issued'});await updateDealRoom(deal.id,{eventType:'aion-signature-requested',note:'AION execution awaits owner approval.',evidence:{type:'signature-approval',approvalId:approval.id,contractHash:contract.contentHash}});return json(res,201,{success:true,data:{contract,approval:{id:approval.id,status:approval.status,expiresAt:approval.expiresAt},dealRoom:deal}});}
   if(!authorized(req))return json(res,401,{success:false,error:'orbital exchange authorization required'});
   if(req.method==='GET'&&path==='rfqs')return json(res,200,{success:true,data:await listSpaceRFQs()});
   if(req.method==='GET'&&path.startsWith('rfqs/')){
