@@ -1,6 +1,6 @@
-import { AGENTS, DEPARTMENTS, TOTAL_AGENTS, findAgent, fleetHealth } from './aion-fleet.js';
+import { DEPARTMENTS, TOTAL_AGENTS, findAgent, fleetHealth } from './aion-fleet.js';
 
-export const CONTROL_PLANE_VERSION = '1.1.0';
+export const CONTROL_PLANE_VERSION = '1.1.1';
 export const CONTROL_PLANE_STATUS = 'ready';
 
 export const AUTONOMOUS_POLICIES = Object.freeze({
@@ -21,7 +21,7 @@ export const AUTONOMOUS_POLICIES = Object.freeze({
 export const COMMANDERS = Object.freeze({
   executive: { id: 'AION-EXEC-001', mission: 'Coordinate company-wide priorities and reports.' },
   engineering: { id: 'AION-ENG-001', mission: 'Coordinate engineering, QA and DevOps.' },
-  security: { id: 'AION-SECU-001', mission: 'Coordinate security and compliance checks.' },
+  security: { id: 'AION-SECU-001', mission: 'Security review, threat detection and incident response.' },
   growth: { id: 'AION-GROW-001', mission: 'Coordinate marketing, sales and partnerships.' }
 });
 
@@ -69,7 +69,7 @@ export function routeTask(task = {}) {
   }
 
   const requestedAgentId = String(task.agentId || task.role || '').trim();
-  const agent = AGENTS.find(candidate => candidate.id === requestedAgentId) || findAgent(department);
+  const agent = requestedAgentId ? findAgent(requestedAgentId) : findAgent(department);
   const commanderKey = COMMANDER_BY_DEPARTMENT[department] || 'executive';
   const moneySensitive = department === 'finance' || /payment|money|treasury|wallet|tokenized asset|tokenization|mainnet token|token.*mainnet|asset custody|asset transfer|stablecoin|paid ads|paid advertising/.test(text);
   const legalExternalBoundary = department === 'legal' || department === 'compliance';
@@ -94,6 +94,6 @@ export function controlPlaneHealth() {
   };
 }
 
-if (AGENTS.length !== TOTAL_AGENTS || Object.keys(DEPARTMENTS).length !== 20) {
+if (TOTAL_AGENTS !== 1_000_000 || Object.keys(DEPARTMENTS).length !== 20) {
   throw new Error('AION control plane fleet configuration is invalid');
 }
