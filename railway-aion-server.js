@@ -45,6 +45,7 @@ const API_HANDLERS = {
   "economic-intelligence": () => import("./server-api/economic-intelligence.js"),
   "continuous-intelligence": () => import("./server-api/continuous-intelligence.js"),
   "customer-revenue": () => import("./server-api/customer-revenue.js"),
+  leads: () => import("./server-api/leads.js"),
   "openai-intelligence": () => import("./server-api/openai-intelligence.js"),
   "global-platform": () => import("./server-api/global-platform.js"),
   "space-sentinel": () => import("./server-api/space-sentinel.js"),
@@ -189,6 +190,7 @@ async function dispatchLegacyApi(req, res, url) {
     const direct = {
       "openai-intelligence":"openai-intelligence",
       "customer-revenue":"customer-revenue",
+      leads:"leads",
       autonomy:"autonomy",
       mobile:"mobile",
       fleet:"fleet",
