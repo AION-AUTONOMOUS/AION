@@ -55,6 +55,7 @@ const API_HANDLERS = {
   "digital-treasury": () => import("./server-api/digital-treasury.js"),
   "orbital-exchange": () => import("./server-api/orbital-exchange.js"),
   "digital-contracts": () => import("./server-api/digital-contracts.js"),
+  "deal-room": () => import("./server-api/deal-room.js"),
   "market-quote": () => import("./server-api/market-quote.js")
 };
 
@@ -224,6 +225,7 @@ async function dispatchLegacyApi(req, res, url) {
       "digital-treasury":"digital-treasury",
       "orbital-exchange":"orbital-exchange",
       "digital-contracts":"digital-contracts",
+      "deal-room":"deal-room",
       "market-quote":"market-quote"
     };
     route = direct[tail] || null;
