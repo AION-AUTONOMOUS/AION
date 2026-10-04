@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 
-export const AION_MARKET_PRICING_VERSION='1.0.0';
+export const AION_MARKET_PRICING_VERSION='1.1.0';
+export const MARKET_PRICE_POLICY=Object.freeze({noSyntheticPrices:true,noStaleFallback:true,sourceAndTimestampRequired:true,snapshotHashRecommended:true});
 
 export const MARKET_PRICE_SOURCES=Object.freeze({
   equity:['exchange','licensed-market-data-provider'],
