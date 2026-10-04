@@ -1,7 +1,7 @@
 import { dailyReport } from '../config/aion-daily-report.js';
 
 const ALLOWED_ORIGIN =
-  process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
+  process.env.AION_PUBLIC_ORIGIN || 'https://aion-production-fbf3.up.railway.app';
 
 export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
