@@ -1,7 +1,7 @@
 import { routeTask, controlPlaneHealth } from '../config/aion-control-plane.js';
 
 const ALLOWED_ORIGIN =
-  process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
+  process.env.AION_PUBLIC_ORIGIN || 'https://aion-production-fbf3.up.railway.app';
 
 function cors(res) {
   res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
