@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aion-theta-eight.vercel.app/sitemap.xml
+Sitemap: https://aion-production-fbf3.up.railway.app/sitemap.xml
