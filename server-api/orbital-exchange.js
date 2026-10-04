@@ -3,7 +3,7 @@ import { orbitalExchangeHealth,listProviders,createSpaceRFQ,listSpaceRFQs,getSpa
 function json(res,status,payload){return res.status(status).json(payload);}
 function token(req){return String(req.headers?.authorization||'').replace(/^Bearer\s+/i,'').trim();}
 function authorized(req){
- const expected=String(process.env.AION_ORBITAL_ADMIN_TOKEN||'').trim();
+ const expected=String(process.env.AION_ORBITAL_ADMIN_TOKEN||process.env.AION_MESH_TOKEN||'').trim();
  return Boolean(expected)&&token(req)===expected;
 }
 export default async function handler(req,res){
