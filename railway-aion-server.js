@@ -50,7 +50,8 @@ const API_HANDLERS = {
   "space-sentinel": () => import("./server-api/space-sentinel.js"),
   "asset-vault": () => import("./server-api/asset-vault.js"),
   "asset-vault-intelligence": () => import("./server-api/asset-vault-intelligence.js"),
-  "asset-vault-ai-state": () => import("./server-api/asset-vault-ai-state.js")
+  "asset-vault-ai-state": () => import("./server-api/asset-vault-ai-state.js"),
+  "market-quote": () => import("./server-api/market-quote.js")
 };
 
 const send = (res, status, body) => {
@@ -214,7 +215,8 @@ async function dispatchLegacyApi(req, res, url) {
       "space-sentinel":"space-sentinel",
       "asset-vault":"asset-vault",
       "asset-vault/intelligence":"asset-vault-intelligence",
-      "asset-vault-ai-state":"asset-vault-ai-state"
+      "asset-vault-ai-state":"asset-vault-ai-state",
+      "market-quote":"market-quote"
     };
     route = direct[tail] || null;
   }

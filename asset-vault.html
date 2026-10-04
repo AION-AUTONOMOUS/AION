@@ -31,9 +31,34 @@ table{width:100%;border-collapse:collapse;margin-top:20px;background:#0b1322;bor
 <div class="card"><small>AI Value Units — وحدات القيمة</small><div id="units" class="value">0</div></div>
 <div class="card"><small>Target Valuation — الهدف النظري</small><div class="value">$10,000,000</div></div>
 </section>
+<section class="trust" style="margin-top:18px">
+<h2 style="margin:0 0 10px">📈 سعر السوق — Market Quote</h2>
+<p class="lead">استعلم عن سعر من مزود AION المتصل. السعر لا يظهر إلا مع المصدر ووقت الاقتباس؛ إذا لم يكن المزود مضبوطًا فستظهر الحالة بوضوح.</p>
+<form id="quote-form" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+<input id="quote-symbol" required maxlength="80" placeholder="Symbol / الرمز (مثال: AAPL)" style="flex:1;min-width:160px;padding:12px;border-radius:9px;border:1px solid #2a4568;background:#071225;color:#fff">
+<select id="quote-type" style="padding:12px;border-radius:9px;border:1px solid #2a4568;background:#071225;color:#fff">
+<option value="equity">سهم / Equity</option><option value="fund">صندوق / Fund</option><option value="bond">سند / Bond</option><option value="treasury-security">ورقة خزانة / Treasury</option><option value="commodity">سلعة / Commodity</option><option value="real-estate">عقار / Real Estate</option><option value="energy-infrastructure">طاقة / Infrastructure</option><option value="tokenized-rwa">Tokenized RWA</option>
+</select>
+<button type="submit" style="padding:12px 18px;border:0;border-radius:9px;background:#087db7;color:white;font-weight:800">جلب السعر</button>
+</form><div id="quote-result" class="status" aria-live="polite">لم يتم طلب سعر بعد.</div>
+</section>
 <table><thead><tr><th>الأصل</th><th>الفئة</th><th>التحقق</th><th>وحدة AI</th><th>القيمة الموثقة</th></tr></thead><tbody id="rows"></tbody></table>
 <p class="note">الهدف البالغ 10 ملايين دولار هو هدف تقييم لوحدات الذكاء المسجلة، وليس رصيدًا نقديًا أو أصولًا مملوكة حاليًا. تبدأ القيمة الحية من صفر حتى تتوفر أدلة ومصادر تقييم حقيقية وتنجح عملية التحقق.</p>
 <script>
+document.getElementById('quote-form').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const box=document.getElementById('quote-result');
+ const symbol=document.getElementById('quote-symbol').value.trim();
+ const assetType=document.getElementById('quote-type').value;
+ box.textContent='جارٍ طلب السعر من مصدر البيانات…';
+ try{
+  const r=await fetch('/api/market-quote?symbol='+encodeURIComponent(symbol)+'&assetType='+encodeURIComponent(assetType),{headers:{Accept:'application/json'}});
+  const d=await r.json();
+  if(!r.ok||!d.success)throw Error(d.error||'market_quote_unavailable');
+  const q=d.record;
+  box.innerHTML='<strong class="ok">'+esc(q.currency)+' '+Number(q.marketPrice).toLocaleString('en-US')+'</strong><br>المصدر: '+esc(q.priceSource)+'<br>الوقت: '+esc(q.quotedAt)+'<br>مرجع المصدر: '+esc(q.sourceRef)+'<br>بصمة الدليل: '+esc(q.fingerprint);
+ }catch(err){box.innerHTML='<span class="warn">● السعر غير متاح</span> — '+esc(err.message)}
+});
 async function load(){
  const s=document.getElementById('status');
  try{
