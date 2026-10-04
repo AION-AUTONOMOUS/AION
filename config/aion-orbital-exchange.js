@@ -81,6 +81,28 @@ export async function createOrbitalContractForRFQ(input={}){
  return contract;
 }
 
+export async function settleCommissionToTreasury(input={}){
+ const commissionId=text(input.commissionId);
+ const records=await listCommissionRecords();
+ const record=records.find(r=>r.id===commissionId);
+ if(!record) throw new Error('commission record not found');
+ if(text(input.status)!=='contract-verified') throw new Error('commission requires verified contract status');
+ const { recordTreasuryEntry }=await import('./aion-digital-treasury.js');
+ const treasury=await recordTreasuryEntry({
+  type:'orbital-success-fee-receivable',
+  amount:record.commissionAmount,
+  currency:record.currency,
+  accountRef:'AION-ORBITAL-RECEIVABLES',
+  externalReference:commissionId,
+  actor:'aion-orbital-exchange',
+  approvalRequired:true,
+  status:'receivable-recorded'
+ });
+ record.status='receivable-recorded'; record.treasuryEntryId=treasury.id; record.updatedAt=new Date().toISOString();
+ await setJson('space-commissions:'+record.id,record);
+ return {commission:record,treasury};
+}
+
 export async function createCommissionRecord(input={}){
  const contractValue=Number(input.contractValue);
  if(!Number.isFinite(contractValue)||contractValue<=0)throw new Error('positive contractValue required');
