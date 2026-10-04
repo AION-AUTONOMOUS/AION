@@ -23,7 +23,7 @@ function requireLiveExecution() {
 
 async function request(path, options = {}) {
   requireConfigured();
-  const response = await fetch(BASE_URL.replace(/\\/$/, '') + path, {
+  const response = await fetch(BASE_URL.replace(/\/$/, '') + path, {
     ...options,
     headers: { ...jsonHeaders(), ...(options.headers || {}) }
   });
