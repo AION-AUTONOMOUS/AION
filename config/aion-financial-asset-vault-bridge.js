@@ -1,4 +1,5 @@
 import { createFinancialAssetEvidenceRecord } from './aion-financial-asset-evidence.js';
+import { registerAsset } from './aion-global-asset-vault.js';
 
 export function createVerifiedFinancialVaultRecord(input={}) {
   const evidence=createFinancialAssetEvidenceRecord(input);
@@ -26,4 +27,9 @@ export function createVerifiedFinancialVaultRecord(input={}) {
     fakeOwnership:false,
     fakeValue:false
   };
+}
+
+export async function registerVerifiedFinancialAsset(input={}) {
+  const record=createVerifiedFinancialVaultRecord(input);
+  return registerAsset(record);
 }
