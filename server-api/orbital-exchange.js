@@ -1,4 +1,4 @@
-import { orbitalExchangeHealth,listProviders,createSpaceRFQ,listSpaceRFQs,getSpaceRFQ,createCommissionRecord,listCommissionRecords } from '../config/aion-orbital-exchange.js';
+import { orbitalExchangeHealth,listProviders,createSpaceRFQ,listSpaceRFQs,getSpaceRFQ,createOrbitalContractForRFQ,createCommissionRecord,listCommissionRecords } from '../config/aion-orbital-exchange.js';
 
 function json(res,status,payload){return res.status(status).json(payload);}
 function token(req){return String(req.headers?.authorization||'').replace(/^Bearer\s+/i,'').trim();}
@@ -12,6 +12,7 @@ export default async function handler(req,res){
   if(req.method==='GET'&&path==='health')return json(res,200,{success:true,data:orbitalExchangeHealth()});
   if(req.method==='GET'&&path==='providers')return json(res,200,{success:true,data:listProviders()});
   if(req.method==='POST'&&path==='rfqs')return json(res,201,{success:true,data:await createSpaceRFQ(req.body||{})});
+  if(req.method==='POST'&&path==='contracts')return json(res,201,{success:true,data:await createOrbitalContractForRFQ(req.body||{})});
   if(!authorized(req))return json(res,401,{success:false,error:'orbital exchange authorization required'});
   if(req.method==='GET'&&path==='rfqs')return json(res,200,{success:true,data:await listSpaceRFQs()});
   if(req.method==='GET'&&path.startsWith('rfqs/')){
