@@ -4,6 +4,16 @@ import { getJson, setJson, addToIndex, listIndexed } from './aion-stack-store.js
 export const DIGITAL_CONTRACTS_VERSION = '1.1.0';
 export const CONTRACT_LIFECYCLE = Object.freeze(['draft','issued','partially-accepted','awaiting-trust-provider','executed','declined','void']);
 
+function trustProviderConfig(){
+  const provider=text(process.env.AION_E_SIGNATURE_PROVIDER).toLowerCase();
+  const base=text(process.env.AION_E_SIGNATURE_API_BASE);
+  const mode=text(process.env.AION_E_SIGNATURE_MODE) || 'qualified';
+  if(provider==='docusign'){
+    return {provider,base,mode,ready:Boolean(base && text(process.env.AION_DOCUSIGN_INTEGRATION_KEY) && text(process.env.AION_DOCUSIGN_USER_ID) && text(process.env.AION_DOCUSIGN_ACCOUNT_ID) && text(process.env.AION_DOCUSIGN_RSA_PRIVATE_KEY))};
+  }
+  return {provider,base,mode,ready:Boolean(provider && base && text(process.env.AION_E_SIGNATURE_API_KEY))};
+}
+
 function text(v){ return String(v ?? '').trim(); }
 function id(prefix){ return prefix + '-' + crypto.randomUUID(); }
 function canonical(value){
@@ -39,7 +49,8 @@ export function digitalContractsHealth(){
     version:DIGITAL_CONTRACTS_VERSION, status:'digital-contracts-ready',
     lifecycle:CONTRACT_LIFECYCLE, electronicRecords:true, contentHashing:'SHA-256',
     immutableVersionEvidence:true, externalMoney:false,
-    qualifiedSignatureProviderConfigured:Boolean(process.env.AION_E_SIGNATURE_PROVIDER),
+    trustProvider:trustProviderConfig(),
+    qualifiedSignatureProviderConfigured:trustProviderConfig().ready,
     humanLegalAuthorityRequired:true,
     ownerApprovalWorkflow:true,
     electronicExecutionSeal:true
@@ -139,8 +150,9 @@ export async function approveAionSignature(input={}){
 
   // Fail closed: owner approval authorizes AION to seek the corporate trust signature,
   // but never fabricates a qualified/trusted signature when no real provider is configured.
-  const providerConfigured=Boolean(text(process.env.AION_E_SIGNATURE_PROVIDER));
-  const providerReady=providerConfigured && Boolean(text(process.env.AION_E_SIGNATURE_API_BASE)) && Boolean(text(process.env.AION_E_SIGNATURE_API_KEY));
+  const trust=trustProviderConfig();
+  const providerConfigured=Boolean(trust.provider);
+  const providerReady=trust.ready;
   const executionBase={
     type:'aion-signature-authorized',
     contractId:contract.id,contractVersion:contract.version,contractHash:contract.contentHash,
@@ -148,7 +160,9 @@ export async function approveAionSignature(input={}){
     authorizationEventId:approvalEvent.id,approvedAt:approvalBase.at,
     method:'owner-approved-trust-signature-request',
     trustProviderConfigured:providerConfigured,
-    trustProviderReady:providerReady
+    trustProviderReady:providerReady,
+    trustProvider:trust.provider,
+    signatureMode:trust.mode
   };
   const executionEvent={...executionBase,id:id('AION-EVENT')};
   executionEvent.executionHash=hash(executionBase);
