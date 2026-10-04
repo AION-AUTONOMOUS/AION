@@ -55,6 +55,9 @@ export default async function handler(req,res){
     return res.status(200).json({success:true,classification:classifyDemandSignal(signal),compliance:demandCompliance(signal),recommendedOffer:routeDemandOffer(signal),score:scoreDemandSignal(signal)});
   }
   if(req.method==='POST'&&path==='ingest'){
+    const expected=process.env.AION_MESH_TOKEN;
+    const auth=String(req.headers?.authorization||'');
+    if(!expected || auth !== 'Bearer '+expected) return res.status(401).json({success:false,error:'authenticated internal ingest required'});
     const body=bodyOf(req);
     if(!body.company||!body.type||!body.headline||!body.sourceUrl) return res.status(400).json({success:false,error:'company, type, headline and sourceUrl required'});
     const signal=normalizeSignal(body);
