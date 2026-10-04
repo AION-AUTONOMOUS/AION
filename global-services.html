@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AION Global Services — Intelligence, Space & AI</title>
+<meta name="description" content="Request AION intelligence, space situational awareness, disaster intelligence, or a custom AI-native digital service. Global digital delivery.">
+<link rel="canonical" href="https://aionautonomous.devs.surf/global-services.html">
+<meta property="og:title" content="AION Global Services">
+<meta property="og:description" content="AI-native intelligence, space services and digital solutions with direct online ordering and global delivery.">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#020817;color:#fff;font-family:Segoe UI,Arial,sans-serif}
+.wrap{max-width:1180px;margin:auto;padding:18px}.nav{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 18px;background:#06152a;border:1px solid #17466d;border-radius:16px}.nav a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:800}.brand{font-size:21px;letter-spacing:4px;color:#00c8ff}
+.hero{text-align:center;padding:42px 10px 25px}.eyebrow{color:#f5c542;font-size:11px;letter-spacing:3px;font-weight:900}.hero h1{font-size:clamp(28px,5vw,50px);margin:12px 0}.hero h1 span{color:#00c8ff}.hero p{max-width:760px;margin:auto;color:#aebbd0;line-height:1.8}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{padding:20px;background:linear-gradient(145deg,#061a34,#030b1d);border:1px solid #16466d;border-radius:16px;display:flex;flex-direction:column;min-height:245px}.icon{font-size:30px}.card h2{font-size:16px}.card p{font-size:11px;color:#aebbd0;line-height:1.7;flex:1}.price{font-size:22px;color:#f5c542;font-weight:900}.choose{border:0;border-radius:11px;padding:11px;background:linear-gradient(135deg,#f5c542,#e6a800);font-weight:900;cursor:pointer;margin-top:10px}
+.formbox{margin:22px 0;padding:26px;background:linear-gradient(180deg,rgba(0,130,255,.12),rgba(2,8,23,.9));border:2px solid #174d74;border-radius:20px}.formbox h2{margin-top:0;color:#f5c542}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:#9eb0c6}.field input,.field textarea,.field select{background:#06152a;border:1px solid #28577d;color:#fff;border-radius:10px;padding:12px;font:inherit}.field textarea{min-height:130px;resize:vertical}.submit{margin-top:14px;padding:13px 24px;border:0;border-radius:30px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#020817;font-weight:900;cursor:pointer}.msg{margin-top:12px;font-size:12px;color:#9eb0c6}.trust{text-align:center;color:#61758d;font-size:10px;padding:25px 0}.back{display:inline-block;margin-top:10px;color:#00c8ff;text-decoration:none;font-weight:900}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.grid,.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+</style>
+</head>
+<body><div class="wrap">
+<nav class="nav"><a class="brand" href="/">AION</a><div><a href="/">Home</a>　<a href="/order.html">All Services</a>　<a href="/growth.html">Growth Engine</a></div></nav>
+<section class="hero"><div class="eyebrow">AION GLOBAL DIGITAL SERVICES</div><h1>Intelligence that turns <span>data into decisions</span></h1><p>Order verified intelligence online, request a custom AI-native service, or submit an enterprise/space opportunity. AION evaluates the request and routes it to the appropriate digital workflow.</p></section>
+<section class="grid">
+<article class="card"><div class="icon">🌍</div><h2>Earth Change Intelligence</h2><p>Remote-sensing analysis using evidence-backed Earth observation data.</p><div class="price">$250</div><button class="choose" onclick="pick('earth-change-intelligence','Earth Change Intelligence')">Request</button></article>
+<article class="card"><div class="icon">☀️</div><h2>Space Weather Risk Brief</h2><p>Operational brief on solar and space-weather conditions and potential impacts.</p><div class="price">$180</div><button class="choose" onclick="pick('space-weather-brief','Space Weather Risk Brief')">Request</button></article>
+<article class="card"><div class="icon">🛰️</div><h2>LEO Situational Awareness</h2><p>Orbital awareness using public operational space-data sources.</p><div class="price">$250</div><button class="choose" onclick="pick('leo-situational-awareness','LEO Situational Awareness')">Request</button></article>
+<article class="card"><div class="icon">🚨</div><h2>Rapid Disaster Intelligence</h2><p>Fast evidence-backed incident intelligence for assessment and decision support.</p><div class="price">$350</div><button class="choose" onclick="pick('disaster-intelligence','Rapid Disaster Intelligence')">Request</button></article>
+</section>
+<section class="formbox" id="request"><h2>Global request desk</h2><form id="leadForm"><div class="formgrid">
+<div class="field"><label>Name</label><input id="name" required maxlength="160"></div>
+<div class="field"><label>Email</label><input id="email" type="email" required maxlength="320"></div>
+<div class="field"><label>Company / organization (optional)</label><input id="company" maxlength="200"></div>
+<div class="field"><label>Service</label><select id="offer"><option value="custom-digital-service">Custom AI / digital service</option><option value="earth-change-intelligence">Earth Change Intelligence</option><option value="space-weather-brief">Space Weather Risk Brief</option><option value="leo-situational-awareness">LEO Situational Awareness</option><option value="disaster-intelligence">Rapid Disaster Intelligence</option><option value="orbital-exchange">Space / Orbital opportunity</option></select></div>
+<div class="field full"><label>What do you need?</label><textarea id="requestText" required maxlength="2000" placeholder="Describe the problem, data, location/asset, desired outcome, deadline, or partnership opportunity."></textarea></div>
+</div><button class="submit" type="submit">Submit request to AION</button><div class="msg" id="msg"></div></form></section>
+<div class="trust">Digital delivery • Evidence-backed outputs • Payment confirmation required before revenue recognition • No political targeting</div>
+</div>
+<script>
+function pick(id,title){document.getElementById('offer').value=id;document.getElementById('requestText').value='I am interested in '+title+'. ';document.getElementById('request').scrollIntoView({behavior:'smooth'});}
+document.getElementById('leadForm').addEventListener('submit',async e=>{
+ e.preventDefault();const msg=document.getElementById('msg');msg.textContent='Submitting…';
+ try{const r=await fetch('/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+  name:document.getElementById('name').value,email:document.getElementById('email').value,company:document.getElementById('company').value,
+  offerId:document.getElementById('offer').value,request:document.getElementById('requestText').value,source:'global-services'
+ })});const j=await r.json();if(!r.ok||!j.success)throw Error(j.error||'Request failed');
+ msg.textContent='Request received. AION has recorded it for qualification and routing.';e.target.reset();
+ }catch(err){msg.textContent='Unable to submit: '+String(err.message||err)}
+});
+</script></body></html>
