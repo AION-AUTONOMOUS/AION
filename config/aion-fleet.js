@@ -77,7 +77,7 @@ export function* iterateAgents(start = 0, limit = 1000) {
 
 export function findAgent(role = '') {
   const normalized = String(role).trim().toLowerCase();
-  if (/^\\d+$/.test(normalized)) return agentAt(Number(normalized));
+  if (/^\d+$/.test(normalized)) return agentAt(Number(normalized));
   const exactDepartment = DEPARTMENT_NAMES.find(([id]) => id === normalized);
   if (exactDepartment) return agentAt(DEPARTMENT_NAMES.indexOf(exactDepartment) * AGENTS_PER_DEPARTMENT);
   for (let i = 0; i < DEPARTMENT_NAMES.length; i += 1) {
