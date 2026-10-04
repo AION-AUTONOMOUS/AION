@@ -19,7 +19,8 @@ const indexes = {
   'economic-events': 'aion:stack:economic-events:index',
   'space-rfqs': 'aion:stack:space-rfqs:index',
   'space-commissions': 'aion:stack:space-commissions:index',
-  'digital-contracts': 'aion:stack:digital-contracts:index'
+  'digital-contracts': 'aion:stack:digital-contracts:index',
+  'deal-rooms': 'aion:stack:deal-rooms:index'
 };
 
 function config() {
