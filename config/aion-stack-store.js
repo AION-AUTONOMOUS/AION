@@ -23,7 +23,8 @@ const indexes = {
   'deal-rooms': 'aion:stack:deal-rooms:index',
   'customer-orders': 'aion:stack:customer-orders:index',
   'customer-revenue': 'aion:stack:customer-revenue:index',
-  'customer-outcomes': 'aion:stack:customer-outcomes:index'
+  'customer-outcomes': 'aion:stack:customer-outcomes:index',
+  'customer-leads': 'aion:stack:customer-leads:index'
 };
 
 function config() {
