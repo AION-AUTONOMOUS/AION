@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { describe, it } from 'node:test';
 import { valueStatus, assetClassTarget } from '../config/aion-ai-vault-live-value-status.js';
 
 describe('AION AI Vault Live Value Status',()=>{
