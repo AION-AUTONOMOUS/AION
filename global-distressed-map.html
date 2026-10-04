@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AION Global Distressed Asset Map</title>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#07111f;color:#eef5ff}
+main{max-width:1180px;margin:auto;padding:28px}.hero{padding:26px;border:1px solid #24364e;border-radius:20px;background:linear-gradient(135deg,#0b1c31,#0a1524)}
+h1{margin:0 0 8px;font-size:32px}.muted{color:#9db0c8}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.card{border:1px solid #24364e;border-radius:16px;padding:18px;background:#0b1727}.score{font-size:24px;font-weight:800}.tag{display:inline-block;padding:5px 8px;border-radius:999px;background:#12253b;color:#b9d7ff;margin:3px;font-size:12px}
+a{color:#8fc5ff}.bar{height:8px;background:#18283b;border-radius:10px;overflow:hidden}.fill{height:100%;background:#4ca3ff}
+table{width:100%;border-collapse:collapse;margin-top:18px}td,th{padding:10px;border-bottom:1px solid #203149;text-align:left}
+</style></head>
+<body><main>
+<section class="hero"><div class="muted">AION ACQUISITION INTELLIGENCE</div><h1>Global Distressed Asset Map</h1>
+<p class="muted">A production intelligence layer for insolvency, liquidation, court-supervised sales and transferable assets. Live opportunities are counted only after official-process evidence.</p>
+<div id="health"></div></section>
+<section><h2>Global coverage</h2><div id="regions" class="grid"></div></section>
+<section><h2>Scoring engine</h2><p class="muted">Asset value 28% · expected acquisition-price advantage 20% · integration ease 16% · revenue conversion 24% · evidence 12%, with legal/liability/sanctions penalties.</p></section>
+<section><h2>Verified opportunities</h2><table><thead><tr><th>Region</th><th>Opportunity</th><th>Score</th><th>Status</th><th>Evidence</th></tr></thead><tbody id="opps"></tbody></table></section>
+</main>
+<script>
+const j=async p=>(await fetch('/api/global-distressed-map?path='+p)).json();
+(async()=>{
+ const h=await j('health'); document.querySelector('#health').innerHTML='<b>'+h.regions+' regions</b> · '+h.verifiedLiveOpportunities+' verified live opportunities · '+h.acquisitionsClosed+' acquisitions closed';
+ const r=await j('regions'); document.querySelector('#regions').innerHTML=r.regions.map(x=>'<article class="card"><h3>'+x.name+'</h3><div class="score">'+x.priority+'/100 priority</div><div class="bar"><div class="fill" style="width:'+x.priority+'%"></div></div><p class="muted">'+x.countries.join(' · ')+'</p><div>'+x.focus.map(t=>'<span class="tag">'+t+'</span>').join('')+'</div><p>'+x.officialSources.map(s=>'<a target="_blank" rel="noopener" href="'+s.url+'">'+s.name+'</a>').join('<br>')+'</p></article>').join('');
+ const o=await j('opportunities'); document.querySelector('#opps').innerHTML=o.opportunities.length?o.opportunities.map(x=>'<tr><td>'+x.region+'</td><td>'+x.name+'</td><td>'+x.classification.score+'</td><td>'+x.classification.status+'</td><td><a target="_blank" rel="noopener" href="'+x.sourceUrl+'">official evidence</a></td></tr>').join(''):'<tr><td colspan="5" class="muted">No verified live opportunities ingested yet. This is intentional: AION will not fabricate targets.</td></tr>';
+})()
+</script></body></html>
