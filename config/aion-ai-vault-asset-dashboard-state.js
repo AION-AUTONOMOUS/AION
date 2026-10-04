@@ -2,7 +2,7 @@ import { listAssets, verifyAsset } from './aion-global-asset-vault.js';
 import { valueStatus } from './aion-ai-vault-live-value-status.js';
 import { createIntelligenceValueProfile } from './aion-intelligence-asset-standard.js';
 
-export const AI_VAULT_ASSET_STATE_VERSION = '2.0.0';
+export const AI_VAULT_ASSET_STATE_VERSION = '2.1.0';
 
 export async function buildVaultAiAssetState({limit=100}={}) {
   const assets = await listAssets({limit});
@@ -21,6 +21,10 @@ export async function buildVaultAiAssetState({limit=100}={}) {
       evidenceRef: asset.evidenceRef || null,
       valuationSource: asset.valuationSource || null,
       intelligenceAsset: asset.intelligenceAsset || null,
+      financialAssetEvidence: asset.financialAssetEvidence || null,
+      marketPrice: asset.marketPrice || asset.financialAssetEvidence?.marketPrice || null,
+      marketPriceSource: asset.marketPriceSource || asset.financialAssetEvidence?.marketPriceSource || null,
+      marketPriceQuotedAt: asset.marketPriceQuotedAt || asset.financialAssetEvidence?.marketPriceQuotedAt || null,
       intelligenceAssetEligible: Boolean(asset.intelligenceAsset?.vaultEligibility === true),
       intelligenceValueScore: (() => {
         try {
