@@ -20,7 +20,10 @@ const indexes = {
   'space-rfqs': 'aion:stack:space-rfqs:index',
   'space-commissions': 'aion:stack:space-commissions:index',
   'digital-contracts': 'aion:stack:digital-contracts:index',
-  'deal-rooms': 'aion:stack:deal-rooms:index'
+  'deal-rooms': 'aion:stack:deal-rooms:index',
+  'customer-orders': 'aion:stack:customer-orders:index',
+  'customer-revenue': 'aion:stack:customer-revenue:index',
+  'customer-outcomes': 'aion:stack:customer-outcomes:index'
 };
 
 function config() {
