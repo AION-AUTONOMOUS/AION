@@ -51,6 +51,8 @@ const API_HANDLERS = {
   "asset-vault": () => import("./server-api/asset-vault.js"),
   "asset-vault-intelligence": () => import("./server-api/asset-vault-intelligence.js"),
   "asset-vault-ai-state": () => import("./server-api/asset-vault-ai-state.js"),
+  "agent-mesh": () => import("./server-api/agent-mesh.js"),
+  "digital-treasury": () => import("./server-api/digital-treasury.js"),
   "market-quote": () => import("./server-api/market-quote.js")
 };
 
@@ -216,6 +218,8 @@ async function dispatchLegacyApi(req, res, url) {
       "asset-vault":"asset-vault",
       "asset-vault/intelligence":"asset-vault-intelligence",
       "asset-vault-ai-state":"asset-vault-ai-state",
+      "agent-mesh":"agent-mesh",
+      "digital-treasury":"digital-treasury",
       "market-quote":"market-quote"
     };
     route = direct[tail] || null;
