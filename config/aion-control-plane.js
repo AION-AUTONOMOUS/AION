@@ -1,6 +1,7 @@
 import { DEPARTMENTS, TOTAL_AGENTS, findAgent, fleetHealth } from './aion-fleet.js';
 
-export const CONTROL_PLANE_VERSION = '1.1.1';
+export const CONTROL_PLANE_VERSION = '1.2.0';
+import { classifyExecution, executionGovernorHealth } from './aion-execution-governor.js';
 export const CONTROL_PLANE_STATUS = 'ready';
 
 export const AUTONOMOUS_POLICIES = Object.freeze({
@@ -11,7 +12,8 @@ export const AUTONOMOUS_POLICIES = Object.freeze({
   autoDeployAfterPassingChecks: true,
   autoMoveMoney: false,
   aiOperateAllNonFinancialDomains: true,
-  humanApprovalBoundary: 'money-only',
+  unifiedExecutionGovernor: true,
+  humanApprovalBoundary: 'client-and-high-impact',
   autoRunPaidAds: false,
   autoDeployMainnetToken: false,
   autoExecuteLegalDecisions: false,
@@ -73,14 +75,14 @@ export function routeTask(task = {}) {
   const commanderKey = COMMANDER_BY_DEPARTMENT[department] || 'executive';
   const moneySensitive = department === 'finance' || /payment|money|treasury|wallet|tokenized asset|tokenization|mainnet token|token.*mainnet|asset custody|asset transfer|stablecoin|paid ads|paid advertising/.test(text);
   const legalExternalBoundary = department === 'legal' || department === 'compliance';
-  const blocked = /political targeting|target voters|microtarget voters|استهداف سياسي|استهداف الناخبين/.test(text);
+  const execution = classifyExecution(task);
 
   return {
     task: task.id || null,
     department,
     commander: COMMANDERS[commanderKey],
     agent,
-    policy: { autonomous: !blocked && !moneySensitive, requiresHumanApproval: moneySensitive, externalLegalBoundary: legalExternalBoundary, blocked }
+    policy: { autonomous: execution.autonomousInternal, requiresHumanApproval: execution.requiresOwnerApproval || moneySensitive, externalLegalBoundary: legalExternalBoundary, blocked: execution.blocked, execution }
   };
 }
 
@@ -90,7 +92,8 @@ export function controlPlaneHealth() {
     status: CONTROL_PLANE_STATUS,
     fleet: fleetHealth(),
     commanders: Object.keys(COMMANDERS).length,
-    policies: AUTONOMOUS_POLICIES
+    policies: AUTONOMOUS_POLICIES,
+    executionGovernor: executionGovernorHealth()
   };
 }
 
