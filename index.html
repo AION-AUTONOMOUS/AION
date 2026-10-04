@@ -295,6 +295,15 @@ a{text-decoration:none;color:inherit}
 .aion-map-dialog h3{color:#f5c542;font-size:22px;margin-bottom:8px}.aion-map-dialog p{color:#c8d5e7;line-height:1.8;font-size:13px}.aion-dialog-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.aion-dialog-actions a,.aion-dialog-actions button{padding:10px 15px;border-radius:10px;border:1px solid rgba(0,200,255,.35);background:rgba(0,180,255,.1);color:#fff;font-weight:900;text-decoration:none;cursor:pointer;font-family:inherit}.aion-dialog-actions .primary{background:linear-gradient(135deg,#f5c542,#e6a800);color:#020817;border:none}
 @media(max-width:1050px){.aion-map-stage{grid-template-columns:1fr;min-height:0}.aion-map-core{min-height:500px;order:-1}.aion-map-side{display:grid;grid-template-columns:1fr 1fr}.aion-pipeline-row{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:600px){.aion-map-side{grid-template-columns:1fr}.aion-map-core{min-height:420px}.aion-orbit{width:350px;max-width:95vw}.aion-core-button{width:145px;height:145px}.aion-core-button strong{font-size:24px}.aion-orbit-node{width:67px;height:67px;font-size:8px}.aion-pipeline-row{grid-template-columns:repeat(2,1fr)}}
+</style><style id="aion-architecture-v2">
+.aion-architecture{margin:0 0 20px;padding:24px 18px;background:linear-gradient(180deg,rgba(0,120,210,.08),rgba(2,8,23,.96));border:1px solid rgba(0,200,255,.3);border-radius:20px}
+.aion-architecture h2{text-align:center;color:#fff;font-size:clamp(21px,2.7vw,30px);margin-bottom:6px}.aion-architecture h2 span{color:#00c8ff}.aion-architecture .sub{text-align:center;color:#8293aa;font-size:11px;margin-bottom:18px}
+.aion-division-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.aion-division{padding:11px 8px;border:1px solid rgba(0,180,255,.18);background:rgba(0,100,180,.06);border-radius:10px;text-align:center;color:#dbeafe;font-size:10px;font-weight:800;cursor:pointer;transition:.2s}
+.aion-division:hover{border-color:#00c8ff;background:rgba(0,180,255,.13);transform:translateY(-2px)}
+.aion-projects{margin-top:18px;padding-top:18px;border-top:1px solid rgba(0,180,255,.15)}.aion-projects h3{text-align:center;color:#f5c542;font-size:15px;margin-bottom:10px}
+.aion-project-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}.aion-project{padding:9px 6px;border:1px solid rgba(245,197,66,.17);background:rgba(245,197,66,.035);border-radius:9px;color:#dbeafe;text-align:center;font-size:9px;font-weight:800;cursor:pointer;transition:.2s}.aion-project:hover{border-color:#f5c542;background:rgba(245,197,66,.1)}
+@media(max-width:950px){.aion-division-grid{grid-template-columns:repeat(3,1fr)}.aion-project-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:560px){.aion-division-grid{grid-template-columns:repeat(2,1fr)}.aion-project-grid{grid-template-columns:repeat(2,1fr)}}
 </style></head>
 <body>
 <div class="container">
@@ -686,7 +695,17 @@ aion.genesisss@gmail.com<br><br>
 })();
 </script>
 
-<script id="aion-command-map-script">
+<section class="aion-architecture" id="aion-architecture">
+<h2>بنية AION الكاملة — <span>20 قسمًا</span></h2>
+<p class="sub">هذه هي الخريطة التنظيمية الأساسية. الوحدات التي تظهر هنا مرتبطة بالخريطة التنفيذية وتُفتح من نفس الواجهة.</p>
+<div class="aion-division-grid">
+<button class="aion-division" data-aion-panel="executive-intelligence">01 · Executive Intelligence</button><button class="aion-division" data-aion-panel="research-intelligence">02 · Research & Intelligence</button><button class="aion-division" data-aion-panel="engineering">03 · Engineering</button><button class="aion-division" data-aion-panel="security">04 · Security</button><button class="aion-division" data-aion-panel="quality-reliability">05 · Quality & Reliability</button><button class="aion-division" data-aion-panel="devops-infrastructure">06 · DevOps & Infrastructure</button><button class="aion-division" data-aion-panel="product">07 · Product</button><button class="aion-division" data-aion-panel="data-analytics">08 · Data & Analytics</button><button class="aion-division" data-aion-panel="treasury-intelligence">09 · Treasury Intelligence</button><button class="aion-division" data-aion-panel="legal-contracts">10 · Legal & Contracts</button><button class="aion-division" data-aion-panel="compliance">11 · Compliance</button><button class="aion-division" data-aion-panel="marketing-seo-geo">12 · Marketing & SEO/GEO</button><button class="aion-division" data-aion-panel="growth">13 · Growth</button><button class="aion-division" data-aion-panel="sales-customer-operations">14 · Sales & Customer Operations</button><button class="aion-division" data-aion-panel="partnerships">15 · Partnerships</button><button class="aion-division" data-aion-panel="support">16 · Support</button><button class="aion-division" data-aion-panel="content-academy">17 · Content & Academy</button><button class="aion-division" data-aion-panel="operations">18 · Operations</button><button class="aion-division" data-aion-panel="strategy">19 · Strategy</button><button class="aion-division" data-aion-panel="communications">20 · Communications</button>
+</div>
+<div class="aion-projects">
+<h3>🚀 محفظة المشاريع والأنظمة — 18+ مسارًا</h3>
+<div class="aion-project-grid">
+<button class="aion-project" data-aion-panel="agent-mesh">AION Agent Mesh</button><button class="aion-project" data-aion-panel="vault">AION Digital Vault</button><button class="aion-project" data-aion-panel="treasury">AION Treasury Intelligence</button><button class="aion-project" data-aion-panel="intelligence">AION Intelligence Exchange</button><button class="aion-project" data-aion-panel="commerce">AION AI Economy</button><button class="aion-project" data-aion-panel="digital-assets">AION Digital Asset Network</button><button class="aion-project" data-aion-panel="orbital">AION Autonomous Commerce</button><button class="aion-project" data-aion-panel="space">AION Orbital Exchange</button><button class="aion-project" data-aion-panel="earth">AION Space</button><button class="aion-project" data-aion-panel="climate">AION Earth Intelligence</button><button class="aion-project" data-aion-panel="intelligence">AION Climate</button><button class="aion-project" data-aion-panel="teacher">AION Intelligence</button><button class="aion-project" data-aion-panel="academy">AION Teacher</button><button class="aion-project" data-aion-panel="future-labs">AION Academy</button><button class="aion-project" data-aion-panel="recurring">AION Future Labs</button><button class="aion-project" data-aion-panel="contracts">AION Revenue Engine</button><button class="aion-project" data-aion-panel="sales">AION Deal Room</button><button class="aion-project" data-aion-panel="support">AION Global Customer Network</button>
+</div></div></section><script id="aion-command-map-script">
 (function(){
  const modal=document.getElementById('aion-map-modal'), title=document.getElementById('aion-dialog-title'), text=document.getElementById('aion-dialog-text'), actions=document.getElementById('aion-dialog-actions');
  const map={
@@ -727,6 +746,29 @@ aion.genesisss@gmail.com<br><br>
   recurring:['Recurring Revenue','تحويل النتائج الناجحة إلى عقود/إيرادات متكررة عندما تتوفر الأدلة.',['order.html','ابدأ طلبًا']],
   education:['Education','التعليم والمحتوى الأكاديمي الذكي.',['academy.html','فتح Academy']]
  };
+
+  Object.assign(map,{
+   'executive-intelligence':['Executive Intelligence','المركز التنفيذي الرئيسي لـ AION.',['chat.html','فتح AION']],
+   'research-intelligence':['Research & Intelligence','البحث والتحليل وجمع الأدلة.',['intelligence.html','فتح Intelligence']],
+   'engineering':['Engineering','الهندسة والتطوير.',['aion-global-platform.html','فتح المنصة']],
+   'security':['Security','الأمن والموثوقية.',['aion-global-platform.html','فتح المنصة']],
+   'quality-reliability':['Quality & Reliability','الجودة والاختبارات والاعتمادية.',['reports.html','فتح التقارير']],
+   'devops-infrastructure':['DevOps & Infrastructure','البنية التحتية والنشر.',['aion-global-platform.html','فتح المنصة']],
+   'product':['Product','إدارة المنتجات وتجربة المستخدم.',['aion-global-platform.html','فتح المنصة']],
+   'data-analytics':['Data & Analytics','البيانات والتحليلات والقياس.',['reports.html','فتح التقارير']],
+   'treasury-intelligence':['Treasury Intelligence','ذكاء الخزينة ومراقبة التدفقات.',['aion-global-platform.html','فتح المنصة']],
+   'legal-contracts':['Legal & Contracts','العقود والعمليات القانونية.',['order.html','فتح الطلب']],
+   'compliance':['Compliance','الامتثال والضوابط التنظيمية.',['aion-global-platform.html','فتح المنصة']],
+   'marketing-seo-geo':['Marketing & SEO/GEO','التسويق والاكتشاف العالمي.',['portfolio.html','فتح الأعمال']],
+   'growth':['Growth','النمو وتوسيع الطلب المدفوع.',['order.html','ابدأ الطلب']],
+   'sales-customer-operations':['Sales & Customer Operations','المبيعات وتشغيل علاقات العملاء.',['order.html','اطلب خدمة']],
+   'partnerships':['Partnerships','الشراكات ومطابقة الفرص.',['aion-global-platform.html','فتح المنصة']],
+   'support':['Support','دعم العملاء.',['chat.html','تواصل']],
+   'content-academy':['Content & Academy','المحتوى والتعليم.',['academy.html','فتح Academy']],
+   'operations':['Operations','التشغيل اليومي.',['aion-global-platform.html','فتح المنصة']],
+   'strategy':['Strategy','الاستراتيجية والأولويات.',['aion-global-platform.html','فتح المنصة']],
+   'communications':['Communications','الاتصالات والرسائل المؤسسية.',['portfolio.html','فتح الأعمال']]
+  });
  function openPanel(id){
   const item=map[id]||['AION','هذه الوحدة جزء من البنية التنفيذية لـ AION.',['aion-global-platform.html','فتح المنصة']];
   title.textContent=item[0]; text.textContent=item[1];
