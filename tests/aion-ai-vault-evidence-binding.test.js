@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { describe, it } from 'node:test';
 import { bindAiValueUnitToRealAsset, bindingPolicy } from '../config/aion-ai-vault-evidence-binding.js';
 
 describe('AION AI Vault Evidence Binding', () => {
