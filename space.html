@@ -214,7 +214,10 @@ aion.genesisss@gmail.com<br><br>
 </div>
 
 <script>
-function order(s,p){window.location.href='order.html?service='+encodeURIComponent(s)+'&price='+p;}
+function order(s,p){
+ const ids={'Satellite Data':'satellite-data','Space Reports':'space-reports','Space Consulting':'space-consulting','Satellite Monitoring':'satellite-monitoring','Remote Sensing':'remote-sensing','Launch Planning':'launch-planning'};
+ const id=ids[s]; if(id) window.location.href='checkout.html?offer='+encodeURIComponent(id); else window.location.href='order.html';
+}
 </script>
 
 <script src="lang.js"></script>
