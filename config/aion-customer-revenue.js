@@ -45,6 +45,10 @@ const OFFERS = Object.freeze([
   { id:'business-directory', name:'دليل الشركات', priceUsd:8, delivery:'digital-data', evidence:'AION Intelligence' },
   { id:'intelligence-api-access', name:'AION API — وصول شهري', priceUsd:99, delivery:'digital-access', evidence:'AION Intelligence' },
   { id:'strategic-consulting', name:'استشارات استراتيجية', priceUsd:45, delivery:'digital-consulting', evidence:'AION Intelligence' },
+  { id:'currency-intelligence-report', name:'تقرير العملات والأسواق العالمية', priceUsd:15, delivery:'currency-report', evidence:'AION market data' },
+  { id:'aion-coin-research-report', name:'تقرير AION Coin', priceUsd:15, delivery:'digital-report', evidence:'AION public protocol data' },
+  { id:'asset-vault-report', name:'تقرير خزنة الأصول', priceUsd:20, delivery:'asset-intelligence', evidence:'AION Evidence Layer' },
+  { id:'treasury-intelligence-report', name:'تقرير خزينة AION', priceUsd:25, delivery:'treasury-intelligence', evidence:'AION Treasury Intelligence' },
 ]);
 
 function text(v){return String(v??'').trim();}
