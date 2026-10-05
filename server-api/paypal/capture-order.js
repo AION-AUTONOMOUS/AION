@@ -1,7 +1,7 @@
 import { paypalBaseUrl, paypalClientId, paypalClientSecret } from './config.js';
 
 const PAYPAL_BASE_URL = paypalBaseUrl();
-const ALLOWED_ORIGIN = process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
+const ALLOWED_ORIGIN = process.env.AION_PUBLIC_ORIGIN || 'https://aion-production-fbf3.up.railway.app';
 
 function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
