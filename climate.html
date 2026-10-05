@@ -253,7 +253,10 @@ aion.genesisss@gmail.com<br><br>
 </div>
 
 <script>
-function order(s,p){window.location.href='order.html?service='+encodeURIComponent(s)+'&price='+p;}
+function order(s,p){
+ const ids={'Climate Analysis':'climate-analysis','ESG Report':'esg-report','Climate Risk':'climate-risk','Renewable Energy':'renewable-energy','Smart Agriculture':'smart-agriculture','Carbon Markets':'carbon-markets','Climate Report':'climate-monthly-report','Sustainability Plan':'sustainability-plan','Climate Consulting':'climate-consulting'};
+ const id=ids[s]; if(id) window.location.href='checkout.html?offer='+encodeURIComponent(id); else window.location.href='order.html';
+}
 </script>
 
 <script src="lang.js"></script>
