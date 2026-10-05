@@ -24,6 +24,8 @@ const indexes = {
   'customer-orders': 'aion:stack:customer-orders:index',
   'customer-revenue': 'aion:stack:customer-revenue:index',
   'customer-outcomes': 'aion:stack:customer-outcomes:index',
+  'teacher-orders': 'aion:stack:teacher-orders:index',
+  'teacher-revenue': 'aion:stack:teacher-revenue:index',
   'customer-leads': 'aion:stack:customer-leads:index',
   'demand-signals': 'aion:stack:demand-signals:index',
   'distressed-opportunities': 'aion:stack:distressed-opportunities:index',

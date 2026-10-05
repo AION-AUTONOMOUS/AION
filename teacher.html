@@ -675,11 +675,19 @@ async function createEmbeddedOrder() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       serviceTitle: currentService.title,
-      details: prompt.slice(0, 500)
+      price: currentService.price,
+      country: CURRENCIES[currentCurrency].name,
+      grade: document.getElementById('selGrade').value,
+      subject: document.getElementById('selSubject').value,
+      term: document.getElementById('selTerm').value,
+      details: document.getElementById('mDetails').value.trim(),
+      pdfText: pdfTextContent,
+      prompt
     })
   });
   const data = await res.json();
   if (!res.ok || !data.id) throw new Error(data.error || 'فشل إنشاء طلب الدفع');
+  if (!data.aionOrderId) throw new Error('لم يتم إنشاء رقم طلب AION');
   return data;
 }
 
@@ -693,6 +701,7 @@ async function openPayPalFallback() {
   try {
     const data = await createEmbeddedOrder();
     if (!data.approvalUrl) throw new Error('لم يعرض PayPal رابط الدفع');
+    window.__aionTeacherOrderId = data.aionOrderId;
     window.location.href = data.approvalUrl;
   } catch (err) {
     showStatus(err.message || 'تعذر فتح بوابة الدفع. حاول مرة أخرى.', 'error');
@@ -702,11 +711,11 @@ async function openPayPalFallback() {
   }
 }
 
-async function finishEmbeddedPayment(orderId) {
+async function finishEmbeddedPayment(paypalOrderId, aionOrderId) {
   const captureRes = await fetch('/api/paypal/capture-order', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ orderId })
+    body: JSON.stringify({ orderId: paypalOrderId })
   });
   const captureData = await captureRes.json();
   if (!captureRes.ok || captureData.status !== 'COMPLETED') {
@@ -716,16 +725,23 @@ async function finishEmbeddedPayment(orderId) {
   const verifyRes = await fetch('/api/verify', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ orderId })
+    body: JSON.stringify({ orderId: paypalOrderId, aionOrderId })
   });
   const verifyData = await verifyRes.json();
   if (!verifyRes.ok || !verifyData.success) {
     throw new Error(verifyData.error || 'تعذر التحقق من الدفع');
   }
 
-  showStatus('تم الدفع بنجاح ✓ رقم العملية: ' + (verifyData.transactionId || orderId), 'success');
+  showStatus(verifyData.delivery?.status === 'delivered'
+    ? 'تم الدفع وتسليم الطلب بنجاح ✓'
+    : 'تم الدفع والتحقق ✓ والطلب دخل مرحلة التنفيذ.', 'success');
   document.getElementById('payNowBtn').disabled = false;
   document.getElementById('payNowBtn').textContent = 'تم الدفع ✓';
+
+  if (verifyData.delivery?.content) {
+    document.getElementById('dBody').textContent = verifyData.delivery.content;
+    document.getElementById('delivery').classList.add('active');
+  }
 }
 
 async function renderEmbeddedPayment() {
@@ -749,7 +765,7 @@ async function renderEmbeddedPayment() {
         onApprove: async (data) => {
           try {
             showStatus('جاري تأكيد الدفع...', 'success');
-            await finishEmbeddedPayment(data.orderID);
+            await finishEmbeddedPayment(data.orderID, window.__aionTeacherOrderId || '');
           } catch (err) {
             showStatus(err.message || 'فشل الدفع', 'error');
           }
@@ -785,7 +801,7 @@ async function renderEmbeddedPayment() {
         onApprove: async (data) => {
           try {
             showStatus('جاري تأكيد الدفع...', 'success');
-            await finishEmbeddedPayment(data.orderID);
+            await finishEmbeddedPayment(data.orderID, window.__aionTeacherOrderId || '');
           } catch (err) {
             showStatus(err.message || 'فشل الدفع', 'error');
           }
@@ -897,15 +913,24 @@ async function handlePayPalReturn() {
     document.getElementById('payModal').classList.add('active');
     document.body.style.overflow = 'hidden';
     document.getElementById('mTitle').textContent = 'تم الدفع بنجاح ✓';
-    document.getElementById('mDesc').textContent = 'تم تأكيد العملية لدى PayPal وتسليم الطلب إلى AION.';
+    document.getElementById('mDesc').textContent = verifyData.delivery?.status === 'delivered'
+      ? 'تم تأكيد الدفع وإنشاء وتسليم طلبك.'
+      : 'تم تأكيد الدفع ووضع طلبك في قائمة التنفيذ.';
     document.getElementById('mPrice').innerHTML =
       Number(verifyData.amount || 0).toFixed(2) +
       ' USD<span class="usd-note">رقم العملية: ' +
-      (verifyData.transactionId || orderId) + '</span>';
+      (verifyData.transactionId || orderId) + '<br>رقم طلب AION: ' +
+      (verifyData.aionOrderId || '') + '</span>';
     document.getElementById('payNowBtn').style.display = 'none';
     document.getElementById('paypalFallbackBtn').style.display = 'none';
     document.getElementById('paypal-button-container').innerHTML = '';
-    showStatus('تم الدفع والتحقق بنجاح ✓', 'success');
+    if (verifyData.delivery?.content) {
+      document.getElementById('dBody').textContent = verifyData.delivery.content;
+      document.getElementById('delivery').classList.add('active');
+    }
+    showStatus(verifyData.delivery?.status === 'delivered'
+      ? 'تم الدفع والتحقق والتسليم بنجاح ✓'
+      : 'تم الدفع والتحقق بنجاح ✓ والطلب قيد التنفيذ', 'success');
   } catch (err) {
     document.getElementById('payModal').classList.add('active');
     document.body.style.overflow = 'hidden';
