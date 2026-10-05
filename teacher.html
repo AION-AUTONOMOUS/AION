@@ -423,7 +423,8 @@ a{text-decoration:none;color:inherit}
       <div id="card-cvv" style="height:48px;background:#fff;border-radius:10px;padding:4px"></div>
     </div>
   </div>
-  <button id="payNowBtn" class="pay-btn-main" onclick="payNow()">ادفع بالبطاقة داخل الموقع</button>
+  <button id="payNowBtn" class="pay-btn-main" onclick="payNow()" style="display:none">ادفع بالبطاقة داخل الموقع</button>
+  <button id="paypalFallbackBtn" class="pay-alt-btn" onclick="openPayPalFallback()" style="display:block">فتح الدفع الآمن عبر PayPal</button>
   <div style="margin:10px 0;text-align:center;color:#6b7c94;font-size:11px">أو</div>
   <div id="paypal-button-container"></div>
 </div>
@@ -644,6 +645,7 @@ function buildPrompt() {
 let paypalSdkPromise = null;
 let paypalCardFields = null;
 let paypalCardFieldsEligible = false;
+let paypalFallbackBusy = false;
 
 async function loadPayPalSDK() {
   if (window.paypal) return window.paypal;
@@ -678,7 +680,26 @@ async function createEmbeddedOrder() {
   });
   const data = await res.json();
   if (!res.ok || !data.id) throw new Error(data.error || 'فشل إنشاء طلب الدفع');
-  return data.id;
+  return data;
+}
+
+async function openPayPalFallback() {
+  if (paypalFallbackBusy) return;
+  paypalFallbackBusy = true;
+  const btn = document.getElementById('paypalFallbackBtn');
+  const old = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'جاري فتح بوابة الدفع...';
+  try {
+    const data = await createEmbeddedOrder();
+    if (!data.approvalUrl) throw new Error('لم يعرض PayPal رابط الدفع');
+    window.location.href = data.approvalUrl;
+  } catch (err) {
+    showStatus(err.message || 'تعذر فتح بوابة الدفع. حاول مرة أخرى.', 'error');
+    btn.disabled = false;
+    btn.textContent = old;
+    paypalFallbackBusy = false;
+  }
 }
 
 async function finishEmbeddedPayment(orderId) {
@@ -720,10 +741,11 @@ async function renderEmbeddedPayment() {
 
   try {
     const paypal = await loadPayPalSDK();
+    document.getElementById('paypalFallbackBtn').style.display = 'block';
 
     if (paypal.CardFields) {
       paypalCardFields = paypal.CardFields({
-        createOrder: createEmbeddedOrder,
+        createOrder: async () => (await createEmbeddedOrder()).id,
         onApprove: async (data) => {
           try {
             showStatus('جاري تأكيد الدفع...', 'success');
@@ -759,7 +781,7 @@ async function renderEmbeddedPayment() {
     if (paypal.Buttons) {
       paypal.Buttons({
         style: { layout: 'vertical', label: 'paypal', shape: 'rect' },
-        createOrder: createEmbeddedOrder,
+        createOrder: async () => (await createEmbeddedOrder()).id,
         onApprove: async (data) => {
           try {
             showStatus('جاري تأكيد الدفع...', 'success');
@@ -771,15 +793,15 @@ async function renderEmbeddedPayment() {
         onCancel: () => showStatus('تم إلغاء الدفع. يمكنك المحاولة مرة أخرى.', 'error'),
         onError: (err) => {
           console.error('AION PayPal Buttons error:', err);
-          showStatus('تعذر تحميل/إتمام طريقة الدفع.', 'error');
+          showStatus('تعذر تحميل/إتمام الدفع المضمن. استخدم زر فتح الدفع الآمن عبر PayPal.', 'error');
+          document.getElementById('paypalFallbackBtn').style.display = 'block';
         }
       }).render('#paypal-button-container');
     }
   } catch (err) {
-    cardButton.style.display = 'block';
-    cardButton.disabled = false;
-    cardButton.textContent = 'إعادة محاولة الدفع';
-    showStatus(err.message || 'بوابة الدفع غير مهيأة بعد', 'error');
+    cardButton.style.display = 'none';
+    document.getElementById('paypalFallbackBtn').style.display = 'block';
+    showStatus('الدفع المضمن غير متاح الآن. استخدم بوابة PayPal الآمنة.', 'error');
   }
 }
 
@@ -799,7 +821,10 @@ function openPay(title, price, desc) {
   document.getElementById('delivery').classList.remove('active');
   document.getElementById('payNowBtn').disabled = false;
   document.getElementById('payNowBtn').textContent = 'ادفع بالبطاقة داخل الموقع';
-  document.getElementById('payNowBtn').style.display = 'block';
+  document.getElementById('payNowBtn').style.display = 'none';
+  document.getElementById('paypalFallbackBtn').style.display = 'block';
+  document.getElementById('paypalFallbackBtn').disabled = false;
+  document.getElementById('paypalFallbackBtn').textContent = 'فتح الدفع الآمن عبر PayPal';
   document.getElementById('paypalCardFields').style.display = 'none';
   document.getElementById('paypal-button-container').innerHTML = '';
   document.getElementById('payModal').classList.add('active');
@@ -820,8 +845,7 @@ function openPay(title, price, desc) {
 async function payNow() {
   const btn = document.getElementById('payNowBtn');
   if (!paypalCardFieldsEligible || !paypalCardFields) {
-    showStatus('الدفع بالبطاقة غير متاح لهذا الحساب/البلد حاليًا. استخدم زر PayPal المضمن أدناه.', 'error');
-    return;
+    return openPayPalFallback();
   }
   btn.disabled = true;
   btn.textContent = 'جاري إرسال الدفع...';
