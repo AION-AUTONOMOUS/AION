@@ -21,7 +21,11 @@ const OFFERS = Object.freeze([
   { id:'pitch-deck', name:'Pitch Deck', priceUsd:60, delivery:'digital-document', evidence:'AION AI' },
   { id:'feasibility-study', name:'دراسة جدوى', priceUsd:30, delivery:'digital-analysis', evidence:'AION AI' },
   { id:'satellite-data', name:'تحليل بيانات الأقمار الصناعية', priceUsd:35, delivery:'space-analysis', evidence:'Copernicus/NASA' },
-  { id:'space-reports', name:'تقارير قطاع الفضاء', priceUsd:25, delivery:'space-report', evidence:'AION Space' }
+  { id:'space-reports', name:'تقارير قطاع الفضاء', priceUsd:25, delivery:'space-report', evidence:'AION Space' },
+  { id:'space-consulting', name:'استشارات فضائية', priceUsd:40, delivery:'space-consulting', evidence:'AION Space' },
+  { id:'satellite-monitoring', name:'مراقبة الأقمار الصناعية', priceUsd:99, delivery:'space-monitoring', evidence:'AION Space' },
+  { id:'remote-sensing', name:'تحليل الاستشعار عن بعد', priceUsd:30, delivery:'space-analysis', evidence:'Copernicus/NASA' },
+  { id:'launch-planning', name:'خطط إطلاق الأقمار', priceUsd:150, delivery:'space-planning', evidence:'AION Space' }
 ]);
 
 function text(v){return String(v??'').trim();}
