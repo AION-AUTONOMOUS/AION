@@ -7,7 +7,21 @@ const OFFERS = Object.freeze([
   { id:'earth-change-intelligence', name:'AION Earth Change Intelligence', priceUsd:250, delivery:'verified-analysis', evidence:'Copernicus Sentinel-2' },
   { id:'space-weather-brief', name:'AION Space Weather Risk Brief', priceUsd:180, delivery:'verified-report', evidence:'NOAA SWPC' },
   { id:'leo-situational-awareness', name:'AION LEO Situational Awareness', priceUsd:250, delivery:'verified-intelligence', evidence:'CelesTrak + operational space data' },
-  { id:'disaster-intelligence', name:'AION Rapid Disaster Intelligence', priceUsd:350, delivery:'incident-brief', evidence:'Copernicus + NASA GIBS' }
+  { id:'disaster-intelligence', name:'AION Rapid Disaster Intelligence', priceUsd:350, delivery:'incident-brief', evidence:'Copernicus + NASA GIBS' },
+  { id:'article-500', name:'مقال 500 كلمة', priceUsd:5, delivery:'digital-content', evidence:'AION AI' },
+  { id:'article-1000', name:'مقال 1000 كلمة', priceUsd:10, delivery:'digital-content', evidence:'AION AI' },
+  { id:'social-5', name:'5 منشورات سوشيال', priceUsd:5, delivery:'digital-content', evidence:'AION AI' },
+  { id:'translation-500', name:'ترجمة 500 كلمة', priceUsd:5, delivery:'digital-content', evidence:'AION AI' },
+  { id:'market-analysis', name:'تحليل سوق', priceUsd:30, delivery:'digital-analysis', evidence:'AION AI' },
+  { id:'competitor-analysis', name:'تحليل منافسين', priceUsd:20, delivery:'digital-analysis', evidence:'AION AI' },
+  { id:'business-plan', name:'Business Plan', priceUsd:50, delivery:'digital-document', evidence:'AION AI' },
+  { id:'professional-cv', name:'CV احترافي', priceUsd:10, delivery:'digital-document', evidence:'AION AI' },
+  { id:'python-script', name:'سكريبت Python', priceUsd:15, delivery:'digital-code', evidence:'AION AI' },
+  { id:'company-analysis', name:'تحليل شركة', priceUsd:15, delivery:'digital-analysis', evidence:'AION AI' },
+  { id:'pitch-deck', name:'Pitch Deck', priceUsd:60, delivery:'digital-document', evidence:'AION AI' },
+  { id:'feasibility-study', name:'دراسة جدوى', priceUsd:30, delivery:'digital-analysis', evidence:'AION AI' },
+  { id:'satellite-data', name:'تحليل بيانات الأقمار الصناعية', priceUsd:35, delivery:'space-analysis', evidence:'Copernicus/NASA' },
+  { id:'space-reports', name:'تقارير قطاع الفضاء', priceUsd:25, delivery:'space-report', evidence:'AION Space' }
 ]);
 
 function text(v){return String(v??'').trim();}
