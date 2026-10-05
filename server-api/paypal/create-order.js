@@ -5,6 +5,20 @@ import { paypalBaseUrl, paypalClientId, paypalClientSecret } from './config.js';
 
 const PAYPAL_BASE_URL = paypalBaseUrl();
 const ALLOWED_ORIGIN = process.env.AION_PUBLIC_ORIGIN || 'https://aion-production-fbf3.up.railway.app';
+const PAYPAL_TIMEOUT_MS = 8000;
+
+async function paypalFetch(url, options = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), PAYPAL_TIMEOUT_MS);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } catch (err) {
+    if (err?.name === 'AbortError') throw new Error('PayPal request timed out');
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
@@ -18,7 +32,7 @@ async function getAccessToken() {
   const clientSecret = paypalClientSecret();
   if (!clientId || !clientSecret) throw new Error('PayPal configuration is incomplete');
   const auth = Buffer.from(clientId + ':' + clientSecret).toString('base64');
-  const tokenRes = await fetch(PAYPAL_BASE_URL + '/v1/oauth2/token', {
+  const tokenRes = await paypalFetch(PAYPAL_BASE_URL + '/v1/oauth2/token', {
     method: 'POST',
     headers: { Authorization: 'Basic ' + auth, 'Content-Type': 'application/x-www-form-urlencoded' },
     body: 'grant_type=client_credentials'
@@ -73,7 +87,7 @@ export default async function handler(req, res) {
   try {
     const accessToken = await getAccessToken();
     const invoiceId = order.id;
-    const orderRes = await fetch(PAYPAL_BASE_URL + '/v2/checkout/orders', {
+    const orderRes = await paypalFetch(PAYPAL_BASE_URL + '/v2/checkout/orders', {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + accessToken,
