@@ -58,13 +58,24 @@ async function command(command) {
 
 export async function getJson(key) {
   if (!config()) return memory.get(key) ?? null;
-  const raw = await command(['GET', prefix + key]);
-  return raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : null;
+  try {
+    const raw = await command(['GET', prefix + key]);
+    return raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : null;
+  } catch (error) {
+    memory.set(key, memory.get(key) ?? null);
+    console.warn('AION stack store GET degraded to memory:', String(error?.message || error));
+    return memory.get(key) ?? null;
+  }
 }
 
 export async function setJson(key, value) {
   if (!config()) { memory.set(key, value); return value; }
-  await command(['SET', prefix + key, JSON.stringify(value)]);
+  try {
+    await command(['SET', prefix + key, JSON.stringify(value)]);
+  } catch (error) {
+    memory.set(key, value);
+    console.warn('AION stack store SET degraded to memory:', String(error?.message || error));
+  }
   return value;
 }
 
@@ -72,7 +83,11 @@ export async function addToIndex(indexName, id) {
   if (!config()) return id;
   const index = indexes[indexName];
   if (!index) throw new Error('Unknown stack index: ' + indexName);
-  await command(['SADD', index, id]);
+  try {
+    await command(['SADD', index, id]);
+  } catch (error) {
+    console.warn('AION stack store index degraded to memory:', String(error?.message || error));
+  }
   return id;
 }
 
@@ -83,8 +98,14 @@ export async function listIndexed(indexName) {
   }
   const index = indexes[indexName];
   if (!index) throw new Error('Unknown stack index: ' + indexName);
-  const ids = await command(['SMEMBERS', index]);
-  if (!Array.isArray(ids) || ids.length === 0) return [];
-  const values = await Promise.all(ids.map(id => getJson(indexName + ':' + id)));
-  return values.filter(Boolean);
+  try {
+    const ids = await command(['SMEMBERS', index]);
+    if (!Array.isArray(ids) || ids.length === 0) return [];
+    const values = await Promise.all(ids.map(id => getJson(indexName + ':' + id)));
+    return values.filter(Boolean);
+  } catch (error) {
+    console.warn('AION stack store LIST degraded to memory:', String(error?.message || error));
+    const prefixKey = indexName + ':';
+    return [...memory.entries()].filter(([key]) => key.startsWith(prefixKey)).map(([, value]) => value);
+  }
 }
