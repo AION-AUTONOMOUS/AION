@@ -20,7 +20,7 @@ async function getClient() {
 
   let client = globalThis[GLOBAL_KEY];
   if (!client) {
-    client = createClient({ url });
+    client = createClient({ url, socket: { connectTimeout: 2500, reconnectStrategy: false } });
     client.on('error', error => {
       console.error('AION Railway Redis client error:', error);
     });
@@ -36,6 +36,7 @@ async function getClient() {
 
 export async function railwayRedisCommand(command) {
   const client = await getClient();
+  const run = async () => {
   if (!client) return null;
 
   const [name, ...rawArgs] = command.map(argument => String(argument));
@@ -79,6 +80,8 @@ export async function railwayRedisCommand(command) {
     default:
       throw new Error('Unsupported Railway Redis command: ' + name);
   }
+  };
+  return await Promise.race([run(), new Promise((_, reject) => setTimeout(() => reject(new Error('Redis command timeout')), 3000))]);
 }
 
 export async function railwayRedisPing() {
