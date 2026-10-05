@@ -4,7 +4,7 @@ import { getService } from '../../server-api/paypal/services.js';
 import { paypalBaseUrl, paypalClientId, paypalClientSecret } from './config.js';
 
 const PAYPAL_BASE_URL = paypalBaseUrl();
-const ALLOWED_ORIGIN = process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
+const ALLOWED_ORIGIN = process.env.AION_PUBLIC_ORIGIN || 'https://aion-production-fbf3.up.railway.app';
 
 function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
@@ -57,7 +57,9 @@ export default async function handler(req, res) {
         application_context: {
           brand_name: 'AION AUTONOMOUS',
           shipping_preference: 'NO_SHIPPING',
-          user_action: 'PAY_NOW'
+          user_action: 'PAY_NOW',
+          return_url: ALLOWED_ORIGIN + '/teacher.html?paypal_return=1',
+          cancel_url: ALLOWED_ORIGIN + '/teacher.html?paypal_cancel=1'
         },
         purchase_units: [{
           reference_id: service.id,
@@ -73,7 +75,11 @@ export default async function handler(req, res) {
     if (!orderRes.ok || !orderData.id) throw new Error(orderData.message || 'PayPal order creation failed');
 
     const approvalLink = Array.isArray(orderData.links)
-      ? orderData.links.find(link => link.rel === 'approve')?.href
+      ? (
+          orderData.links.find(link => link.rel === 'payer-action')?.href ||
+          orderData.links.find(link => link.rel === 'approve')?.href ||
+          null
+        )
       : null;
 
     const verificationToken = crypto.createHmac('sha256', process.env.AION_VERIFY_SECRET || paypalClientSecret())
