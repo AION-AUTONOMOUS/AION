@@ -866,13 +866,13 @@ async function handlePayPalReturn() {
   const cancelled = params.get('paypal_cancel') === '1';
 
   if (cancelled) {
-    const clean = window.location.pathname;
-    window.history.replaceState({}, document.title, clean);
+    window.history.replaceState({}, document.title, window.location.pathname);
     return;
   }
   if (!returned || !orderId) return;
 
   window.history.replaceState({}, document.title, window.location.pathname);
+
   try {
     const captureRes = await fetch('/api/paypal/capture-order', {
       method: 'POST',
@@ -898,14 +898,30 @@ async function handlePayPalReturn() {
     document.body.style.overflow = 'hidden';
     document.getElementById('mTitle').textContent = 'تم الدفع بنجاح ✓';
     document.getElementById('mDesc').textContent = 'تم تأكيد العملية لدى PayPal وتسليم الطلب إلى AION.';
-    document.getElementById('mPrice').innerHTML = '
+    document.getElementById('mPrice').innerHTML =
+      Number(verifyData.amount || 0).toFixed(2) +
+      ' USD<span class="usd-note">رقم العملية: ' +
+      (verifyData.transactionId || orderId) + '</span>';
+    document.getElementById('payNowBtn').style.display = 'none';
+    document.getElementById('paypalFallbackBtn').style.display = 'none';
+    document.getElementById('paypal-button-container').innerHTML = '';
+    showStatus('تم الدفع والتحقق بنجاح ✓', 'success');
+  } catch (err) {
+    document.getElementById('payModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    showStatus(err.message || 'تعذر تأكيد الدفع', 'error');
+  }
+}
 
 function copyDelivery() {
   const text = document.getElementById('dBody').textContent;
   navigator.clipboard.writeText(text).then(function() {
     const btn = document.querySelector('.d-copy');
+    if (!btn) return;
     btn.textContent = 'تم النسخ';
     setTimeout(function() { btn.textContent = 'نسخ'; }, 2000);
+  }).catch(function() {
+    showStatus('تعذر النسخ تلقائيًا', 'error');
   });
 }
 
@@ -914,7 +930,6 @@ document.addEventListener('DOMContentLoaded', function() {
   detectCountry();
   handlePayPalReturn();
 });
-</script>
 
 <script src="lang.js"></script>
 
