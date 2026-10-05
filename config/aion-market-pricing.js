@@ -7,7 +7,7 @@ export const MARKET_PRICE_SOURCES=Object.freeze({
   equity:['exchange','licensed-market-data-provider'],
   fund:['fund-issuer','regulated-market-data-provider'],
   bond:['issuer','exchange','regulated-market-data-provider','regulated-custodian'],
-  treasury-security:['issuer','exchange','regulated-market-data-provider','regulated-custodian'],
+  'treasury-security':['issuer','exchange','regulated-market-data-provider','regulated-custodian'],
   money-market-instrument:['issuer','regulated-market-data-provider','regulated-custodian'],
   commodity:['exchange','regulated-market-data-provider'],
   real-estate:['official-registry','licensed-accredited-valuation','regulated-market-data-provider'],
