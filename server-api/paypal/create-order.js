@@ -6,6 +6,7 @@ import { paypalBaseUrl, paypalClientId, paypalClientSecret } from './config.js';
 const PAYPAL_BASE_URL = paypalBaseUrl();
 const ALLOWED_ORIGIN = process.env.AION_PUBLIC_ORIGIN || 'https://aion-production-fbf3.up.railway.app';
 const PAYPAL_TIMEOUT_MS = 8000;
+const STORAGE_TIMEOUT_MS = 2500;
 
 async function paypalFetch(url, options = {}) {
   const controller = new AbortController();
@@ -17,6 +18,20 @@ async function paypalFetch(url, options = {}) {
     throw err;
   } finally {
     clearTimeout(timer);
+  }
+}
+
+async function persistTeacherOrder(order) {
+  try {
+    await Promise.race([
+      (async () => {
+        await setJson('teacher-orders:' + order.id, order);
+        await addToIndex('teacher-orders', order.id);
+      })(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('AION order storage timed out')), STORAGE_TIMEOUT_MS))
+    ]);
+  } catch (err) {
+    console.error('AION teacher order storage warning:', err);
   }
 }
 
@@ -81,9 +96,6 @@ export default async function handler(req, res) {
     createdAt: new Date().toISOString()
   };
 
-  await setJson('teacher-orders:' + order.id, order);
-  await addToIndex('teacher-orders', order.id);
-
   try {
     const accessToken = await getAccessToken();
     const invoiceId = order.id;
@@ -127,7 +139,9 @@ export default async function handler(req, res) {
       status: 'PAYMENT_PENDING',
       updatedAt: new Date().toISOString()
     };
-    await setJson('teacher-orders:' + order.id, updated);
+
+    // Redis must never block the customer's payment screen.
+    void persistTeacherOrder(updated);
 
     return res.status(200).json({
       id: orderData.id,
@@ -141,7 +155,13 @@ export default async function handler(req, res) {
       approvalUrl: approvalLink || null
     });
   } catch (err) {
-    await setJson('teacher-orders:' + order.id, {...order,status:'PAYMENT_FAILED',paymentStatus:'failed',paymentError:String(err?.message||err),updatedAt:new Date().toISOString()});
+    void persistTeacherOrder({
+      ...order,
+      status: 'PAYMENT_FAILED',
+      paymentStatus: 'failed',
+      paymentError: String(err?.message || err),
+      updatedAt: new Date().toISOString()
+    });
     console.error('AION PayPal create-order error:', err);
     return res.status(502).json({ error: 'Payment provider unavailable', aionOrderId: order.id });
   }
