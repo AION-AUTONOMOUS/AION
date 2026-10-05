@@ -59,15 +59,6 @@ export default async function handler(req, res) {
           shipping_preference: 'NO_SHIPPING',
           user_action: 'PAY_NOW'
         },
-        payment_source: {
-          card: {
-            attributes: {
-              verification: {
-                method: 'SCA_WHEN_REQUIRED'
-              }
-            }
-          }
-        },
         purchase_units: [{
           reference_id: service.id,
           invoice_id: aionOrderId || invoiceId,
