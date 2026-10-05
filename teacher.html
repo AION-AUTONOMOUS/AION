@@ -931,36 +931,6 @@ document.addEventListener('DOMContentLoaded', function() {
   handlePayPalReturn();
 });
 
-<script src="lang.js"></script>
-
-</body>
-</html>
- + Number(verifyData.amount).toFixed(2) +
-      '<span class="usd-note">رقم العملية: ' + (verifyData.transactionId || orderId) + '</span>';
-    document.getElementById('payNowBtn').style.display = 'none';
-    document.getElementById('paypalFallbackBtn').style.display = 'none';
-    showStatus('تم الدفع والتحقق بنجاح ✓', 'success');
-  } catch (err) {
-    document.getElementById('payModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-    showStatus(err.message || 'تعذر تأكيد الدفع', 'error');
-  }
-}
-
-function copyDelivery() {
-  const text = document.getElementById('dBody').textContent;
-  navigator.clipboard.writeText(text).then(function() {
-    const btn = document.querySelector('.d-copy');
-    btn.textContent = 'تم النسخ';
-    setTimeout(function() { btn.textContent = 'نسخ'; }, 2000);
-  });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  updateAllPrices();
-  detectCountry();
-  handlePayPalReturn();
-});
 </script>
 
 <script src="lang.js"></script>
