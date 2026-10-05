@@ -45,11 +45,6 @@ const OFFERS = Object.freeze([
   { id:'business-directory', name:'دليل الشركات', priceUsd:8, delivery:'digital-data', evidence:'AION Intelligence' },
   { id:'intelligence-api-access', name:'AION API — وصول شهري', priceUsd:99, delivery:'digital-access', evidence:'AION Intelligence' },
   { id:'strategic-consulting', name:'استشارات استراتيجية', priceUsd:45, delivery:'digital-consulting', evidence:'AION Intelligence' },
-  { id:'satellite-data', name:'تحليل بيانات الأقمار الصناعية', priceUsd:35, delivery:'space-analysis', evidence:'Copernicus/NASA' },
-  { id:'space-reports', name:'تقارير قطاع الفضاء', priceUsd:25, delivery:'space-report', evidence:'AION Space' },
-  { id:'space-consulting', name:'استشارات فضائية', priceUsd:40, delivery:'space-consulting', evidence:'AION Space' },
-  { id:'satellite-monitoring', name:'مراقبة الأقمار الصناعية', priceUsd:99, delivery:'space-monitoring', evidence:'AION Space' },
-  { id:'remote-sensing', name:'تحليل الاستشعار عن بعد', priceUsd:30, delivery:'space-analysis', evidence:'Copernicus/NASA' },
 ]);
 
 function text(v){return String(v??'').trim();}
