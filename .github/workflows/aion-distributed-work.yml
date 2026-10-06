@@ -16,6 +16,7 @@ env:
 jobs:
   workers:
     name: Worker group
+    if: vars.AION_AUTONOMOUS_WORK_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -42,6 +43,7 @@ jobs:
 
   global_projects:
     name: AION global project
+    if: vars.AION_AUTONOMOUS_WORK_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -81,3 +83,4 @@ jobs:
         with:
           name: global-project-${{ matrix.product }}
           path: reports/global-project-result.json
+

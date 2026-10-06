@@ -2,7 +2,7 @@ const SANDBOX_BASE_URL = 'https://api-m.sandbox.paypal.com';
 const PRODUCTION_BASE_URL = 'https://api-m.paypal.com';
 
 export function paypalEnvironment() {
-  const value = String(process.env.PAYPAL_ENVIRONMENT || 'live').trim().toLowerCase();
+  const value = String(process.env.PAYPAL_ENVIRONMENT || 'sandbox').trim().toLowerCase();
   return value === 'production' || value === 'live' ? 'production' : 'sandbox';
 }
 
@@ -23,3 +23,4 @@ export function paypalClientSecret() {
     ''
   ).trim();
 }
+

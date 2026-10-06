@@ -1,16 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { AGENTS, DEPARTMENTS, TOTAL_AGENTS, fleetHealth } from '../config/aion-fleet.js';
+import { agentAt, DEPARTMENTS, TOTAL_AGENTS, fleetHealth, iterateAgents } from '../config/aion-fleet.js';
 import { AUTONOMOUS_POLICIES, routeTask } from '../config/aion-control-plane.js';
 import { dispatchTask } from '../config/aion-workers.js';
 import { processOne, setActionExecutor, resetStore } from '../config/aion-worker-runtime.js';
 
-test('fleet is exactly 20 departments and 10,000 roles', () => {
+test('fleet is exactly 20 departments and 1,000,000 logical roles', () => {
   assert.equal(Object.keys(DEPARTMENTS).length, 20);
-  assert.equal(TOTAL_AGENTS, 10000);
-  assert.equal(AGENTS.length, 10000);
-  assert.equal(fleetHealth().total_agents, 10000);
+  assert.equal(TOTAL_AGENTS, 1_000_000);
+  assert.equal(fleetHealth().total_agents, 1_000_000);
+  assert.equal(agentAt(TOTAL_AGENTS - 1).department, 'communications');
+  assert.deepEqual(
+    [...iterateAgents(TOTAL_AGENTS - 2, 10)].map(agent => agent.index),
+    [TOTAL_AGENTS - 2, TOTAL_AGENTS - 1]
+  );
 });
 
 test('control plane keeps sensitive money/assets gated and political targeting blocked', () => {
@@ -71,3 +75,4 @@ test('stack health exposes frontier and owner-only governance', async () => {
   assert.equal(health.governance.mode, 'owner-only');
   assert.equal(health.governance.ordinaryWorkAutonomous, true);
 });
+
