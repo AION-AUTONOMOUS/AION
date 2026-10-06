@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#4ade80">
+<meta name="theme-color" content="#38bdf8">
 <link rel="manifest" href="/manifest-teacher.json">
-<title>AION Teacher | تطبيق المعلم والطالب</title>
+<title>Teacher | تطبيق المعلم والطالب</title>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -15,7 +15,7 @@ a{text-decoration:none;color:inherit}
 .topnav{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:linear-gradient(90deg,rgba(2,8,23,.95),rgba(0,30,70,.85),rgba(2,8,23,.95));backdrop-filter:blur(20px);border:1px solid rgba(0,180,255,.25);border-radius:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px}
 .logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px}
 .logo svg{width:34px;height:34px}
-.logo .s{font-size:8px;color:#4ade80;letter-spacing:4px;margin-top:2px}
+.logo .s{font-size:8px;color:#38bdf8;letter-spacing:4px;margin-top:2px}
 .menu{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .menu a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:600;transition:.3s}
 .menu a:hover{color:#00c8ff}
@@ -122,14 +122,12 @@ a{text-decoration:none;color:inherit}
 
 <div class="topnav">
 <div class="logo">
-<svg viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#22c55e"/></linearGradient></defs><path d="M50 8 L88 88 L72 88 L50 38 L28 88 L12 88 Z" fill="url(#g)"/><circle cx="50" cy="58" r="7" fill="#020817"/></svg>
-<div>AION<div class="s">TEACHER</div></div>
+<svg viewBox="0 0 100 100" aria-label="T"><rect x="8" y="8" width="84" height="84" rx="22" fill="#38bdf8"/><path d="M25 27h50v14H57v34H43V41H25z" fill="#020817"/></svg>
+<div>Teacher<div class="s">T</div></div>
 </div>
 <div class="menu">
-<a href="index.html">الرئيسية</a>
-<a href="academy.html">Academy</a>
+<a href="teacher.html">الرئيسية</a>
 <a href="chat.html">AI Tutor</a>
-<a href="pricing.html">الأسعار</a>
 <span class="lang-btn">اللغات</span>
 </div>
 </div>
@@ -137,7 +135,7 @@ a{text-decoration:none;color:inherit}
 <div class="view active" id="mainView">
 <div class="hero">
 <div class="content">
-<h1>تطبيق <span>المعلم والطالب</span></h1>
+<h1>Teacher <span>المعلم والطالب</span></h1>
 <p>مدعوم بالذكاء الاصطناعي — كل المناهج — أسعار رمزية للجميع</p>
 </div>
 </div>
@@ -446,7 +444,7 @@ a{text-decoration:none;color:inherit}
 </div>
 
 <div class="footer">
-<strong>AION AUTONOMOUS</strong> — Teacher App<br>
+<strong>Teacher</strong> — تطبيق المعلم والطالب<br>
 aion.genesisss@gmail.com<br><br>
 <a href="https://twitter.com/AIONNetworozes">Twitter</a>
 <a href="https://github.com/AION-AUTONOMOUS/AION">GitHub</a>
@@ -947,7 +945,7 @@ function printDelivery() {
   const title = document.getElementById('mTitle')?.textContent?.replace('تم الدفع بنجاح ✓','').trim() || 'خدمة AION';
   const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=900,height=700');
   if (!printWindow) { showStatus('يرجى السماح بالنوافذ المنبثقة للطباعة.', 'error'); return; }
-  printWindow.document.write('<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>'+escapeHtml(title)+'</title><style>body{font-family:Arial,"Segoe UI",sans-serif;padding:32px;line-height:1.9;color:#111}h1{font-size:24px;margin-bottom:8px}p.meta{color:#666;font-size:12px;margin-bottom:24px;white-space:pre-wrap}.content{white-space:pre-wrap;font-size:15px} @media print{body{padding:10mm}h1{font-size:20px}}</style></head><body><h1>AION — '+escapeHtml(title)+'</h1><p class="meta">تم الشراء والتحقق من الدفع عبر AION</p><div class="content">'+escapeHtml(content)+'</div><script>window.onload=function(){window.print();setTimeout(function(){window.close()},500)}<\\/script></body></html>');
+  printWindow.document.write('<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>'+escapeHtml(title)+'</title><style>body{font-family:Arial,"Segoe UI",sans-serif;padding:32px;line-height:1.9;color:#111}h1{font-size:24px;margin-bottom:8px}p.meta{color:#666;font-size:12px;margin-bottom:24px;white-space:pre-wrap}.content{white-space:pre-wrap;font-size:15px} @media print{body{padding:10mm}h1{font-size:20px}}</style></head><body><h1>Teacher — '+escapeHtml(title)+'</h1><p class="meta">تم الشراء والتحقق من الدفع عبر Teacher</p><div class="content">'+escapeHtml(content)+'</div><script>window.onload=function(){window.print();setTimeout(function(){window.close()},500)}<\\/script></body></html>');
   printWindow.document.close();
 }
 
