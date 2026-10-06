@@ -1,6 +1,6 @@
 import { openAIGatewayHealth, runOpenAI } from '../config/aion-openai-gateway.js';
 
-export async function openAIIntelligenceHandler(req, res) {
+export default async function openAIIntelligenceHandler(req, res) {
   if (req.method === 'GET') return res.status(200).json(openAIGatewayHealth());
   if (req.method !== 'POST') {
     res.setHeader('allow', 'GET, POST');
