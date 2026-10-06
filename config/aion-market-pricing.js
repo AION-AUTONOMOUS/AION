@@ -8,11 +8,11 @@ export const MARKET_PRICE_SOURCES=Object.freeze({
   fund:['fund-issuer','regulated-market-data-provider'],
   bond:['issuer','exchange','regulated-market-data-provider','regulated-custodian'],
   'treasury-security':['issuer','exchange','regulated-market-data-provider','regulated-custodian'],
-  money-market-instrument:['issuer','regulated-market-data-provider','regulated-custodian'],
+  'money-market-instrument':['issuer','regulated-market-data-provider','regulated-custodian'],
   commodity:['exchange','regulated-market-data-provider'],
-  real-estate:['official-registry','licensed-accredited-valuation','regulated-market-data-provider'],
-  energy-infrastructure:['issuer','regulated-market-data-provider','licensed-accredited-valuation'],
-  tokenized-rwa:['issuer','official-registry','regulated-custodian','regulated-market-data-provider']
+  'real-estate':['official-registry','licensed-accredited-valuation','regulated-market-data-provider'],
+  'energy-infrastructure':['issuer','regulated-market-data-provider','licensed-accredited-valuation'],
+  'tokenized-rwa':['issuer','official-registry','regulated-custodian','regulated-market-data-provider']
 });
 
 export function validateMarketPrice(input={}){
@@ -37,3 +37,4 @@ export function createMarketPriceRecord(input={}){
   const fingerprint=crypto.createHash('sha256').update(JSON.stringify(payload)).digest('hex');
   return {...payload,fingerprint,verified:true,liveMarketPrice:true,fakePrice:false,fallbackPrice:false};
 }
+

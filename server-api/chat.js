@@ -1,4 +1,4 @@
-import { AGENTS, TOTAL_AGENTS, findAgent } from '../config/aion-fleet.js';
+import { TOTAL_AGENTS, findAgent } from '../config/aion-fleet.js';
 
 const ALLOWED_ORIGIN =
   process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';

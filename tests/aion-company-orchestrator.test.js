@@ -9,8 +9,9 @@ test('company orchestrator routes all 20 departments', () => {
   assert.ok(plan.every(x => x.model));
 });
 
-test('fleet integrity is 10,000 roles', () => {
+test('fleet integrity is 1,000,000 logical roles', () => {
   const health = companyOrchestratorHealth();
-  assert.equal(health.registeredAgentRoles, 10000);
+  assert.equal(health.registeredAgentRoles, 1_000_000);
   assert.equal(health.roleRegistryIntegrity, true);
 });
+

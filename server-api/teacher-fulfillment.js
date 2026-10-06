@@ -55,9 +55,7 @@ export async function fulfillTeacherOrder(orderId) {
     'متطلبات العميل: ' + order.details,
     'محتوى PDF المستخرج: ' + order.pdfText,
     'صيغة الإخراج المطلوبة: ' + outputFormat(order.serviceId)
-  ].join('
-
-');
+  ].join('\n\n');
 
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -96,3 +94,4 @@ export async function fulfillTeacherOrder(orderId) {
     return {status:'failed',reason:String(error?.message||error)};
   }
 }
+
