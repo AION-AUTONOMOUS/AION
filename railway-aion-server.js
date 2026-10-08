@@ -153,7 +153,11 @@ async function serveStatic(req, res, pathname) {
   const target = path.resolve(ROOT, "." + requested);
   if (!target.startsWith(ROOT + path.sep) && target !== ROOT) return false;
   try {
-    const data = await fs.readFile(target);
+    let data = await fs.readFile(target);
+    if (path.extname(target).toLowerCase() === ".html" && !["/teacher.html","/payment-success.html"].includes(requested) && !data.toString("utf8").includes('src="/print-all.js"')) {
+      const html = data.toString("utf8");
+      data = Buffer.from(html.includes("</body>") ? html.replace("</body>", '<script src="/print-all.js"></script></body>') : html, "utf8");
+    }
     res.writeHead(200, {
       "Content-Type": mime[path.extname(target).toLowerCase()] || "application/octet-stream",
       "Cache-Control": requested === "/index.html" ? "no-store" : "public, max-age=300"
