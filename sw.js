@@ -9,6 +9,10 @@ const urlsToCache = [
   '/autonomy.html',
   '/teacher.html',
   '/manifest-teacher.json',
+  '/teacher-ai.js',
+  '/icons/teacher-192.svg',
+  '/icons/teacher-512.svg',
+  '/icons/teacher-512-maskable.svg',
   '/manifest.json',
   '/icons/aion-company.svg'
 ];
