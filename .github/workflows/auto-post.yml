@@ -12,13 +12,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Check auto-post readiness
+        id: readiness
+        shell: bash
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [[ ! -f scripts/post.js ]]; then
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+            {
+              echo '## Auto-post skipped'
+              echo ''
+              echo 'No post was generated or sent: scripts/post.js is missing.'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          if [[ -z "$GROQ_API_KEY" || -z "$DISCORD_WEBHOOK" ]]; then
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+            {
+              echo '## Auto-post skipped'
+              echo ''
+              echo 'No post was generated or sent: required provider or Discord configuration is missing.'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo 'ready=true' >> "$GITHUB_OUTPUT"
+
       - name: Setup Node
+        if: steps.readiness.outputs.ready == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      
+
       - name: Run auto-post
+        if: steps.readiness.outputs.ready == 'true'
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
