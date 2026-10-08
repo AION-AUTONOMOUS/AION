@@ -7,6 +7,8 @@ const urlsToCache = [
   '/academy.html',
   '/chat.html',
   '/autonomy.html',
+  '/teacher.html',
+  '/manifest-teacher.json',
   '/manifest.json',
   '/icons/aion-company.svg'
 ];
