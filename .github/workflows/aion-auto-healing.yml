@@ -1,13 +1,21 @@
 name: AION Auto-Healing
 on:
   workflow_run:
-    workflows: ["AION Distributed Real Work", "AION Security Shield", "AION Autonomous Maintenance"]
+    workflows:
+      [
+        "AION Distributed Real Work",
+        "AION Security Shield",
+        "AION Autonomous Maintenance",
+      ]
     types: [completed]
   workflow_dispatch:
 permissions:
   contents: write
   issues: write
   pull-requests: write
+concurrency:
+  group: aion-auto-healing
+  cancel-in-progress: false
 jobs:
   diagnose-and-repair:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'failure' }}
@@ -48,4 +56,30 @@ jobs:
         if: ${{ steps.repair.outcome == 'failure' }}
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue create --title "AION automated security incident" --body "Automated shield detected a failure and could not complete the safe repair path. Human review is required."
+          SOURCE_WORKFLOW: ${{ github.event.workflow_run.name || github.workflow }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id || github.run_id }}
+          SOURCE_RUN_URL: ${{ github.event.workflow_run.html_url || '' }}
+        run: |
+          set -euo pipefail
+          body_file="$RUNNER_TEMP/aion-security-incident.md"
+          {
+            echo "Automated dependency repair could not complete; human review is required."
+            echo
+            printf 'Source workflow: `%s`\n' "${SOURCE_WORKFLOW:-unknown}"
+            printf 'Source run ID: `%s`\n' "${SOURCE_RUN_ID:-unknown}"
+            if [[ -n "${SOURCE_RUN_URL:-}" ]]; then
+              printf 'Source run: %s\n' "$SOURCE_RUN_URL"
+            fi
+            printf 'Auto-Healing run: %s/%s/actions/runs/%s\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
+            echo
+            echo "This issue is updated in place while an incident with the same title is open, so repeated failures do not create another ticket."
+          } > "$body_file"
+
+          existing_issue="$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search 'in:title "AION automated security incident"' --limit 1 --json number --jq '.[0].number // ""')"
+          if [[ -n "$existing_issue" ]]; then
+            gh issue edit "$existing_issue" --body-file "$body_file"
+            echo "Updated existing incident issue #$existing_issue with the latest run context."
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "AION automated security incident" --body-file "$body_file"
+          fi
+
