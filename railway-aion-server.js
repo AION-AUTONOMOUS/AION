@@ -154,7 +154,7 @@ async function serveStatic(req, res, pathname) {
   if (!target.startsWith(ROOT + path.sep) && target !== ROOT) return false;
   try {
     let data = await fs.readFile(target);
-    if (path.extname(target).toLowerCase() === ".html" && !["/teacher.html","/payment-success.html"].includes(requested) && !data.toString("utf8").includes('src="/print-all.js"')) {
+    if (path.extname(target).toLowerCase() === ".html" && requested !== "/payment-success.html" && !data.toString("utf8").includes('src="/print-all.js"')) {
       const html = data.toString("utf8");
       data = Buffer.from(html.includes("</body>") ? html.replace("</body>", '<script src="/print-all.js"></script></body>') : html, "utf8");
     }
