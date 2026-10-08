@@ -4,7 +4,7 @@
   "short_name": "Teacher",
   "description": "تطبيق المعلم والطالب مدعوم بالذكاء الاصطناعي",
   "start_url": "/teacher.html",
-  "scope": "/teacher-app/",
+  "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#020817",
