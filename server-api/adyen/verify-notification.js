@@ -11,7 +11,7 @@ export function verifyAdyenStandardNotification(item, hmacKey = process.env.ADYE
   if (typeof hmacKey !== 'string' || !/^[0-9a-fA-F]{64,}$/.test(hmacKey) || hmacKey.length % 2 !== 0) return false;
 
   const signature = item.additionalData?.hmacSignature;
-  if (typeof signature !== 'string' || !signature) return false;
+  if (typeof signature !== 'string' || !/^[A-Za-z0-9+/]+={0,2}$/.test(signature) || signature.length % 4 !== 0) return false;
 
   const fields = [
     item.pspReference,
@@ -30,12 +30,7 @@ export function verifyAdyenStandardNotification(item, hmacKey = process.env.ADYE
     .createHmac('sha256', Buffer.from(hmacKey, 'hex'))
     .update(payload, 'utf8')
     .digest();
-  let supplied;
-  try {
-    supplied = Buffer.from(signature, 'base64');
-  } catch {
-    return false;
-  }
+  const supplied = Buffer.from(signature, 'base64');
   if (supplied.length !== expected.length) return false;
   return crypto.timingSafeEqual(supplied, expected);
 }
