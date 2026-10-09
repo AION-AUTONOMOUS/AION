@@ -44,6 +44,7 @@ export async function railwayRedisCommand(command) {
     case 'GET':
       return client.get(rawArgs[0]);
     case 'SET':
+      if (rawArgs[2]?.toUpperCase() === 'NX') return client.set(rawArgs[0], rawArgs[1], { NX: true });
       return client.set(rawArgs[0], rawArgs[1]);
     case 'SADD':
       return client.sAdd(rawArgs[0], rawArgs.slice(1));
