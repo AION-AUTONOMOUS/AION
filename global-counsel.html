@@ -48,9 +48,12 @@
 <div class="field"><label for="srcPublished">تاريخ النشر أو صدور الحكم</label><input id="srcPublished" type="date"></div>
 <div class="field"><label for="srcEffective">تاريخ النفاذ (إن انطبق)</label><input id="srcEffective" type="date"></div>
 <div class="field"><label for="srcChecked">تاريخ فتح المصدر والتحقق يدويًا</label><input id="srcChecked" type="date"></div>
+<div class="field"><label for="srcVersionDate">تاريخ آخر تعديل/نسخة ظاهرة بالمصدر</label><input id="srcVersionDate" type="date"></div>
+<div class="field"><label for="srcStatus">حالة النص بعد المراجعة</label><select id="srcStatus"><option value="غير محسوم">غير محسوم / لم يُفحص</option><option value="ساري بحسب الفحص اليدوي">ساري بحسب الفحص اليدوي</option><option value="عُثر على تعديل">عُثر على تعديل</option><option value="تعارض بين المصادر">تعارض بين المصادر</option><option value="ملغى أو مستبدل بحسب المصدر">ملغى أو مستبدل بحسب المصدر</option></select></div>
 <div class="field"><label for="srcPinpoint">رقم الصفحة / الفقرة / موضع النص</label><input id="srcPinpoint" maxlength="160" placeholder="المادة، الفقرة، الصفحة أو رابط الجزء"></div>
 <div class="field" style="grid-column:1/-1"><label for="srcUrl">الرابط المباشر للمصدر الرسمي (HTTPS)</label><input id="srcUrl" type="url" maxlength="1000" placeholder="https://..." inputmode="url"></div>
-<div class="field" style="grid-column:1/-1"><label for="srcNote">ملاحظة تحقق غير سرية</label><textarea id="srcNote" maxlength="1200" placeholder="هل النص ساري؟ هل توجد تعديلات؟ ما الذي لم تتمكن من تأكيده؟"></textarea></div>
+<div class="field" style="grid-column:1/-1"><label for="srcConflict">التعديل أو التعارض أو نقطة عدم اليقين</label><textarea id="srcConflict" maxlength="1200" placeholder="اذكر رقم التعديل وتاريخه، المصدر المقابل، أو سبب عدم القدرة على الجزم. لا تخمّن."></textarea></div>
+<div class="field" style="grid-column:1/-1"><label for="srcNote">ملاحظة تحقق غير سرية</label><textarea id="srcNote" maxlength="1200" placeholder="ما الذي طابقته بنفسك؟ وما الذي لا يزال يحتاج مراجعة؟"></textarea></div>
 </div>
 <div class="checks"><label><input id="srcManualVerified" type="checkbox"> فتحت الرابط بنفسي، وتأكدت أنه مصدر رسمي وأن البيانات أعلاه تطابق الصفحة</label></div>
 <div class="source-actions"><button class="btn primary" id="addSourceBtn" type="button">إضافة إلى سجل الاستشهادات</button><button class="btn" id="exportSourcesBtn" type="button">نسخ السجل للمراجعة</button><button class="btn" id="clearSourcesBtn" type="button">مسح السجل</button></div>
@@ -87,7 +90,7 @@ document.getElementById("buildStrategy").addEventListener("click",()=>{const v=i
 
 
 const sourceRecords=[];
-const sourceFields=["srcJurisdiction","srcType","srcTitle","srcCitation","srcPublished","srcEffective","srcChecked","srcPinpoint","srcUrl","srcNote"];
+const sourceFields=["srcJurisdiction","srcType","srcTitle","srcCitation","srcPublished","srcEffective","srcChecked","srcVersionDate","srcStatus","srcPinpoint","srcUrl","srcConflict","srcNote"];
 const sourceValue=id=>document.getElementById(id).value.trim();
 const safeText=s=>String(s||"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 function renderSourceRecords(){
@@ -95,7 +98,7 @@ function renderSourceRecords(){
  const status=document.getElementById("sourceRegisterStatus");
  status.textContent=sourceRecords.length+" مصدر مسجل — التسجيل محلي مؤقت، ولا يعني تحققًا قانونيًا آليًا.";
  if(!sourceRecords.length){host.innerHTML='<div class="source-empty">لم تُضف مصادر بعد. ابدأ بمصدر رسمي ذي صلة بالقضية، ولا تسجل اقتباسًا لم تراجعه.</div>';return;}
- host.innerHTML=sourceRecords.map((s,i)=>'<article class="source-record"><h4>'+safeText(s.title||"مصدر بلا عنوان")+'</h4><span class="verify-badge">'+(s.verified?"تحقق يدوي أقرّه المستخدم":"غير متحقق")+'</span><p><b>الاختصاص:</b> '+safeText(s.jurisdiction||"غير محدد")+' · <b>النوع:</b> '+safeText(s.type)+'</p><p><b>المرجع:</b> '+safeText(s.citation||"غير محدد")+' · <b>الموضع:</b> '+safeText(s.pinpoint||"غير محدد")+'</p><p><b>النشر/الصدور:</b> '+safeText(s.published||"غير مسجل")+' · <b>النفاذ:</b> '+safeText(s.effective||"غير مسجل")+' · <b>فحص المصدر:</b> '+safeText(s.checked||"غير مسجل")+'</p><p><a href="'+safeText(s.url)+'" target="_blank" rel="noopener noreferrer">فتح المصدر المسجل</a></p><p>'+safeText(s.note||"لا توجد ملاحظات.")+'</p><div class="source-actions"><button class="btn" type="button" data-remove-source="'+i+'">حذف هذا السجل</button></div></article>').join("");
+ host.innerHTML=sourceRecords.map((s,i)=>'<article class="source-record"><h4>'+safeText(s.title||"مصدر بلا عنوان")+'</h4><span class="verify-badge">'+(s.verified?"تحقق يدوي أقرّه المستخدم":"غير متحقق")+'</span><p><b>الاختصاص:</b> '+safeText(s.jurisdiction||"غير محدد")+' · <b>النوع:</b> '+safeText(s.type)+'</p><p><b>المرجع:</b> '+safeText(s.citation||"غير محدد")+' · <b>الموضع:</b> '+safeText(s.pinpoint||"غير محدد")+'</p><p><b>النشر/الصدور:</b> '+safeText(s.published||"غير مسجل")+' · <b>النفاذ:</b> '+safeText(s.effective||"غير مسجل")+' · <b>فحص المصدر:</b> '+safeText(s.checked||"غير مسجل")+' · <b>تاريخ النسخة/التعديل:</b> '+safeText(s.versionDate||"غير مسجل")+'</p><p><b>حالة النص:</b> '+safeText(s.status||"غير محسوم")+'</p><p><b>التعديل/التعارض/عدم اليقين:</b> '+safeText(s.conflict||"لم يُسجل")+'</p><p><a href="'+safeText(s.url)+'" target="_blank" rel="noopener noreferrer">فتح المصدر المسجل</a></p><p>'+safeText(s.note||"لا توجد ملاحظات.")+'</p><div class="source-actions"><button class="btn" type="button" data-remove-source="'+i+'">حذف هذا السجل</button></div></article>').join("");
  host.querySelectorAll("[data-remove-source]").forEach(btn=>btn.addEventListener("click",()=>{sourceRecords.splice(Number(btn.getAttribute("data-remove-source")),1);renderSourceRecords()}));
 }
 document.getElementById("addSourceBtn").addEventListener("click",()=>{
@@ -107,7 +110,7 @@ document.getElementById("addSourceBtn").addEventListener("click",()=>{
  const checked=sourceValue("srcChecked");
  const verified=document.getElementById("srcManualVerified").checked;
  if(verified&&!checked){alert("سجّل تاريخ فتح المصدر قبل وضع علامة التحقق اليدوي.");return;}
- const item={jurisdiction:sourceValue("srcJurisdiction"),type:sourceValue("srcType"),title:sourceValue("srcTitle"),citation:sourceValue("srcCitation"),published:sourceValue("srcPublished"),effective:sourceValue("srcEffective"),checked,pinpoint:sourceValue("srcPinpoint"),url:parsed.href,note:sourceValue("srcNote"),verified};
+ const item={jurisdiction:sourceValue("srcJurisdiction"),type:sourceValue("srcType"),title:sourceValue("srcTitle"),citation:sourceValue("srcCitation"),published:sourceValue("srcPublished"),effective:sourceValue("srcEffective"),checked,versionDate:sourceValue("srcVersionDate"),status:sourceValue("srcStatus"),conflict:sourceValue("srcConflict"),pinpoint:sourceValue("srcPinpoint"),url:parsed.href,note:sourceValue("srcNote"),verified};
  sourceRecords.unshift(item);
  sourceFields.forEach(id=>{if(id!=="srcType")document.getElementById(id).value=""});
  document.getElementById("srcManualVerified").checked=false;
@@ -116,7 +119,7 @@ document.getElementById("addSourceBtn").addEventListener("click",()=>{
 document.getElementById("exportSourcesBtn").addEventListener("click",async()=>{
  if(!sourceRecords.length){alert("لا يوجد سجل لنسخه بعد.");return;}
  const textOut=sourceRecords.map((s,i)=>[
- "الاستشهاد "+(i+1),s.title,"الاختصاص: "+(s.jurisdiction||"غير محدد"),"النوع: "+s.type,"المرجع: "+(s.citation||"غير محدد"),"تاريخ النشر/الصدور: "+(s.published||"غير مسجل"),"تاريخ النفاذ: "+(s.effective||"غير مسجل"),"تاريخ الفحص اليدوي: "+(s.checked||"غير مسجل"),"الموضع: "+(s.pinpoint||"غير محدد"),"الرابط: "+s.url,"حالة التحقق اليدوي: "+(s.verified?"أقر المستخدم بأنه فتح المصدر وطابق البيانات":"غير متحقق"),"ملاحظة: "+(s.note||"لا توجد"),"تنبيه: لم يتحقق التطبيق آليًا من المصدر أو سريانه."
+ "الاستشهاد "+(i+1),s.title,"الاختصاص: "+(s.jurisdiction||"غير محدد"),"النوع: "+s.type,"المرجع: "+(s.citation||"غير محدد"),"تاريخ النشر/الصدور: "+(s.published||"غير مسجل"),"تاريخ النفاذ: "+(s.effective||"غير مسجل"),"تاريخ الفحص اليدوي: "+(s.checked||"غير مسجل"),"تاريخ النسخة/التعديل الظاهر: "+(s.versionDate||"غير مسجل"),"حالة النص: "+(s.status||"غير محسوم"),"التعديل/التعارض/عدم اليقين: "+(s.conflict||"لم يسجل"),"الموضع: "+(s.pinpoint||"غير محدد"),"الرابط: "+s.url,"حالة التحقق اليدوي: "+(s.verified?"أقر المستخدم بأنه فتح المصدر وطابق البيانات":"غير متحقق"),"ملاحظة: "+(s.note||"لا توجد"),"تنبيه: لم يتحقق التطبيق آليًا من المصدر أو سريانه."
  ].join("\n")).join("\n\n----------------\n\n");
  try{await navigator.clipboard.writeText(textOut);alert("تم نسخ السجل. راجعه قبل مشاركته ولا تضف بيانات سرية.")}catch(e){const w=window.open("","_blank");if(w){w.document.write("<pre>"+safeText(textOut)+"</pre>");w.document.close()}else{alert("تعذر النسخ تلقائيًا. استخدم زر النسخ في متصفحك بعد تحديد النص.")}}
 });
