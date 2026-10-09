@@ -53,6 +53,17 @@ export default async function handler(req, res) {
         return res.status(400).send('Amount or currency mismatch');
       }
 
+      // Claim the order for this PSP reference before writing revenue. This prevents
+      // two distinct successful authorisations racing to recognise revenue twice.
+      const orderClaimKey = PREFIX + 'adyen-order-claim:' + crypto.createHash('sha256').update(reference).digest('hex');
+      const orderClaim = await railwayRedisCommand(['SET', orderClaimKey, text(item.pspReference), 'NX']);
+      if (orderClaim !== 'OK') {
+        const existingClaim = await railwayRedisCommand(['GET', orderClaimKey]);
+        if (existingClaim !== text(item.pspReference)) {
+          return res.status(409).send('Order already claimed by a different payment reference');
+        }
+      }
+
       // Deterministic event ledger key makes retries safe after partial failures.
       // Write the immutable ledger entry with SET NX, then repair the order on retry.
       const eventHash = crypto.createHash('sha256').update(text(item.pspReference)).digest('hex');
