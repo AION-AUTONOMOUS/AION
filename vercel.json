@@ -28,6 +28,7 @@
     { "source": "/api/paypal/create-order", "destination": "/api/system?route=paypal-create-order" },
     { "source": "/api/paypal/capture-order", "destination": "/api/system?route=paypal-capture-order" },
     { "source": "/api/adyen/create-session", "destination": "/api/system?route=adyen-create-session" },
+    { "source": "/api/case-files/upload", "destination": "/api/system?route=case-files-upload" },
     { "source": "/api/wallet/config", "destination": "/api/system?route=wallet-config" },
     { "source": "/api/space-commerce", "destination": "/api/system?route=space-commerce" },
     { "source": "/api/space-planet/:path*", "destination": "/api/system?route=space-planet&path=:path*" },
