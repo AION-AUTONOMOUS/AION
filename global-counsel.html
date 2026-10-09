@@ -11,7 +11,9 @@
 
 .workflow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.step{border:1px solid var(--line);border-radius:14px;padding:14px;background:#0b1b2e}.step b{display:block;color:var(--cyan);margin-bottom:5px}.step small{color:var(--muted)}.module{border:1px solid #2a4b67;border-radius:18px;background:#0b1b2e;padding:20px;margin:14px 0}.module h3{margin-top:0}.source-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.source-item{border:1px solid var(--line);padding:12px;border-radius:12px}.source-item a{font-weight:700}.status{font-size:12px;color:var(--gold)}@media(max-width:760px){.workflow,.source-list{grid-template-columns:1fr 1fr}}
 .source-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.source-form .field{margin:5px 0}.source-record{border:1px solid #31536b;border-radius:14px;padding:14px;margin:10px 0;background:#081827;overflow-wrap:anywhere}.source-record h4{margin:0 0 8px;color:var(--cyan)}.source-record p{margin:5px 0;font-size:14px}.source-record .source-meta{color:var(--muted);font-size:12px}.source-record a{overflow-wrap:anywhere}.source-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.verify-badge{display:inline-block;padding:3px 8px;border-radius:8px;border:1px solid #8b7748;color:#f0dca7;font-size:12px}.source-empty{border:1px dashed #31536b;padding:14px;border-radius:12px;color:var(--muted)}@media(max-width:760px){.source-form{grid-template-columns:1fr}}
-</style></head>
+</style>
+<link rel="stylesheet" href="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/6.9.0/adyen.css">
+</head>
 <body><main class="wrap">
 <header class="top"><div class="brand"><div class="logo">GC</div><div><b>AION GLOBAL COUNSEL</b><small id="tagline">العدالة الذكية للجميع</small></div></div><select id="lang" class="lang" aria-label="Language"><option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option><option value="es">Español</option></select></header>
 <section class="hero"><div class="eyebrow" id="eyebrow">LEGAL CLARITY • HUMAN DIGNITY</div><h1 id="heroTitle">افهم حقوقك.<br><span>رتّب قضيتك بثقة.</span></h1><p class="lead" id="lead">مساعد قانوني رقمي يساعدك على فهم المشكلة، تنظيم الأدلة والمواعيد، ومعرفة الخطوات التالية — بتكلفة ميسورة وبأسلوب واضح.</p><div class="actions"><button class="btn primary" id="startBtn">ابدأ تنظيم قضيتك ↓</button><a class="btn" href="#how" id="howBtn">كيف يعمل؟</a></div><div class="notice" id="notice">مهم: هذه نسخة أولية للمساعدة المعلوماتية والتنظيمية، وليست محاميًا مرخصًا ولا تضمن نتيجة قضائية. لا تدخل أسماء كاملة أو أرقام هوية أو أسرارًا أو تفاصيل شديدة الحساسية.</div></section>
@@ -45,6 +47,29 @@
 <article class="feature"><span class="pill">$3,000+</span><h3>نزاع دولي كبير أو تحكيم أو معاملة كبرى</h3><p>عرض سعر مكتوب ومخصص؛ أتعاب المحامين المختصين منفصلة ما لم ينص العرض على غير ذلك.</p></article>
 </div>
 <div class="notice"><strong>حماية العميل:</strong> الأسعار ليست مفعّلة للدفع بعد. لا يوجد زر شراء فعّال حتى اجتياز اختبار الدفع الكامل. لا نضمن نتائج القضايا أو صلاحية الإيداع للمحكمة، ولا ندّعي ترخيصًا قانونيًا عالميًا. لا تدخل معلومات سرية أو ترفع ملفات قضايا في النسخة الحالية. راجع الضرائب والاسترداد والإلغاء والنطاق النهائي قبل أي شراء.</div>
+</section>
+
+
+<section id="secure-checkout" class="module" aria-labelledby="checkoutTitle">
+  <h2 id="checkoutTitle">الدفع الآمن | Secure checkout</h2>
+  <p class="sub">الدفع التجريبي للبطاقات وApple Pay عبر Adyen. لن تُخصم أموال حقيقية من هذه البيئة. لا تدخل معلومات سرية للقضية هنا.</p>
+  <div class="card">
+    <div class="field">
+      <label for="gcPaymentService">اختر الخدمة</label>
+      <select id="gcPaymentService">
+        <option value="simple_letter">خطاب أو طلب بسيط — $4</option>
+        <option value="evidence_timeline">تنظيم الأدلة والتسلسل الزمني — $5</option>
+        <option value="family_matter">تحضير مسألة أسرية — $7</option>
+        <option value="defence_draft">مسودة مذكرة دفاع أو رد — $9</option>
+        <option value="company_summary">ملخص مسألة قانونية للشركة — $49</option>
+        <option value="contract_review">قائمة مراجعة عقد أو سياسة — $99</option>
+        <option value="commercial_dispute">تحضير نزاع تجاري — $249</option>
+      </select>
+    </div>
+    <button class="btn primary" id="gcStartPayment" type="button">ابدأ الدفع التجريبي الآمن</button>
+    <p id="gcPaymentStatus" class="sub" role="status" aria-live="polite">الدفع الحقيقي غير مفعّل. ستظهر رسالة واضحة إذا لم تكن مفاتيح الاختبار مضبوطة.</p>
+    <div id="gcAdyenDropin"></div>
+  </div>
 </section>
 
 <section id="workspace"><h2 id="workTitle">ابدأ بملف قضيتك</h2><p class="sub" id="workSub">أدخل الحد الأدنى من المعلومات. النموذج يعمل محليًا في متصفحك ولا يحفظ أو يرسل البيانات.</p><div class="workspace">
@@ -158,4 +183,59 @@ document.getElementById("exportSourcesBtn").addEventListener("click",async()=>{
 document.getElementById("clearSourcesBtn").addEventListener("click",()=>{sourceRecords.splice(0,sourceRecords.length);renderSourceRecords()});
 
 setLang("ar");
+
+/* Adyen Drop-in: test environment only. Payment is never marked paid by the browser callback. */
+(function initAionGlobalCounselCheckout(){
+  const start = document.getElementById('gcStartPayment');
+  if (!start) return;
+  const status = document.getElementById('gcPaymentStatus');
+  const host = document.getElementById('gcAdyenDropin');
+  let mounted = false;
+  const say = message => { status.textContent = message; };
+  start.addEventListener('click', async () => {
+    if (mounted) { say('بوابة الدفع التجريبية جاهزة. أكمل خطوات الاختبار داخل النموذج.'); return; }
+    start.disabled = true;
+    say('جارٍ تجهيز جلسة دفع تجريبية آمنة…');
+    try {
+      const response = await fetch('/api/adyen/create-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ serviceId: document.getElementById('gcPaymentService').value, countryCode: 'US' })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'تعذر بدء الدفع التجريبي.');
+      if (data.environment !== 'test') throw new Error('أُوقف الدفع لأن هذه الصفحة لا تسمح ببدء جلسة حقيقية.');
+      if (!data.clientKey) throw new Error('مفتاح Adyen Client Key غير مضبوط. لم يبدأ أي دفع.');
+      if (!window.AdyenWeb) {
+        await new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/6.9.0/adyen.js';
+          script.onload = resolve;
+          script.onerror = () => reject(new Error('تعذر تحميل نموذج الدفع التجريبي.'));
+          document.head.appendChild(script);
+        });
+      }
+      const checkout = await window.AdyenWeb.AdyenCheckout({
+        environment: 'test',
+        clientKey: data.clientKey,
+        session: data.session,
+        onPaymentCompleted: result => {
+          say('نتيجة بوابة الاختبار: ' + String(result.resultCode || 'غير معروفة') + '. هذه ليست إثباتًا لتحصيل أموال؛ يجب التحقق من إشعار الخادم قبل اعتماد الطلب.');
+        },
+        onError: error => {
+          console.error('AION Adyen Drop-in error:', error);
+          say('تعذر إكمال الاختبار. لم يتم اعتماد الطلب كمدفوع.');
+        }
+      });
+      checkout.create('dropin').mount(host);
+      mounted = true;
+      say('جلسة اختبار جاهزة. استخدم بيانات الاختبار الرسمية من Adyen فقط.');
+    } catch (error) {
+      say(error.message || 'الدفع غير متاح حاليًا. لم يتم تحصيل أي مبلغ.');
+    } finally {
+      start.disabled = false;
+    }
+  });
+})();
+
 </script></body></html>
