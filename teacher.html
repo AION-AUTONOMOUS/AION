@@ -958,7 +958,8 @@ function printDelivery() {
     escapeHtml(title) +
     '</h1><p class="meta">تم الشراء والتحقق من الدفع عبر Teacher</p><div class="content">' +
     escapeHtml(content) +
-    '</div></body></html>';
+    '</div><script src="/print-all.js?v=20261009-1"></script>
+</body></html>';
 
   printWindow.document.open();
   printWindow.document.write(printableHtml);
