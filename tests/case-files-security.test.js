@@ -33,6 +33,7 @@ test('anonymous POST fails closed without reading request body', async () => {
   await handler(req, res);
   assert.equal(res.statusCode, 503);
   assert.equal(res.body.code, 'CASE_FILE_INTAKE_CLOSED');
+  assert.equal(res.body.safeToUploadSensitiveFiles, false);
   assert.equal(res.headers['cache-control'], 'no-store, max-age=0');
   assert.equal(res.headers['pragma'], 'no-cache');
   assert.equal(res.headers['x-content-type-options'], 'nosniff');
@@ -46,6 +47,9 @@ test('GET reports intake disabled and is not cacheable', async () => {
   await handler({ method: 'GET' }, res);
   assert.equal(res.statusCode, 503);
   assert.equal(res.body.enabled, false);
+  assert.equal(res.body.status, 'BLOCKED');
+  assert.equal(res.body.safeToUploadSensitiveFiles, false);
+  assert.ok(res.body.blockers.includes('cross-tenant-isolation-not-verified'));
   assert.equal(res.headers['cache-control'], 'no-store, max-age=0');
 });
 
