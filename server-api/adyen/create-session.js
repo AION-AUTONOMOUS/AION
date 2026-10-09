@@ -1,3 +1,5 @@
+import { hasRailwayRedis, railwayRedisCommand } from '../../config/aion-redis.js';
+
 const CATALOG = {
   simple_letter: { title: 'Simple legal letter', amount: 400 },
   evidence_timeline: { title: 'Evidence and timeline organizer', amount: 500 },
@@ -54,6 +56,25 @@ export default async function handler(req, res) {
   }
 
   const reference = 'AION-GC-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2, 10).toUpperCase();
+  // The order must exist in durable Redis before the provider can authorise it.
+  // This checkout remains test-only and fails closed when durable storage is unavailable.
+  if (!hasRailwayRedis()) {
+    return res.status(503).json({ error: 'Durable payment storage is required; checkout was not started.', code: 'DURABLE_STORAGE_REQUIRED' });
+  }
+  const order = {
+    id: reference, offerId: serviceId, customerId: 'global-counsel-customer',
+    serviceTitle: item.title, amountUsd: item.amount / 100, currency: 'USD',
+    paymentProvider: 'adyen', status: 'awaiting-payment', paymentStatus: 'unpaid',
+    deliveryStatus: 'not-started', revenueRecognized: false, createdAt: new Date().toISOString()
+  };
+  try {
+    await railwayRedisCommand(['SET', 'aion:stack:customer-orders:' + reference, JSON.stringify(order)]);
+    await railwayRedisCommand(['SADD', 'aion:stack:customer-orders:index', reference]);
+  } catch (error) {
+    console.error('Unable to persist Adyen order:', String(error?.message || error));
+    return res.status(503).json({ error: 'Order storage unavailable; checkout was not started.', code: 'ORDER_PERSISTENCE_FAILED' });
+  }
+
   const payload = {
     merchantAccount,
     reference,
