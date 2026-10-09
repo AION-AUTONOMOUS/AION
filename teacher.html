@@ -996,5 +996,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script src="lang.js"></script>
 <script src="/teacher-ai.js"></script>
+<script>
+// Register the PWA service worker so supported browsers can install Teacher.
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("/sw.js").catch(function (error) {
+      console.error("Teacher service worker registration failed:", error);
+    });
+  });
+}
+</script>
 </body>
 </html>
