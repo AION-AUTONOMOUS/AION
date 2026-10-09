@@ -12,30 +12,46 @@ function secureHeaders(res) {
 export function caseFileIntakeStatus(env = process.env) {
   const blockers = [];
   if (env.CASE_FILES_ENABLED !== 'true') blockers.push('intake-disabled');
-  // This first release intentionally stays closed: auth/case ACL, private object storage,
-  // malware scanning, and auditable deletion have not been verified in this deployment.
+  // These are deliberately unconditional until implementation and staging evidence exist.
   blockers.push('identity-and-case-authorization-not-verified');
   blockers.push('private-encrypted-object-storage-not-verified');
   blockers.push('malware-scanning-and-quarantine-not-verified');
   blockers.push('retention-and-audit-controls-not-verified');
-  return { enabled: false, maxFileBytes: MAX_FILE_BYTES, blockers };
+  blockers.push('cross-tenant-isolation-not-verified');
+  return Object.freeze({
+    enabled: false,
+    status: 'BLOCKED',
+    maxFileBytes: MAX_FILE_BYTES,
+    blockers,
+    safeToUploadSensitiveFiles: false
+  });
 }
 
 export default async function handler(req, res) {
   secureHeaders(res);
   res.setHeader('Allow', 'GET, HEAD, OPTIONS, POST');
+
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method === 'HEAD') return res.status(503).end();
-  if (req.method === 'GET') return res.status(503).json({
-    enabled: false,
-    message: 'Confidential case-file intake is not enabled until security verification is complete.'
-  });
-  if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method not allowed' });
 
-  // Deliberately do not read or log request bodies while intake is closed.
+  if (req.method === 'GET') {
+    const status = caseFileIntakeStatus();
+    return res.status(503).json({
+      ...status,
+      message: 'Confidential case-file intake is blocked pending implementation and verification of required security controls.'
+    });
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ success: false, error: 'Method not allowed' });
+  }
+
+  // Do not read, persist, or log request bodies while intake is closed.
   return res.status(503).json({
     success: false,
     code: 'CASE_FILE_INTAKE_CLOSED',
+    status: 'BLOCKED',
+    safeToUploadSensitiveFiles: false,
     message: 'Confidential file intake is closed pending security verification.'
   });
 }
