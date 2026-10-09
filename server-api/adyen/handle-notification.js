@@ -81,9 +81,7 @@ export default async function handler(req, res) {
       };
       const ledgerKey = PREFIX + 'customer-revenue:' + revenueId;
       const inserted = await railwayRedisCommand(['SET', ledgerKey, json(revenue), 'NX']);
-      if (inserted === 'OK') {
-        await railwayRedisCommand(['SADD', PREFIX + 'customer-revenue:index', revenueId]);
-      } else {
+      if (inserted !== 'OK') {
         const priorRaw = await railwayRedisCommand(['GET', ledgerKey]);
         const prior = priorRaw ? JSON.parse(priorRaw) : null;
         if (!prior || prior.orderId !== reference || prior.paymentReference !== text(item.pspReference) ||
@@ -92,6 +90,9 @@ export default async function handler(req, res) {
           return res.status(409).send('Existing revenue entry does not match this payment');
         }
       }
+      // SADD is idempotent; repeat it on every retry so a prior partial failure
+      // cannot leave a valid ledger record permanently absent from the revenue index.
+      await railwayRedisCommand(['SADD', PREFIX + 'customer-revenue:index', revenueId]);
       // If this write fails after the ledger write, Adyen retry repairs the order
       // without duplicating revenue because the ledger key is deterministic.
       await railwayRedisCommand(['SET', PREFIX + 'customer-orders:' + reference, json(updated)]);
