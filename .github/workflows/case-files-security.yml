@@ -1,0 +1,30 @@
+name: Confidential Case Files Security Gate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "server-api/case-files/**"
+      - "tests/case-files-security.test.js"
+      - ".github/workflows/case-files-security.yml"
+  pull_request:
+    paths:
+      - "server-api/case-files/**"
+      - "tests/case-files-security.test.js"
+      - ".github/workflows/case-files-security.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  fail-closed-intake-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Verify confidential intake stays closed
+        run: node --test tests/case-files-security.test.js
