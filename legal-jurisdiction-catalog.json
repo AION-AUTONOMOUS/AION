@@ -1,0 +1,334 @@
+{
+  "schema_version": "1.0",
+  "product": "AION GLOBAL COUNSEL",
+  "purpose": "Initial discovery catalog of candidate government legal-information portals. This is not a verified law database and does not establish current legal coverage.",
+  "last_reviewed_at": null,
+  "policy": {
+    "default_status": "UNREVIEWED",
+    "may_cite_as_current_law": false,
+    "promotion_requirements": [
+      "Open and inspect the actual official legal text, not merely the portal home page",
+      "Capture jurisdiction, issuing authority, exact title and citation/article/paragraph",
+      "Record publication date, effective dates, amendments/repeal/supersession status and source language",
+      "Record retrieval time, verification time, verification method and accountable reviewer",
+      "Check competing or later instruments and run citation/validity tests",
+      "Keep UNREVIEWED until all required evidence is recorded and independently reviewed"
+    ]
+  },
+  "jurisdictions": [
+    {
+      "jurisdiction_id": "SA",
+      "jurisdiction_name": "Saudi Arabia",
+      "languages": [
+        "ar"
+      ],
+      "portal_candidates": [
+        {
+          "label": "Bureau of Experts at the Council of Ministers — Laws and Regulations",
+          "url": "https://laws.boe.gov.sa/",
+          "status": "UNREVIEWED"
+        },
+        {
+          "label": "Ministry of Justice",
+          "url": "https://www.moj.gov.sa/",
+          "status": "UNREVIEWED"
+        },
+        {
+          "label": "Najiz",
+          "url": "https://najiz.sa/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "AE",
+      "jurisdiction_name": "United Arab Emirates",
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "portal_candidates": [
+        {
+          "label": "UAE Legislation",
+          "url": "https://uaelegislation.gov.ae/",
+          "status": "UNREVIEWED"
+        },
+        {
+          "label": "UAE Government Portal",
+          "url": "https://u.ae/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "GB",
+      "jurisdiction_name": "United Kingdom",
+      "languages": [
+        "en"
+      ],
+      "portal_candidates": [
+        {
+          "label": "The National Archives — legislation.gov.uk",
+          "url": "https://www.legislation.gov.uk/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "US",
+      "jurisdiction_name": "United States — Federal",
+      "languages": [
+        "en"
+      ],
+      "portal_candidates": [
+        {
+          "label": "U.S. House Office of the Law Revision Counsel — U.S. Code",
+          "url": "https://uscode.house.gov/",
+          "status": "UNREVIEWED"
+        },
+        {
+          "label": "U.S. Government Publishing Office — GovInfo",
+          "url": "https://www.govinfo.gov/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "CA",
+      "jurisdiction_name": "Canada — Federal",
+      "languages": [
+        "en",
+        "fr"
+      ],
+      "portal_candidates": [
+        {
+          "label": "Justice Laws Website",
+          "url": "https://laws-lois.justice.gc.ca/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "AU",
+      "jurisdiction_name": "Australia — Commonwealth",
+      "languages": [
+        "en"
+      ],
+      "portal_candidates": [
+        {
+          "label": "Federal Register of Legislation",
+          "url": "https://www.legislation.gov.au/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "NZ",
+      "jurisdiction_name": "New Zealand",
+      "languages": [
+        "en",
+        "mi"
+      ],
+      "portal_candidates": [
+        {
+          "label": "New Zealand Legislation",
+          "url": "https://www.legislation.govt.nz/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "IE",
+      "jurisdiction_name": "Ireland",
+      "languages": [
+        "en",
+        "ga"
+      ],
+      "portal_candidates": [
+        {
+          "label": "Irish Statute Book",
+          "url": "https://www.irishstatutebook.ie/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "SG",
+      "jurisdiction_name": "Singapore",
+      "languages": [
+        "en"
+      ],
+      "portal_candidates": [
+        {
+          "label": "Singapore Statutes Online",
+          "url": "https://sso.agc.gov.sg/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "IN",
+      "jurisdiction_name": "India — Central",
+      "languages": [
+        "en",
+        "hi"
+      ],
+      "portal_candidates": [
+        {
+          "label": "India Code",
+          "url": "https://www.indiacode.nic.in/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "EU",
+      "jurisdiction_name": "European Union",
+      "languages": [
+        "multilingual"
+      ],
+      "portal_candidates": [
+        {
+          "label": "EUR-Lex",
+          "url": "https://eur-lex.europa.eu/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "FR",
+      "jurisdiction_name": "France",
+      "languages": [
+        "fr"
+      ],
+      "portal_candidates": [
+        {
+          "label": "Légifrance",
+          "url": "https://www.legifrance.gouv.fr/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "DE",
+      "jurisdiction_name": "Germany — Federal",
+      "languages": [
+        "de"
+      ],
+      "portal_candidates": [
+        {
+          "label": "Gesetze im Internet",
+          "url": "https://www.gesetze-im-internet.de/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "BR",
+      "jurisdiction_name": "Brazil — Federal",
+      "languages": [
+        "pt"
+      ],
+      "portal_candidates": [
+        {
+          "label": "Presidency of the Republic — Legislation",
+          "url": "https://www.planalto.gov.br/ccivil_03/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "ZA",
+      "jurisdiction_name": "South Africa",
+      "languages": [
+        "en"
+      ],
+      "portal_candidates": [
+        {
+          "label": "South African Government — Documents",
+          "url": "https://www.gov.za/documents",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "CH",
+      "jurisdiction_name": "Switzerland — Federal",
+      "languages": [
+        "de",
+        "fr",
+        "it"
+      ],
+      "portal_candidates": [
+        {
+          "label": "Fedlex",
+          "url": "https://www.fedlex.admin.ch/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "JP",
+      "jurisdiction_name": "Japan",
+      "languages": [
+        "ja",
+        "en"
+      ],
+      "portal_candidates": [
+        {
+          "label": "Japanese Law Translation",
+          "url": "https://www.japaneselawtranslation.go.jp/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "KR",
+      "jurisdiction_name": "South Korea",
+      "languages": [
+        "ko",
+        "en"
+      ],
+      "portal_candidates": [
+        {
+          "label": "Korean Law Information Center",
+          "url": "https://www.law.go.kr/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "MX",
+      "jurisdiction_name": "Mexico — Federal",
+      "languages": [
+        "es"
+      ],
+      "portal_candidates": [
+        {
+          "label": "Chamber of Deputies — Federal Laws",
+          "url": "https://www.diputados.gob.mx/LeyesBiblio/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    },
+    {
+      "jurisdiction_id": "UN",
+      "jurisdiction_name": "International treaties and United Nations materials",
+      "languages": [
+        "multilingual"
+      ],
+      "portal_candidates": [
+        {
+          "label": "United Nations Treaty Collection",
+          "url": "https://treaties.un.org/",
+          "status": "UNREVIEWED"
+        },
+        {
+          "label": "United Nations Digital Library",
+          "url": "https://digitallibrary.un.org/",
+          "status": "UNREVIEWED"
+        }
+      ]
+    }
+  ]
+}
