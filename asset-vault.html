@@ -2,145 +2,129 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AION Global Asset Vault — الخزنة العالمية للأصول</title>
-<meta name="description" content="AION Global Asset Vault — سجل رقمي موثوق للأصول الحقيقية، الأدلة، التحقق، والتقييمات المستقلة.">
+<meta name="description" content="AION Digital Vault: سجل أدلة ومستندات وأصول مع بصمات SHA-256 وسجل موثق.">
+<title>AION Digital Vault — الخزينة الرقمية</title>
 <style>
-*{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;margin:0;background:#050914;color:#eef2ff}
-main{max-width:1180px;margin:auto;padding:24px}.nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-.nav a{padding:10px 15px;border:1px solid #2a4568;border-radius:999px;color:#dbeafe;text-decoration:none;background:#0c1628}.nav a:hover{border-color:#35c7ff}
-h1{margin:8px 0;color:#fff}.lead{color:#9fb0ca;line-height:1.8}.trust{margin:20px 0;padding:18px;border:1px solid #275174;border-radius:16px;background:#0b1729}
-.trust strong{color:#4ade80}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
-.card{background:#0c1527;border:1px solid #243754;border-radius:16px;padding:18px}.value{font-size:28px;font-weight:800;margin-top:6px}
-small{color:#8fa1bc}.status{margin:20px 0;padding:14px;border-radius:12px;background:#0d1a2d;border:1px solid #263d5c}
-table{width:100%;border-collapse:collapse;margin-top:20px;background:#0b1322;border-radius:12px;overflow:hidden}td,th{text-align:right;padding:11px;border-bottom:1px solid #22334c;font-size:13px}
-.note{color:#8fa1bc;font-size:12px;line-height:1.7;margin-top:16px}.ok{color:#4ade80}.warn{color:#f5c542}
-</style></head>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#050914;color:#eef2ff;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}
+main{max-width:1100px;margin:auto;padding:20px}.nav,.actions{display:flex;gap:10px;flex-wrap:wrap}.nav{margin-bottom:20px}.nav a,button{border:1px solid #2b476b;border-radius:10px;padding:10px 14px;background:#0c1b30;color:#eaf4ff;text-decoration:none;cursor:pointer;font-weight:700}button.primary{background:#087db7;border-color:#087db7;color:white}button:disabled{opacity:.5;cursor:wait}
+h1{margin:8px 0;color:#fff}h2{font-size:19px}.lead{line-height:1.8;color:#a9bbd4}.panel{margin:16px 0;padding:18px;border:1px solid #263c5b;border-radius:16px;background:#0b1526}.notice{border-color:#6b5420;background:#241d0b;color:#f9e7a8;line-height:1.8}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:7px;margin:10px 0}.field label{font-size:13px;color:#bcd0e8}.field input,.field select,.field textarea{width:100%;padding:11px;border-radius:9px;border:1px solid #2a4568;background:#061022;color:#fff;font:inherit}.field textarea{min-height:80px;resize:vertical}.status{padding:12px;border-radius:10px;background:#071225;color:#a9bbd4;line-height:1.7;overflow-wrap:anywhere}.good{color:#4ade80}.warn{color:#facc15}.bad{color:#fca5a5}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:700px}td,th{text-align:right;padding:10px;border-bottom:1px solid #26374e;font-size:13px;vertical-align:top}th{color:#8ddcff}code{overflow-wrap:anywhere;color:#8ddcff}.muted{color:#91a4bd;font-size:12px;line-height:1.7}.hidden{display:none!important}
+@media print{body{background:#fff;color:#111}.nav,.actions,form,#auth-panel,.no-print{display:none!important}.panel{background:#fff;border:1px solid #ccc;color:#111}table,td,th{color:#111}.lead,.muted{color:#333}}
+</style>
+</head>
 <body><main>
 <nav class="nav" aria-label="AION navigation">
-<a href="/">← AION الرئيسية</a><a href="asset-vault.html">🏦 خزنة الأصول</a><a href="space.html">🛰️ AION Space</a><a href="intelligence.html">🧠 Intelligence</a><a href="coin.html">🪙 AION Coin</a>
+<a href="/">← AION الرئيسية</a><a href="/coin.html">🪙 AION Coin</a><a href="/digital-treasury.html">💰 الخزينة المالية</a><a href="/asset-vault.html">🏦 خزنة الأصول والمستندات</a>
 </nav>
-<h1>🏦 AION GLOBAL ASSET VAULT</h1><p><a href="checkout.html?offer=asset-vault-report" style="display:inline-block;padding:12px 18px;border-radius:12px;background:#f5c542;color:#020817;text-decoration:none;font-weight:900">اشترِ تقرير خزنة الأصول + اطبع</a> <a href="checkout.html?offer=treasury-intelligence-report" style="display:inline-block;padding:12px 18px;border-radius:12px;background:#0b7db7;color:#fff;text-decoration:none;font-weight:900">اشترِ تقرير الخزينة + اطبع</a></p>
-<p class="lead">سجل رقمي للأصول الحقيقية المرتبطة بمصدر خارجي وأدلة قابلة للتدقيق. هذه الصفحة لا تنشئ أصلًا أو ملكية أو قيمة نقدية من تلقاء نفسها.</p>
-<section class="trust">
-<strong>قاعدة الثقة:</strong> لا تدخل قيمة في «القيمة الموثوقة» إلا إذا كان هناك أصل حقيقي محدد + مرجع دليل + مصدر تقييم مستقل + حالة تحقق ناجحة. تسجيل السجل الرقمي وحده ليس إثباتًا قانونيًا للملكية.
+<h1>🏦 AION DIGITAL VAULT</h1>
+<p class="lead">فهرس رقمي للمستندات والأدلة والأصول، مع بصمة SHA-256 وسجل تحقق. صُمم لتقليل فقدان المراجع وتسهيل التدقيق.</p>
+<section class="panel notice"><strong>مهم — حدود النسخة الحالية:</strong> هذه الصفحة تسجل بيانات المستند وبصمته الرقمية في سجل الخزنة؛ لا ترفع محتوى الملف نفسه إلى الخادم. احتفظ بالملف الأصلي في مخزن ملفات آمن. البصمة تثبت تطابق الملف لاحقًا، لكنها لا تثبت الملكية القانونية أو صحة محتواه.</section>
+<section class="panel" id="auth-panel">
+<h2>الوصول الآمن</h2>
+<p class="muted">أدخل رمز الخزنة الإداري الموجود في إعدادات Railway باسم <code>AION_ASSET_VAULT_TOKEN</code>. لا نحتفظ بالرمز في التخزين المحلي، ويُمسح عند إغلاق الصفحة.</p>
+<div class="field"><label for="token">رمز الخزنة</label><input id="token" type="password" autocomplete="off" placeholder="ألصق الرمز الإداري هنا"></div>
+<div class="actions"><button class="primary" id="connect">التحقق وفتح الخزنة</button><button id="clearToken">مسح الرمز</button></div>
+<div id="auth-status" class="status" aria-live="polite">لم يتم الاتصال بعد.</div>
 </section>
-<div id="status" class="status">جاري تحميل حالة الخزنة الحية…</div>
-<section class="grid">
-<div class="card"><small>Verified Value — القيمة الموثقة</small><div id="value" class="value">$0</div></div>
-<div class="card"><small>Verified Assets — الأصول الموثقة</small><div id="assets" class="value">0</div></div>
-<div class="card"><small>AI Value Units — وحدات القيمة</small><div id="units" class="value">0</div></div>
-<div class="card"><small>Verified Intelligence — الذكاء الموثق</small><div id="intelligence-value" class="value">$0</div></div><div class="card"><small>Verified Financial — الأصول المالية الموثقة</small><div id="financial-value" class="value">$0</div></div><div class="card"><small>Verified Total — الإجمالي الموثق</small><div id="total-value" class="value">$0</div></div><div class="card"><small>Target Valuation — الهدف النظري</small><div class="value">$10,000,000</div></div>
+<section class="panel">
+<h2>تسجيل مستند أو دليل</h2>
+<form id="doc-form">
+<div class="grid">
+<div class="field"><label for="file">اختر الملف لحساب البصمة فقط</label><input id="file" type="file" required></div>
+<div class="field"><label for="category">الفئة</label><select id="category" required><option value="company-document">مستندات الشركة</option><option value="contract">عقود واتفاقيات</option><option value="finance-record">سجلات مالية</option><option value="intellectual-property">ملكية فكرية</option><option value="research-evidence">أبحاث وأدلة</option><option value="digital-asset">أصل رقمي</option><option value="compliance">قانوني وامتثال</option><option value="other">أخرى</option></select></div>
+<div class="field"><label for="owner">المالك/الجهة صاحبة المستند</label><input id="owner" required maxlength="180" placeholder="اكتب الجهة بعد التحقق"></div>
+<div class="field"><label for="jurisdiction">الدولة/النطاق القانوني</label><input id="jurisdiction" required maxlength="120" placeholder="يُحدّد بحسب المستند"></div>
+<div class="field"><label for="custodian">جهة الحفظ (اختياري)</label><input id="custodian" maxlength="180" placeholder="مثال: مخزن ملفات مشفر"></div>
+<div class="field"><label for="reference">مرجع آمن للملف (اختياري)</label><input id="reference" maxlength="500" placeholder="رابط خاص أو معرّف تخزين؛ لا تضع رابطًا عامًا سريًا"></div>
+</div>
+<div class="field"><label for="notes">ملاحظات/حقوق/حالة التحقق</label><textarea id="notes" maxlength="2000" placeholder="مصدر المستند، تاريخه، القيود، وما يحتاج إلى تحقق"></textarea></div>
+<div id="hash-status" class="status">اختر ملفًا لحساب بصمته.</div>
+<div class="actions"><button class="primary" id="register" type="submit">تسجيل المستند في الخزنة</button><button type="button" id="print">طباعة التقرير</button></div>
+</form>
 </section>
-<section class="trust" style="margin-top:18px">
-<h2 style="margin:0 0 10px">📈 سعر السوق — Market Quote</h2>
-<p class="lead">استعلم عن سعر من مزود AION المتصل. السعر لا يظهر إلا مع المصدر ووقت الاقتباس؛ إذا لم يكن المزود مضبوطًا فستظهر الحالة بوضوح.</p>
-<form id="quote-form" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
-<input id="quote-symbol" required maxlength="80" placeholder="Symbol / الرمز (مثال: AAPL)" style="flex:1;min-width:160px;padding:12px;border-radius:9px;border:1px solid #2a4568;background:#071225;color:#fff">
-<select id="quote-source" style="padding:12px;border-radius:9px;border:1px solid #2a4568;background:#071225;color:#fff"><option value="provider">مزود سوق مرخص / Licensed Provider</option><option value="treasury">U.S. Treasury الرسمي</option><option value="fred">FRED الرسمي</option></select><select id="quote-type" style="padding:12px;border-radius:9px;border:1px solid #2a4568;background:#071225;color:#fff">
-<option value="equity">سهم / Equity</option><option value="fund">صندوق / Fund</option><option value="bond">سند / Bond</option><option value="treasury-security">ورقة خزانة / Treasury</option><option value="commodity">سلعة / Commodity</option><option value="real-estate">عقار / Real Estate</option><option value="energy-infrastructure">طاقة / Infrastructure</option><option value="tokenized-rwa">Tokenized RWA</option>
-</select><input id="quote-series" maxlength="40" placeholder="FRED Series ID (لـ FRED فقط)" style="flex:1;min-width:170px;padding:12px;border-radius:9px;border:1px solid #2a4568;background:#071225;color:#fff">
-<button type="submit" style="padding:12px 18px;border:0;border-radius:9px;background:#087db7;color:white;font-weight:800">جلب السعر</button>
-</form><div id="quote-result" class="status" aria-live="polite">لم يتم طلب سعر بعد.</div>
+<section class="panel">
+<div class="actions" style="justify-content:space-between;align-items:center"><h2>سجل الخزنة</h2><button id="refresh">تحديث السجل</button></div>
+<div id="vault-status" class="status" aria-live="polite">سجّل الدخول لعرض السجل.</div>
+<div class="table-wrap"><table><thead><tr><th>المعرّف</th><th>الفئة</th><th>المالك</th><th>البصمة/الدليل</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody id="rows"></tbody></table></div>
+<p class="muted">لا تُعرض قيمة مالية على أنها موثقة إلا بدليل ومصدر تقييم مستقل. سجل الخزنة ليس بديلًا عن مستودع ملفات مشفر أو سجل ملكية قانوني.</p>
 </section>
-<table><thead><tr><th>الأصل</th><th>الفئة</th><th>التحقق</th><th>وحدة AI</th><th>القيمة الموثقة</th><th>سعر السوق</th><th>المصدر</th></tr></thead><tbody id="rows"></tbody></table>
-<p class="note">الهدف البالغ 10 ملايين دولار هو هدف تقييم لوحدات الذكاء المسجلة، وليس رصيدًا نقديًا أو أصولًا مملوكة حاليًا. تبدأ القيمة الحية من صفر حتى تتوفر أدلة ومصادر تقييم حقيقية وتنجح عملية التحقق.</p>
 <script>
-document.getElementById('quote-form').addEventListener('submit',async e=>{
- e.preventDefault();
- const box=document.getElementById('quote-result');
- const symbol=document.getElementById('quote-symbol').value.trim();
- const assetType=document.getElementById('quote-type').value;
- const source=document.getElementById('quote-source').value;
- const seriesId=document.getElementById('quote-series').value.trim();
- box.textContent='جارٍ طلب البيانات مباشرة من المصدر…';
- try{
-  let url='/api/market-quote?source='+encodeURIComponent(source)+'&symbol='+encodeURIComponent(symbol)+'&assetType='+encodeURIComponent(assetType); if(source==='fred') url+='&seriesId='+encodeURIComponent(seriesId); if(source==='treasury') url+='&maturity=10%20Yr'; const r=await fetch(url,{headers:{Accept:'application/json'}});
-  const d=await r.json();
-  if(!r.ok||!d.success)throw Error(d.error||'market_quote_unavailable');
-  const q=d.record;
-  box.innerHTML='<strong class="ok">'+esc(q.currency)+' '+Number(q.marketPrice).toLocaleString('en-US')+'</strong><br>المصدر: '+esc(q.priceSource)+'<br>الوقت: '+esc(q.quotedAt)+'<br>مرجع المصدر: '+esc(q.sourceRef)+'<br>بصمة الدليل: '+esc(q.fingerprint);
- }catch(err){box.innerHTML='<span class="warn">● السعر غير متاح</span> — '+esc(err.message)}
+let vaultToken = '';
+let currentHash = '';
+const $ = id => document.getElementById(id);
+const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+async function api(path, options={}) {
+  const headers = Object.assign({'Accept':'application/json'}, options.headers||{});
+  if (vaultToken) headers.Authorization = 'Bearer ' + vaultToken;
+  if (options.body) headers['Content-Type']='application/json';
+  const response = await fetch(path, Object.assign({},options,{headers,cache:'no-store'}));
+  const data = await response.json().catch(()=>({success:false,error:'Invalid server response'}));
+  if(!response.ok || data.success===false) throw new Error(data.error || ('HTTP '+response.status));
+  return data;
+}
+$('connect').addEventListener('click', async () => {
+  const token=$('token').value.trim();
+  if(!token){$('auth-status').textContent='أدخل رمز الخزنة أولًا.';return;}
+  vaultToken=token;
+  $('auth-status').textContent='جارٍ التحقق من الرمز…';
+  try{
+    await api('/api/asset-vault?limit=1');
+    $('auth-status').innerHTML='<span class="good">تم التحقق من الوصول.</span> الرمز محفوظ في ذاكرة الصفحة فقط.';
+    await loadRecords();
+  }catch(error){vaultToken='';$('auth-status').innerHTML='<span class="bad">تعذر فتح الخزنة:</span> '+esc(error.message);}
 });
-async function load(){
- const s=document.getElementById('status');
- try{
-  const r=await fetch('/api/asset-vault-ai-state',{headers:{Accept:'application/json'}});
-  const d=await r.json();
-  if(!r.ok) throw Error(d.error||'Unauthorized');
-  document.getElementById('value').textContent='$'+Number(d.verifiedValueUsd||0).toLocaleString('en-US');
-  document.getElementById('assets').textContent=Number(d.verifiedAssetCount||0).toLocaleString('en-US');
-  document.getElementById('units').textContent=Number(d.linkedAiValueUnitCount||0).toLocaleString('en-US');
-  document.getElementById('intelligence-value').textContent='
-  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
-  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
-   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>
-  ).join('');
- }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
+$('clearToken').addEventListener('click',()=>{vaultToken='';$('token').value='';$('auth-status').textContent='تم مسح الرمز من الصفحة.';$('vault-status').textContent='سجّل الدخول لعرض السجل.';$('rows').replaceChildren();});
+$('file').addEventListener('change',async()=>{
+  const file=$('file').files[0]; currentHash='';
+  if(!file){$('hash-status').textContent='اختر ملفًا لحساب بصمته.';return;}
+  $('hash-status').textContent='جارٍ حساب SHA-256 محليًا…';
+  try{
+    const digest=await crypto.subtle.digest('SHA-256',await file.arrayBuffer());
+    currentHash=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');
+    $('hash-status').innerHTML='<span class="good">تم حساب البصمة محليًا.</span><br><code>'+currentHash+'</code><br>الاسم: '+esc(file.name)+' — الحجم: '+file.size.toLocaleString()+' بايت. لم يتم رفع محتوى الملف.';
+  }catch(error){$('hash-status').textContent='تعذر حساب البصمة؛ استخدم متصفحًا يدعم Web Crypto.';}
+});
+$('doc-form').addEventListener('submit',async event=>{
+  event.preventDefault();
+  if(!vaultToken){$('vault-status').textContent='افتح الخزنة بالرمز الإداري أولًا.';return;}
+  const file=$('file').files[0];
+  if(!file||!currentHash){$('vault-status').textContent='اختر ملفًا وانتظر حساب البصمة.';return;}
+  const button=$('register');button.disabled=true;$('vault-status').textContent='جارٍ تسجيل بيانات المستند…';
+  try{
+    const record=await api('/api/asset-vault',{method:'POST',body:JSON.stringify({
+      assetType:'digital-document:'+ $('category').value,
+      legalOwner:$('owner').value.trim(),
+      jurisdiction:$('jurisdiction').value.trim(),
+      custodian:$('custodian').value.trim()||null,
+      externalReference:$('reference').value.trim()||file.name,
+      quantity:1,
+      valuation:null,
+      evidenceRefs:['sha256:'+currentHash,'filename:'+file.name,'size-bytes:'+file.size],
+      rights:$('notes').value.trim()?[$('notes').value.trim()]:[],
+      risk:{status:'unverified-document-metadata',note:'File bytes are not stored by this page.'},
+      assetFingerprint:currentHash
+    })});
+    $('vault-status').innerHTML='<span class="good">تم تسجيل السجل.</span> المعرّف: <code>'+esc(record.asset?.id||'—')+'</code>. احتفظ بالملف الأصلي.';
+    await loadRecords();
+  }catch(error){$('vault-status').innerHTML='<span class="bad">فشل التسجيل:</span> '+esc(error.message);}
+  finally{button.disabled=false;}
+});
+async function loadRecords(){
+  if(!vaultToken)return;
+  $('vault-status').textContent='جارٍ تحميل السجل…';
+  try{
+    const data=await api('/api/asset-vault?limit=100');
+    const assets=Array.isArray(data.assets)?data.assets:[];
+    $('rows').replaceChildren();
+    for(const item of assets){
+      const row=document.createElement('tr');
+      const values=[item.id,item.assetType,item.legalOwner,(item.evidenceRefs||[]).join(' | '),item.createdAt,item.status];
+      for(const value of values){const cell=document.createElement('td');cell.textContent=String(value??'—');row.appendChild(cell);}
+      $('rows').appendChild(row);
+    }
+    $('vault-status').textContent='تم تحميل '+assets.length+' سجلًا من الخزنة. لا يعني التسجيل أن الملكية أو المحتوى قد تم التحقق منهما.';
+  }catch(error){$('vault-status').innerHTML='<span class="bad">تعذر تحميل السجل:</span> '+esc(error.message);}
 }
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-load();
-</script></main></body></html>+Number(d.verifiedIntelligenceValueUsd||0).toLocaleString('en-US');
-  document.getElementById('financial-value').textContent='
-  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
-  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
-   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
-  ).join('');
- }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
-}
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-load();
-</script></main></body></html>+Number(d.verifiedFinancialValueUsd||0).toLocaleString('en-US');
-  document.getElementById('total-value').textContent='
-  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
-  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
-   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
-  ).join('');
- }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
-}
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-load();
-</script></main></body></html>+Number(d.verifiedTotalAssetValueUsd||0).toLocaleString('en-US');
-  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
-  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
-   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
-  ).join('');
- }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
-}
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-load();
-</script></main></body></html>+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td><td>'+esc(x.marketPrice??'—')+'</td><td>'+esc(x.marketPriceSource||'—')+'</td></tr>'
-  ).join('');
- }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
-}
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-load();
-</script></main></body></html>+Number(d.verifiedIntelligenceValueUsd||0).toLocaleString('en-US');
-  document.getElementById('financial-value').textContent='
-  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
-  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
-   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
-  ).join('');
- }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
-}
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-load();
-</script></main></body></html>+Number(d.verifiedFinancialValueUsd||0).toLocaleString('en-US');
-  document.getElementById('total-value').textContent='
-  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
-  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
-   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
-  ).join('');
- }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
-}
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-load();
-</script></main></body></html>+Number(d.verifiedTotalAssetValueUsd||0).toLocaleString('en-US');
-  s.innerHTML='<span class="ok">● Live</span> — '+(d.valueStatus?.status||'UNKNOWN');
-  document.getElementById('rows').innerHTML=(d.assets||[]).map(x=>
-   '<tr><td>'+esc(x.assetId)+'</td><td>'+esc(x.assetClass||'—')+'</td><td>'+esc(x.verified)+'</td><td>'+esc(x.aiValueUnitId||'—')+'</td><td>$'+Number(x.aiValueUsd||0).toLocaleString('en-US')+'</td></tr>'
-  ).join('');
- }catch(e){s.innerHTML='<span class="warn">● Live vault state unavailable</span> — '+esc(e.message)}
-}
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-load();
-</script></main></body></html>
+$('refresh').addEventListener('click',loadRecords);
+$('print').addEventListener('click',()=>window.print());
+</script>
+</main></body></html>
