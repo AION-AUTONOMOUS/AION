@@ -14,7 +14,7 @@ function mockResponse() {
   };
 }
 
-const envKeys = ['ADYEN_API_KEY', 'ADYEN_MERCHANT_ACCOUNT', 'ADYEN_CLIENT_KEY', 'ADYEN_ENVIRONMENT'];
+const envKeys = ['ADYEN_API_KEY', 'ADYEN_MERCHANT_ACCOUNT', 'ADYEN_CLIENT_KEY', 'ADYEN_ENVIRONMENT', 'REDIS_URL'];
 function saveEnv() {
   return Object.fromEntries(envKeys.map(key => [key, process.env[key]]));
 }
@@ -44,7 +44,7 @@ test('checkout refuses to start if any required Adyen test credential is missing
   }
 });
 
-test('checkout stays on Adyen test host even when ADYEN_ENVIRONMENT=live', async () => {
+test('checkout fails closed without durable order storage, even when ADYEN_ENVIRONMENT=live', async () => {
   const saved = saveEnv();
   const oldFetch = globalThis.fetch;
   let requestedUrl;
@@ -54,22 +54,18 @@ test('checkout stays on Adyen test host even when ADYEN_ENVIRONMENT=live', async
     process.env.ADYEN_MERCHANT_ACCOUNT = 'test-merchant';
     process.env.ADYEN_CLIENT_KEY = 'test-client-key';
     process.env.ADYEN_ENVIRONMENT = 'live';
+    delete process.env.REDIS_URL;
     globalThis.fetch = async (url, options) => {
       requestedUrl = String(url);
       requestedPayload = JSON.parse(options.body);
-      return {
-        ok: true,
-        status: 200,
-        json: async () => ({ id: 'session-id', sessionData: 'session-data' })
-      };
+      throw new Error('provider must not be called before durable order storage');
     };
     const res = mockResponse();
     await handler({ method: 'POST', body: { serviceId: 'simple_letter', countryCode: 'US' } }, res);
-    assert.equal(res.statusCode, 200);
-    assert.equal(requestedUrl, 'https://checkout-test.adyen.com/v72/sessions');
-    assert.equal(res.body.environment, 'test');
-    assert.equal(requestedPayload.amount.currency, 'USD');
-    assert.equal(requestedPayload.amount.value, 400);
+    assert.equal(res.statusCode, 503);
+    assert.equal(res.body.code, 'DURABLE_STORAGE_REQUIRED');
+    assert.equal(requestedUrl, undefined);
+    assert.equal(requestedPayload, undefined);
     assert.equal(res.headers['cache-control'], 'no-store');
   } finally {
     globalThis.fetch = oldFetch;
