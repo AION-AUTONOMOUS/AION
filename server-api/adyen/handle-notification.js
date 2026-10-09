@@ -53,32 +53,37 @@ export default async function handler(req, res) {
         return res.status(400).send('Amount or currency mismatch');
       }
 
-      const claimKey = PREFIX + 'adyen-event:' + crypto.createHash('sha256').update(text(item.pspReference)).digest('hex');
-      const claimed = await railwayRedisCommand(['SET', claimKey, 'processing', 'NX']);
-      if (claimed !== 'OK') {
-        const currentRaw = await railwayRedisCommand(['GET', PREFIX + 'customer-orders:' + reference]);
-        const current = currentRaw ? JSON.parse(currentRaw) : null;
-        if (current?.paymentStatus === 'confirmed' && current?.providerEventId === text(item.pspReference)) continue;
-        return res.status(409).send('Notification already claimed; reconciliation required');
-      }
-
-      // All financial writes are strict Redis writes: no in-memory fallback.
+      // Deterministic event ledger key makes retries safe after partial failures.
+      // Write the immutable ledger entry with SET NX, then repair the order on retry.
+      const eventHash = crypto.createHash('sha256').update(text(item.pspReference)).digest('hex');
+      const revenueId = 'ADYEN-REV-' + eventHash;
       const now = new Date().toISOString();
       const updated = {
         ...order, status: 'paid', paymentStatus: 'confirmed', paymentProvider: 'adyen',
         providerEventId: text(item.pspReference), paymentReference: text(item.pspReference),
         revenueRecognized: true, paidAt: now, verifiedAt: now
       };
-      const revenueId = 'AION-REV-' + crypto.randomUUID();
       const revenue = {
         id: revenueId, orderId: reference, customerId: order.customerId || 'global-counsel-customer',
         amountUsd: Number(order.amountUsd), currency: order.currency,
         paymentReference: text(item.pspReference), recognizedAt: now, source: 'adyen-hmac-verified'
       };
+      const ledgerKey = PREFIX + 'customer-revenue:' + revenueId;
+      const inserted = await railwayRedisCommand(['SET', ledgerKey, json(revenue), 'NX']);
+      if (inserted === 'OK') {
+        await railwayRedisCommand(['SADD', PREFIX + 'customer-revenue:index', revenueId]);
+      } else {
+        const priorRaw = await railwayRedisCommand(['GET', ledgerKey]);
+        const prior = priorRaw ? JSON.parse(priorRaw) : null;
+        if (!prior || prior.orderId !== reference || prior.paymentReference !== text(item.pspReference) ||
+            Number(prior.amountUsd) !== Number(order.amountUsd) ||
+            text(prior.currency).toUpperCase() !== text(order.currency).toUpperCase()) {
+          return res.status(409).send('Existing revenue entry does not match this payment');
+        }
+      }
+      // If this write fails after the ledger write, Adyen retry repairs the order
+      // without duplicating revenue because the ledger key is deterministic.
       await railwayRedisCommand(['SET', PREFIX + 'customer-orders:' + reference, json(updated)]);
-      await railwayRedisCommand(['SET', PREFIX + 'customer-revenue:' + revenueId, json(revenue)]);
-      await railwayRedisCommand(['SADD', PREFIX + 'customer-revenue:index', revenueId]);
-      await railwayRedisCommand(['SET', claimKey, 'processed']);
     }
 
     return res.status(200).send('[accepted]');
