@@ -18,6 +18,7 @@ const HANDLERS = {
   'paypal-client-config': () => import('../server-api/paypal/client-config.js'),
   'paypal-create-order': () => import('../server-api/paypal/create-order.js'),
   'paypal-capture-order': () => import('../server-api/paypal/capture-order.js'),
+  'adyen-create-session': () => import('../server-api/adyen/create-session.js'),
   'wallet-config': () => import('../server-api/wallet/config.js'),
   'space-commerce': () => import('../server-api/space-commerce.js'),
   'space-planet': () => import('../server-api/space-planet.js'),
