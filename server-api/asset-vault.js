@@ -4,7 +4,7 @@ const TOKEN = () => String(process.env.AION_ASSET_VAULT_TOKEN||'').trim();
 
 function authorized(req){
   const configured=TOKEN();
-  const supplied=String(req.headers.authorization||'').replace(/^Bearer\\s+/i,'').trim();
+  const supplied=String(req.headers.authorization||'').replace(/^Bearer\s+/i,'').trim();
   return Boolean(configured && supplied && supplied===configured);
 }
 
