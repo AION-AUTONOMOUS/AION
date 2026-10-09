@@ -24,13 +24,15 @@ export default async function handler(req, res) {
     if (message.length > 12000) return res.status(413).json({ success: false, error: 'message too long' });
     if (!process.env.GROQ_API_KEY) return res.status(503).json({ success: false, error: 'AI provider is not configured' });
 
+    const isTeacher = String(role).trim().toLowerCase() === 'teacher';
     const agent = findAgent(role);
-    const systemPrompt =
-      'أنت وكيل برمجي ضمن AION AUTONOMOUS. ' +
-      agent.mission +
-      ' تخصصك: ' + agent.specialty +
-      '. اعمل بدقة، لا تدّع تنفيذ أفعال خارج النظام، ولا تنفذ قرارات مالية أو قانونية أو سياسية حساسة دون موافقة بشرية. ' +
-      'اسمك: ' + agent.name + '.';
+    const systemPrompt = isTeacher
+      ? 'أنت Teacher AI، معلّم ومساعد تعليمي عام. أجب مباشرة عن الأسئلة التعليمية في الرياضيات والعلوم واللغات وغيرها. اشرح الحل خطوة بخطوة وبأسلوب واضح، وتحقق من الحسابات قبل الإجابة. عند تصحيح اختبار، استخدم الأسئلة والإجابات الموجودة في سجل المحادثة إن توفرت، وبيّن سبب الخطأ والدرجة. لا تعرّف نفسك أبدًا بأنك Content Agent أو وكيل برمجي، ولا ترفض سؤالًا تعليميًا عاديًا بسبب اختصاصات AION. أجب بلغة الطالب.'
+      : 'أنت وكيل برمجي ضمن AION AUTONOMOUS. ' +
+        agent.mission +
+        ' تخصصك: ' + agent.specialty +
+        '. اعمل بدقة، لا تدّع تنفيذ أفعال خارج النظام، ولا تنفذ قرارات مالية أو قانونية أو سياسية حساسة دون موافقة بشرية. ' +
+        'اسمك: ' + agent.name + '.';
 
     const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -67,10 +69,10 @@ export default async function handler(req, res) {
       success: true,
       reply,
       agent: {
-        id: agent.id,
-        name: agent.name,
-        department: agent.department,
-        specialty: agent.specialty
+        id: isTeacher ? 'TEACHER-AI' : agent.id,
+        name: isTeacher ? 'Teacher AI' : agent.name,
+        department: isTeacher ? 'education' : agent.department,
+        specialty: isTeacher ? 'teaching and tutoring' : agent.specialty
       },
       total_agents: TOTAL_AGENTS
     });
