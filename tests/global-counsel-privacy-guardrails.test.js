@@ -11,14 +11,15 @@ test('Global Counsel clearly warns against entering sensitive case data', () => 
   assert.match(privacy, /غير جاهز لاستقبال ملفات حساسة/);
 });
 
-test('case organizer remains a local-only prototype with no client network submission APIs', () => {
-  // This is a static guardrail, not proof of overall application security.
-  assert.doesNotMatch(counsel, /\bfetch\s*\(/i);
+test('case organizer has no file-upload or client-side persistence path; network call is limited to payment session', () => {
+  // Payment checkout has its own explicit API call. The case organizer must not submit case content.
+  assert.match(counsel, /fetch\(['"]\/api\/adyen\/create-session['"]/);
   assert.doesNotMatch(counsel, /\bXMLHttpRequest\b/);
   assert.doesNotMatch(counsel, /\bsendBeacon\s*\(/i);
   assert.doesNotMatch(counsel, /\blocalStorage\b|\bsessionStorage\b/);
   assert.doesNotMatch(counsel, /<input[^>]+type=["']file["']/i);
   assert.doesNotMatch(counsel, /<form\b[^>]*\baction\s*=/i);
+  assert.doesNotMatch(counsel, /fetch\s*\([^)]*(?:summary|caseText|caseDetails|evidence|documentContent)/is);
 });
 
 test('the clear control resets the case fields and generated summary', () => {
