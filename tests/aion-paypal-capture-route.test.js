@@ -141,3 +141,47 @@ test('server-side PayPal capture validates amount before capture and records one
     globalThis.fetch = originalFetch;
   }
 });
+
+
+test('PayPal network outages return retryable 503 and do not mark an order paid', async () => {
+  const order = await revenueApi.createCustomerOrder({
+    offerId: 'space-weather-brief',
+    customerId: 'paypal-network-outage-test'
+  });
+  await setJson('customer-orders:' + order.id, { ...order, paypalOrderId: 'PP-NETWORK-OUTAGE' });
+
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => {
+    throw new TypeError('mock socket failure');
+  };
+  try {
+    const res = await postCapture(order.id);
+    assert.equal(res.statusCode, 503);
+    assert.match(res.payload?.error || '', /PayPal network request failed/);
+    const persisted = await revenueApi.listCustomerOrders();
+    assert.equal(persisted.find(row => row.id === order.id)?.paymentStatus, 'unpaid');
+    assert.equal((await revenueApi.listRevenue()).some(row => row.orderId === order.id), false);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('PayPal upstream 429/5xx failures are returned as retryable 503 responses', async () => {
+  const order = await revenueApi.createCustomerOrder({
+    offerId: 'space-weather-brief',
+    customerId: 'paypal-upstream-error-test'
+  });
+  await setJson('customer-orders:' + order.id, { ...order, paypalOrderId: 'PP-UPSTREAM-ERROR' });
+
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => paypalResponse(503, { message: 'PayPal temporarily unavailable' });
+  try {
+    const res = await postCapture(order.id);
+    assert.equal(res.statusCode, 503);
+    assert.match(res.payload?.error || '', /temporarily unavailable/);
+    const persisted = (await revenueApi.listCustomerOrders()).find(row => row.id === order.id);
+    assert.equal(persisted?.paymentStatus, 'unpaid');
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
