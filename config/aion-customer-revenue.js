@@ -89,16 +89,23 @@ export async function confirmCustomerPayment(orderId,input={}){
   if(provider!=='paypal') throw new Error('revenue confirmation requires an authorized payment provider');
   if(verification!=='SUCCESS') throw new Error('payment provider verification required');
   if(!providerEventId||!paymentReference) throw new Error('providerEventId and paymentReference required');
-  if(input.amountUsd !== undefined) {
-    const amount = Number(input.amountUsd);
-    if(!Number.isFinite(amount) || Math.round(amount * 100) !== Math.round(Number(order.amountUsd) * 100)) {
-      throw new Error('verified payment amount does not match the AION order');
-    }
+  // Amount and currency are mandatory evidence from the verified provider event.
+  // Omitting either must never bypass order matching.
+  if(typeof input.amountUsd !== 'string' || !/^\\d+(?:\\.\\d{1,2})?$/.test(input.amountUsd)) {
+    throw new Error('verified payment amount evidence required');
   }
-  if(input.currency !== undefined && text(input.currency).toUpperCase() !== text(order.currency).toUpperCase()) {
+  const amount = Number(input.amountUsd);
+  if(!Number.isFinite(amount) || Math.round(amount * 100) !== Math.round(Number(order.amountUsd) * 100)) {
+    throw new Error('verified payment amount does not match the AION order');
+  }
+  if(typeof input.currency !== 'string' || !/^[A-Za-z]{3}$/.test(input.currency) ||
+     text(input.currency).toUpperCase() !== text(order.currency).toUpperCase()) {
     throw new Error('verified payment currency does not match the AION order');
   }
-  if(order.paymentStatus==='confirmed') return order;
+  if(order.paymentStatus==='confirmed') {
+    if(order.providerEventId===providerEventId && order.paymentReference===paymentReference) return order;
+    throw new Error('AION order already confirmed by a different provider payment');
+  }
   const updated={...order,status:'paid',paymentStatus:'confirmed',paymentProvider:provider,providerEventId,paymentReference,revenueRecognized:true,paidAt:new Date().toISOString(),verifiedAt:new Date().toISOString()};
   await setJson('customer-orders:'+order.id,updated);
   const revenue={id:id('AION-REV'),orderId:order.id,customerId:order.customerId,amountUsd:order.amountUsd,currency:order.currency,paymentReference:updated.paymentReference,recognizedAt:updated.paidAt,source:'confirmed-payment'};
