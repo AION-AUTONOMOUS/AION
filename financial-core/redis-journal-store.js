@@ -9,7 +9,32 @@ const KEY_PATTERN = /^[A-Za-z0-9:_-]{8,200}$/;
  * callers must provide a dedicated Redis client, enforce authorization, configure durable
  * Redis persistence/backup, and monitor failures. Do not set a TTL on the journal key.
  */
-export async function appendJournalRedis(client, key, command, {
+const clientQueues = new WeakMap();
+
+export async function appendJournalRedis(client, key, command, options = {}) {
+  if (!client || typeof client.watch !== "function" || typeof client.get !== "function" ||
+      typeof client.multi !== "function" || typeof client.unwatch !== "function") {
+    throw new TypeError("a compatible Redis client is required");
+  }
+
+  // WATCH state belongs to a Redis connection. Serialize this process's operations
+  // per client so concurrent requests cannot cancel or overwrite each other's WATCH.
+  const predecessor = clientQueues.get(client) || Promise.resolve();
+  let release;
+  const gate = new Promise(resolve => { release = resolve; });
+  const tail = predecessor.catch(() => {}).then(() => gate);
+  clientQueues.set(client, tail);
+  await predecessor.catch(() => {});
+
+  try {
+    return await appendJournalRedisTransaction(client, key, command, options);
+  } finally {
+    release();
+    if (clientQueues.get(client) === tail) clientQueues.delete(client);
+  }
+}
+
+async function appendJournalRedisTransaction(client, key, command, {
   now,
   maxRetries = 5
 } = {}) {
