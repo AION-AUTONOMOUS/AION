@@ -72,3 +72,38 @@ test('unknown market paths are not treated as valid data routes without a provid
     else process.env.AION_MARKET_PROVIDER_ADAPTER = prior;
   }
 });
+
+test('market API denies cross-origin requests unless the exact origin is configured', async () => {
+  const prior = process.env.AION_PUBLIC_ORIGIN;
+  delete process.env.AION_PUBLIC_ORIGIN;
+  try {
+    const res = response();
+    await handler({ method: 'GET', url: '/api/market?path=health', headers: { origin: 'https://attacker.example' } }, res);
+    assert.equal(res.code, 403);
+    assert.equal(res.body.error, 'origin_not_allowed');
+    assert.equal(res.headers['Access-Control-Allow-Origin'], undefined);
+    assert.equal(res.headers.Vary, 'Origin');
+  } finally {
+    if (prior === undefined) delete process.env.AION_PUBLIC_ORIGIN;
+    else process.env.AION_PUBLIC_ORIGIN = prior;
+  }
+});
+
+test('market API permits only the configured public origin for browser access', async () => {
+  const prior = process.env.AION_PUBLIC_ORIGIN;
+  process.env.AION_PUBLIC_ORIGIN = 'https://aion.example';
+  try {
+    const allowed = response();
+    await handler({ method: 'GET', url: '/api/market?path=health', headers: { origin: 'https://aion.example' } }, allowed);
+    assert.equal(allowed.code, 200);
+    assert.equal(allowed.headers['Access-Control-Allow-Origin'], 'https://aion.example');
+
+    const denied = response();
+    await handler({ method: 'OPTIONS', url: '/api/market?path=health', headers: { origin: 'https://attacker.example' } }, denied);
+    assert.equal(denied.code, 403);
+    assert.equal(denied.body.error, 'origin_not_allowed');
+  } finally {
+    if (prior === undefined) delete process.env.AION_PUBLIC_ORIGIN;
+    else process.env.AION_PUBLIC_ORIGIN = prior;
+  }
+});
