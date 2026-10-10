@@ -63,12 +63,10 @@ test("rejects duplicate references and malformed statement entries", () => {
   assert.throws(() => reconcileStatements({ internalEntries: null, externalEntries: [] }), /must be arrays/);
 });
 
-
 test("rejects duplicate external references", () => {
   const duplicate = { reference: "EXT-1", amountMinor: 500, currency: "USD" };
   assert.throws(() => reconcileStatements({
-    internalEntries: [],
-    externalEntries: [duplicate, duplicate]
+    internalEntries: [], externalEntries: [duplicate, duplicate]
   }), /duplicate external reference/);
 });
 
@@ -85,4 +83,11 @@ test("rejects blank references, negative amounts, and malformed currencies", () 
     internalEntries: [{ reference: "CUR-1", amountMinor: 100, currency: "usd" }],
     externalEntries: []
   }), /uppercase ISO-style code/);
+});
+
+test("rejects whitespace-only reconciliation references", () => {
+  assert.throws(() => reconcileStatements({
+    internalEntries: [{ reference: "   ", amountMinor: 100, currency: "USD" }],
+    externalEntries: []
+  }), /non-blank string/);
 });
