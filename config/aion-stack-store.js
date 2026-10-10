@@ -106,15 +106,16 @@ export async function setJson(key, value) {
 }
 
 export async function addToIndex(indexName, id) {
-  const index = indexes[indexName];
-  if (!index) throw new Error('Unknown stack index: ' + indexName);
   const financial = FINANCIAL_INDEXES.has(indexName);
   if (!config()) {
     if (financial && !ALLOW_MEMORY_FINANCIAL_TESTS()) {
       throw financialStorageUnavailable('Redis is not configured for index ' + indexName);
     }
+    // Preserve the legacy memory behavior for non-financial stack indexes.
     return id;
   }
+  const index = indexes[indexName];
+  if (!index) throw new Error('Unknown stack index: ' + indexName);
   try {
     await command(['SADD', index, id]);
   } catch (error) {
