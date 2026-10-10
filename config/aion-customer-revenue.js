@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { addToIndex, getJson, listIndexed, setJson } from './aion-stack-store.js';
+import { addToIndex, commitCustomerPayment, getJson, listIndexed, setJson } from './aion-stack-store.js';
 
 export const CUSTOMER_REVENUE_VERSION = '1.0.0';
 
@@ -106,11 +106,17 @@ export async function confirmCustomerPayment(orderId,input={}){
     if(order.providerEventId===providerEventId && order.paymentReference===paymentReference) return order;
     throw new Error('AION order already confirmed by a different provider payment');
   }
-  const updated={...order,status:'paid',paymentStatus:'confirmed',paymentProvider:provider,providerEventId,paymentReference,revenueRecognized:true,paidAt:new Date().toISOString(),verifiedAt:new Date().toISOString()};
-  await setJson('customer-orders:'+order.id,updated);
-  const revenue={id:id('AION-REV'),orderId:order.id,customerId:order.customerId,amountUsd:order.amountUsd,currency:order.currency,paymentReference:updated.paymentReference,recognizedAt:updated.paidAt,source:'confirmed-payment'};
-  await setJson('customer-revenue:'+revenue.id,revenue); await addToIndex('customer-revenue',revenue.id);
-  return updated;
+  const paidAt=new Date().toISOString();
+  const updated={...order,status:'paid',paymentStatus:'confirmed',paymentProvider:provider,providerEventId,paymentReference,revenueRecognized:true,paidAt,verifiedAt:paidAt};
+  // A deterministic revenue ID makes retries safe if a Redis command fails mid-commit.
+  const revenueId='AION-REV-'+crypto.createHash('sha256').update(order.id+':'+paymentReference).digest('hex').slice(0,24);
+  const revenue={id:revenueId,orderId:order.id,customerId:order.customerId,amountUsd:order.amountUsd,currency:order.currency,paymentReference:updated.paymentReference,recognizedAt:updated.paidAt,source:'confirmed-payment'};
+  // Order, revenue record and the revenue index are committed by one Redis Lua script.
+  // Storage errors propagate so the PayPal webhook returns 5xx and can be retried.
+  return await commitCustomerPayment({
+    orderId:order.id,updatedOrder:updated,revenue,providerEventId,paymentReference,
+    amountUsd:amount,currency:text(input.currency).toUpperCase()
+  });
 }
 export async function recordDelivery(orderId,input={}){
   const order=await getJson('customer-orders:'+text(orderId));
