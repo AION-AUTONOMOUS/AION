@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
-import { addToIndex, commitCustomerOrder, commitCustomerPayment, getJson, listIndexed, setJson } from './aion-stack-store.js';
+import { addToIndex, commitCustomerDelivery, commitCustomerOrder, commitCustomerPayment, getJson, listIndexed, setJson } from './aion-stack-store.js';
+import { postCustomerServiceRevenue } from '../financial-core/customer-payment-ledger.js';
 
 export const CUSTOMER_REVENUE_VERSION = '1.0.0';
 
@@ -60,7 +61,7 @@ export function customerRevenueHealth(){
     status:'customer-ready',
     offers:OFFERS.length,
     realDataBacked:true,
-    revenueRecognition:'payment-confirmed-only',
+    revenueRecognition:'payment-and-delivery-evidence-required',
     deliveryEvidenceRequired:true,
     roiMeasurement:true,
     externalMoney:'provider-gated',
@@ -108,10 +109,10 @@ export async function confirmCustomerPayment(orderId,input={}){
     throw new Error('AION order already confirmed by a different provider payment');
   }
   const paidAt=new Date().toISOString();
-  const updated={...order,status:'paid',paymentStatus:'confirmed',paymentProvider:provider,providerEventId,paymentReference,revenueRecognized:true,paidAt,verifiedAt:paidAt};
+  const updated={...order,status:'paid',paymentStatus:'confirmed',paymentProvider:provider,providerEventId,paymentReference,revenueRecognized:false,paidAt,verifiedAt:paidAt};
   // A deterministic revenue ID makes retries safe if a Redis command fails mid-commit.
   const revenueId='AION-REV-'+crypto.createHash('sha256').update(order.id+':'+paymentReference).digest('hex').slice(0,24);
-  const revenue={id:revenueId,orderId:order.id,customerId:order.customerId,amountUsd:order.amountUsd,currency:order.currency,paymentReference:updated.paymentReference,recognizedAt:updated.paidAt,source:'confirmed-payment'};
+  const revenue={id:revenueId,orderId:order.id,customerId:order.customerId,amountUsd:order.amountUsd,currency:order.currency,paymentReference:updated.paymentReference,receivedAt:updated.paidAt,recognizedAt:null,status:'pending-delivery',revenueRecognized:false,source:'payment-confirmed'};
   // Order, revenue record and the revenue index are committed by one Redis Lua script.
   // Storage errors propagate so the PayPal webhook returns 5xx and can be retried.
   return await commitCustomerPayment({
@@ -125,9 +126,38 @@ export async function recordDelivery(orderId,input={}){
   if(order.paymentStatus!=='confirmed') throw new Error('delivery blocked until payment is confirmed');
   const evidence=text(input.evidence);
   if(!evidence) throw new Error('delivery evidence required');
-  const updated={...order,status:'delivered',deliveryStatus:'delivered',deliveryEvidence:evidence,deliveredAt:new Date().toISOString()};
-  await setJson('customer-orders:'+order.id,updated);
-  return updated;
+
+  if(order.deliveryStatus==='delivered'){
+    if(order.deliveryEvidence!==evidence) throw new Error('delivery evidence cannot change after revenue recognition');
+    await postDeliveryRevenueJournal(order);
+    return order;
+  }
+
+  const recognizedAt=new Date().toISOString();
+  const updated={...order,status:'delivered',deliveryStatus:'delivered',deliveryEvidence:evidence,deliveredAt:recognizedAt,revenueRecognized:true,revenueRecognizedAt:recognizedAt};
+  const revenueId='AION-REV-'+crypto.createHash('sha256').update(order.id+':'+order.paymentReference).digest('hex').slice(0,24);
+  const revenue={
+    id:revenueId,orderId:order.id,customerId:order.customerId,amountUsd:order.amountUsd,currency:order.currency,
+    paymentReference:order.paymentReference,receivedAt:order.paidAt||order.verifiedAt||null,
+    recognizedAt,status:'recognized',revenueRecognized:true,source:'delivered-service'
+  };
+  const committed=await commitCustomerDelivery({
+    orderId:order.id,updatedOrder:updated,revenue,paymentReference:order.paymentReference,evidence
+  });
+  if(!committed) return null;
+  await postDeliveryRevenueJournal(committed);
+  return committed;
+}
+
+async function postDeliveryRevenueJournal(order){
+  if(process.env.NODE_ENV==='test' &&
+     process.env.AION_TEST_ALLOW_MEMORY_FINANCIAL_STORE==='1' &&
+     !String(process.env.REDIS_URL||'').trim()) return {skipped:'explicit-memory-test-adapter'};
+  try{
+    return await postCustomerServiceRevenue(order);
+  }catch(error){
+    throw new Error('Durable financial journal unavailable: '+String(error?.message||error));
+  }
 }
 export async function recordOutcome(orderId,input={}){
   const order=await getJson('customer-orders:'+text(orderId));
@@ -140,17 +170,17 @@ export async function recordOutcome(orderId,input={}){
   return roi;
 }
 export async function listCustomerOrders(){return listIndexed('customer-orders');}
-export async function listRevenue(){
-  const records = await listIndexed('customer-revenue');
-  // A record key/index can temporarily survive a failed Lua write; only report revenue
-  // once the corresponding order is durably confirmed for this exact capture.
-  const checked = await Promise.all(records.map(async record => {
-    if (!record?.orderId || !record?.paymentReference) return null;
-    const order = await getJson('customer-orders:' + record.orderId);
-    if (order?.paymentStatus !== 'confirmed' ||
-        order?.revenueRecognized !== true ||
-        order?.paymentReference !== record.paymentReference) return null;
-    return record;
+export async function listCustomerPayments(){
+  const records=await listIndexed('customer-revenue');
+  const checked=await Promise.all(records.map(async record=>{
+    if(!record?.orderId||!record?.paymentReference)return null;
+    const order=await getJson('customer-orders:'+record.orderId);
+    if(order?.paymentStatus!=='confirmed'||order?.paymentReference!==record.paymentReference)return null;
+    return {...record,paymentStatus:'confirmed',deliveryStatus:order.deliveryStatus,revenueRecognized:order.revenueRecognized===true};
   }));
   return checked.filter(Boolean);
+}
+export async function listRevenue(){
+  const payments=await listCustomerPayments();
+  return payments.filter(record=>record.revenueRecognized===true&&record.deliveryStatus==='delivered'&&Boolean(record.recognizedAt));
 }
