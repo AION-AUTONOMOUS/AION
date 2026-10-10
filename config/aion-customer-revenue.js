@@ -103,7 +103,9 @@ export async function confirmCustomerPayment(orderId,input={}){
     throw new Error('verified payment currency does not match the AION order');
   }
   if(order.paymentStatus==='confirmed') {
-    if(order.providerEventId===providerEventId && order.paymentReference===paymentReference) return order;
+    // A capture is the payment identity; webhook event IDs can differ between
+    // the synchronous capture flow and the later PayPal webhook delivery.
+    if(order.paymentProvider==='paypal' && order.paymentReference===paymentReference) return order;
     throw new Error('AION order already confirmed by a different provider payment');
   }
   const paidAt=new Date().toISOString();
