@@ -99,6 +99,23 @@ test("rejects malformed stored journal data", async () => {
   );
 });
 
+test("rejects a persisted journal whose hash chain was tampered with", async () => {
+  const redis = new FakeRedis();
+  const original = await appendJournalRedis(redis, "aion:journal:usd", command());
+  const tampered = JSON.parse(redis.values.get("aion:journal:usd"));
+  tampered.entries[0].postings[0].debitMinor = 999;
+  redis.values.set("aion:journal:usd", JSON.stringify(tampered));
+
+  await assert.rejects(
+    appendJournalRedis(redis, "aion:journal:usd", command({
+      idempotencyKey: "order:00000002",
+      reference: "test-order-002"
+    })),
+    /integrity check failed/
+  );
+  assert.equal(original.state.entries.length, 1);
+});
+
 test("validates key and retry configuration", async () => {
   const redis = new FakeRedis();
   await assert.rejects(appendJournalRedis(redis, "bad", command()), /key is invalid/);
