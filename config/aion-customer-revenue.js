@@ -58,9 +58,10 @@ function id(prefix){return prefix+'-'+crypto.randomUUID();}
 export function customerRevenueHealth(){
   return {
     version:CUSTOMER_REVENUE_VERSION,
-    status:'customer-ready',
+    status:'integration-foundation',
     offers:OFFERS.length,
-    realDataBacked:true,
+    realDataBacked:false,
+    paymentIntegration:'server-side-verification-integrated; live Sandbox flow not yet tested',
     revenueRecognition:'payment-and-delivery-evidence-required',
     deliveryEvidenceRequired:true,
     roiMeasurement:true,
