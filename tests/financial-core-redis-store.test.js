@@ -20,30 +20,35 @@ class FakeRedis {
   }
   multi() {
     const commands = [];
-    return {
-      set: (key, value) => { commands.push({ key, value }); return this; },
-      exec: async () => {
-        if (this.conflictNextExec) {
-          this.conflictNextExec = false;
+    const redis = this;
+    const transaction = {
+      set(key, value) {
+        commands.push({ key, value });
+        return transaction;
+      },
+      async exec() {
+        if (redis.conflictNextExec) {
+          redis.conflictNextExec = false;
           const first = commands[0];
-          this.versions.set(first.key, (this.versions.get(first.key) ?? 0) + 1);
-          this.watched.clear();
+          redis.versions.set(first.key, (redis.versions.get(first.key) ?? 0) + 1);
+          redis.watched.clear();
           return null;
         }
         for (const { key } of commands) {
-          if (this.watched.get(key) !== (this.versions.get(key) ?? 0)) {
-            this.watched.clear();
+          if (redis.watched.get(key) !== (redis.versions.get(key) ?? 0)) {
+            redis.watched.clear();
             return null;
           }
         }
         for (const { key, value } of commands) {
-          this.values.set(key, value);
-          this.versions.set(key, (this.versions.get(key) ?? 0) + 1);
+          redis.values.set(key, value);
+          redis.versions.set(key, (redis.versions.get(key) ?? 0) + 1);
         }
-        this.watched.clear();
+        redis.watched.clear();
         return commands.map(() => "OK");
       }
     };
+    return transaction;
   }
 }
 
