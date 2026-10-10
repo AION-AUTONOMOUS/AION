@@ -1,4 +1,4 @@
-import { listOffers, listCustomerOrders, listRevenue } from './aion-customer-revenue.js';
+import { listOffers, listCustomerOrders, listCustomerPayments, listRevenue } from './aion-customer-revenue.js';
 
 export const AION_REVENUE_ENGINE_VERSION = '1.0.0';
 
@@ -45,13 +45,15 @@ export function revenueStrategy(){
 }
 
 export async function revenueDashboard(){
-  const [offers,orders,revenue] = await Promise.all([
+  const [offers,orders,payments,revenue] = await Promise.all([
     Promise.resolve(listOffers()),
     listCustomerOrders(),
+    listCustomerPayments(),
     listRevenue()
   ]);
   const paidOrders = orders.filter(x=>x.paymentStatus==='confirmed');
   const delivered = orders.filter(x=>x.deliveryStatus==='delivered');
+  const capturedPayments = payments.reduce((sum,x)=>sum + Number(x.amountUsd||0),0);
   const recognized = revenue.reduce((sum,x)=>sum + Number(x.amountUsd||0),0);
   return {
     health:revenueEngineHealth(),
@@ -60,6 +62,8 @@ export async function revenueDashboard(){
       totalOrders:orders.length,
       paidOrders:paidOrders.length,
       deliveredOrders:delivered.length,
+      capturedPayments,
+      capturedPaymentRecords:payments.length,
       recognizedRevenue:recognized,
       currency:'USD',
       revenueRecords:revenue.length
