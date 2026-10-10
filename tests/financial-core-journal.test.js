@@ -28,6 +28,14 @@ test("same idempotency key and same command does not append twice", () => {
   assert.equal(second.state.entries.length, 1);
 });
 
+test("handles inherited object-property names as idempotency keys", () => {
+  const first = postJournal(createJournalState(), command({ idempotencyKey: "constructor" }));
+  const second = postJournal(first.state, command({ idempotencyKey: "constructor" }));
+  assert.equal(second.duplicate, true);
+  assert.equal(second.entry.id, first.entry.id);
+  assert.equal(second.state.entries.length, 1);
+});
+
 test("rejects reuse of idempotency key with a different command", () => {
   const first = postJournal(createJournalState(), command());
   assert.throws(
