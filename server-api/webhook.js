@@ -73,21 +73,30 @@ export default async function handler(req, res) {
 
     const eventType = String(webhookEvent?.event_type || '');
     const resource = webhookEvent?.resource || {};
-    const capture = Array.isArray(resource?.purchase_units)
-      ? resource.purchase_units[0]?.payments?.captures?.[0]
-      : null;
+    // PAYMENT.CAPTURE.COMPLETED normally carries the capture itself as resource.
+    // Retain support for order-shaped payloads without treating them as verified by shape alone.
+    const purchaseUnit = Array.isArray(resource?.purchase_units) ? resource.purchase_units[0] : null;
+    const capture = resource?.id && resource?.status
+      ? resource
+      : purchaseUnit?.payments?.captures?.[0] || null;
     const captureStatus = String(capture?.status || '').toUpperCase();
-    const orderId = String(resource?.custom_id || '').trim();
+    const orderId = String(resource?.custom_id || purchaseUnit?.custom_id || '').trim();
+    const amountValue = capture?.amount?.value;
+    const amountCurrency = capture?.amount?.currency_code;
 
     if (eventType === 'PAYMENT.CAPTURE.COMPLETED' && captureStatus === 'COMPLETED') {
-      if (!orderId || !webhookEvent?.id || !capture?.id) {
-        return res.status(400).json({ success: false, error: 'Verified payment event is missing AION order mapping' });
+      if (!orderId || !webhookEvent?.id || !capture?.id ||
+          typeof amountValue !== 'string' || !/^\\d+(?:\\.\\d{1,2})?$/.test(amountValue) ||
+          typeof amountCurrency !== 'string') {
+        return res.status(400).json({ success: false, error: 'Verified payment event is missing AION order mapping or amount evidence' });
       }
       await confirmCustomerPayment(orderId, {
         paymentProvider: 'paypal',
         verificationStatus: 'SUCCESS',
         providerEventId: webhookEvent.id,
-        paymentReference: capture.id
+        paymentReference: capture.id,
+        amountUsd: amountValue,
+        currency: amountCurrency
       });
     }
 
