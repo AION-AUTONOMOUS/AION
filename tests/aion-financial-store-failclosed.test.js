@@ -25,8 +25,9 @@ function runIsolated(source, overrides = {}) {
 test('financial writes fail closed when no durable Redis is configured', () => {
   const script = `
     import assert from 'node:assert/strict';
-    import { setJson, addToIndex } from './config/aion-stack-store.js';
+    import { setJson, addToIndex, commitCustomerOrder } from './config/aion-stack-store.js';
     await assert.rejects(() => setJson('customer-orders:no-redis', { id: 'no-redis' }), /Durable financial storage unavailable/);
+    await assert.rejects(() => commitCustomerOrder({ id: 'no-redis' }), /Durable financial storage unavailable/);
     await assert.rejects(() => addToIndex('customer-revenue', 'no-redis'), /Durable financial storage unavailable/);
   `;
   assert.doesNotThrow(() => runIsolated(script));
