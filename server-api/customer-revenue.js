@@ -37,16 +37,23 @@ export default async function handler(req,res){
       if(order.paymentStatus==='confirmed') return res.status(200).json({success:true,order});
       if(!order.paypalOrderId) return res.status(400).json({success:false,error:'PayPal order is missing'});
       const payment=await capturePayPalOrder({paypalOrderId:order.paypalOrderId,expectedOrderId:order.id,expectedAmountUsd:order.amountUsd});
-      const updated=await confirmCustomerPayment(order.id,{paymentProvider:'paypal',verificationStatus:'SUCCESS',providerEventId:payment.orderId,paymentReference:payment.captureId});
+      const updated=await confirmCustomerPayment(order.id,{
+        paymentProvider:'paypal',verificationStatus:'SUCCESS',providerEventId:payment.orderId,
+        paymentReference:payment.captureId,amountUsd:String(payment.amount),currency:String(payment.currency)
+      });
       return res.status(200).json({success:true,order:updated,payment});
     }
     if(req.method==='POST'&&path==='payment'){
-      const b=await body();
-      if(String(b.paymentProvider||'').toLowerCase()!=='paypal'||String(b.verificationStatus||'').toUpperCase()!=='SUCCESS'||!b.providerEventId) return res.status(400).json({success:false,error:'verified PayPal payment evidence required'});
-      return res.status(200).json({success:true,order:await confirmCustomerPayment(b.orderId,b)});
+      // Never accept a client-supplied "SUCCESS" flag as provider verification.
+      // Confirmations are permitted only through server-verified capture or webhook flows.
+      return res.status(403).json({success:false,error:'Payment confirmation requires server-side PayPal verification'});
     }
     if(req.method==='POST'&&path==='delivery'){const b=await body();return res.status(200).json({success:true,order:await recordDelivery(b.orderId,b)})}
     if(req.method==='POST'&&path==='outcome'){const b=await body();return res.status(200).json({success:true,outcome:await recordOutcome(b.orderId,b)})}
     return res.status(405).json({success:false,error:'Method not allowed'});
-  }catch(error){return res.status(400).json({success:false,error:String(error?.message||error)})}
+  }catch(error){
+    const message=String(error?.message||error);
+    const status=message.startsWith('Durable financial storage unavailable')?503:400;
+    return res.status(status).json({success:false,error:message});
+  }
 }
