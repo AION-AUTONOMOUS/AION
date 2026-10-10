@@ -32,7 +32,7 @@ AION is building a digital financial platform from its own codebase. Regulated s
 ## API authorization boundary
 
 - Public endpoints may list offers and initialize customer checkout; they cannot set a payment-confirmed flag or assert successful delivery.
-- The administrative `dashboard`, `orders`, `receipts`, and `revenue` endpoints, plus `delivery` and `outcome` mutation routes, require a server-side bearer token from `AION_REVENUE_ADMIN_TOKEN`, `AION_MESH_TOKEN`, or `AION_CONTRACTS_TOKEN`. If no token is configured, these routes fail closed. Do not expose these tokens to browser code.
+- The administrative `dashboard`, `orders`, `receipts`, and `revenue` endpoints, plus `delivery` and `outcome` mutation routes, require the dedicated server-side bearer token `AION_REVENUE_ADMIN_TOKEN`. No other subsystem token is accepted. If the dedicated token is not configured, these routes fail closed. Do not expose the token to browser code.
 - A capture is acknowledged only after both the provider evidence and the durable receipt journal are stored. A delivery is reported as recognized revenue only after delivery evidence and its idempotent journal entry are durable; retries complete pending work without double-posting.
 
 ## Non-negotiable invariants
