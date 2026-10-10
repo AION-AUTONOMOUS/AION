@@ -1,4 +1,5 @@
 const SANDBOX_API = "https://api-m.sandbox.paypal.com";
+const DEFAULT_REQUEST_TIMEOUT_MS = 8000;
 
 function requireNonEmptyString(value, name) {
   if (typeof value !== "string" || value.trim() === "") {
@@ -15,12 +16,19 @@ function requireNonEmptyString(value, name) {
 export function createPayPalSandboxVerifier({
   clientId,
   clientSecret,
-  fetchImpl = globalThis.fetch
+  fetchImpl = globalThis.fetch,
+  requestTimeoutMs = DEFAULT_REQUEST_TIMEOUT_MS
 } = {}) {
   requireNonEmptyString(clientId, "PayPal sandbox client ID");
   requireNonEmptyString(clientSecret, "PayPal sandbox client secret");
   if (typeof fetchImpl !== "function") {
     throw new TypeError("server-side fetch implementation is required");
+  }
+  if (!Number.isSafeInteger(requestTimeoutMs) || requestTimeoutMs < 1000 || requestTimeoutMs > 30000) {
+    throw new TypeError("request timeout must be an integer between 1000 and 30000 milliseconds");
+  }
+  if (typeof AbortSignal === "undefined" || typeof AbortSignal.timeout !== "function") {
+    throw new Error("AbortSignal.timeout is required for bounded PayPal requests");
   }
 
   return async function verifyWithPayPal({
@@ -41,7 +49,8 @@ export function createPayPalSandboxVerifier({
         "Content-Type": "application/x-www-form-urlencoded",
         Accept: "application/json"
       },
-      body: "grant_type=client_credentials"
+      body: "grant_type=client_credentials",
+      signal: AbortSignal.timeout(requestTimeoutMs)
     });
     if (!tokenResponse || !tokenResponse.ok) {
       throw new Error("PayPal sandbox OAuth token request failed");
@@ -68,7 +77,8 @@ export function createPayPalSandboxVerifier({
           transmission_sig: transmissionSig,
           webhook_id: webhookId,
           webhook_event: webhookEvent
-        })
+        }),
+        signal: AbortSignal.timeout(requestTimeoutMs)
       }
     );
     if (!verificationResponse || !verificationResponse.ok) {
