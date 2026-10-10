@@ -1,4 +1,4 @@
-import { customerRevenueHealth, listOffers, getOffer, createCustomerOrder, confirmCustomerPayment, recordDelivery, recordOutcome, listCustomerOrders, listRevenue } from '../config/aion-customer-revenue.js';
+import { customerRevenueHealth, listOffers, getOffer, createCustomerOrder, confirmCustomerPayment, recordDelivery, recordOutcome, listCustomerOrders, listCustomerPayments, listRevenue } from '../config/aion-customer-revenue.js';
 import { revenueEngineHealth, revenueStrategy, revenueDashboard } from '../config/aion-revenue-engine.js';
 import { createPayPalOrder, capturePayPalOrder, paypalHealth } from '../config/aion-paypal.js';
 import { setJson } from '../config/aion-stack-store.js';
@@ -30,6 +30,7 @@ export default async function handler(req,res){
     if(req.method==='GET'&&path==='dashboard') return res.status(200).json({success:true,...await revenueDashboard()});
     if(req.method==='GET'&&path==='offers') return res.status(200).json({success:true,offers:listOffers()});
     if(req.method==='GET'&&path==='orders') return res.status(200).json({success:true,orders:await listCustomerOrders()});
+    if(req.method==='GET'&&path==='receipts') return res.status(200).json({success:true,receipts:await listCustomerPayments()});
     if(req.method==='GET'&&path==='revenue') return res.status(200).json({success:true,revenue:await listRevenue()});
     if(req.method==='GET'&&path==='offer') return res.status(200).json({success:true,offer:getOffer(url.searchParams.get('id'))});
     if(req.method==='POST'&&path==='order') return res.status(201).json({success:true,order:await createCustomerOrder(await body())});
