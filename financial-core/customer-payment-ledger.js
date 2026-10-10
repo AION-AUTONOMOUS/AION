@@ -27,7 +27,7 @@ function toMinorUnits(amountUsd) {
  * webhook and browser-return flows retry this safely.
  */
 export async function postConfirmedPaymentReceipt(order, { client, now } = {}) {
-  if (!order || order.paymentStatus !== 'confirmed' || order.revenueRecognized !== true) {
+  if (!order || order.paymentStatus !== 'confirmed') {
     throw new Error('a durably confirmed customer payment is required before journal posting');
   }
   if (String(order.paymentProvider || '').toLowerCase() !== 'paypal') {
@@ -54,9 +54,40 @@ export async function postConfirmedPaymentReceipt(order, { client, now } = {}) {
   });
 }
 
+/**
+ * Recognize service income only after the paid order has durable delivery evidence.
+ * This transfers the captured amount from customer prepayments to service income.
+ */
+export async function postCustomerServiceRevenue(order, { client, now } = {}) {
+  if (!order || order.paymentStatus !== 'confirmed' ||
+      order.deliveryStatus !== 'delivered' || order.revenueRecognized !== true ||
+      !String(order.deliveryEvidence || '').trim()) {
+    throw new Error('a paid order with verified delivery evidence is required for income recognition');
+  }
+  const paymentReference = String(order.paymentReference || '').trim();
+  if (!paymentReference) throw new TypeError('PayPal capture reference is required');
+  const minor = toMinorUnits(order.amountUsd);
+  const digest = createHash('sha256').update(String(order.id)).digest('hex');
+  const journalCommand = {
+    idempotencyKey: 'aion:delivery:' + digest,
+    currency: String(order.currency || '').toUpperCase(),
+    reference: String(order.id),
+    postings: [
+      { accountId: CUSTOMER_PREPAYMENTS_ACCOUNT, debitMinor: minor, creditMinor: 0 },
+      { accountId: 'revenue:services', debitMinor: 0, creditMinor: minor }
+    ]
+  };
+  const redisClient = client || await getFinancialLedgerRedisClient();
+  return appendJournalRedis(redisClient, JOURNAL_KEY, journalCommand, {
+    ...(now ? { now } : order.revenueRecognizedAt ? { now: order.revenueRecognizedAt } : {})
+  });
+}
+
 export const customerPaymentLedgerConfig = Object.freeze({
   journalKey: JOURNAL_KEY,
   receiptDebitAccount: PAYPAL_CLEARING_ACCOUNT,
   receiptCreditAccount: CUSTOMER_PREPAYMENTS_ACCOUNT,
-  incomeRecognition: 'deferred-until-delivery-review'
+  incomeRecognition: 'after-delivery-evidence',
+  serviceRevenueDebitAccount: CUSTOMER_PREPAYMENTS_ACCOUNT,
+  serviceRevenueCreditAccount: 'revenue:services'
 });
