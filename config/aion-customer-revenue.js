@@ -1,5 +1,7 @@
 import crypto from 'node:crypto';
-import { addToIndex, getJson, listIndexed, setJson } from './aion-stack-store.js';
+import { addToIndex, commitCustomerDelivery, commitCustomerOrder, commitCustomerPayment, finalizeCustomerDeliveryRevenue, getJson, listIndexed, setJson } from './aion-stack-store.js';
+import { getProductEligibility } from '../financial-core/product-eligibility.js';
+import { postCustomerServiceRevenue } from '../financial-core/customer-payment-ledger.js';
 
 export const CUSTOMER_REVENUE_VERSION = '1.0.0';
 
@@ -57,18 +59,29 @@ function id(prefix){return prefix+'-'+crypto.randomUUID();}
 export function customerRevenueHealth(){
   return {
     version:CUSTOMER_REVENUE_VERSION,
-    status:'customer-ready',
+    status:'integration-foundation',
     offers:OFFERS.length,
-    realDataBacked:true,
-    revenueRecognition:'payment-confirmed-only',
+    realDataBacked:false,
+    paymentIntegration:'server-side-verification-integrated; live Sandbox flow not yet tested',
+    revenueRecognition:'payment-and-delivery-evidence-required',
     deliveryEvidenceRequired:true,
     roiMeasurement:true,
     externalMoney:'provider-gated',
     noFakeRevenue:true
   };
 }
-export function listOffers(){return OFFERS.map(o=>({...o,currency:'USD',paymentProvider:'PayPal',status:'available'}));}
-export function getOffer(offerId){return OFFERS.find(o=>o.id===text(offerId))||null;}
+export function listOffers(){
+  return OFFERS.map(o => ({
+    ...o,
+    currency: 'USD',
+    paymentProvider: 'PayPal',
+    ...getProductEligibility(o.id)
+  }));
+}
+export function getOffer(offerId){
+  const offer = OFFERS.find(o => o.id === text(offerId));
+  return offer && getProductEligibility(offer.id).checkoutEnabled ? offer : null;
+}
 
 export async function createCustomerOrder(input={}){
   const offer=getOffer(input.offerId);
@@ -76,8 +89,7 @@ export async function createCustomerOrder(input={}){
   if(!offer)throw new Error('unknown offer');
   if(!customerId)throw new Error('customerId required');
   const order={id:id('AION-ORDER'),offerId:offer.id,customerId,amountUsd:offer.priceUsd,currency:'USD',paymentProvider:'PayPal',status:'awaiting-payment',paymentStatus:'unpaid',deliveryStatus:'not-started',revenueRecognized:false,createdAt:new Date().toISOString()};
-  await setJson('customer-orders:'+order.id,order); await addToIndex('customer-orders',order.id);
-  return order;
+  return await commitCustomerOrder(order);
 }
 export async function confirmCustomerPayment(orderId,input={}){
   const order=await getJson('customer-orders:'+text(orderId));
@@ -89,12 +101,36 @@ export async function confirmCustomerPayment(orderId,input={}){
   if(provider!=='paypal') throw new Error('revenue confirmation requires an authorized payment provider');
   if(verification!=='SUCCESS') throw new Error('payment provider verification required');
   if(!providerEventId||!paymentReference) throw new Error('providerEventId and paymentReference required');
-  if(order.paymentStatus==='confirmed') return order;
-  const updated={...order,status:'paid',paymentStatus:'confirmed',paymentProvider:provider,providerEventId,paymentReference,revenueRecognized:true,paidAt:new Date().toISOString(),verifiedAt:new Date().toISOString()};
-  await setJson('customer-orders:'+order.id,updated);
-  const revenue={id:id('AION-REV'),orderId:order.id,customerId:order.customerId,amountUsd:order.amountUsd,currency:order.currency,paymentReference:updated.paymentReference,recognizedAt:updated.paidAt,source:'confirmed-payment'};
-  await setJson('customer-revenue:'+revenue.id,revenue); await addToIndex('customer-revenue',revenue.id);
-  return updated;
+  // Amount and currency are mandatory evidence from the verified provider event.
+  // Omitting either must never bypass order matching.
+  if(typeof input.amountUsd !== 'string' || !/^\d+(?:\.\d{1,2})?$/.test(input.amountUsd)) {
+    throw new Error('verified payment amount evidence required');
+  }
+  const amount = Number(input.amountUsd);
+  if(!Number.isFinite(amount) || Math.round(amount * 100) !== Math.round(Number(order.amountUsd) * 100)) {
+    throw new Error('verified payment amount does not match the AION order');
+  }
+  if(typeof input.currency !== 'string' || !/^[A-Za-z]{3}$/.test(input.currency) ||
+     text(input.currency).toUpperCase() !== text(order.currency).toUpperCase()) {
+    throw new Error('verified payment currency does not match the AION order');
+  }
+  if(order.paymentStatus==='confirmed') {
+    // A capture is the payment identity; webhook event IDs can differ between
+    // the synchronous capture flow and the later PayPal webhook delivery.
+    if(order.paymentProvider==='paypal' && order.paymentReference===paymentReference) return order;
+    throw new Error('AION order already confirmed by a different provider payment');
+  }
+  const paidAt=new Date().toISOString();
+  const updated={...order,status:'paid',paymentStatus:'confirmed',paymentProvider:provider,providerEventId,paymentReference,revenueRecognized:false,paidAt,verifiedAt:paidAt};
+  // A deterministic revenue ID makes retries safe if a Redis command fails mid-commit.
+  const revenueId='AION-REV-'+crypto.createHash('sha256').update(order.id+':'+paymentReference).digest('hex').slice(0,24);
+  const revenue={id:revenueId,orderId:order.id,customerId:order.customerId,amountUsd:order.amountUsd,currency:order.currency,paymentReference:updated.paymentReference,receivedAt:updated.paidAt,recognizedAt:null,status:'pending-delivery',revenueRecognized:false,source:'payment-confirmed'};
+  // Order, revenue record and the revenue index are committed by one Redis Lua script.
+  // Storage errors propagate so the PayPal webhook returns 5xx and can be retried.
+  return await commitCustomerPayment({
+    orderId:order.id,updatedOrder:updated,revenue,providerEventId,paymentReference,
+    amountUsd:amount,currency:text(input.currency).toUpperCase()
+  });
 }
 export async function recordDelivery(orderId,input={}){
   const order=await getJson('customer-orders:'+text(orderId));
@@ -102,9 +138,55 @@ export async function recordDelivery(orderId,input={}){
   if(order.paymentStatus!=='confirmed') throw new Error('delivery blocked until payment is confirmed');
   const evidence=text(input.evidence);
   if(!evidence) throw new Error('delivery evidence required');
-  const updated={...order,status:'delivered',deliveryStatus:'delivered',deliveryEvidence:evidence,deliveredAt:new Date().toISOString()};
-  await setJson('customer-orders:'+order.id,updated);
-  return updated;
+
+  if(order.deliveryStatus==='delivered'){
+    if(order.deliveryEvidence!==evidence) throw new Error('delivery evidence cannot change after revenue recognition');
+    await postDeliveryRevenueJournal(order);
+    return order;
+  }
+  if(order.deliveryStatus==='delivered-pending-journal' && order.deliveryEvidence!==evidence){
+    throw new Error('delivery evidence cannot change while revenue recognition is pending');
+  }
+
+  const deliveredAt=order.deliveredAt||new Date().toISOString();
+  const pendingOrder=order.deliveryStatus==='delivered-pending-journal'
+    ? order
+    : {...order,status:'delivery-recorded',deliveryStatus:'delivered-pending-journal',
+       deliveryEvidence:evidence,deliveredAt,revenueRecognized:false,revenueRecognizedAt:null};
+  const revenueId='AION-REV-'+crypto.createHash('sha256').update(order.id+':'+order.paymentReference).digest('hex').slice(0,24);
+  const pendingRevenue={
+    id:revenueId,orderId:order.id,customerId:order.customerId,amountUsd:order.amountUsd,currency:order.currency,
+    paymentReference:order.paymentReference,receivedAt:order.paidAt||order.verifiedAt||null,
+    recognizedAt:null,status:'pending-journal',revenueRecognized:false,source:'delivery-pending-journal'
+  };
+  const pending=await commitCustomerDelivery({
+    orderId:order.id,updatedOrder:pendingOrder,revenue:pendingRevenue,
+    paymentReference:order.paymentReference,evidence
+  });
+  if(!pending) return null;
+
+  // Journal first; only then expose the order and record as recognized revenue.
+  await postDeliveryRevenueJournal(pending);
+  const recognizedAt=new Date().toISOString();
+  const finalizedOrder={...pending,status:'delivered',deliveryStatus:'delivered',
+    revenueRecognized:true,revenueRecognizedAt:recognizedAt};
+  const recognizedRevenue={...pendingRevenue,recognizedAt,status:'recognized',
+    revenueRecognized:true,source:'delivered-service'};
+  return await finalizeCustomerDeliveryRevenue({
+    orderId:order.id,updatedOrder:finalizedOrder,revenue:recognizedRevenue,
+    paymentReference:order.paymentReference,evidence
+  });
+}
+
+async function postDeliveryRevenueJournal(order){
+  if(process.env.NODE_ENV==='test' &&
+     process.env.AION_TEST_ALLOW_MEMORY_FINANCIAL_STORE==='1' &&
+     !String(process.env.REDIS_URL||'').trim()) return {skipped:'explicit-memory-test-adapter'};
+  try{
+    return await postCustomerServiceRevenue(order);
+  }catch(error){
+    throw new Error('Durable financial journal unavailable: '+String(error?.message||error));
+  }
 }
 export async function recordOutcome(orderId,input={}){
   const order=await getJson('customer-orders:'+text(orderId));
@@ -117,4 +199,17 @@ export async function recordOutcome(orderId,input={}){
   return roi;
 }
 export async function listCustomerOrders(){return listIndexed('customer-orders');}
-export async function listRevenue(){return listIndexed('customer-revenue');}
+export async function listCustomerPayments(){
+  const records=await listIndexed('customer-revenue');
+  const checked=await Promise.all(records.map(async record=>{
+    if(!record?.orderId||!record?.paymentReference)return null;
+    const order=await getJson('customer-orders:'+record.orderId);
+    if(order?.paymentStatus!=='confirmed'||order?.paymentReference!==record.paymentReference)return null;
+    return {...record,paymentStatus:'confirmed',deliveryStatus:order.deliveryStatus,revenueRecognized:order.revenueRecognized===true};
+  }));
+  return checked.filter(Boolean);
+}
+export async function listRevenue(){
+  const payments=await listCustomerPayments();
+  return payments.filter(record=>record.revenueRecognized===true&&record.deliveryStatus==='delivered'&&Boolean(record.recognizedAt));
+}

@@ -45,6 +45,16 @@ export async function railwayRedisCommand(command) {
       return client.get(rawArgs[0]);
     case 'SET':
       return client.set(rawArgs[0], rawArgs[1]);
+    case 'EVAL': {
+      const script = rawArgs[0];
+      const numKeys = Number(rawArgs[1]);
+      if (!Number.isInteger(numKeys) || numKeys < 0 || rawArgs.length < 2 + numKeys) {
+        throw new Error('Invalid Redis EVAL arguments');
+      }
+      const keys = rawArgs.slice(2, 2 + numKeys);
+      const args = rawArgs.slice(2 + numKeys);
+      return client.eval(script, { keys, arguments: args });
+    }
     case 'SADD':
       return client.sAdd(rawArgs[0], rawArgs.slice(1));
     case 'SMEMBERS':
@@ -82,6 +92,27 @@ export async function railwayRedisCommand(command) {
   }
   };
   return await Promise.race([run(), new Promise((_, reject) => setTimeout(() => reject(new Error('Redis command timeout')), 3000))]);
+}
+
+const FINANCIAL_LEDGER_CLIENT_KEY = Symbol.for('aion.financial.ledger.redis.client');
+
+export async function getFinancialLedgerRedisClient() {
+  const url = String(process.env.REDIS_URL || '').trim();
+  if (!url) throw new Error('Durable financial ledger requires REDIS_URL for a dedicated Redis connection');
+
+  let client = globalThis[FINANCIAL_LEDGER_CLIENT_KEY];
+  if (!client) {
+    client = createClient({
+      url,
+      socket: { connectTimeout: 2500, reconnectStrategy: false }
+    });
+    client.on('error', error => {
+      console.error('AION financial ledger Redis client error:', error);
+    });
+    globalThis[FINANCIAL_LEDGER_CLIENT_KEY] = client;
+  }
+  if (!client.isOpen) await client.connect();
+  return client;
 }
 
 export async function railwayRedisPing() {
