@@ -152,7 +152,11 @@ export async function listIndexed(indexName) {
 
 // Atomically creates a customer order and adds it to the order index.
 const CUSTOMER_ORDER_CREATE_LUA = `
-if redis.call('EXISTS', KEYS[1]) == 1 then return 0 end
+local orderType = redis.call('TYPE', KEYS[1]).ok
+local indexType = redis.call('TYPE', KEYS[2]).ok
+if orderType ~= 'none' and orderType ~= 'string' then return -1 end
+if indexType ~= 'none' and indexType ~= 'set' then return -1 end
+if orderType == 'string' then return 0 end
 redis.call('SET', KEYS[1], ARGV[1])
 redis.call('SADD', KEYS[2], ARGV[2])
 return 1
@@ -179,6 +183,7 @@ export async function commitCustomerOrder(order) {
   } catch (error) {
     throw financialStorageUnavailable('atomic customer order creation failed: ' + String(error?.message || error));
   }
+  if (Number(result) === -1) throw financialStorageUnavailable('customer order or index key has an unexpected Redis type');
   if (Number(result) !== 1) throw new Error('Customer order ID already exists');
   return order;
 }
@@ -186,6 +191,18 @@ export async function commitCustomerOrder(order) {
 // Atomically writes the order, revenue record and revenue index in Redis.
 // PayPal receives a success response only after this script commits successfully.
 const CUSTOMER_PAYMENT_COMMIT_LUA = `
+local orderType = redis.call('TYPE', KEYS[1]).ok
+local revenueType = redis.call('TYPE', KEYS[2]).ok
+local indexType = redis.call('TYPE', KEYS[3]).ok
+if orderType ~= 'none' and orderType ~= 'string' then
+  return cjson.encode({ status = 'storage_type_mismatch', key = 'order' })
+end
+if revenueType ~= 'none' and revenueType ~= 'string' then
+  return cjson.encode({ status = 'storage_type_mismatch', key = 'revenue' })
+end
+if indexType ~= 'none' and indexType ~= 'set' then
+  return cjson.encode({ status = 'storage_type_mismatch', key = 'index' })
+end
 local orderRaw = redis.call('GET', KEYS[1])
 if not orderRaw then return cjson.encode({ status = 'not_found' }) end
 local current = cjson.decode(orderRaw)
@@ -267,6 +284,9 @@ export async function commitCustomerPayment({ orderId, updatedOrder, revenue, pr
   if (result.status === 'amount_mismatch') throw new Error('verified payment amount does not match the AION order');
   if (result.status === 'currency_mismatch') throw new Error('verified payment currency does not match the AION order');
   if (result.status === 'invalid_commit_payload') throw new Error('Invalid customer payment commit payload');
+  if (result.status === 'storage_type_mismatch') {
+    throw financialStorageUnavailable('payment commit encountered an unexpected Redis key type: ' + String(result.key || 'unknown'));
+  }
   if (result.status !== 'confirmed' && result.status !== 'duplicate') {
     throw financialStorageUnavailable('atomic payment commit failed with status ' + result.status);
   }
