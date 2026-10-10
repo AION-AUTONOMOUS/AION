@@ -11,7 +11,18 @@ export default async function handler(req, res) {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Origin', process.env.AION_PUBLIC_ORIGIN || '*');
+  res.setHeader('Vary', 'Origin');
+
+  // Cross-origin browser access is opt-in. Never reflect arbitrary origins and
+  // never use a wildcard; configure the exact public origin at deployment.
+  const requestOrigin = req.headers?.origin;
+  const configuredOrigin = process.env.AION_PUBLIC_ORIGIN;
+  if (requestOrigin) {
+    if (!configuredOrigin || requestOrigin !== configuredOrigin) {
+      return res.status(403).json({ success: false, error: 'origin_not_allowed' });
+    }
+    res.setHeader('Access-Control-Allow-Origin', configuredOrigin);
+  }
 
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'GET') {
