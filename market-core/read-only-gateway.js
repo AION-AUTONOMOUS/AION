@@ -12,11 +12,10 @@ export function createReadOnlyMarketGateway({ assets = [], quotes = [], now = Da
   const quoteByAsset = new Map();
   for (const quote of normalizedQuotes) {
     if (!registry.get(quote.assetId)) throw new Error("quote references an unknown assetId: " + quote.assetId);
-    const previous = quoteByAsset.get(quote.assetId);
-    if (previous && previous.receivedTimestamp === quote.receivedTimestamp && previous.providerId === quote.providerId) {
+    const list = quoteByAsset.get(quote.assetId) || [];
+    if (list.some(previous => previous.receivedTimestamp === quote.receivedTimestamp && previous.providerId === quote.providerId)) {
       throw new Error("duplicate quote event for asset and provider");
     }
-    const list = quoteByAsset.get(quote.assetId) || [];
     list.push(quote);
     quoteByAsset.set(quote.assetId, list);
   }
