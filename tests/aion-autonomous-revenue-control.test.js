@@ -39,7 +39,7 @@ test('customer revenue rejects a verified provider currency that differs from th
   );
 });
 
-test('customer revenue accepts matching verified amount and currency evidence', async () => {
+test('customer payment confirms matching provider evidence without recognizing revenue before delivery', async () => {
   const order = await source.createCustomerOrder({offerId:'space-weather-brief',customerId:'matching-payment-test'});
   const paid = await source.confirmCustomerPayment(order.id,{
     paymentProvider:'paypal',verificationStatus:'SUCCESS',
@@ -47,7 +47,30 @@ test('customer revenue accepts matching verified amount and currency evidence', 
     amountUsd:'180.00',currency:'USD'
   });
   assert.equal(paid.paymentStatus,'confirmed');
-  assert.equal(paid.revenueRecognized,true);
+  assert.equal(paid.revenueRecognized,false);
+  assert.equal((await source.listCustomerPayments()).filter(record=>record.orderId===order.id).length,1);
+  assert.equal((await source.listRevenue()).filter(record=>record.orderId===order.id).length,0);
+});
+
+test('customer revenue is recognized only after delivery evidence is recorded', async () => {
+  const order = await source.createCustomerOrder({offerId:'space-weather-brief',customerId:'delivery-recognition-test'});
+  const paid = await source.confirmCustomerPayment(order.id,{
+    paymentProvider:'paypal',verificationStatus:'SUCCESS',
+    providerEventId:'verified-event-delivery-recognition',paymentReference:'capture-delivery-recognition',
+    amountUsd:'180.00',currency:'USD'
+  });
+  assert.equal(paid.revenueRecognized,false);
+  await assert.rejects(
+    () => source.recordDelivery(order.id,{}),
+    /delivery evidence required/
+  );
+  const delivered = await source.recordDelivery(order.id,{evidence:'AION-DELIVERY-TEST-001'});
+  assert.equal(delivered.deliveryStatus,'delivered');
+  assert.equal(delivered.revenueRecognized,true);
+  const revenue = (await source.listRevenue()).filter(record=>record.orderId===order.id);
+  assert.equal(revenue.length,1);
+  assert.equal(revenue[0].source,'delivered-service');
+  assert.ok(revenue[0].recognizedAt);
 });
 
 test('customer revenue rejects missing amount or currency evidence', async () => {
@@ -79,8 +102,10 @@ test('customer revenue is idempotent for the same payment but rejects a differen
   // Capture and webhook paths can identify the same capture with different event IDs.
   const webhookRetry = await source.confirmCustomerPayment(order.id,{...payment,providerEventId:'separate-webhook-event'});
   assert.equal(webhookRetry.paymentReference,first.paymentReference);
+  const receipts = (await source.listCustomerPayments()).filter(record => record.orderId === order.id);
+  assert.equal(receipts.length,1,'duplicate capture or webhook delivery must not create a second receipt');
   const recognized = (await source.listRevenue()).filter(record => record.orderId === order.id);
-  assert.equal(recognized.length,1,'duplicate capture or webhook delivery must not create a second revenue record');
+  assert.equal(recognized.length,0,'payment alone must not be reported as recognized service revenue');
   await assert.rejects(
     () => source.confirmCustomerPayment(order.id,{...payment,providerEventId:'different-event',paymentReference:'different-capture'}),
     /already confirmed by a different provider payment/
