@@ -87,5 +87,7 @@ test('real Redis atomically persists customer orders and payment revenue under r
     await client.del(revenueIndex);
     await client.del('aion:stack:customer-orders:index');
     await client.quit();
+    const storeClient = globalThis[Symbol.for('aion.railway.redis.client')];
+    if (storeClient?.isOpen) await storeClient.quit();
   }
 });
