@@ -95,7 +95,7 @@ export default async function handler(req,res){
     return res.status(405).json({success:false,error:'Method not allowed'});
   }catch(error){
     const message=String(error?.message||error);
-    const status=(message.startsWith('Durable financial storage unavailable') || message.startsWith('Durable financial journal unavailable'))?503:400;
+    const status=Number.isInteger(error?.statusCode)&&error.statusCode>=400&&error.statusCode<=599?error.statusCode:(message.startsWith('Durable financial storage unavailable')||message.startsWith('Durable financial journal unavailable'))?503:400;
     return res.status(status).json({success:false,error:message});
   }
 }
