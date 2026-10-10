@@ -93,7 +93,7 @@ export default async function handler(req, res) {
       const amountValue = resource?.amount?.value;
       const amountCurrency = resource?.amount?.currency_code;
       if (!relatedPayPalOrderId || !webhookEvent?.id || !resource?.id ||
-          typeof amountValue !== 'string' || !/^\\d+(?:\\.\\d{1,2})?$/.test(amountValue) ||
+          typeof amountValue !== 'string' || !/^\d+(?:\.\d{1,2})?$/.test(amountValue) ||
           typeof amountCurrency !== 'string') {
         return res.status(400).json({ success: false, error: 'Verified PayPal capture is missing its related order or amount evidence' });
       }
