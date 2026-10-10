@@ -140,4 +140,17 @@ export async function recordOutcome(orderId,input={}){
   return roi;
 }
 export async function listCustomerOrders(){return listIndexed('customer-orders');}
-export async function listRevenue(){return listIndexed('customer-revenue');}
+export async function listRevenue(){
+  const records = await listIndexed('customer-revenue');
+  // A record key/index can temporarily survive a failed Lua write; only report revenue
+  // once the corresponding order is durably confirmed for this exact capture.
+  const checked = await Promise.all(records.map(async record => {
+    if (!record?.orderId || !record?.paymentReference) return null;
+    const order = await getJson('customer-orders:' + record.orderId);
+    if (order?.paymentStatus !== 'confirmed' ||
+        order?.revenueRecognized !== true ||
+        order?.paymentReference !== record.paymentReference) return null;
+    return record;
+  }));
+  return checked.filter(Boolean);
+}
