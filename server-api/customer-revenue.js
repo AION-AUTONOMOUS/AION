@@ -6,7 +6,7 @@ import crypto from 'node:crypto';
 import { postConfirmedPaymentReceipt } from '../financial-core/customer-payment-ledger.js';
 
 function expectedRevenueAdminToken() {
-  return String(process.env.AION_REVENUE_ADMIN_TOKEN || process.env.AION_MESH_TOKEN || process.env.AION_CONTRACTS_TOKEN || '').trim();
+  return String(process.env.AION_REVENUE_ADMIN_TOKEN || '').trim();
 }
 function tokenMatches(actual, expected) {
   const a = Buffer.from(String(actual || ''));
