@@ -139,6 +139,49 @@ test('real Redis atomically persists customer orders and payment revenue under r
       { accountId: 'revenue:services', debitMinor: 0, creditMinor: 18000 }
     ]);
 
+    // If journal storage is temporarily unreadable after delivery evidence is saved,
+    // income must remain unrecognized; retry should finish without duplicate journal entries.
+    const recoveryOrder = await revenueApi.createCustomerOrder({
+      offerId: 'space-weather-brief',
+      customerId: 'redis-recovery-' + suffix
+    });
+    const recoveryPayment = {
+      ...payment,
+      providerEventId: 'WH-RECOVERY-' + suffix,
+      paymentReference: 'CAP-RECOVERY-' + suffix
+    };
+    await revenueApi.confirmCustomerPayment(recoveryOrder.id, recoveryPayment);
+    const recoveryPaidOrder = await store.getJson('customer-orders:' + recoveryOrder.id);
+    const { postConfirmedPaymentReceipt: postReceipt } = await import('../financial-core/customer-payment-ledger.js');
+    await postReceipt(recoveryPaidOrder);
+    const journalSnapshot = await client.get(journalKey);
+
+    await client.set(journalKey, 'corrupt-journal-state');
+    const recoveryEvidence = 'DELIVERY-RECOVERY-' + suffix;
+    await assert.rejects(
+      () => revenueApi.recordDelivery(recoveryOrder.id, { evidence: recoveryEvidence }),
+      /Durable financial journal unavailable/
+    );
+    const pendingDelivery = await store.getJson('customer-orders:' + recoveryOrder.id);
+    assert.equal(pendingDelivery.deliveryStatus, 'delivered-pending-journal');
+    assert.equal(pendingDelivery.revenueRecognized, false);
+    assert.equal((await revenueApi.listRevenue()).filter(x => x.orderId === recoveryOrder.id).length, 0,
+      'revenue must stay hidden while its journal entry is missing');
+
+    await client.set(journalKey, journalSnapshot);
+    const recoveredOrder = await revenueApi.recordDelivery(recoveryOrder.id, { evidence: recoveryEvidence });
+    assert.equal(recoveredOrder.deliveryStatus, 'delivered');
+    assert.equal(recoveredOrder.revenueRecognized, true);
+    const repeatedDelivery = await revenueApi.recordDelivery(recoveryOrder.id, { evidence: recoveryEvidence });
+    assert.equal(repeatedDelivery.revenueRecognized, true);
+
+    const recoveredRevenue = (await revenueApi.listRevenue()).filter(x => x.orderId === recoveryOrder.id);
+    assert.equal(recoveredRevenue.length, 1);
+    const recoveredJournal = JSON.parse(await client.get(journalKey));
+    assert.equal(verifyJournalChain(recoveredJournal).valid, true);
+    assert.equal(recoveredJournal.entries.filter(entry => entry.reference === recoveryOrder.id).length, 1,
+      'journal recovery plus delivery retry must only recognize revenue once');
+
     await assert.rejects(
       () => revenueApi.confirmCustomerPayment(order.id, {
         ...payment,
