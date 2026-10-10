@@ -159,7 +159,7 @@ local current = cjson.decode(orderRaw)
 local eventId = ARGV[3]
 local paymentReference = ARGV[4]
 if current.paymentStatus == 'confirmed' then
-  if current.providerEventId == eventId and current.paymentReference == paymentReference then
+  if current.paymentProvider == 'paypal' and current.paymentReference == paymentReference then
     return cjson.encode({ status = 'duplicate', order = current })
   end
   return cjson.encode({ status = 'different_payment' })
@@ -198,7 +198,7 @@ export async function commitCustomerPayment({ orderId, updatedOrder, revenue, pr
     const current = memory.get(orderKey);
     if (!current) return null;
     if (current.paymentStatus === 'confirmed') {
-      if (current.providerEventId === providerEventId && current.paymentReference === paymentReference) return current;
+      if (current.paymentProvider === 'paypal' && current.paymentReference === paymentReference) return current;
       throw new Error('AION order already confirmed by a different provider payment');
     }
     if (Math.round(Number(current.amountUsd) * 100) !== Math.round(Number(amountUsd) * 100)) {
