@@ -82,6 +82,17 @@ test("does not append a duplicate idempotent request twice", async () => {
   assert.equal(JSON.parse(redis.values.get("aion:journal:usd")).entries.length, 1);
 });
 
+test("serializes concurrent calls that share a WATCH-based Redis client", async () => {
+  const redis = new FakeRedis();
+  const results = await Promise.all(
+    Array.from({ length: 12 }, () => appendJournalRedis(redis, "aion:journal:usd", command()))
+  );
+  const stored = JSON.parse(redis.values.get("aion:journal:usd"));
+  assert.equal(stored.entries.length, 1);
+  assert.equal(results.filter(result => result.duplicate === false).length, 1);
+  assert.equal(results.filter(result => result.duplicate === true).length, 11);
+});
+
 test("retries optimistic-lock conflicts", async () => {
   const redis = new FakeRedis();
   redis.conflictNextExec = true;
