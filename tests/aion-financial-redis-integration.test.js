@@ -58,6 +58,24 @@ test('real Redis atomically persists customer orders and payment revenue under r
     assert.equal((await revenueApi.listRevenue()).filter(x => x.orderId === order.id).length, 0,
       'no revenue record should exist after rejected preflight');
 
+    // Simulate a stale/partial revenue record; reports must hide it while the order is unpaid.
+    const partialRevenue = {
+      id: 'AION-REV-PARTIAL-' + suffix,
+      orderId: order.id,
+      customerId: order.customerId,
+      amountUsd: order.amountUsd,
+      currency: order.currency,
+      paymentReference: 'CAP-PARTIAL-' + suffix,
+      recognizedAt: new Date().toISOString(),
+      source: 'confirmed-payment'
+    };
+    await store.setJson('customer-revenue:' + partialRevenue.id, partialRevenue);
+    await store.addToIndex('customer-revenue', partialRevenue.id);
+    assert.equal((await revenueApi.listRevenue()).filter(x => x.orderId === order.id).length, 0,
+      'a revenue index/key must not expose income before the matching order is confirmed');
+    await client.del('aion:stack:customer-revenue:' + partialRevenue.id);
+    await client.sRem(revenueIndex, partialRevenue.id);
+
     // Race webhook/capture deliveries with the same actual capture but different event IDs.
     const secondDelivery = { ...payment, providerEventId: 'WH-' + suffix + '-B' };
     const results = await Promise.all([
