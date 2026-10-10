@@ -1,4 +1,4 @@
-import { createJournalState, postJournal } from "./journal.js";
+import { createJournalState, postJournal, verifyJournalChain } from "./journal.js";
 
 const KEY_PATTERN = /^[A-Za-z0-9:_-]{8,200}$/;
 
@@ -38,8 +38,19 @@ export async function appendJournalRedis(client, key, command, {
           throw new Error("stored journal state is not valid JSON");
         }
         if (!state || state.schema !== "aion.journal-state/0.1" ||
-            !Array.isArray(state.entries) || !state.idempotency || !Array.isArray(state.audit)) {
+            !Array.isArray(state.entries) || !state.idempotency ||
+            typeof state.idempotency !== "object" || Array.isArray(state.idempotency) ||
+            !Array.isArray(state.audit)) {
           throw new Error("stored journal state has an unsupported schema");
+        }
+        let integrity;
+        try {
+          integrity = verifyJournalChain(state);
+        } catch {
+          throw new Error("stored journal integrity check failed");
+        }
+        if (!integrity.valid) {
+          throw new Error("stored journal integrity check failed");
         }
       }
 
