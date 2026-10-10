@@ -1,6 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+// In-memory storage is allowed only for this isolated Node test process.
+process.env.NODE_ENV = 'test';
+process.env.AION_TEST_ALLOW_MEMORY_FINANCIAL_STORE = '1';
+
 const source = await import('../config/aion-customer-revenue.js');
 
 test('customer revenue requires provider verification evidence', async () => {
@@ -72,6 +76,8 @@ test('customer revenue is idempotent for the same payment but rejects a differen
   const first = await source.confirmCustomerPayment(order.id,payment);
   const duplicate = await source.confirmCustomerPayment(order.id,payment);
   assert.equal(duplicate.providerEventId,first.providerEventId);
+  const recognized = (await source.listRevenue()).filter(record => record.orderId === order.id);
+  assert.equal(recognized.length,1,'a duplicate webhook must not create a second revenue record');
   await assert.rejects(
     () => source.confirmCustomerPayment(order.id,{...payment,providerEventId:'different-event',paymentReference:'different-capture'}),
     /already confirmed by a different provider payment/
