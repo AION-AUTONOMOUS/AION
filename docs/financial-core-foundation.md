@@ -8,7 +8,7 @@ AION is building a digital financial platform from its own codebase. Regulated s
 ## Core modules
 1. Identity and access: account lifecycle, MFA, least-privilege roles, session revocation, audit trail.
 2. Double-entry ledger: immutable journal entries, balanced postings, idempotency keys, currency/asset precision, reversals by compensating entries only.
-3. Reconciliation: internal ledger vs. provider/bank/custodian statements; discrepancies enter a blocked queue and never auto-resolve silently.
+3. Reconciliation: `financial-core/reconciliation.js` compares internal posted records with provider statements by unique reference, amount in minor units, and currency. Any missing, unexpected, duplicate, or mismatched record blocks settlement. It does not move money.
 4. Payment intents: internal payment state machine with deduplicated provider events, exact amount/currency/provider matching, and verified-evidence gating. The current module does not create checkout sessions or communicate with PayPal or any other payment provider.
 5. PayPal webhook verification boundary: `financial-core/paypal-webhook-verifier.js` requires PayPal transmission headers and the configured webhook ID, then delegates authenticity verification to a trusted server-side callback. It accepts only `verification_status: SUCCESS`.
 6. PayPal sandbox client: `financial-core/paypal-sandbox-client.js` requests a sandbox OAuth token and calls PayPal's webhook signature verification endpoint. It is sandbox-only, uses injected server-side credentials, and has mocked-fetch tests. It is not yet wired into an application webhook route and has not been tested with real PayPal sandbox credentials.
@@ -28,6 +28,7 @@ AION is building a digital financial platform from its own codebase. Regulated s
 - A verified flag is a service-layer trust boundary, not cryptographic verification by itself; only trusted webhook/API verification code may set it.
 - Payment event amount, currency, provider, and event identity must match the stored intent.
 - Reversals are compensating entries; posted history is not silently edited.
+- Any reconciliation discrepancy blocks settlement until reviewed.
 - All privileged actions are attributable and logged.
 - Production release requires tests, independent security review, and rollback plan.
 - Regulatory status and partner availability must be stated accurately.
@@ -36,7 +37,7 @@ AION is building a digital financial platform from its own codebase. Regulated s
 Phase 0: inspect current AION modules and deployment health; preserve existing production behavior.
 Phase 1: ledger domain model, schema, invariants, idempotency, optimistic-lock persistence prototype, unit tests.
 Phase 2: payment-intent state machine, then server-side PayPal sandbox OAuth/webhook verification and application-route integration with strict signature verification.
-Phase 3: identity, permissions, reconciliation and digital-vault controls.
+Phase 3: reconciliation, identity, permissions, and digital-vault controls.
 Phase 4: read-only market data and asset catalogue; trading/custody features remain disabled.
 Phase 5: threat modeling, penetration testing, disaster recovery, legal/regulatory mapping.
 Phase 6: enable specific regulated services only after written authorization and operational sign-off.
@@ -46,9 +47,9 @@ Phase 6: enable specific regulated services only after written authorization and
 - Payment-intent tests reject unverified events, amount/currency/provider mismatches, duplicate-event mutation, and illegal transitions.
 - PayPal webhook verifier tests reject missing transmission headers, absent webhook ID, failed/unknown verification results, and provider verification errors.
 - PayPal sandbox-client tests prove the fixed sandbox endpoint, OAuth-before-verification sequence, correct event payload, and fail-closed handling.
+- Reconciliation tests prove mismatches block settlement, including missing/extra records and amount/currency discrepancies.
 - Production persistence uses a dedicated connection strategy, durable Redis configuration, backup/restore verification, monitoring, and access controls.
 - Real webhook replay and invalid-signature tests pass against provider sandbox before integration is considered complete.
-- Reconciliation mismatch reliably blocks settlement.
 - Backup restoration is tested.
 - No secrets are committed to source control.
 - Security and legal sign-off recorded before enabling any regulated transaction.
