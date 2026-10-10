@@ -8,6 +8,7 @@ on:
       - "config/aion-customer-revenue.js"
       - "config/aion-redis.js"
       - "tests/aion-financial-redis-integration.test.js"
+      - "tests/aion-redis-connection.test.js"
       - ".github/workflows/aion-financial-redis-integration.yml"
   workflow_dispatch:
 
@@ -39,5 +40,5 @@ jobs:
           node-version: 24
       - name: Install dependencies
         run: npm install --no-audit --no-fund
-      - name: Exercise real Redis financial persistence
-        run: node --test tests/aion-financial-redis-integration.test.js
+      - name: Exercise Redis connection and financial persistence
+        run: node --test tests/aion-redis-connection.test.js tests/aion-financial-redis-integration.test.js
