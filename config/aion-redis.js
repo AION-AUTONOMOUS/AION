@@ -45,6 +45,16 @@ export async function railwayRedisCommand(command) {
       return client.get(rawArgs[0]);
     case 'SET':
       return client.set(rawArgs[0], rawArgs[1]);
+    case 'EVAL': {
+      const script = rawArgs[0];
+      const numKeys = Number(rawArgs[1]);
+      if (!Number.isInteger(numKeys) || numKeys < 0 || rawArgs.length < 2 + numKeys) {
+        throw new Error('Invalid Redis EVAL arguments');
+      }
+      const keys = rawArgs.slice(2, 2 + numKeys);
+      const args = rawArgs.slice(2 + numKeys);
+      return client.eval(script, { keys, arguments: args });
+    }
     case 'SADD':
       return client.sAdd(rawArgs[0], rawArgs.slice(1));
     case 'SMEMBERS':
