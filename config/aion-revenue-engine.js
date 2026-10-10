@@ -34,7 +34,7 @@ export function revenueStrategy(){
     targets:[...TARGETS],
     rules:[
       'prioritize paid demand with clear ROI',
-      'never recognize revenue before provider-confirmed payment',
+      'recognize service revenue only after provider-confirmed payment and durable delivery evidence',
       'never claim a customer, partner or contract without evidence',
       'prefer recurring B2B revenue over one-off low-value work',
       'use existing AION products before creating new offers',
