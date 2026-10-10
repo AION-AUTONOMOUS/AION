@@ -150,6 +150,39 @@ export async function listIndexed(indexName) {
 }
 
 
+// Atomically creates a customer order and adds it to the order index.
+const CUSTOMER_ORDER_CREATE_LUA = `
+if redis.call('EXISTS', KEYS[1]) == 1 then return 0 end
+redis.call('SET', KEYS[1], ARGV[1])
+redis.call('SADD', KEYS[2], ARGV[2])
+return 1
+`;
+
+export async function commitCustomerOrder(order) {
+  if (!order?.id) throw new Error('Invalid customer order');
+  const orderKey = 'customer-orders:' + String(order.id);
+  if (!config()) {
+    if (!ALLOW_MEMORY_FINANCIAL_TESTS()) {
+      throw financialStorageUnavailable('Redis is not configured for customer order creation');
+    }
+    if (memory.has(orderKey)) throw new Error('Customer order ID already exists');
+    memory.set(orderKey, order);
+    return order;
+  }
+  let result;
+  try {
+    result = await command([
+      'EVAL', CUSTOMER_ORDER_CREATE_LUA, '2',
+      prefix + orderKey, indexes['customer-orders'],
+      JSON.stringify(order), String(order.id)
+    ]);
+  } catch (error) {
+    throw financialStorageUnavailable('atomic customer order creation failed: ' + String(error?.message || error));
+  }
+  if (Number(result) !== 1) throw new Error('Customer order ID already exists');
+  return order;
+}
+
 // Atomically writes the order, revenue record and revenue index in Redis.
 // PayPal receives a success response only after this script commits successfully.
 const CUSTOMER_PAYMENT_COMMIT_LUA = `
