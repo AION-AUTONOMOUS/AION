@@ -2,7 +2,25 @@ import { customerRevenueHealth, listOffers, getOffer, createCustomerOrder, confi
 import { revenueEngineHealth, revenueStrategy, revenueDashboard } from '../config/aion-revenue-engine.js';
 import { createPayPalOrder, capturePayPalOrder, paypalHealth } from '../config/aion-paypal.js';
 import { setJson } from '../config/aion-stack-store.js';
+import crypto from 'node:crypto';
 import { postConfirmedPaymentReceipt } from '../financial-core/customer-payment-ledger.js';
+
+function expectedRevenueAdminToken() {
+  return String(process.env.AION_REVENUE_ADMIN_TOKEN || process.env.AION_MESH_TOKEN || process.env.AION_CONTRACTS_TOKEN || '').trim();
+}
+function tokenMatches(actual, expected) {
+  const a = Buffer.from(String(actual || ''));
+  const b = Buffer.from(String(expected || ''));
+  return a.length === b.length && a.length > 0 && crypto.timingSafeEqual(a, b);
+}
+function requireRevenueAdmin(req, res) {
+  const expected = expectedRevenueAdminToken();
+  if (!expected) return res.status(503).json({success:false,error:'Revenue admin authorization is not configured'});
+  const actual = String(req.headers?.authorization || '').replace(/^Bearer\s+/i, '').trim();
+  if (!tokenMatches(actual, expected)) return res.status(401).json({success:false,error:'Revenue admin authorization required'});
+  return null;
+}
+
 async function ensurePaymentJournal(order) {
   if (process.env.NODE_ENV === 'test' &&
       process.env.AION_TEST_ALLOW_MEMORY_FINANCIAL_STORE === '1' &&
@@ -25,6 +43,11 @@ export default async function handler(req,res){
   const url=new URL(req.url||'/','http://aion.local'), path=url.searchParams.get('path')||'health';
   const body=async()=>req.body&&typeof req.body==='object'?req.body:new Promise((resolve,reject)=>{let r='';req.on('data',c=>r+=c);req.on('end',()=>{try{resolve(r?JSON.parse(r):{})}catch(e){reject(e)}});req.on('error',reject)});
   try{
+    if ((req.method === 'GET' && ['dashboard','orders','receipts','revenue'].includes(path)) ||
+        (req.method === 'POST' && ['delivery','outcome'].includes(path))) {
+      const denied = requireRevenueAdmin(req, res);
+      if (denied) return denied;
+    }
     if(req.method==='GET'&&path==='health') return res.status(200).json({success:true,...customerRevenueHealth(),revenueEngine:revenueEngineHealth(),paypal:paypalHealth()});
     if(req.method==='GET'&&path==='strategy') return res.status(200).json({success:true,...revenueStrategy()});
     if(req.method==='GET'&&path==='dashboard') return res.status(200).json({success:true,...await revenueDashboard()});
@@ -72,7 +95,7 @@ export default async function handler(req,res){
     return res.status(405).json({success:false,error:'Method not allowed'});
   }catch(error){
     const message=String(error?.message||error);
-    const status=message.startsWith('Durable financial storage unavailable')?503:400;
+    const status=(message.startsWith('Durable financial storage unavailable') || message.startsWith('Durable financial journal unavailable'))?503:400;
     return res.status(status).json({success:false,error:message});
   }
 }
