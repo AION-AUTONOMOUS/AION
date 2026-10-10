@@ -16,6 +16,7 @@ AION is building a digital financial platform from its own codebase. Regulated s
 8. Digital vault: encrypted document metadata, integrity hashes, access logging, retention and deletion policy.
 9. Risk and compliance: jurisdiction/product gating, sanctions/KYC hooks where legally required, transaction limits, suspicious-activity escalation, incident records.
 10. Operations: health checks, backups, recovery drills, alerting, signed releases, change approvals.
+11. Persistence prototype: Redis WATCH/MULTI adapter for a single journal-state key with bounded optimistic-lock retries. This is a foundation for integration testing, not yet a scalable or production-approved ledger.
 
 ## Non-negotiable invariants
 - No fake execution or simulated success presented as a real financial transaction.
@@ -29,7 +30,7 @@ AION is building a digital financial platform from its own codebase. Regulated s
 
 ## Build sequence
 Phase 0: inspect current AION modules and deployment health; preserve existing production behavior.
-Phase 1: ledger domain model, schema, invariants, unit/property tests, audit event model.
+Phase 1: ledger domain model, schema, invariants, idempotency, optimistic-lock persistence prototype, unit tests.
 Phase 2: payment-intent state machine with provider sandbox and webhook signature validation.
 Phase 3: identity, permissions, reconciliation and digital-vault controls.
 Phase 4: read-only market data and asset catalogue; trading/custody features remain disabled.
@@ -37,7 +38,8 @@ Phase 5: threat modeling, penetration testing, disaster recovery, legal/regulato
 Phase 6: enable specific regulated services only after written authorization and operational sign-off.
 
 ## Acceptance gates
-- Ledger invariant tests pass and concurrent/idempotent posting tests pass.
+- Ledger invariant tests and Redis adapter tests pass in CI, including duplicate requests and optimistic-lock conflicts.
+- Production persistence uses a dedicated connection strategy, durable Redis configuration, backup/restore verification, monitoring, and access controls.
 - Webhook replay and invalid-signature tests pass.
 - Reconciliation mismatch reliably blocks settlement.
 - Backup restoration is tested.
