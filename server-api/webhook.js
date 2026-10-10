@@ -1,6 +1,19 @@
 import { paypalBaseUrl, paypalClientId, paypalClientSecret } from './paypal/config.js';
 import { confirmCustomerPayment } from '../config/aion-customer-revenue.js';
 
+async function paypalAccessToken(clientId, secret) {
+  const basic = Buffer.from(clientId + ':' + secret).toString('base64');
+  const response = await fetch(paypalBaseUrl() + '/v1/oauth2/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Basic ' + basic },
+    body: 'grant_type=client_credentials',
+    signal: AbortSignal.timeout(8000)
+  });
+  const data = await response.json();
+  if (!response.ok || !data?.access_token) throw new Error('PayPal OAuth access token could not be obtained');
+  return data.access_token;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({
@@ -35,18 +48,16 @@ export default async function handler(req, res) {
       });
     }
 
-    const auth = Buffer.from(
-      clientId + ':' + secret
-    ).toString('base64');
-
+    const accessToken = await paypalAccessToken(clientId, secret);
     const verificationResponse = await fetch(
       paypalBaseUrl() + '/v1/notifications/verify-webhook-signature',
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + auth
+          'Authorization': 'Bearer ' + accessToken
         },
+        signal: AbortSignal.timeout(8000),
         body: JSON.stringify({
           auth_algo: headers['paypal-auth-algo'],
           cert_url: headers['paypal-cert-url'],
@@ -75,28 +86,52 @@ export default async function handler(req, res) {
 
     const eventType = String(webhookEvent?.event_type || '');
     const resource = webhookEvent?.resource || {};
-    // PAYMENT.CAPTURE.COMPLETED normally carries the capture itself as resource.
-    // Retain support for order-shaped payloads without treating them as verified by shape alone.
-    const purchaseUnit = Array.isArray(resource?.purchase_units) ? resource.purchase_units[0] : null;
-    const capture = resource?.id && resource?.status
-      ? resource
-      : purchaseUnit?.payments?.captures?.[0] || null;
-    const captureStatus = String(capture?.status || '').toUpperCase();
-    const orderId = String(resource?.custom_id || purchaseUnit?.custom_id || '').trim();
-    const amountValue = capture?.amount?.value;
-    const amountCurrency = capture?.amount?.currency_code;
+    const captureStatus = String(resource?.status || '').toUpperCase();
 
     if (eventType === 'PAYMENT.CAPTURE.COMPLETED' && captureStatus === 'COMPLETED') {
-      if (!orderId || !webhookEvent?.id || !capture?.id ||
-          typeof amountValue !== 'string' || !/^\d+(?:\.\d{1,2})?$/.test(amountValue) ||
+      const relatedPayPalOrderId = String(resource?.supplementary_data?.related_ids?.order_id || '').trim();
+      const amountValue = resource?.amount?.value;
+      const amountCurrency = resource?.amount?.currency_code;
+      if (!relatedPayPalOrderId || !webhookEvent?.id || !resource?.id ||
+          typeof amountValue !== 'string' || !/^\\d+(?:\\.\\d{1,2})?$/.test(amountValue) ||
           typeof amountCurrency !== 'string') {
-        return res.status(400).json({ success: false, error: 'Verified payment event is missing AION order mapping or amount evidence' });
+        return res.status(400).json({ success: false, error: 'Verified PayPal capture is missing its related order or amount evidence' });
       }
-      const confirmedOrder = await confirmCustomerPayment(orderId, {
+
+      // A capture webhook points to the PayPal checkout order. Resolve the local AION order
+      // through PayPal's server-side order details, and verify this exact capture and amount.
+      const orderResponse = await fetch(
+        paypalBaseUrl() + '/v2/checkout/orders/' + encodeURIComponent(relatedPayPalOrderId),
+        { headers: { 'Authorization': 'Bearer ' + accessToken }, signal: AbortSignal.timeout(8000) }
+      );
+      const paypalOrder = await orderResponse.json();
+      if (!orderResponse.ok || String(paypalOrder?.status || '').toUpperCase() !== 'COMPLETED') {
+        throw new Error('PayPal checkout order could not be verified as completed');
+      }
+
+      const purchaseUnits = Array.isArray(paypalOrder?.purchase_units) ? paypalOrder.purchase_units : [];
+      const matchedUnit = purchaseUnits.find(unit =>
+        String(unit?.custom_id || unit?.invoice_id || '').trim() &&
+        String(unit?.amount?.currency_code || '').toUpperCase() === String(amountCurrency).toUpperCase() &&
+        Number(unit?.amount?.value).toFixed(2) === Number(amountValue).toFixed(2) &&
+        Array.isArray(unit?.payments?.captures) &&
+        unit.payments.captures.some(item =>
+          item?.id === resource.id &&
+          String(item?.status || '').toUpperCase() === 'COMPLETED' &&
+          String(item?.amount?.currency_code || '').toUpperCase() === String(amountCurrency).toUpperCase() &&
+          Number(item?.amount?.value).toFixed(2) === Number(amountValue).toFixed(2)
+        )
+      );
+      const aionOrderId = String(matchedUnit?.custom_id || matchedUnit?.invoice_id || '').trim();
+      if (!aionOrderId) {
+        return res.status(400).json({ success: false, error: 'PayPal order does not contain a matching AION order and completed capture' });
+      }
+
+      const confirmedOrder = await confirmCustomerPayment(aionOrderId, {
         paymentProvider: 'paypal',
         verificationStatus: 'SUCCESS',
         providerEventId: webhookEvent.id,
-        paymentReference: capture.id,
+        paymentReference: resource.id,
         amountUsd: amountValue,
         currency: amountCurrency
       });
