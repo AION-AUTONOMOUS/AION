@@ -91,7 +91,7 @@ export async function confirmCustomerPayment(orderId,input={}){
   if(!providerEventId||!paymentReference) throw new Error('providerEventId and paymentReference required');
   // Amount and currency are mandatory evidence from the verified provider event.
   // Omitting either must never bypass order matching.
-  if(typeof input.amountUsd !== 'string' || !/^\\d+(?:\\.\\d{1,2})?$/.test(input.amountUsd)) {
+  if(typeof input.amountUsd !== 'string' || !/^\d+(?:\.\d{1,2})?$/.test(input.amountUsd)) {
     throw new Error('verified payment amount evidence required');
   }
   const amount = Number(input.amountUsd);
