@@ -157,8 +157,9 @@ local indexType = redis.call('TYPE', KEYS[2]).ok
 if orderType ~= 'none' and orderType ~= 'string' then return -1 end
 if indexType ~= 'none' and indexType ~= 'set' then return -1 end
 if orderType == 'string' then return 0 end
-redis.call('SET', KEYS[1], ARGV[1])
+-- Index first: if a later SET fails, readers ignore this missing order and retries can heal it.
 redis.call('SADD', KEYS[2], ARGV[2])
+redis.call('SET', KEYS[1], ARGV[1])
 return 1
 `;
 
