@@ -9,7 +9,7 @@ process.env.PAYPAL_WEBHOOK_ID = 'test-webhook-id';
 process.env.PAYPAL_ENVIRONMENT = 'sandbox';
 delete process.env.N8N_WEBHOOK_URL;
 
-const { createCustomerOrder, listRevenue } = await import('../config/aion-customer-revenue.js');
+const { createCustomerOrder, listCustomerPayments, listRevenue } = await import('../config/aion-customer-revenue.js');
 const { default: webhookHandler } = await import('../server-api/webhook.js');
 
 function response(status, payload) {
@@ -95,10 +95,12 @@ test('PayPal capture webhook resolves related order ID and verifies capture agai
     assert.ok(calls.some(call => call.url.endsWith('/v1/notifications/verify-webhook-signature')));
     assert.ok(calls.some(call => call.url.endsWith('/v2/checkout/orders/PP-ORDER-TEST-1')));
 
-    const records = (await listRevenue()).filter(item => item.orderId === order.id);
-    assert.equal(records.length, 1);
-    assert.equal(records[0].paymentReference, 'CAPTURE-TEST-1');
-    assert.equal(records[0].amountUsd, 180);
+    const receipts = (await listCustomerPayments()).filter(item => item.orderId === order.id);
+    assert.equal(receipts.length, 1);
+    assert.equal(receipts[0].paymentReference, 'CAPTURE-TEST-1');
+    assert.equal(receipts[0].amountUsd, 180);
+    assert.equal((await listRevenue()).filter(item => item.orderId === order.id).length, 0,
+      'a confirmed payment must not be treated as recognized service revenue before delivery');
   } finally {
     globalThis.fetch = originalFetch;
   }
