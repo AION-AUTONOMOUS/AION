@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { addToIndex, commitCustomerDelivery, commitCustomerOrder, commitCustomerPayment, getJson, listIndexed, setJson } from './aion-stack-store.js';
+import { addToIndex, commitCustomerDelivery, commitCustomerOrder, commitCustomerPayment, finalizeCustomerDeliveryRevenue, getJson, listIndexed, setJson } from './aion-stack-store.js';
 import { postCustomerServiceRevenue } from '../financial-core/customer-payment-ledger.js';
 
 export const CUSTOMER_REVENUE_VERSION = '1.0.0';
@@ -133,21 +133,38 @@ export async function recordDelivery(orderId,input={}){
     await postDeliveryRevenueJournal(order);
     return order;
   }
+  if(order.deliveryStatus==='delivered-pending-journal' && order.deliveryEvidence!==evidence){
+    throw new Error('delivery evidence cannot change while revenue recognition is pending');
+  }
 
-  const recognizedAt=new Date().toISOString();
-  const updated={...order,status:'delivered',deliveryStatus:'delivered',deliveryEvidence:evidence,deliveredAt:recognizedAt,revenueRecognized:true,revenueRecognizedAt:recognizedAt};
+  const deliveredAt=order.deliveredAt||new Date().toISOString();
+  const pendingOrder=order.deliveryStatus==='delivered-pending-journal'
+    ? order
+    : {...order,status:'delivery-recorded',deliveryStatus:'delivered-pending-journal',
+       deliveryEvidence:evidence,deliveredAt,revenueRecognized:false,revenueRecognizedAt:null};
   const revenueId='AION-REV-'+crypto.createHash('sha256').update(order.id+':'+order.paymentReference).digest('hex').slice(0,24);
-  const revenue={
+  const pendingRevenue={
     id:revenueId,orderId:order.id,customerId:order.customerId,amountUsd:order.amountUsd,currency:order.currency,
     paymentReference:order.paymentReference,receivedAt:order.paidAt||order.verifiedAt||null,
-    recognizedAt,status:'recognized',revenueRecognized:true,source:'delivered-service'
+    recognizedAt:null,status:'pending-journal',revenueRecognized:false,source:'delivery-pending-journal'
   };
-  const committed=await commitCustomerDelivery({
-    orderId:order.id,updatedOrder:updated,revenue,paymentReference:order.paymentReference,evidence
+  const pending=await commitCustomerDelivery({
+    orderId:order.id,updatedOrder:pendingOrder,revenue:pendingRevenue,
+    paymentReference:order.paymentReference,evidence
   });
-  if(!committed) return null;
-  await postDeliveryRevenueJournal(committed);
-  return committed;
+  if(!pending) return null;
+
+  // Journal first; only then expose the order and record as recognized revenue.
+  await postDeliveryRevenueJournal(pending);
+  const recognizedAt=new Date().toISOString();
+  const finalizedOrder={...pending,status:'delivered',deliveryStatus:'delivered',
+    revenueRecognized:true,revenueRecognizedAt:recognizedAt};
+  const recognizedRevenue={...pendingRevenue,recognizedAt,status:'recognized',
+    revenueRecognized:true,source:'delivered-service'};
+  return await finalizeCustomerDeliveryRevenue({
+    orderId:order.id,updatedOrder:finalizedOrder,revenue:recognizedRevenue,
+    paymentReference:order.paymentReference,evidence
+  });
 }
 
 async function postDeliveryRevenueJournal(order){
