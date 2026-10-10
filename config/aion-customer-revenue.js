@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import { addToIndex, commitCustomerDelivery, commitCustomerOrder, commitCustomerPayment, finalizeCustomerDeliveryRevenue, getJson, listIndexed, setJson } from './aion-stack-store.js';
+import { getProductEligibility } from '../financial-core/product-eligibility.js';
 import { postCustomerServiceRevenue } from '../financial-core/customer-payment-ledger.js';
 
 export const CUSTOMER_REVENUE_VERSION = '1.0.0';
@@ -69,8 +70,18 @@ export function customerRevenueHealth(){
     noFakeRevenue:true
   };
 }
-export function listOffers(){return OFFERS.map(o=>({...o,currency:'USD',paymentProvider:'PayPal',status:'available'}));}
-export function getOffer(offerId){return OFFERS.find(o=>o.id===text(offerId))||null;}
+export function listOffers(){
+  return OFFERS.map(o => ({
+    ...o,
+    currency: 'USD',
+    paymentProvider: 'PayPal',
+    ...getProductEligibility(o.id)
+  }));
+}
+export function getOffer(offerId){
+  const offer = OFFERS.find(o => o.id === text(offerId));
+  return offer && getProductEligibility(offer.id).checkoutEnabled ? offer : null;
+}
 
 export async function createCustomerOrder(input={}){
   const offer=getOffer(input.offerId);
