@@ -131,9 +131,11 @@ test('server-side PayPal capture validates amount before capture and records one
     assert.equal(duplicateRes.payload?.order?.paymentReference, 'CAP-VALID-1');
     assert.equal(validCaptureCalls, 1, 'duplicate return visits must not capture again');
 
-    const validRevenue = (await revenueApi.listRevenue()).filter(row => row.orderId === validOrder.id);
-    assert.equal(validRevenue.length, 1);
-    assert.equal(validRevenue[0].amountUsd, 180);
+    const validReceipts = (await revenueApi.listCustomerPayments()).filter(row => row.orderId === validOrder.id);
+    assert.equal(validReceipts.length, 1);
+    assert.equal(validReceipts[0].amountUsd, 180);
+    assert.equal((await revenueApi.listRevenue()).filter(row => row.orderId === validOrder.id).length, 0,
+      'capture is a receipt; service revenue recognition awaits delivery evidence');
     assert.ok(calls.some(call => call.url.endsWith('/v1/oauth2/token')));
   } finally {
     globalThis.fetch = originalFetch;
