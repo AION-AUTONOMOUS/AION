@@ -29,6 +29,10 @@ AION is building a digital financial platform from its own codebase. Regulated s
 - The journal uses a dedicated Redis connection, and operations sharing that connection are serialized around WATCH/MULTI to protect connection-scoped WATCH state.
 - These entries are a foundation for accounting operations, not a complete general ledger: PayPal fees, refunds, chargebacks, settlement to a bank account, tax, foreign-exchange gains/losses, and formal accounting-policy approval remain unimplemented.
 
+## Checkout eligibility for finance-adjacent offers
+
+The public catalogue currently marks `investment-report`, `portfolio-analysis`, and `investment-consulting` as `pending-regulatory-review` with `checkoutEnabled: false`. These items remain discoverable for internal planning, but `getOffer` rejects them, so checkout/order creation cannot sell them. The guard has no environment-variable bypass. Re-enablement requires explicit product-scope and jurisdiction-specific legal/compliance review followed by a reviewed code change. This control is not a determination of legal status, and it does not authorize any regulated service.
+
 ## API authorization boundary
 
 - Public endpoints may list offers and initialize customer checkout; they cannot set a payment-confirmed flag or assert successful delivery.
@@ -61,6 +65,7 @@ Phase 6: enable specific regulated services only after written authorization and
 - Ledger invariant tests and Redis adapter tests pass in CI, including duplicate requests, optimistic-lock conflicts, and tampered persisted state.
 - Payment-intent tests reject unverified events, amount/currency/provider mismatches, duplicate-event mutation, and illegal transitions.
 - Confirmed payment receipts are journaled to clearing/prepayment accounts exactly once; service revenue is posted only after delivery evidence and remains idempotent on retry.
+- Finance-adjacent offers marked pending review remain visible but are rejected by `getOffer`, preventing order creation and checkout until a reviewed code change.
 - PayPal webhook verifier tests reject missing transmission headers, absent webhook ID, failed/unknown verification results, and provider verification errors.
 - PayPal sandbox-client tests prove the fixed sandbox endpoint, OAuth-before-verification sequence, correct event payload, and fail-closed handling.
 - Reconciliation tests prove mismatches block settlement, including missing/extra records and amount/currency discrepancies.
