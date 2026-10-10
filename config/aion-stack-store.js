@@ -189,7 +189,8 @@ export async function commitCustomerOrder(order) {
   return order;
 }
 
-// Marks a paid order delivered and recognizes its revenue as one Redis Lua operation.
+// Commits delivery evidence as pending journal recognition. The order is not reported
+// as revenue-recognized until the separate double-entry posting succeeds.
 const CUSTOMER_DELIVERY_COMMIT_LUA = `
 local orderType = redis.call('TYPE', KEYS[1]).ok
 local revenueType = redis.call('TYPE', KEYS[2]).ok
@@ -212,7 +213,7 @@ end
 if current.paymentReference ~= ARGV[3] then
   return cjson.encode({ status = 'payment_reference_mismatch' })
 end
-if current.deliveryStatus == 'delivered' then
+if current.deliveryStatus == 'delivered' or current.deliveryStatus == 'delivered-pending-journal' then
   if current.deliveryEvidence == ARGV[4] then
     return cjson.encode({ status = 'duplicate', order = current })
   end
@@ -220,15 +221,13 @@ if current.deliveryStatus == 'delivered' then
 end
 local updated = cjson.decode(ARGV[1])
 local revenue = cjson.decode(ARGV[2])
-if updated.id ~= current.id or updated.revenueRecognized ~= true or
-   updated.deliveryStatus ~= 'delivered' or updated.deliveryEvidence ~= ARGV[4] or
+if updated.id ~= current.id or updated.revenueRecognized ~= false or
+   updated.deliveryStatus ~= 'delivered-pending-journal' or updated.deliveryEvidence ~= ARGV[4] or
    updated.paymentReference ~= current.paymentReference or revenue.id == nil or
    revenue.orderId ~= current.id or revenue.paymentReference ~= current.paymentReference or
-   revenue.revenueRecognized ~= true then
+   revenue.revenueRecognized ~= false or revenue.status ~= 'pending-journal' then
   return cjson.encode({ status = 'invalid_commit_payload' })
 end
--- Write recognition record/index first and the deliverable order state last.
--- Revenue reporting cross-checks the durable order state before exposing a record.
 redis.call('SET', KEYS[2], ARGV[2])
 redis.call('SADD', KEYS[3], revenue.id)
 redis.call('SET', KEYS[1], ARGV[1])
@@ -249,7 +248,7 @@ export async function commitCustomerDelivery({ orderId, updatedOrder, revenue, p
     if (!current) return null;
     if (current.paymentStatus !== 'confirmed') throw new Error('delivery blocked until payment is confirmed');
     if (current.paymentReference !== paymentReference) throw new Error('payment reference mismatch for delivery');
-    if (current.deliveryStatus === 'delivered') {
+    if (current.deliveryStatus === 'delivered' || current.deliveryStatus === 'delivered-pending-journal') {
       if (current.deliveryEvidence === evidence) return current;
       throw new Error('delivery evidence cannot change after revenue recognition');
     }
@@ -284,6 +283,102 @@ export async function commitCustomerDelivery({ orderId, updatedOrder, revenue, p
   }
   if (result.status !== 'committed' && result.status !== 'duplicate') {
     throw financialStorageUnavailable('customer delivery commit failed with status ' + result.status);
+  }
+  return result.order || updatedOrder;
+}
+
+// Finalizes revenue recognition only after the idempotent double-entry journal post succeeds.
+const CUSTOMER_DELIVERY_FINALIZE_LUA = `
+local orderType = redis.call('TYPE', KEYS[1]).ok
+local revenueType = redis.call('TYPE', KEYS[2]).ok
+local indexType = redis.call('TYPE', KEYS[3]).ok
+if orderType ~= 'none' and orderType ~= 'string' then
+  return cjson.encode({ status = 'storage_type_mismatch', key = 'order' })
+end
+if revenueType ~= 'none' and revenueType ~= 'string' then
+  return cjson.encode({ status = 'storage_type_mismatch', key = 'revenue' })
+end
+if indexType ~= 'none' and indexType ~= 'set' then
+  return cjson.encode({ status = 'storage_type_mismatch', key = 'index' })
+end
+local orderRaw = redis.call('GET', KEYS[1])
+if not orderRaw then return cjson.encode({ status = 'not_found' }) end
+local current = cjson.decode(orderRaw)
+if current.paymentStatus ~= 'confirmed' then return cjson.encode({ status = 'payment_not_confirmed' }) end
+if current.deliveryEvidence ~= ARGV[4] or current.paymentReference ~= ARGV[3] then
+  return cjson.encode({ status = 'delivery_context_mismatch' })
+end
+if current.deliveryStatus == 'delivered' and current.revenueRecognized == true then
+  return cjson.encode({ status = 'duplicate', order = current })
+end
+if current.deliveryStatus ~= 'delivered-pending-journal' then
+  return cjson.encode({ status = 'delivery_journal_not_pending' })
+end
+local updated = cjson.decode(ARGV[1])
+local revenue = cjson.decode(ARGV[2])
+if updated.id ~= current.id or updated.deliveryStatus ~= 'delivered' or
+   updated.revenueRecognized ~= true or updated.deliveryEvidence ~= current.deliveryEvidence or
+   updated.paymentReference ~= current.paymentReference or revenue.id == nil or
+   revenue.orderId ~= current.id or revenue.paymentReference ~= current.paymentReference or
+   revenue.revenueRecognized ~= true or revenue.status ~= 'recognized' or not revenue.recognizedAt then
+  return cjson.encode({ status = 'invalid_finalize_payload' })
+end
+redis.call('SET', KEYS[2], ARGV[2])
+redis.call('SADD', KEYS[3], revenue.id)
+redis.call('SET', KEYS[1], ARGV[1])
+return cjson.encode({ status = 'finalized', order = updated })
+`;
+
+export async function finalizeCustomerDeliveryRevenue({ orderId, updatedOrder, revenue, paymentReference, evidence }) {
+  const orderKey = 'customer-orders:' + String(orderId);
+  const revenueKey = 'customer-revenue:' + String(revenue?.id || '');
+  if (!updatedOrder || !revenue?.id || !paymentReference || !evidence) {
+    throw new Error('Invalid customer revenue finalization payload');
+  }
+  if (!config()) {
+    if (!ALLOW_MEMORY_FINANCIAL_TESTS()) {
+      throw financialStorageUnavailable('Redis is not configured for revenue finalization');
+    }
+    const current = memory.get(orderKey);
+    if (!current) return null;
+    if (current.deliveryEvidence !== evidence || current.paymentReference !== paymentReference) {
+      throw new Error('delivery context mismatch for revenue finalization');
+    }
+    if (current.deliveryStatus === 'delivered' && current.revenueRecognized === true) return current;
+    if (current.deliveryStatus !== 'delivered-pending-journal' || current.paymentStatus !== 'confirmed') {
+      throw new Error('delivery journal is not pending');
+    }
+    memory.set(revenueKey, revenue);
+    memory.set(orderKey, updatedOrder);
+    return updatedOrder;
+  }
+
+  let raw;
+  try {
+    raw = await command([
+      'EVAL', CUSTOMER_DELIVERY_FINALIZE_LUA, '3',
+      prefix + orderKey, prefix + revenueKey, indexes['customer-revenue'],
+      JSON.stringify(updatedOrder), JSON.stringify(revenue), String(paymentReference), String(evidence)
+    ]);
+  } catch (error) {
+    throw financialStorageUnavailable('atomic revenue finalization failed: ' + String(error?.message || error));
+  }
+  let result;
+  try { result = typeof raw === 'string' ? JSON.parse(raw) : raw; }
+  catch { throw financialStorageUnavailable('revenue finalization returned an invalid result'); }
+  if (!result || typeof result.status !== 'string') {
+    throw financialStorageUnavailable('revenue finalization returned an empty result');
+  }
+  if (result.status === 'not_found') return null;
+  if (result.status === 'payment_not_confirmed') throw new Error('payment must be confirmed before revenue finalization');
+  if (result.status === 'delivery_context_mismatch') throw new Error('delivery context mismatch for revenue finalization');
+  if (result.status === 'delivery_journal_not_pending') throw new Error('delivery journal is not pending');
+  if (result.status === 'invalid_finalize_payload') throw new Error('Invalid customer revenue finalization payload');
+  if (result.status === 'storage_type_mismatch') {
+    throw financialStorageUnavailable('revenue finalization encountered an unexpected Redis key type: ' + String(result.key || 'unknown'));
+  }
+  if (result.status !== 'finalized' && result.status !== 'duplicate') {
+    throw financialStorageUnavailable('revenue finalization failed with status ' + result.status);
   }
   return result.order || updatedOrder;
 }
