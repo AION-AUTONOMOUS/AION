@@ -45,3 +45,35 @@ test('customer revenue accepts matching verified amount and currency evidence', 
   assert.equal(paid.paymentStatus,'confirmed');
   assert.equal(paid.revenueRecognized,true);
 });
+
+test('customer revenue rejects missing amount or currency evidence', async () => {
+  const order = await source.createCustomerOrder({offerId:'space-weather-brief',customerId:'missing-evidence-test'});
+  const base = {
+    paymentProvider:'paypal',verificationStatus:'SUCCESS',
+    providerEventId:'verified-event-missing-evidence',paymentReference:'capture-missing-evidence'
+  };
+  await assert.rejects(
+    () => source.confirmCustomerPayment(order.id,{...base,currency:'USD'}),
+    /amount evidence required/
+  );
+  await assert.rejects(
+    () => source.confirmCustomerPayment(order.id,{...base,amountUsd:'180.00'}),
+    /currency does not match/
+  );
+});
+
+test('customer revenue is idempotent for the same payment but rejects a different payment for an already-paid order', async () => {
+  const order = await source.createCustomerOrder({offerId:'space-weather-brief',customerId:'idempotency-test'});
+  const payment = {
+    paymentProvider:'paypal',verificationStatus:'SUCCESS',
+    providerEventId:'verified-event-idempotency',paymentReference:'capture-idempotency',
+    amountUsd:'180.00',currency:'USD'
+  };
+  const first = await source.confirmCustomerPayment(order.id,payment);
+  const duplicate = await source.confirmCustomerPayment(order.id,payment);
+  assert.equal(duplicate.providerEventId,first.providerEventId);
+  await assert.rejects(
+    () => source.confirmCustomerPayment(order.id,{...payment,providerEventId:'different-event',paymentReference:'different-capture'}),
+    /already confirmed by a different provider payment/
+  );
+});
