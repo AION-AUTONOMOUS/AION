@@ -24,10 +24,12 @@ test('real Redis atomically persists customer orders and payment revenue under r
 
   const suffix = crypto.randomUUID();
   const revenueIndex = 'aion:stack:customer-revenue:index';
+  const journalKey = 'aion:financial:journal';
   try {
-    // This workflow uses a fresh Redis service; clean the two relevant indexes for repeatability.
+    // This workflow uses a fresh Redis service; clean the relevant keys for repeatability.
     await client.del(revenueIndex);
     await client.del('aion:stack:customer-orders:index');
+    await client.del(journalKey);
 
     const order = await revenueApi.createCustomerOrder({
       offerId: 'space-weather-brief',
@@ -92,6 +94,27 @@ test('real Redis atomically persists customer orders and payment revenue under r
     assert.equal(finalRevenue[0].amountUsd, 180);
     assert.ok((await client.sMembers(revenueIndex)).includes(finalRevenue[0].id));
 
+    // Payment capture must also be represented in the durable double-entry journal.
+    const { postConfirmedPaymentReceipt } = await import('../financial-core/customer-payment-ledger.js');
+    const { verifyJournalChain } = await import('../financial-core/journal.js');
+    const journalResults = await Promise.all([
+      postConfirmedPaymentReceipt(finalOrder),
+      postConfirmedPaymentReceipt(finalOrder)
+    ]);
+    assert.ok(journalResults.some(result => result.duplicate === true),
+      'concurrent journal retries should deduplicate the same PayPal capture');
+    const journalState = JSON.parse(await client.get(journalKey));
+    const journalCheck = verifyJournalChain(journalState);
+    assert.equal(journalCheck.valid, true);
+    const journalEntries = journalState.entries.filter(entry => entry.reference === payment.paymentReference);
+    assert.equal(journalEntries.length, 1, 'one PayPal capture must create one journal entry');
+    assert.equal(journalEntries[0].currency, 'USD');
+    assert.equal(journalEntries[0].totalMinor, '18000');
+    assert.deepEqual(journalEntries[0].postings, [
+      { accountId: 'assets:paypal-clearing', debitMinor: 18000, creditMinor: 0 },
+      { accountId: 'liabilities:customer-prepayments', debitMinor: 0, creditMinor: 18000 }
+    ]);
+
     await assert.rejects(
       () => revenueApi.confirmCustomerPayment(order.id, {
         ...payment,
@@ -104,8 +127,11 @@ test('real Redis atomically persists customer orders and payment revenue under r
   } finally {
     await client.del(revenueIndex);
     await client.del('aion:stack:customer-orders:index');
+    await client.del(journalKey);
     await client.quit();
     const storeClient = globalThis[Symbol.for('aion.railway.redis.client')];
     if (storeClient?.isOpen) await storeClient.quit();
+    const ledgerClient = globalThis[Symbol.for('aion.financial.ledger.redis.client')];
+    if (ledgerClient?.isOpen) await ledgerClient.quit();
   }
 });
