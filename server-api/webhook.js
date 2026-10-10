@@ -12,10 +12,12 @@ export default async function handler(req, res) {
   const paypalWebhookId = process.env.PAYPAL_WEBHOOK_ID;
   const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
 
-  if (!paypalWebhookId || !n8nWebhookUrl) {
+  // PayPal verification is required for the payment endpoint. Automation
+  // forwarding is optional and must not disable verified payment processing.
+  if (!paypalWebhookId) {
     return res.status(500).json({
       success: false,
-      error: 'Configuration incomplete'
+      error: 'PayPal webhook configuration incomplete'
     });
   }
 
@@ -90,7 +92,7 @@ export default async function handler(req, res) {
           typeof amountCurrency !== 'string') {
         return res.status(400).json({ success: false, error: 'Verified payment event is missing AION order mapping or amount evidence' });
       }
-      await confirmCustomerPayment(orderId, {
+      const confirmedOrder = await confirmCustomerPayment(orderId, {
         paymentProvider: 'paypal',
         verificationStatus: 'SUCCESS',
         providerEventId: webhookEvent.id,
@@ -98,39 +100,33 @@ export default async function handler(req, res) {
         amountUsd: amountValue,
         currency: amountCurrency
       });
+      if (!confirmedOrder) {
+        return res.status(404).json({ success: false, error: 'AION order not found; payment was not recorded' });
+      }
     }
 
-    const forwardResponse = await fetch(
-      n8nWebhookUrl,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(webhookEvent)
+    if (n8nWebhookUrl) {
+      try {
+        const forwardResponse = await fetch(n8nWebhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(webhookEvent),
+          signal: AbortSignal.timeout(8000)
+        });
+        if (!forwardResponse.ok) {
+          console.error('AION automation webhook failed:', forwardResponse.status);
+          // The verified payment has already been recorded. Return success to
+          // PayPal so a downstream automation outage does not cause webhook retries.
+        }
+      } catch (forwardError) {
+        console.error('AION automation webhook unavailable:', String(forwardError?.message || forwardError));
+        // Payment recording is independent of optional downstream automation.
       }
-    );
-
-    if (!forwardResponse.ok) {
-      const forwardText =
-        await forwardResponse.text();
-
-      console.error(
-        'Automation webhook failed:',
-        forwardResponse.status,
-        forwardText
-      );
-
-      return res.status(502).json({
-        success: false,
-        error: 'Automation webhook failed',
-        provider_status: forwardResponse.status
-      });
     }
 
     return res.status(200).json({
       success: true,
-      status: 'Forwarded to automation'
+      status: n8nWebhookUrl ? 'Verified event processed; automation forwarding attempted' : 'Verified event processed; automation forwarding not configured'
     });
 
   } catch (error) {
@@ -142,8 +138,7 @@ export default async function handler(req, res) {
     return res.status(500).json({
       success: false,
       error: 'Internal Server Error',
-      details:
-        error?.message || 'Unknown error'
+      error: 'Webhook processing failed'
     });
   }
 };
