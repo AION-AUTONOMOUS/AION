@@ -5,8 +5,7 @@ on:
     branches: [main]
     paths:
       - "financial-core/**"
-      - "tests/financial-core-journal.test.js"
-      - "package.json"
+      - "tests/financial-core-*.test.js"
       - ".github/workflows/financial-core-tests.yml"
   workflow_dispatch:
 
@@ -23,7 +22,5 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Install dependencies
-        run: npm install --ignore-scripts
       - name: Run financial core tests
-        run: node --test tests/financial-core-journal.test.js
+        run: node --test tests/financial-core-*.test.js
