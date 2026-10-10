@@ -18,6 +18,53 @@ function responseRecorder() {
   };
 }
 
+test('financial admin data and delivery mutations require an explicit server token', async () => {
+  const original = {
+    admin: process.env.AION_REVENUE_ADMIN_TOKEN,
+    mesh: process.env.AION_MESH_TOKEN,
+    contracts: process.env.AION_CONTRACTS_TOKEN
+  };
+  try {
+    delete process.env.AION_REVENUE_ADMIN_TOKEN;
+    process.env.AION_MESH_TOKEN = '';
+    process.env.AION_CONTRACTS_TOKEN = '';
+
+    let res = responseRecorder();
+    await handler({ method: 'GET', url: '/api/customer-revenue?path=receipts', headers: {} }, res);
+    assert.equal(res.statusCode, 503, 'sensitive endpoints fail closed when no admin token is configured');
+
+    process.env.AION_REVENUE_ADMIN_TOKEN = 'unit-test-revenue-admin-token';
+    res = responseRecorder();
+    await handler({ method: 'GET', url: '/api/customer-revenue?path=receipts', headers: {} }, res);
+    assert.equal(res.statusCode, 401, 'missing bearer token must not expose receipts');
+
+    res = responseRecorder();
+    await handler({
+      method: 'GET',
+      url: '/api/customer-revenue?path=receipts',
+      headers: { authorization: 'Bearer unit-test-revenue-admin-token' }
+    }, res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(Array.isArray(res.payload?.receipts), true);
+
+    res = responseRecorder();
+    await handler({
+      method: 'POST',
+      url: '/api/customer-revenue?path=delivery',
+      headers: {},
+      body: { orderId: 'AION-ORDER-unauthorized', evidence: 'fake-delivery' }
+    }, res);
+    assert.equal(res.statusCode, 401, 'clients must not self-assert delivery evidence');
+  } finally {
+    if (original.admin === undefined) delete process.env.AION_REVENUE_ADMIN_TOKEN;
+    else process.env.AION_REVENUE_ADMIN_TOKEN = original.admin;
+    if (original.mesh === undefined) delete process.env.AION_MESH_TOKEN;
+    else process.env.AION_MESH_TOKEN = original.mesh;
+    if (original.contracts === undefined) delete process.env.AION_CONTRACTS_TOKEN;
+    else process.env.AION_CONTRACTS_TOKEN = original.contracts;
+  }
+});
+
 test('public payment endpoint rejects client-supplied PayPal SUCCESS claims', async () => {
   const req = {
     method: 'POST',
