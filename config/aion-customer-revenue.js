@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { addToIndex, commitCustomerPayment, getJson, listIndexed, setJson } from './aion-stack-store.js';
+import { addToIndex, commitCustomerOrder, commitCustomerPayment, getJson, listIndexed, setJson } from './aion-stack-store.js';
 
 export const CUSTOMER_REVENUE_VERSION = '1.0.0';
 
@@ -76,8 +76,7 @@ export async function createCustomerOrder(input={}){
   if(!offer)throw new Error('unknown offer');
   if(!customerId)throw new Error('customerId required');
   const order={id:id('AION-ORDER'),offerId:offer.id,customerId,amountUsd:offer.priceUsd,currency:'USD',paymentProvider:'PayPal',status:'awaiting-payment',paymentStatus:'unpaid',deliveryStatus:'not-started',revenueRecognized:false,createdAt:new Date().toISOString()};
-  await setJson('customer-orders:'+order.id,order); await addToIndex('customer-orders',order.id);
-  return order;
+  return await commitCustomerOrder(order);
 }
 export async function confirmCustomerPayment(orderId,input={}){
   const order=await getJson('customer-orders:'+text(orderId));
