@@ -89,10 +89,12 @@ test('real Redis atomically persists customer orders and payment revenue under r
     const finalOrder = await store.getJson('customer-orders:' + order.id);
     assert.equal(finalOrder.paymentStatus, 'confirmed');
     assert.equal(finalOrder.paymentReference, payment.paymentReference);
-    const finalRevenue = (await revenueApi.listRevenue()).filter(x => x.orderId === order.id);
-    assert.equal(finalRevenue.length, 1, 'concurrent duplicate captures must create one revenue record');
-    assert.equal(finalRevenue[0].amountUsd, 180);
-    assert.ok((await client.sMembers(revenueIndex)).includes(finalRevenue[0].id));
+    const finalPayments = (await revenueApi.listCustomerPayments()).filter(x => x.orderId === order.id);
+    assert.equal(finalPayments.length, 1, 'concurrent duplicate captures must create one payment receipt');
+    assert.equal(finalPayments[0].amountUsd, 180);
+    assert.equal(finalOrder.revenueRecognized, false, 'payment alone must not recognize service revenue');
+    assert.equal((await revenueApi.listRevenue()).filter(x => x.orderId === order.id).length, 0);
+    assert.ok((await client.sMembers(revenueIndex)).includes(finalPayments[0].id));
 
     // Payment capture must also be represented in the durable double-entry journal.
     const { postConfirmedPaymentReceipt } = await import('../financial-core/customer-payment-ledger.js');
@@ -103,16 +105,38 @@ test('real Redis atomically persists customer orders and payment revenue under r
     ]);
     assert.ok(journalResults.some(result => result.duplicate === true),
       'concurrent journal retries should deduplicate the same PayPal capture');
-    const journalState = JSON.parse(await client.get(journalKey));
-    const journalCheck = verifyJournalChain(journalState);
+    let journalState = JSON.parse(await client.get(journalKey));
+    let journalCheck = verifyJournalChain(journalState);
     assert.equal(journalCheck.valid, true);
-    const journalEntries = journalState.entries.filter(entry => entry.reference === payment.paymentReference);
-    assert.equal(journalEntries.length, 1, 'one PayPal capture must create one journal entry');
-    assert.equal(journalEntries[0].currency, 'USD');
-    assert.equal(journalEntries[0].totalMinor, '18000');
-    assert.deepEqual(journalEntries[0].postings, [
+    let captureEntries = journalState.entries.filter(entry => entry.reference === payment.paymentReference);
+    assert.equal(captureEntries.length, 1, 'one PayPal capture must create one journal entry');
+    assert.equal(captureEntries[0].currency, 'USD');
+    assert.equal(captureEntries[0].totalMinor, '18000');
+    assert.deepEqual(captureEntries[0].postings, [
       { accountId: 'assets:paypal-clearing', debitMinor: 18000, creditMinor: 0 },
       { accountId: 'liabilities:customer-prepayments', debitMinor: 0, creditMinor: 18000 }
+    ]);
+
+    // Revenue is recognized only after delivery evidence, with a second double-entry posting.
+    const deliveredOrder = await revenueApi.recordDelivery(order.id, { evidence: 'DELIVERY-EVIDENCE-' + suffix });
+    assert.equal(deliveredOrder.deliveryStatus, 'delivered');
+    assert.equal(deliveredOrder.revenueRecognized, true);
+    const finalRevenue = (await revenueApi.listRevenue()).filter(x => x.orderId === order.id);
+    assert.equal(finalRevenue.length, 1);
+    assert.equal(finalRevenue[0].amountUsd, 180);
+    assert.equal(finalRevenue[0].source, 'delivered-service');
+    assert.ok(finalRevenue[0].recognizedAt);
+
+    journalState = JSON.parse(await client.get(journalKey));
+    journalCheck = verifyJournalChain(journalState);
+    assert.equal(journalCheck.valid, true);
+    captureEntries = journalState.entries.filter(entry => entry.reference === payment.paymentReference);
+    const serviceRevenueEntries = journalState.entries.filter(entry => entry.reference === order.id);
+    assert.equal(captureEntries.length, 1);
+    assert.equal(serviceRevenueEntries.length, 1, 'delivery revenue recognition must be idempotent');
+    assert.deepEqual(serviceRevenueEntries[0].postings, [
+      { accountId: 'liabilities:customer-prepayments', debitMinor: 18000, creditMinor: 0 },
+      { accountId: 'revenue:services', debitMinor: 0, creditMinor: 18000 }
     ]);
 
     await assert.rejects(
