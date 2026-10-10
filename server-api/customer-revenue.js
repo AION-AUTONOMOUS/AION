@@ -2,6 +2,20 @@ import { customerRevenueHealth, listOffers, getOffer, createCustomerOrder, confi
 import { revenueEngineHealth, revenueStrategy, revenueDashboard } from '../config/aion-revenue-engine.js';
 import { createPayPalOrder, capturePayPalOrder, paypalHealth } from '../config/aion-paypal.js';
 import { setJson } from '../config/aion-stack-store.js';
+import { postConfirmedPaymentReceipt } from '../financial-core/customer-payment-ledger.js';
+async function ensurePaymentJournal(order) {
+  if (process.env.NODE_ENV === 'test' &&
+      process.env.AION_TEST_ALLOW_MEMORY_FINANCIAL_STORE === '1' &&
+      !String(process.env.REDIS_URL || '').trim()) {
+    return { skipped: 'explicit-memory-test-adapter' };
+  }
+  try {
+    return await postConfirmedPaymentReceipt(order);
+  } catch (error) {
+    throw new Error('Durable financial journal unavailable: ' + String(error?.message || error));
+  }
+}
+
 
 export default async function handler(req,res){
   res.setHeader('Access-Control-Allow-Origin',process.env.AION_PUBLIC_ORIGIN||'*');
@@ -34,13 +48,17 @@ export default async function handler(req,res){
     if(req.method==='POST'&&path==='capture'){
       const b=await body(), orderId=String(b.orderId||'').trim(), orders=await listCustomerOrders(), order=orders.find(x=>x.id===orderId);
       if(!order) return res.status(404).json({success:false,error:'order not found'});
-      if(order.paymentStatus==='confirmed') return res.status(200).json({success:true,order});
+      if(order.paymentStatus==='confirmed') {
+        await ensurePaymentJournal(order);
+        return res.status(200).json({success:true,order});
+      }
       if(!order.paypalOrderId) return res.status(400).json({success:false,error:'PayPal order is missing'});
       const payment=await capturePayPalOrder({paypalOrderId:order.paypalOrderId,expectedOrderId:order.id,expectedAmountUsd:order.amountUsd});
       const updated=await confirmCustomerPayment(order.id,{
         paymentProvider:'paypal',verificationStatus:'SUCCESS',providerEventId:payment.orderId,
         paymentReference:payment.captureId,amountUsd:String(payment.amount),currency:String(payment.currency)
       });
+      await ensurePaymentJournal(updated);
       return res.status(200).json({success:true,order:updated,payment});
     }
     if(req.method==='POST'&&path==='payment'){
