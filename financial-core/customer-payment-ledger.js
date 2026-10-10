@@ -59,8 +59,9 @@ export async function postConfirmedPaymentReceipt(order, { client, now } = {}) {
  * This transfers the captured amount from customer prepayments to service income.
  */
 export async function postCustomerServiceRevenue(order, { client, now } = {}) {
-  if (!order || order.paymentStatus !== 'confirmed' ||
-      order.deliveryStatus !== 'delivered' || order.revenueRecognized !== true ||
+  const deliveryReady = order?.deliveryStatus === 'delivered-pending-journal' && order.revenueRecognized === false ||
+    order?.deliveryStatus === 'delivered' && order.revenueRecognized === true;
+  if (!order || order.paymentStatus !== 'confirmed' || !deliveryReady ||
       !String(order.deliveryEvidence || '').trim()) {
     throw new Error('a paid order with verified delivery evidence is required for income recognition');
   }
@@ -79,7 +80,7 @@ export async function postCustomerServiceRevenue(order, { client, now } = {}) {
   };
   const redisClient = client || await getFinancialLedgerRedisClient();
   return appendJournalRedis(redisClient, JOURNAL_KEY, journalCommand, {
-    ...(now ? { now } : order.revenueRecognizedAt ? { now: order.revenueRecognizedAt } : {})
+    ...(now ? { now } : order.deliveredAt ? { now: order.deliveredAt } : {})
   });
 }
 
