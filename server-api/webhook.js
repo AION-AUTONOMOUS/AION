@@ -1,5 +1,19 @@
 import { paypalBaseUrl, paypalClientId, paypalClientSecret } from './paypal/config.js';
 import { confirmCustomerPayment } from '../config/aion-customer-revenue.js';
+import { postConfirmedPaymentReceipt } from '../financial-core/customer-payment-ledger.js';
+async function ensurePaymentJournal(order) {
+  if (process.env.NODE_ENV === 'test' &&
+      process.env.AION_TEST_ALLOW_MEMORY_FINANCIAL_STORE === '1' &&
+      !String(process.env.REDIS_URL || '').trim()) {
+    return { skipped: 'explicit-memory-test-adapter' };
+  }
+  try {
+    return await postConfirmedPaymentReceipt(order);
+  } catch (error) {
+    throw new Error('Durable financial journal unavailable: ' + String(error?.message || error));
+  }
+}
+
 
 async function paypalAccessToken(clientId, secret) {
   const basic = Buffer.from(clientId + ':' + secret).toString('base64');
@@ -138,6 +152,7 @@ export default async function handler(req, res) {
       if (!confirmedOrder) {
         return res.status(404).json({ success: false, error: 'AION order not found; payment was not recorded' });
       }
+      await ensurePaymentJournal(confirmedOrder);
     }
 
     if (n8nWebhookUrl) {
