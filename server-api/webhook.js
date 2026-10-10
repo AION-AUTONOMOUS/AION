@@ -86,7 +86,7 @@ export default async function handler(req, res) {
 
     if (eventType === 'PAYMENT.CAPTURE.COMPLETED' && captureStatus === 'COMPLETED') {
       if (!orderId || !webhookEvent?.id || !capture?.id ||
-          typeof amountValue !== 'string' || !/^\\d+(?:\\.\\d{1,2})?$/.test(amountValue) ||
+          typeof amountValue !== 'string' || !/^\d+(?:\.\d{1,2})?$/.test(amountValue) ||
           typeof amountCurrency !== 'string') {
         return res.status(400).json({ success: false, error: 'Verified payment event is missing AION order mapping or amount evidence' });
       }
