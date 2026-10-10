@@ -1,13 +1,34 @@
 import crypto from 'node:crypto';
 
-const ENV = String(process.env.PAYPAL_ENVIRONMENT || 'live').toLowerCase();
-const BASE = ENV === 'sandbox' ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com';
+const SANDBOX_BASE = 'https://api-m.sandbox.paypal.com';
+const LIVE_BASE = 'https://api-m.paypal.com';
 const REQUEST_TIMEOUT_MS = 10000;
 let cachedToken = null;
+let cachedTokenKey = null;
 let tokenExpiresAt = 0;
 
+function paypalEnvironment() {
+  const value = String(process.env.PAYPAL_ENVIRONMENT || 'sandbox').trim().toLowerCase();
+  if (value === 'sandbox') return 'sandbox';
+  if (value === 'live' || value === 'production') return 'live';
+  const error = new Error('PAYPAL_ENVIRONMENT must be sandbox or live');
+  error.statusCode = 503;
+  throw error;
+}
+function paypalBaseUrl(environment = paypalEnvironment()) {
+  if (environment === 'sandbox') return SANDBOX_BASE;
+  if (environment === 'live') return LIVE_BASE;
+  const error = new Error('PayPal environment is invalid');
+  error.statusCode = 503;
+  throw error;
+}
 function requireConfig(){
-  if(!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) throw new Error('PayPal server credentials are not configured');
+  paypalEnvironment();
+  if(!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+    const error = new Error('PayPal server credentials are not configured');
+    error.statusCode = 503;
+    throw error;
+  }
 }
 async function paypalFetch(url, options = {}) {
   try {
@@ -36,18 +57,41 @@ async function parseResponse(response){
   }
   return data;
 }
-async function accessToken(){
+async function accessToken(base = paypalBaseUrl()){
   requireConfig();
-  if(cachedToken && Date.now() < tokenExpiresAt - 60000) return cachedToken;
+  const tokenKey = crypto.createHash('sha256')
+    .update([base, process.env.PAYPAL_CLIENT_ID, process.env.PAYPAL_CLIENT_SECRET].join('\\0'))
+    .digest('hex');
+  if(cachedToken && cachedTokenKey === tokenKey && Date.now() < tokenExpiresAt - 60000) return cachedToken;
   const basic = Buffer.from(process.env.PAYPAL_CLIENT_ID + ':' + process.env.PAYPAL_CLIENT_SECRET).toString('base64');
-  const response = await paypalFetch(BASE + '/v1/oauth2/token',{method:'POST',headers:{Authorization:'Basic ' + basic,'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=client_credentials'});
-  const data = await parseResponse(response); cachedToken=data.access_token; tokenExpiresAt=Date.now()+Number(data.expires_in||300)*1000; return cachedToken;
+  const response = await paypalFetch(base + '/v1/oauth2/token',{method:'POST',headers:{Authorization:'Basic ' + basic,'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=client_credentials'});
+  const data = await parseResponse(response);
+  if (typeof data.access_token !== 'string' || !data.access_token.trim()) {
+    const error = new Error('PayPal OAuth response did not contain an access token');
+    error.statusCode = 503;
+    throw error;
+  }
+  cachedToken=data.access_token;
+  cachedTokenKey=tokenKey;
+  tokenExpiresAt=Date.now()+Math.max(60,Number(data.expires_in||300))*1000;
+  return cachedToken;
 }
 function requestId(value){ return crypto.createHash('sha256').update(String(value)).digest('hex').slice(0,24); }
-export function paypalHealth(){ return {provider:'PayPal',environment:ENV,configured:Boolean(process.env.PAYPAL_CLIENT_ID&&process.env.PAYPAL_CLIENT_SECRET),mode:'server-side-orders-v2'}; }
+export function paypalHealth(){
+  let environment = 'invalid';
+  try { environment = paypalEnvironment(); } catch {}
+  return {
+    provider:'PayPal',
+    environment,
+    configured:Boolean(process.env.PAYPAL_CLIENT_ID&&process.env.PAYPAL_CLIENT_SECRET),
+    configurationValid:environment!=='invalid',
+    mode:'server-side-orders-v2'
+  };
+}
 export async function createPayPalOrder({orderId,offer,returnUrl,cancelUrl}){
-  const token=await accessToken(); const amount=Number(offer.priceUsd).toFixed(2);
-  const response=await paypalFetch(BASE+'/v2/checkout/orders',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json',Prefer:'return=representation','PayPal-Request-Id':requestId(orderId)},body:JSON.stringify({
+  const base=paypalBaseUrl();
+  const token=await accessToken(base); const amount=Number(offer.priceUsd).toFixed(2);
+  const response=await paypalFetch(base+'/v2/checkout/orders',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json',Prefer:'return=representation','PayPal-Request-Id':requestId(orderId)},body:JSON.stringify({
     intent:'CAPTURE',
     purchase_units:[{reference_id:'default',invoice_id:orderId,custom_id:orderId,description:offer.name,amount:{currency_code:'USD',value:amount},items:[{name:offer.name,sku:offer.id,quantity:'1',unit_amount:{currency_code:'USD',value:amount},category:'DIGITAL_GOODS'}]}],
     payment_source:{paypal:{experience_context:{brand_name:'AION AUTONOMOUS',user_action:'PAY_NOW',shipping_preference:'NO_SHIPPING',return_url:returnUrl,cancel_url:cancelUrl}}}
@@ -55,17 +99,18 @@ export async function createPayPalOrder({orderId,offer,returnUrl,cancelUrl}){
   const data=await parseResponse(response);
   const approval=(data.links||[]).find(x=>x.rel==='payer-action'||x.rel==='approve');
   if(!approval?.href) { const error = new Error('PayPal approval link was not returned'); error.statusCode = 502; throw error; }
-  return {id:data.id,status:data.status,approvalUrl:approval.href,environment:ENV};
+  return {id:data.id,status:data.status,approvalUrl:approval.href,environment:paypalEnvironment()};
 }
 export async function capturePayPalOrder({paypalOrderId,expectedOrderId,expectedAmountUsd}){
-  const token=await accessToken();
-  const detailsResponse=await paypalFetch(BASE+'/v2/checkout/orders/'+encodeURIComponent(paypalOrderId),{headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'}});
+  const base=paypalBaseUrl();
+  const token=await accessToken(base);
+  const detailsResponse=await paypalFetch(base+'/v2/checkout/orders/'+encodeURIComponent(paypalOrderId),{headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'}});
   const details=await parseResponse(detailsResponse); const unit=details.purchase_units?.[0];
   if(!unit || (unit.custom_id!==expectedOrderId && unit.invoice_id!==expectedOrderId)) throw new Error('PayPal order does not match the AION order');
   if(unit.amount?.currency_code!=='USD' || Number(unit.amount?.value).toFixed(2)!==Number(expectedAmountUsd).toFixed(2)) throw new Error('PayPal amount or currency does not match the AION order');
   let captured=details;
   if(details.status!=='COMPLETED'){
-    const captureResponse=await paypalFetch(BASE+'/v2/checkout/orders/'+encodeURIComponent(paypalOrderId)+'/capture',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json','PayPal-Request-Id':requestId(paypalOrderId+':capture')},body:'{}'});
+    const captureResponse=await paypalFetch(base+'/v2/checkout/orders/'+encodeURIComponent(paypalOrderId)+'/capture',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json','PayPal-Request-Id':requestId(paypalOrderId+':capture')},body:'{}'});
     captured=await parseResponse(captureResponse);
   }
   if(captured.status!=='COMPLETED') throw new Error('PayPal payment is not completed: '+captured.status);
