@@ -16,7 +16,7 @@ function response(payload, ok = true) {
   return { ok, json: async () => payload };
 }
 
-test("uses sandbox OAuth then calls PayPal webhook verification endpoint", async () => {
+test("uses sandbox OAuth then calls PayPal webhook verification endpoint with bounded requests", async () => {
   const calls = [];
   const verify = createPayPalSandboxVerifier({
     clientId: "sandbox-client",
@@ -37,8 +37,10 @@ test("uses sandbox OAuth then calls PayPal webhook verification endpoint", async
   assert.equal(calls[0].options.method, "POST");
   assert.match(calls[0].options.headers.Authorization, /^Basic /);
   assert.equal(calls[0].options.body, "grant_type=client_credentials");
+  assert.ok(calls[0].options.signal instanceof AbortSignal);
   assert.equal(calls[1].url, "https://api-m.sandbox.paypal.com/v1/notifications/verify-webhook-signature");
   assert.equal(calls[1].options.headers.Authorization, "Bearer sandbox-access-token");
+  assert.ok(calls[1].options.signal instanceof AbortSignal);
   const body = JSON.parse(calls[1].options.body);
   assert.equal(body.transmission_id, eventInput.transmissionId);
   assert.equal(body.webhook_id, eventInput.webhookId);
@@ -83,10 +85,16 @@ test("fails closed when PayPal verification API errors or returns unknown status
   await assert.rejects(() => unknownStatus(eventInput), /unknown webhook verification status/);
 });
 
-test("requires server-side credentials and a fetch implementation", () => {
+test("requires server-side credentials, fetch implementation, and a bounded timeout", () => {
   assert.throws(() => createPayPalSandboxVerifier({ clientSecret: "secret" }), /client ID is required/);
   assert.throws(() => createPayPalSandboxVerifier({ clientId: "id" }), /client secret is required/);
   assert.throws(() => createPayPalSandboxVerifier({
     clientId: "id", clientSecret: "secret", fetchImpl: null
   }), /fetch implementation is required/);
+  assert.throws(() => createPayPalSandboxVerifier({
+    clientId: "id", clientSecret: "secret", requestTimeoutMs: 0
+  }), /timeout must be an integer/);
+  assert.throws(() => createPayPalSandboxVerifier({
+    clientId: "id", clientSecret: "secret", requestTimeoutMs: 60000
+  }), /timeout must be an integer/);
 });
