@@ -55,8 +55,9 @@ export function postJournal(state, command, { now = new Date().toISOString() } =
   if (debit === 0n || debit !== credit) throw new Error("journal is not balanced");
 
   const fingerprint = sha256({ currency: command.currency, reference: command.reference, postings: normalized });
-  const prior = state.idempotency[command.idempotencyKey];
-  if (prior) {
+  const hasPrior = Object.hasOwn(state.idempotency, command.idempotencyKey);
+  const prior = hasPrior ? state.idempotency[command.idempotencyKey] : undefined;
+  if (hasPrior) {
     if (prior.fingerprint !== fingerprint) throw new Error("idempotency key reused with different command");
     return { state, entry: state.entries.find((e) => e.id === prior.entryId), duplicate: true };
   }
