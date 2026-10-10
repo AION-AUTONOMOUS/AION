@@ -189,6 +189,105 @@ export async function commitCustomerOrder(order) {
   return order;
 }
 
+// Marks a paid order delivered and recognizes its revenue as one Redis Lua operation.
+const CUSTOMER_DELIVERY_COMMIT_LUA = `
+local orderType = redis.call('TYPE', KEYS[1]).ok
+local revenueType = redis.call('TYPE', KEYS[2]).ok
+local indexType = redis.call('TYPE', KEYS[3]).ok
+if orderType ~= 'none' and orderType ~= 'string' then
+  return cjson.encode({ status = 'storage_type_mismatch', key = 'order' })
+end
+if revenueType ~= 'none' and revenueType ~= 'string' then
+  return cjson.encode({ status = 'storage_type_mismatch', key = 'revenue' })
+end
+if indexType ~= 'none' and indexType ~= 'set' then
+  return cjson.encode({ status = 'storage_type_mismatch', key = 'index' })
+end
+local orderRaw = redis.call('GET', KEYS[1])
+if not orderRaw then return cjson.encode({ status = 'not_found' }) end
+local current = cjson.decode(orderRaw)
+if current.paymentStatus ~= 'confirmed' then
+  return cjson.encode({ status = 'payment_not_confirmed' })
+end
+if current.paymentReference ~= ARGV[3] then
+  return cjson.encode({ status = 'payment_reference_mismatch' })
+end
+if current.deliveryStatus == 'delivered' then
+  if current.deliveryEvidence == ARGV[4] then
+    return cjson.encode({ status = 'duplicate', order = current })
+  end
+  return cjson.encode({ status = 'delivery_evidence_conflict' })
+end
+local updated = cjson.decode(ARGV[1])
+local revenue = cjson.decode(ARGV[2])
+if updated.id ~= current.id or updated.revenueRecognized ~= true or
+   updated.deliveryStatus ~= 'delivered' or updated.deliveryEvidence ~= ARGV[4] or
+   updated.paymentReference ~= current.paymentReference or revenue.id == nil or
+   revenue.orderId ~= current.id or revenue.paymentReference ~= current.paymentReference or
+   revenue.revenueRecognized ~= true then
+  return cjson.encode({ status = 'invalid_commit_payload' })
+end
+-- Write recognition record/index first and the deliverable order state last.
+-- Revenue reporting cross-checks the durable order state before exposing a record.
+redis.call('SET', KEYS[2], ARGV[2])
+redis.call('SADD', KEYS[3], revenue.id)
+redis.call('SET', KEYS[1], ARGV[1])
+return cjson.encode({ status = 'committed', order = updated })
+`;
+
+export async function commitCustomerDelivery({ orderId, updatedOrder, revenue, paymentReference, evidence }) {
+  const orderKey = 'customer-orders:' + String(orderId);
+  const revenueKey = 'customer-revenue:' + String(revenue?.id || '');
+  if (!updatedOrder || !revenue?.id || !paymentReference || !evidence) {
+    throw new Error('Invalid customer delivery commit payload');
+  }
+  if (!config()) {
+    if (!ALLOW_MEMORY_FINANCIAL_TESTS()) {
+      throw financialStorageUnavailable('Redis is not configured for customer delivery recognition');
+    }
+    const current = memory.get(orderKey);
+    if (!current) return null;
+    if (current.paymentStatus !== 'confirmed') throw new Error('delivery blocked until payment is confirmed');
+    if (current.paymentReference !== paymentReference) throw new Error('payment reference mismatch for delivery');
+    if (current.deliveryStatus === 'delivered') {
+      if (current.deliveryEvidence === evidence) return current;
+      throw new Error('delivery evidence cannot change after revenue recognition');
+    }
+    memory.set(revenueKey, revenue);
+    memory.set(orderKey, updatedOrder);
+    return updatedOrder;
+  }
+
+  let raw;
+  try {
+    raw = await command([
+      'EVAL', CUSTOMER_DELIVERY_COMMIT_LUA, '3',
+      prefix + orderKey, prefix + revenueKey, indexes['customer-revenue'],
+      JSON.stringify(updatedOrder), JSON.stringify(revenue), String(paymentReference), String(evidence)
+    ]);
+  } catch (error) {
+    throw financialStorageUnavailable('atomic customer delivery commit failed: ' + String(error?.message || error));
+  }
+  let result;
+  try { result = typeof raw === 'string' ? JSON.parse(raw) : raw; }
+  catch { throw financialStorageUnavailable('customer delivery commit returned an invalid result'); }
+  if (!result || typeof result.status !== 'string') {
+    throw financialStorageUnavailable('customer delivery commit returned an empty result');
+  }
+  if (result.status === 'not_found') return null;
+  if (result.status === 'payment_not_confirmed') throw new Error('delivery blocked until payment is confirmed');
+  if (result.status === 'payment_reference_mismatch') throw new Error('payment reference mismatch for delivery');
+  if (result.status === 'delivery_evidence_conflict') throw new Error('delivery evidence cannot change after revenue recognition');
+  if (result.status === 'invalid_commit_payload') throw new Error('Invalid customer delivery commit payload');
+  if (result.status === 'storage_type_mismatch') {
+    throw financialStorageUnavailable('customer delivery commit encountered an unexpected Redis key type: ' + String(result.key || 'unknown'));
+  }
+  if (result.status !== 'committed' && result.status !== 'duplicate') {
+    throw financialStorageUnavailable('customer delivery commit failed with status ' + result.status);
+  }
+  return result.order || updatedOrder;
+}
+
 // Atomically writes the order, revenue record and revenue index in Redis.
 // PayPal receives a success response only after this script commits successfully.
 const CUSTOMER_PAYMENT_COMMIT_LUA = `
