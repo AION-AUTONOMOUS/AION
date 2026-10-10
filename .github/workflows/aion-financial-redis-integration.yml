@@ -1,0 +1,43 @@
+name: AION Financial Redis Integration
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "config/aion-stack-store.js"
+      - "config/aion-customer-revenue.js"
+      - "config/aion-redis.js"
+      - "tests/aion-financial-redis-integration.test.js"
+      - ".github/workflows/aion-financial-redis-integration.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  redis-financial-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+    env:
+      AION_TEST_REDIS_URL: redis://127.0.0.1:6379
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Exercise real Redis financial persistence
+        run: node --test tests/aion-financial-redis-integration.test.js
