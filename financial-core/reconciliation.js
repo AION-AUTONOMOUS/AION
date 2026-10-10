@@ -5,7 +5,9 @@ const keyOf = (entry) => {
       throw new TypeError("statement entry " + field + " is required");
     }
   }
-  if (typeof entry.reference !== "string") throw new TypeError("statement entry reference must be a string");
+  if (typeof entry.reference !== "string" || entry.reference.trim().length === 0) {
+    throw new TypeError("statement entry reference must be a non-blank string");
+  }
   if (!Number.isSafeInteger(entry.amountMinor) || entry.amountMinor < 0) {
     throw new TypeError("statement entry amountMinor must be a non-negative safe integer");
   }
