@@ -76,8 +76,11 @@ test('customer revenue is idempotent for the same payment but rejects a differen
   const first = await source.confirmCustomerPayment(order.id,payment);
   const duplicate = await source.confirmCustomerPayment(order.id,payment);
   assert.equal(duplicate.providerEventId,first.providerEventId);
+  // Capture and webhook paths can identify the same capture with different event IDs.
+  const webhookRetry = await source.confirmCustomerPayment(order.id,{...payment,providerEventId:'separate-webhook-event'});
+  assert.equal(webhookRetry.paymentReference,first.paymentReference);
   const recognized = (await source.listRevenue()).filter(record => record.orderId === order.id);
-  assert.equal(recognized.length,1,'a duplicate webhook must not create a second revenue record');
+  assert.equal(recognized.length,1,'duplicate capture or webhook delivery must not create a second revenue record');
   await assert.rejects(
     () => source.confirmCustomerPayment(order.id,{...payment,providerEventId:'different-event',paymentReference:'different-capture'}),
     /already confirmed by a different provider payment/
