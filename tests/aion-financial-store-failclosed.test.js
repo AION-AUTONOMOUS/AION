@@ -52,6 +52,23 @@ test('financial Redis write failures propagate and never report a successful wri
   assert.doesNotThrow(() => runIsolated(script, { REDIS_URL: 'redis://127.0.0.1:1' }));
 });
 
+test('double-entry receipt journal fails closed when a dedicated Redis URL is missing', () => {
+  const script = `
+    import assert from 'node:assert/strict';
+    import { postConfirmedPaymentReceipt } from './financial-core/customer-payment-ledger.js';
+    await assert.rejects(() => postConfirmedPaymentReceipt({
+      id: 'order-ledger-no-redis',
+      paymentStatus: 'confirmed',
+      paymentProvider: 'paypal',
+      paymentReference: 'CAPTURE-NO-REDIS',
+      amountUsd: 15,
+      currency: 'USD',
+      revenueRecognized: false
+    }), /REDIS_URL/);
+  `;
+  assert.doesNotThrow(() => runIsolated(script));
+});
+
 test('atomic payment confirmation fails closed when Redis cannot commit', () => {
   const script = `
     import assert from 'node:assert/strict';
