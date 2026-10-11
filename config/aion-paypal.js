@@ -27,7 +27,7 @@ export async function createPayPalOrder({orderId,offer,returnUrl,cancelUrl}){
   const token=await accessToken(); const amount=Number(offer.priceUsd).toFixed(2);
   const response=await fetch(BASE+'/v2/checkout/orders',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json',Prefer:'return=representation','PayPal-Request-Id':requestId(orderId)},body:JSON.stringify({
     intent:'CAPTURE',
-    purchase_units:[{reference_id:'default',invoice_id:orderId,custom_id:orderId,description:offer.name,amount:{currency_code:'USD',value:amount},items:[{name:offer.name,sku:offer.id,quantity:'1',unit_amount:{currency_code:'USD',value:amount},category:'DIGITAL_GOODS'}]}],
+    purchase_units:[{reference_id:'default',invoice_id:orderId,custom_id:orderId,description:offer.name,amount:{currency_code:'USD',value:amount,breakdown:{item_total:{currency_code:'USD',value:amount}}},items:[{name:offer.name,sku:offer.id,quantity:'1',unit_amount:{currency_code:'USD',value:amount},category:'DIGITAL_GOODS'}]}],
     payment_source:{paypal:{experience_context:{brand_name:'AION AUTONOMOUS',user_action:'PAY_NOW',shipping_preference:'NO_SHIPPING',return_url:returnUrl,cancel_url:cancelUrl}}}
   })});
   const data=await parseResponse(response);
