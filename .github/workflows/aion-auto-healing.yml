@@ -24,7 +24,7 @@ concurrency:
 jobs:
   diagnose:
     # Diagnose every watched workflow completion, whether it passed or failed.
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != '' }}
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
