@@ -11,14 +11,30 @@
   "theme_color": "#65e3e6",
   "lang": "ar",
   "dir": "rtl",
-  "categories": ["productivity", "business", "education"],
+  "categories": [
+    "productivity",
+    "business",
+    "education"
+  ],
   "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icons/global-counsel.svg",
-      "sizes": "any",
+      "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any"
+    },
+    {
+      "src": "/icons/global-counsel.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/global-counsel.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ]
 }
