@@ -1,85 +1,110 @@
 name: AION Auto-Healing
+
 on:
   workflow_run:
     workflows:
-      [
-        "AION Distributed Real Work",
-        "AION Security Shield",
-        "AION Autonomous Maintenance",
-      ]
+      - "AION Distributed Real Work"
+      - "AION Security Shield"
+      - "AION Autonomous Maintenance"
     types: [completed]
   workflow_dispatch:
+
 permissions:
-  contents: write
+  contents: read
   issues: write
-  pull-requests: write
+  pull-requests: read
+
 concurrency:
   group: aion-auto-healing
   cancel-in-progress: false
+
 jobs:
-  diagnose-and-repair:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'failure' }}
+  diagnose:
+    # Always diagnose after a watched workflow completes, whether it passed or failed.
+    # Manual dispatch remains available for a deliberate diagnostic run.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != '' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout main
+        uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
+          fetch-depth: 1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: npm install
-      - name: Safe dependency repair
-        id: repair
+          cache: npm
+
+      - name: Install locked dependencies
+        id: install
         continue-on-error: true
-        run: |
-          npm audit fix --package-lock-only --ignore-scripts
-          npm install --ignore-scripts
-          npm audit --audit-level=high
-          npx hardhat compile
-          node --test
-      - name: Open repair PR when safe repair changed dependencies
-        if: ${{ steps.repair.outcome == 'success' }}
+        run: npm ci
+
+      - name: Audit dependencies
+        id: audit
+        continue-on-error: true
+        run: npm audit --audit-level=high
+
+      - name: Compile smart contracts
+        id: compile
+        continue-on-error: true
+        run: npx hardhat compile
+
+      - name: Run automated tests
+        id: tests
+        continue-on-error: true
+        run: node --test
+
+      - name: Report diagnostic result
+        if: always()
         env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if git diff --quiet -- package-lock.json; then exit 0; fi
-          BRANCH="aion-auto-heal-${{ github.run_id }}"
-          git checkout -b "$BRANCH"
-          git config user.name "AION Auto-Healing"
-          git config user.email "aion-auto-healing@users.noreply.github.com"
-          git add package-lock.json
-          git commit -m "chore: apply safe dependency security repair"
-          git push --set-upstream origin "$BRANCH"
-          gh pr create --base main --head "$BRANCH" --title "AION auto-heal: dependency security repair" --body "Automated low-risk dependency remediation. CI must pass before merge."
-      - name: Create incident issue when repair cannot complete
-        if: ${{ steps.repair.outcome == 'failure' }}
-        env:
-          GH_TOKEN: ${{ github.token }}
+          INSTALL_OUTCOME: ${{ steps.install.outcome }}
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
+          TESTS_OUTCOME: ${{ steps.tests.outcome }}
           SOURCE_WORKFLOW: ${{ github.event.workflow_run.name || github.workflow }}
+          SOURCE_CONCLUSION: ${{ github.event.workflow_run.conclusion || 'manual_dispatch' }}
           SOURCE_RUN_ID: ${{ github.event.workflow_run.id || github.run_id }}
           SOURCE_RUN_URL: ${{ github.event.workflow_run.html_url || '' }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          body_file="$RUNNER_TEMP/aion-security-incident.md"
+          body_file="$RUNNER_TEMP/aion-diagnostic-report.md"
           {
-            echo "Automated dependency repair could not complete; human review is required."
+            echo "## AION Auto-Healing diagnostic report"
             echo
-            printf 'Source workflow: `%s`\n' "${SOURCE_WORKFLOW:-unknown}"
-            printf 'Source run ID: `%s`\n' "${SOURCE_RUN_ID:-unknown}"
+            printf '%s\n' "- Trigger: ${{ github.event_name }}"
+            printf '%s\n' "- Source workflow: ${SOURCE_WORKFLOW}"
+            printf '%s\n' "- Source conclusion: ${SOURCE_CONCLUSION}"
+            printf '%s\n' "- Install dependencies: ${INSTALL_OUTCOME:-not_run}"
+            printf '%s\n' "- Dependency audit: ${AUDIT_OUTCOME:-not_run}"
+            printf '%s\n' "- Contract compilation: ${COMPILE_OUTCOME:-not_run}"
+            printf '%s\n' "- Automated tests: ${TESTS_OUTCOME:-not_run}"
+            echo
             if [[ -n "${SOURCE_RUN_URL:-}" ]]; then
               printf 'Source run: %s\n' "$SOURCE_RUN_URL"
             fi
-            printf 'Auto-Healing run: %s/%s/actions/runs/%s\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
+            printf 'Diagnostic run: %s/%s/actions/runs/%s\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
             echo
-            echo "This issue is updated in place while an incident with the same title is open, so repeated failures do not create another ticket."
+            echo "This workflow diagnoses every watched completion. It does not silently modify dependency files or merge repairs into main."
           } > "$body_file"
 
-          existing_issue="$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search 'in:title "AION automated security incident"' --limit 1 --json number --jq '.[0].number // ""')"
-          if [[ -n "$existing_issue" ]]; then
-            gh issue edit "$existing_issue" --body-file "$body_file"
-            echo "Updated existing incident issue #$existing_issue with the latest run context."
+          if [[ "$INSTALL_OUTCOME" == "failure" || "$AUDIT_OUTCOME" == "failure" || "$COMPILE_OUTCOME" == "failure" || "$TESTS_OUTCOME" == "failure" || "$SOURCE_CONCLUSION" == "failure" ]]; then
+            existing_issue="$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search 'in:title "AION automated security incident"' --limit 1 --json number --jq '.[0].number // ""')"
+            if [[ -n "$existing_issue" ]]; then
+              gh issue edit "$existing_issue" --body-file "$body_file"
+              echo "Updated existing diagnostic incident #$existing_issue."
+            else
+              gh issue create --repo "$GITHUB_REPOSITORY" --title "AION automated security incident" --body-file "$body_file"
+            fi
           else
-            gh issue create --repo "$GITHUB_REPOSITORY" --title "AION automated security incident" --body-file "$body_file"
+            echo "All diagnostic checks passed."
           fi
 
+      - name: Fail the run if a diagnostic check failed
+        if: steps.install.outcome == 'failure' || steps.audit.outcome == 'failure' || steps.compile.outcome == 'failure' || steps.tests.outcome == 'failure'
+        run: |
+          echo "One or more diagnostic checks failed. See the preceding steps and incident report."
+          exit 1
