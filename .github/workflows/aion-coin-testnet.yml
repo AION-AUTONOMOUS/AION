@@ -2,12 +2,18 @@ name: AION Coin Testnet Deployment
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
 
 jobs:
   deploy:
+    # Automatic one-shot deployment is enabled only for an explicitly marked main-branch commit.
+    # This lets the project operators trigger testnet from the merge itself without manual UI steps.
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[run-aion-coin-testnet]')
     runs-on: ubuntu-latest
     environment: aion-coin-testnet
     env:
