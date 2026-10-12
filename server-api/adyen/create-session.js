@@ -12,7 +12,7 @@ const CATALOG = {
   commercial_dispute: { title: 'Commercial dispute preparation', amount: 720000 }
 };
 
-const origin = () => (process.env.AION_PUBLIC_ORIGIN || 'https://aion-qosyss6vp-aiongenesisss-8801.vercel.app').replace(/\/$/, '');
+const origin = () => (process.env.AION_PUBLIC_ORIGIN || 'https://aion-production-fbf3.up.railway.app').replace(/\/$/, '');
 const environment = () => process.env.ADYEN_ENVIRONMENT === 'live' ? 'live' : 'test';
 const apiBase = () => environment() === 'live'
   ? 'https://checkout-live.adyen.com'
