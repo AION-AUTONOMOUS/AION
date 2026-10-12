@@ -1,4 +1,5 @@
 import { defineConfig } from "hardhat/config";
+import "@nomicfoundation/hardhat-ethers";
 import "@nomicfoundation/hardhat-ethers-chai-matchers";
 
 export default defineConfig({
