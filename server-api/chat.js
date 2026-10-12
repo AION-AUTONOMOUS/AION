@@ -46,7 +46,8 @@ export default async function handler(req, res) {
           { role: 'system', content: systemPrompt },
           { role: 'user', content: message }
         ],
-        temperature: isTeacher ? 0.2 : 0.7
+        temperature: isTeacher ? 0.2 : 0.7,
+        signal: AbortSignal.timeout(45000)
       })
     });
 
