@@ -37,10 +37,6 @@ describe("AIONCoinV2", function () {
 
     expect(await token.balanceOf(recipient.address)).to.equal(amount);
     expect(await token.totalSupply()).to.equal(ethers.parseUnits("10000000000", 18));
-    expect(await token.balanceOf(founder.address)).to.equal(
-      ethers.parseUnits("6000000000", 18).sub
-        ? ethers.parseUnits("6000000000", 18) - amount
-        : ethers.parseUnits("5999999000", 18)
-    );
+    expect(await token.balanceOf(founder.address)).to.equal(ethers.parseUnits("5999999000", 18));
   });
 });
