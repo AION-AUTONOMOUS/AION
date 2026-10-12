@@ -8,6 +8,10 @@ const urlsToCache = [
   '/chat.html',
   '/autonomy.html',
   '/teacher.html',
+  '/global-counsel.html',
+  '/global-counsel-privacy.html',
+  '/manifest-global-counsel.json',
+  '/icons/global-counsel.svg',
   '/manifest-teacher.json',
   '/teacher-ai.js',
   '/icons/teacher-192.svg',
@@ -60,6 +64,8 @@ self.addEventListener('fetch', event => {
       .catch(() => {
         return caches.match(event.request).then(cached => {
           if (cached) return cached;
+          const path = new URL(event.request.url).pathname;
+          if (path.startsWith('/global-counsel')) return caches.match('/global-counsel.html');
           return caches.match('/index.html');
         });
       })
