@@ -1,8 +1,9 @@
 import { expect } from "chai";
-import { ethers } from "hardhat";
+import { network } from "hardhat";
 
 describe("AIONCoin", function () {
   it("mints the fixed 10 billion supply to the owner", async function () {
+    const { ethers } = await network.connect();
     const [owner] = await ethers.getSigners();
     const token = await ethers.deployContract("AIONCoin", [owner.address]);
     expect(await token.totalSupply()).to.equal(ethers.parseUnits("10000000000", 18));
@@ -10,6 +11,7 @@ describe("AIONCoin", function () {
   });
 
   it("burns 1% only through transferWithBurn", async function () {
+    const { ethers } = await network.connect();
     const [owner, recipient] = await ethers.getSigners();
     const token = await ethers.deployContract("AIONCoin", [owner.address]);
     const amount = ethers.parseUnits("1000", 18);
