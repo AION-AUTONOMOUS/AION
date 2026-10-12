@@ -44,6 +44,11 @@ jobs:
         continue-on-error: true
         run: npm install --ignore-scripts --no-audit --no-fund
 
+      - name: Apply compatible dependency security fixes
+        id: dependency_fix
+        continue-on-error: true
+        run: npm audit fix --ignore-scripts --no-fund
+
       - name: Audit dependencies
         id: audit
         continue-on-error: true
