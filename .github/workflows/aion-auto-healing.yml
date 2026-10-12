@@ -1,6 +1,9 @@
 name: AION Auto-Healing
 
 on:
+  push:
+    paths:
+      - ".github/workflows/aion-auto-healing.yml"
   workflow_run:
     workflows:
       - "AION Distributed Real Work"
