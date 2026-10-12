@@ -13,10 +13,9 @@ const CATALOG = {
 };
 
 const origin = () => (process.env.AION_PUBLIC_ORIGIN || 'https://aion-production-fbf3.up.railway.app').replace(/\/$/, '');
-const environment = () => process.env.ADYEN_ENVIRONMENT === 'live' ? 'live' : 'test';
-const apiBase = () => environment() === 'live'
-  ? 'https://checkout-live.adyen.com'
-  : 'https://checkout-test.adyen.com';
+// Global Counsel checkout remains test-only until live payments receive a separate explicit launch review.
+const environment = () => 'test';
+const apiBase = () => 'https://checkout-test.adyen.com';
 
 function cors(res) {
   res.setHeader('Access-Control-Allow-Origin', origin());
