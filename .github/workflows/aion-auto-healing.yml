@@ -20,8 +20,7 @@ concurrency:
 
 jobs:
   diagnose:
-    # Always diagnose after a watched workflow completes, whether it passed or failed.
-    # Manual dispatch remains available for a deliberate diagnostic run.
+    # Diagnose every watched workflow completion, whether it passed or failed.
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != '' }}
     runs-on: ubuntu-latest
     steps:
@@ -35,12 +34,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
+          # No npm cache: this repository currently has no package-lock.json.
 
-      - name: Install locked dependencies
+      - name: Install dependencies
         id: install
         continue-on-error: true
-        run: npm ci
+        run: npm install --ignore-scripts --no-audit --no-fund
 
       - name: Audit dependencies
         id: audit
@@ -50,12 +49,12 @@ jobs:
       - name: Compile smart contracts
         id: compile
         continue-on-error: true
-        run: npx hardhat compile
+        run: npx --no-install hardhat compile
 
       - name: Run automated tests
         id: tests
         continue-on-error: true
-        run: node --test
+        run: npm test
 
       - name: Report diagnostic result
         if: always()
@@ -75,18 +74,18 @@ jobs:
           {
             echo "## AION Auto-Healing diagnostic report"
             echo
-            printf '%s\n' "- Trigger: ${{ github.event_name }}"
-            printf '%s\n' "- Source workflow: ${SOURCE_WORKFLOW}"
-            printf '%s\n' "- Source conclusion: ${SOURCE_CONCLUSION}"
-            printf '%s\n' "- Install dependencies: ${INSTALL_OUTCOME:-not_run}"
-            printf '%s\n' "- Dependency audit: ${AUDIT_OUTCOME:-not_run}"
-            printf '%s\n' "- Contract compilation: ${COMPILE_OUTCOME:-not_run}"
-            printf '%s\n' "- Automated tests: ${TESTS_OUTCOME:-not_run}"
+            printf '%s\\n' "- Trigger: ${{ github.event_name }}"
+            printf '%s\\n' "- Source workflow: ${SOURCE_WORKFLOW}"
+            printf '%s\\n' "- Source conclusion: ${SOURCE_CONCLUSION}"
+            printf '%s\\n' "- Install dependencies: ${INSTALL_OUTCOME:-not_run}"
+            printf '%s\\n' "- Dependency audit: ${AUDIT_OUTCOME:-not_run}"
+            printf '%s\\n' "- Contract compilation: ${COMPILE_OUTCOME:-not_run}"
+            printf '%s\\n' "- Automated tests: ${TESTS_OUTCOME:-not_run}"
             echo
             if [[ -n "${SOURCE_RUN_URL:-}" ]]; then
-              printf 'Source run: %s\n' "$SOURCE_RUN_URL"
+              printf 'Source run: %s\\n' "$SOURCE_RUN_URL"
             fi
-            printf 'Diagnostic run: %s/%s/actions/runs/%s\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
+            printf 'Diagnostic run: %s/%s/actions/runs/%s\\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
             echo
             echo "This workflow diagnoses every watched completion. It does not silently modify dependency files or merge repairs into main."
           } > "$body_file"
