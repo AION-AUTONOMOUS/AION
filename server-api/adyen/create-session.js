@@ -1,11 +1,15 @@
 const CATALOG = {
   simple_letter: { title: 'Simple legal letter', amount: 400 },
   evidence_timeline: { title: 'Evidence and timeline organizer', amount: 500 },
-  family_matter: { title: 'Family matter preparation', amount: 700 },
+  family_matter: { title: 'Family matter preparation (starting price)', amount: 53333 },
+  legal_consultation: { title: 'Initial legal consultation', amount: 5333 },
+  divorce_filing: { title: 'Divorce or khula filing draft preparation', amount: 133333 },
   defence_draft: { title: 'Defence or response draft', amount: 900 },
-  company_summary: { title: 'Business legal issue summary', amount: 4900 },
-  contract_review: { title: 'Contract or policy checklist', amount: 9900 },
-  commercial_dispute: { title: 'Commercial dispute preparation', amount: 24900 }
+  complex_individual: { title: 'Complex individual matter', amount: 186667 },
+  company_summary: { title: 'Business legal issue summary', amount: 266667 },
+  contract_review: { title: 'Contract or policy checklist', amount: 400000 },
+  contract_drafting: { title: 'Contract or memorandum drafting (starting price)', amount: 533333 },
+  commercial_dispute: { title: 'Commercial dispute preparation', amount: 720000 }
 };
 
 const origin = () => (process.env.AION_PUBLIC_ORIGIN || 'https://aion-qosyss6vp-aiongenesisss-8801.vercel.app').replace(/\/$/, '');
