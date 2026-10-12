@@ -7,6 +7,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: aion-coin-testnet
+    env:
+      BSC_TESTNET_RPC_URL: ${{ secrets.BSC_TESTNET_RPC_URL || 'https://data-seed-prebsc-1-s1.bnbchain.org:8545' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,7 +19,6 @@ jobs:
       - run: npm run test:coin
       - name: Validate testnet deployment secrets
         env:
-          BSC_TESTNET_RPC_URL: ${{ secrets.BSC_TESTNET_RPC_URL }}
           DEPLOYER_PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
           AION_FOUNDER_TREASURY: ${{ secrets.AION_FOUNDER_TREASURY }}
           AION_COMMUNITY_TREASURY: ${{ secrets.AION_COMMUNITY_TREASURY }}
@@ -27,7 +28,7 @@ jobs:
           AION_STRATEGIC_TREASURY: ${{ secrets.AION_STRATEGIC_TREASURY }}
         run: |
           set -euo pipefail
-          for name in BSC_TESTNET_RPC_URL DEPLOYER_PRIVATE_KEY \
+          for name in DEPLOYER_PRIVATE_KEY \
             AION_FOUNDER_TREASURY AION_COMMUNITY_TREASURY \
             AION_AI_REWARDS_TREASURY AION_DEVELOPMENT_TREASURY \
             AION_DIGITAL_RESERVE AION_STRATEGIC_TREASURY; do
@@ -37,10 +38,14 @@ jobs:
             fi
           done
           echo "Required testnet deployment secrets are present."
+          if [ -z "${BSC_TESTNET_RPC_URL:-}" ]; then
+            echo "::error::Testnet RPC URL is empty."
+            exit 1
+          fi
+          echo "Testnet RPC endpoint is configured."
 
       - name: Deploy AION Coin to BNB Testnet
         env:
-          BSC_TESTNET_RPC_URL: ${{ secrets.BSC_TESTNET_RPC_URL }}
           DEPLOYER_PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
           AION_FOUNDER_TREASURY: ${{ secrets.AION_FOUNDER_TREASURY }}
           AION_COMMUNITY_TREASURY: ${{ secrets.AION_COMMUNITY_TREASURY }}
