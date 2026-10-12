@@ -1,0 +1,24 @@
+{
+  "id": "/global-counsel.html",
+  "name": "GLOBAL COUNSEL — مساعد قانوني رقمي",
+  "short_name": "GLOBAL COUNSEL",
+  "description": "مساعد رقمي للمعلومات القانونية الأولية وتنظيم الوقائع والأدلة والأسئلة للمراجعة مع مختص.",
+  "start_url": "/global-counsel.html?source=installed-app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#071426",
+  "theme_color": "#65e3e6",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["productivity", "business", "education"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/icons/global-counsel.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
