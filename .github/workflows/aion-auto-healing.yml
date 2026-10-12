@@ -77,18 +77,18 @@ jobs:
           {
             echo "## AION Auto-Healing diagnostic report"
             echo
-            printf '%s\\n' "- Trigger: ${{ github.event_name }}"
-            printf '%s\\n' "- Source workflow: ${SOURCE_WORKFLOW}"
-            printf '%s\\n' "- Source conclusion: ${SOURCE_CONCLUSION}"
-            printf '%s\\n' "- Install dependencies: ${INSTALL_OUTCOME:-not_run}"
-            printf '%s\\n' "- Dependency audit: ${AUDIT_OUTCOME:-not_run}"
-            printf '%s\\n' "- Contract compilation: ${COMPILE_OUTCOME:-not_run}"
-            printf '%s\\n' "- Automated tests: ${TESTS_OUTCOME:-not_run}"
+            printf '%s\n' "- Trigger: ${{ github.event_name }}"
+            printf '%s\n' "- Source workflow: ${SOURCE_WORKFLOW}"
+            printf '%s\n' "- Source conclusion: ${SOURCE_CONCLUSION}"
+            printf '%s\n' "- Install dependencies: ${INSTALL_OUTCOME:-not_run}"
+            printf '%s\n' "- Dependency audit: ${AUDIT_OUTCOME:-not_run}"
+            printf '%s\n' "- Contract compilation: ${COMPILE_OUTCOME:-not_run}"
+            printf '%s\n' "- Automated tests: ${TESTS_OUTCOME:-not_run}"
             echo
             if [[ -n "${SOURCE_RUN_URL:-}" ]]; then
-              printf 'Source run: %s\\n' "$SOURCE_RUN_URL"
+              printf 'Source run: %s\n' "$SOURCE_RUN_URL"
             fi
-            printf 'Diagnostic run: %s/%s/actions/runs/%s\\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
+            printf 'Diagnostic run: %s/%s/actions/runs/%s\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
             echo
             echo "This workflow diagnoses every watched completion. It does not silently modify dependency files or merge repairs into main."
           } > "$body_file"
