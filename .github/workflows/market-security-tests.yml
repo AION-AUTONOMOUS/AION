@@ -1,0 +1,29 @@
+name: Market Security Boundary Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "market-core/**"
+      - "server-api/market.js"
+      - "tests/market-*.test.js"
+      - "tests/server-api-market.test.js"
+      - ".github/workflows/market-security-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  market-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Test market schemas, read-only gateway, and API security boundaries
+        run: node --test tests/market-*.test.js tests/server-api-market.test.js
