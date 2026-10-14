@@ -1,0 +1,31 @@
+name: AION Coin CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "contracts/**"
+      - "test/**"
+      - "scripts/deploy-aion-coin.js"
+      - "hardhat.config.js"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/aion-coin-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  coin-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run compile:coin
+      - run: npm run test:coin
