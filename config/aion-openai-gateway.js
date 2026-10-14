@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 
-export const OPENAI_GATEWAY_VERSION = '1.0.0';
+export const OPENAI_GATEWAY_VERSION = '1.0.1';
 export const OPENAI_DEFAULT_MODEL = process.env.OPENAI_MODEL || 'gpt-5.6-sol';
 
 const MODEL_BY_MODE = Object.freeze({
@@ -27,15 +27,21 @@ export function selectOpenAIModel(mode = 'frontier') {
 }
 
 export function openAIGatewayHealth() {
+  const configured = openAIConfigured();
   return {
     version: OPENAI_GATEWAY_VERSION,
-    status: openAIConfigured() ? 'configured' : 'awaiting-secret',
+    status: configured ? 'configured-not-probed' : 'awaiting-secret',
     provider: 'OpenAI',
     api: 'Responses API',
     defaultModel: OPENAI_DEFAULT_MODEL,
     modes: MODES,
     multimodal: true,
-    toolReady: ['functions', 'web-search', 'file-search', 'computer-use'],
+    // Do not advertise capabilities that are not wired to executable adapters.
+    toolExecution: {
+      status: 'not-integrated',
+      registeredTools: 0,
+      note: 'The current gateway sends prompts and returns model text; executable tool calling is not yet connected.'
+    },
     durableMemory: 'AION stack store',
     evaluation: 'AION Frontier Intelligence Lab',
     fakeCompletion: false,
