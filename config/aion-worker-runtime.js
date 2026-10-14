@@ -79,7 +79,9 @@ async function executeTask(task) {
 
 async function claimDurableJob() {
   if (!hasRailwayRedis()) return null;
-  const id = await railwayRedisCommand(['BLMOVE', PENDING, PROCESSING, 'LEFT', 'RIGHT', '1']);
+  // LMOVE is atomic and non-blocking. Avoid concurrent blocking BLMOVE calls on
+  // the shared Redis connection, which can serialize and time out under worker concurrency.
+  const id = await railwayRedisCommand(['LMOVE', PENDING, PROCESSING, 'LEFT', 'RIGHT']);
   if (!id) return null;
   const raw = await railwayRedisCommand(['HGETALL', JOB(id)]);
   const meta = raw && !Array.isArray(raw) ? raw : {};

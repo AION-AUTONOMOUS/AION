@@ -73,6 +73,8 @@ export async function railwayRedisCommand(command) {
     }
     case 'HGETALL':
       return client.hGetAll(rawArgs[0]);
+    case 'LMOVE':
+      return client.lMove(rawArgs[0], rawArgs[1], rawArgs[2], rawArgs[3]);
     case 'BLMOVE': {
       const timeout = Math.max(1, Number(rawArgs[5]) || 1);
       return client.blMove(rawArgs[0], rawArgs[1], rawArgs[2], rawArgs[3], timeout);
@@ -81,7 +83,17 @@ export async function railwayRedisCommand(command) {
       throw new Error('Unsupported Railway Redis command: ' + name);
   }
   };
-  return await Promise.race([run(), new Promise((_, reject) => setTimeout(() => reject(new Error('Redis command timeout')), 3000))]);
+  let timer;
+  try {
+    return await Promise.race([
+      run(),
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error('Redis command timeout')), 3000);
+      })
+    ]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
 }
 
 export async function railwayRedisPing() {
