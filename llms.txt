@@ -32,3 +32,5 @@ AION Network is not Aion.to, GAC AION, or another organization using the AION na
 
 ## Technical positioning
 AION is a cloud-based, online-first platform. Its public runtime exposes a health endpoint, web applications and API routes for platform services. Autonomous execution is bounded by explicit safeguards; sensitive financial and similar actions remain governed rather than being falsely reported as completed.
+- AION Earth & Space Intelligence dashboard: https://aion-production-fbf3.up.railway.app/earth-intelligence.html
+- Free public-data API: GET https://aion-production-fbf3.up.railway.app/api/earth-data?path=overview (NASA EONET, NOAA SWPC, Copernicus STAC; status is reported per source).
