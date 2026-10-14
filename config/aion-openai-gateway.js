@@ -133,7 +133,8 @@ export function openAIGatewayHealth() {
       registeredTools: null,
       registeredToolsSource: 'worker-supplied-approved-registry',
       maxToolCallsPerTask: MAX_TOOL_CALLS,
-      note: 'Tool calling is enabled only when a worker supplies the approved read-only registry and executor; the current registry is reported by the worker at runtime, not hard-coded here.'
+      internalActionPolicy: { maxFollowUpsPerRootTask: 1, maxFollowUpDepth: 1, maxActiveTasks: 50, externalActionsEnabled: false },
+      note: 'Workers receive the approved registry at runtime. Read-only tools are default; one bounded internal follow-up action is exposed only when the worker explicitly enables internal actions.'
     },
     durableMemory: 'AION stack store',
     evaluation: 'AION Frontier Intelligence Lab',
@@ -167,7 +168,7 @@ export async function runOpenAI(input = {}) {
     input.tools.length > 0 &&
     typeof input.toolExecutor === 'function';
   const tools = toolCallingEnabled
-    ? input.tools.filter(tool => tool?.access === 'read-only' && typeof tool.name === 'string').slice(0, 20)
+    ? input.tools.filter(tool => typeof tool?.name === 'string' && (tool.access === 'read-only' || (input.enableInternalActions === true && tool.access === 'internal-write'))).slice(0, 20)
     : [];
   const inputItems = [{ role: 'user', content: prompt }];
   const toolEvidence = [];
