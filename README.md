@@ -1,80 +1,55 @@
+# AION AUTONOMOUS GLOBAL NETWORK
 
-# AION AUTONOMOUS
-### The AI Company That Never Sleeps
+**The Eternal Intelligence for an Endless Network**  
+**الذكاء الأبدي لشبكة لا تنتهي**
+
+AION is an online-first, cloud-based initiative developing AI-assisted digital products, research workflows, and autonomous software infrastructure for a global audience. AION operates digitally; this repository is the public engineering and project record.
+
+- **Website:** https://aion-production-fbf3.up.railway.app/
+- **GitHub:** https://github.com/AION-AUTONOMOUS/AION
+- **Contact:** aion.genesisss@gmail.com
+- **Operating principle:** لا نطارد الضجيج؛ نطارد القيمة المثبتة.  
+  *We do not chase noise; we pursue demonstrated value.*
+
+## Global focus areas
+
+### 1. AION Coin, digital assets, and digital documents
+Research and development of token and digital-asset infrastructure, document workflows, and treasury concepts. **The coin and treasury are not represented here as live, purchasable, licensed, or return-generating products.** Testnet deployment and payment readiness require verified configuration and testing. No customer funds should be sent to an AION wallet.
+
+### 2. Global Counsel
+A developing global legal-information and research concept. Jurisdiction, applicable date, and source evidence matter. It is not a substitute for a qualified lawyer, and confidential case uploads or live paid legal workflows must not be used unless the relevant privacy, security, payment, and legal safeguards are verified.
+
+### 3. Teacher and Academy
+Digital learning and AI-assisted education projects. Availability and response quality depend on the live application and configured service providers; do not assume every feature is operational in every environment.
+
+### 4. Earth, disaster, climate, and space intelligence
+Research and digital briefing concepts for earth observation, disaster awareness, climate-related signals, and space-weather/satellite topics. Specific data coverage, delivery times, and operational capabilities must be confirmed for each engagement.
+
+### 5. Autonomous commerce, market intelligence, and distressed assets
+Evidence-led research into demand signals, partnership pathways, and potential distressed-asset opportunities. Research findings are leads for diligence—not proof of a customer, contract, acquisition, or revenue.
+
+## Architecture and operating safeguards
+
+The repository describes an intended autonomous stack including an Intelligence layer, Control Plane, agent/task orchestration, evidence records, product workflows, and guarded financial operations. It also models 20 organizational departments and 10,000 deterministic software-agent roles. **Those role definitions do not mean 10,000 independent agents are continuously running or that every department is fully operational.** Actual execution depends on configured workers, provider access, available API credits, permissions, and passing tests.
+
+AION follows these safeguards:
+
+- No task is considered complete merely because it was queued.
+- Do not invent customers, partners, contracts, licensing, capabilities, results, or revenue.
+- Count a payment only after authoritative payment-provider confirmation and matching order evidence.
+- Do not enable live financial collection, custody, deposits, or token sales without the required legal, licensing, provider, security, and refund readiness.
+- No paid advertising or third-party spending without explicit approval.
+- Use public information responsibly; no bulk or unsolicited mass outreach.
+
+## Current project status
+
+This repository contains active development work. A successful software deployment does not, by itself, prove that every product is ready for customers, that search engines have indexed the site, or that any revenue has been earned. Product readiness, payment status, and service availability must be checked against current operational evidence.
+
+## Partnership and business inquiries
+
+Organizations interested in discussing a potential research collaboration, digital product pilot, or integration can contact **aion.genesisss@gmail.com**. Please describe the use case, geography, required evidence/data, and expected outcome. Any collaboration remains exploratory until explicitly agreed by both parties.
 
 ---
 
-## About
-AION AUTONOMOUS is a global AI company powered by real AI agents working 24/7.
-Built by a human and an AI partner.
-
----
-
-## What We Do
-- AI Workforce (10+ real AI agents)
-- Arabic-first AI solutions
-- Global market expansion
-- AI-powered business services
-
----
-
-## Projects
-- Repository-name - Main codebase
-- AI Workforce v4.0 - 10 real AI agents
-- Market Analysis - Global market research
-
----
-
-## Tech Stack
-- Groq API
-- Python 3.10+
-- GitHub
-
----
-
-## Status
-- v4.0: 10 agents working
-- Real AI: Yes
-- Token: Planned
-- Company: Electronic entity on GitHub
-
----
-
-## Contact
-- Email: aion.genesisss@gmail.com
-- GitHub: github.com/AION-AUTONOMOUS
-
----
-
-Update 2026-09
-AION AUTONOMOUS 2026
-
-
-## Autonomous Delegation Policy
-
-AION operates under an explicit delegation boundary:
-- **Autonomous by default:** engineering, testing, research, DevOps, operations, product, content, growth, support, robotics when a real executor is configured, and other ordinary non-financial work.
-- **Human approval required:** movement of money and sensitive asset/tokenization/custody actions.
-- **No fake execution:** a missing provider or external adapter produces a failure/blocked result rather than a simulated success.
-- Political targeting remains disabled as an explicit governance boundary.
-
-## AION Autonomous Stack — 2026
-
-AION now exposes a unified Autonomous Stack at `/autonomy.html` and `/api/autonomy`.
-
-### Integrated layers
-- **Digital Money:** guarded internal AION-CREDIT ledger and payment-intent preparation; no autonomous external money movement.
-- **Tokenized Assets:** EVM asset registry plus `AIONAssetRegistry.sol`; deployment and asset actions remain explicitly governed.
-- **AI Agents:** 20 departments and 10,000 deterministic software-agent roles coordinated by the Control Plane.
-- **Autonomous Organization:** goal decomposition, delegated tasks, quality/security gates, audit state and human approval gates.
-- **AI + Finance:** financial analysis and preparation without autonomous transfer.
-- **Robotics:** registered device/robot identities with an optional real executor adapter; command execution is guarded.
-- **Scientific Research:** research planning, evidence synthesis and reproducible task delegation.
-- **Frontier Intelligence:** a research track toward AGI/superintelligence; AION does **not** claim that AGI or superintelligence has been achieved.
-
-### Execution invariant
-A task is never marked `completed` merely because it was queued. The Worker Runtime must call a real executor; provider/adaptor failures become `failed`. Sensitive work remains behind the human approval gate.
-
-
-### Railway runtime migration
-The Railway service is the production runtime target for the AION core; Vercel remains a non-destructive fallback until route parity and smoke tests are verified.
+**AION AUTONOMOUS GLOBAL NETWORK**  
+Digital-first. Evidence-led. Global by design.
