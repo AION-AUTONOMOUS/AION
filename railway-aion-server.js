@@ -6,6 +6,7 @@ import { listAgents, listServices } from "./apps/aion-mobile-service/src/agents.
 import { controlPlaneHealth } from "./config/aion-control-plane.js";
 import { stackHealth, createAutonomousPlan, getAutonomousPlan, listAutonomousPlans } from "./config/aion-autonomous-stack.js";
 import { processBatch, workerRuntimeStatus } from "./config/aion-worker-runtime.js";
+import { runExecutiveSupervisorCycle } from "./config/aion-executive-supervisor.js";
 
 const port = Number(process.env.PORT || 8787);
 const serviceName = "AION Autonomous Core";
@@ -282,6 +283,23 @@ const runWorkerTick = async () => {
   finally { workerTickBusy = false; }
 };
 const workerInterval = setInterval(runWorkerTick, WORKER_TICK_MS);
+const SUPERVISOR_TICK_MS = Math.max(60_000, Number(process.env.AION_EXECUTIVE_SUPERVISOR_TICK_MS || 60 * 60 * 1000));
+let supervisorTickBusy = false;
+const runSupervisorTick = async () => {
+  if (supervisorTickBusy) return;
+  supervisorTickBusy = true;
+  try {
+    const result = await runExecutiveSupervisorCycle();
+    if (result.status !== "skipped") console.log("AION executive supervisor:", JSON.stringify(result));
+  } catch (error) {
+    console.error("AION executive supervisor failed:", error?.message || error);
+  } finally {
+    supervisorTickBusy = false;
+  }
+};
+const supervisorInterval = setInterval(runSupervisorTick, SUPERVISOR_TICK_MS);
+supervisorInterval.ref?.();
+void runSupervisorTick();
 // Keep the worker runtime referenced so the Node process cannot exit naturally.
 // Railway must be able to keep this service alive even while the durable queue is idle.
 workerInterval.ref?.();
