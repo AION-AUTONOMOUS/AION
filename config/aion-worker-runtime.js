@@ -39,8 +39,9 @@ async function executeTask(task) {
     mode,
     model: selectOpenAIModel(mode),
     enableTools: true,
+    enableInternalActions: true,
     tools: listRegisteredTools(),
-    toolExecutor: executeRegisteredTool,
+    toolExecutor: (name, args) => executeRegisteredTool(name, args, { parentTask: task }),
     instructions:
       'You are an AION production worker. Execute the assigned analytical/software task using the information available to you. Distinguish evidence from assumptions. Never claim an external action occurred unless an AION execution adapter confirms it. Return a concise result with findings, actions proposed or performed, evidence, and next step.'
   });

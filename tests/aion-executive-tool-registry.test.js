@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { executeRegisteredTool, listRegisteredTools } from '../config/aion-executive-tool-registry.js';
+import { dispatchTask } from '../config/aion-workers.js';
+import { getTask, updateTask } from '../config/aion-ops-store.js';
 
 test('executive registry exposes bounded read-only operational and business tools', () => {
   const tools = listRegisteredTools();
@@ -11,10 +13,12 @@ test('executive registry exposes bounded read-only operational and business tool
     'aion.revenue.orders.list',
     'aion.revenue.records.list',
     'aion.runtime.status',
+    'aion.tasks.create_followup',
     'aion.tasks.get',
     'aion.tasks.list'
   ]);
-  assert.ok(tools.every(tool => tool.access === 'read-only'));
+  assert.ok(tools.every(tool => ['read-only', 'internal-write'].includes(tool.access)));
+  assert.equal(tools.filter(tool => tool.access === 'internal-write').map(tool => tool.name).join(','), 'aion.tasks.create_followup');
   assert.ok(tools.every(tool => tool.inputSchema.additionalProperties === false));
 });
 
@@ -54,6 +58,45 @@ test('lead list does not expose direct personal contact fields', async () => {
     assert.equal(Object.hasOwn(lead, 'name'), false);
     assert.equal(Object.hasOwn(lead, 'request'), false);
   }
+});
+
+
+test('executive can create one bounded internal follow-up but cannot fan out recursively', async () => {
+  const created = await dispatchTask({
+    type: 'research',
+    department: 'research',
+    text: 'Research public market fit for an AION digital intelligence offer.'
+  });
+  assert.equal(created.action, 'queued_for_worker');
+  const parentTask = await updateTask(created.task.id, { status: 'running' });
+
+  const result = await executeRegisteredTool('aion.tasks.create_followup', {
+    department: 'research',
+    title: 'Verify the highest-fit prospect',
+    text: 'Compare the top public prospect with the existing AION offer and list evidence gaps.',
+    priority: 'normal'
+  }, { parentTask });
+
+  assert.equal(result.access, 'internal-write');
+  assert.equal(result.output.parentTaskId, parentTask.id);
+  assert.equal(result.output.action, 'queued_for_worker');
+  assert.ok(result.output.taskId);
+  assert.equal(result.evidence.verified, true);
+
+  await assert.rejects(() => executeRegisteredTool('aion.tasks.create_followup', {
+    department: 'research',
+    title: 'Second follow-up',
+    text: 'Create a second follow-up task for the same parent task.',
+    priority: 'low'
+  }, { parentTask }), /already created its one allowed follow-up/);
+
+  const childTask = await getTask(result.output.taskId);
+  await assert.rejects(() => executeRegisteredTool('aion.tasks.create_followup', {
+    department: 'research',
+    title: 'Recursive follow-up',
+    text: 'Try to create a recursive child task.',
+    priority: 'low'
+  }, { parentTask: childTask }), /depth limit reached/);
 });
 
 test('tool rejects unknown names and unexpected input fields', async () => {
