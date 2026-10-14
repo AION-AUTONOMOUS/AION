@@ -6,13 +6,17 @@ import {
   selectOpenAIModel
 } from '../config/aion-openai-gateway.js';
 
-test('OpenAI gateway exposes a safe health contract without requiring a secret', () => {
-  assert.equal(OPENAI_GATEWAY_VERSION, '1.0.0');
+test('OpenAI gateway exposes a safe and truthful health contract without requiring a secret', () => {
+  assert.equal(OPENAI_GATEWAY_VERSION, '1.0.1');
   const health = openAIGatewayHealth();
   assert.equal(health.provider, 'OpenAI');
   assert.equal(health.fakeCompletion, false);
   assert.equal(health.politicalTargeting, false);
   assert.equal(health.externalMoney, 'owner-approved only');
+  assert.equal(health.toolExecution.status, 'not-integrated');
+  assert.equal(health.toolExecution.registeredTools, 0);
+  assert.match(health.toolExecution.note, /not yet connected/);
+  assert.equal(health.status, process.env.OPENAI_API_KEY ? 'configured-not-probed' : 'awaiting-secret');
 });
 
 test('OpenAI gateway routes intelligence modes to configured models', () => {
