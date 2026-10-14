@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<meta name="description" content="لوحة AION العالمية لبيانات الأرض والكوارث والطقس الفضائي وفهرسة الأقمار الصناعية من مصادر عامة مجانية.">
+<link rel="canonical" href="https://aion-production-fbf3.up.railway.app/earth-intelligence.html">
+<meta name="theme-color" content="#061225">
+<title>AION Earth & Space Intelligence | بيانات الأرض والفضاء</title>
+<style>
+:root{color-scheme:dark;--bg:#061225;--panel:#0b1d36;--line:#23466b;--cyan:#42d9ff;--gold:#f7c84a;--muted:#a9bbd2;--green:#42d392;--red:#ff7777}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#163c64 0,transparent 42%),var(--bg);color:#f4f8ff;font-family:Segoe UI,Arial,Tahoma,sans-serif;line-height:1.65}
+a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1160px;margin:auto;padding:22px}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 18px;border:1px solid var(--line);border-radius:16px;background:#08172bdc}
+.brand{font-weight:900;letter-spacing:2px;color:white}.brand small{display:block;font-size:10px;letter-spacing:3px;color:var(--cyan)}
+.navlinks{display:flex;gap:14px;flex-wrap:wrap;font-size:13px}
+.hero{padding:38px 8px 24px;text-align:center}.tag{display:inline-block;border:1px solid #267797;background:#0a2c46;padding:5px 14px;border-radius:30px;color:var(--cyan);font-size:12px;font-weight:800}
+h1{font-size:clamp(28px,5vw,48px);line-height:1.2;margin:18px 0 12px}.hero p{max-width:780px;margin:0 auto;color:var(--muted)}
+.controls{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:22px 0}.btn{border:0;border-radius:10px;padding:12px 20px;background:var(--gold);color:#071426;font-weight:900;cursor:pointer;font:inherit}.btn:disabled{opacity:.55;cursor:wait}.badge{border:1px solid var(--line);padding:7px 12px;border-radius:999px;color:var(--muted);font-size:12px}.badge.ok{border-color:#236a52;color:var(--green)}.badge.partial{border-color:#816a29;color:var(--gold)}.badge.bad{border-color:#7d373e;color:var(--red)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{min-width:0;background:linear-gradient(160deg,#0e2441,#09172a);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 14px 44px #0002}.card h2{font-size:18px;margin:0 0 4px}.provider{font-size:11px;color:var(--cyan);margin-bottom:14px}.kpi{font-size:30px;font-weight:900;color:var(--gold);margin:12px 0}.small{font-size:12px;color:var(--muted)}.items{display:grid;gap:10px;margin-top:12px}.item{padding:12px;background:#061529;border:1px solid #1c3857;border-radius:12px;overflow-wrap:anywhere}.item strong{display:block;margin-bottom:3px}.item .meta{font-size:11px;color:var(--muted)}.empty{padding:15px;border:1px dashed #31506f;border-radius:12px;color:var(--muted);font-size:13px}
+.wide{margin-top:15px}.sources{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.source{background:#08172b;border:1px solid var(--line);padding:14px;border-radius:12px}.source b{display:block;margin-bottom:5px}.notice{margin-top:16px;border-inline-start:3px solid var(--gold);background:#191e28;padding:14px;color:#d7dfec;font-size:12px}.footer{text-align:center;color:var(--muted);padding:28px 8px;font-size:12px}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.sources{grid-template-columns:1fr}.wrap{padding:12px}.hero{padding-top:28px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="nav">
+<a href="/" class="brand">AION AUTONOMOUS<small>GLOBAL NETWORK</small></a>
+<nav class="navlinks"><a href="/">الرئيسية</a><a href="/space.html">قسم الفضاء</a><a href="/climate.html">المناخ</a><a href="/intelligence.html">الذكاء والتحليل</a><a href="/teacher.html">المعلم</a><a href="/academy.html">الأكاديمية</a></nav>
+</header>
+<section class="hero">
+<span class="tag">GLOBAL PUBLIC-DATA CONNECTOR</span>
+<h1>ذكاء الأرض والفضاء<br><span style="color:var(--cyan)">AION Earth & Space Intelligence</span></h1>
+<p>لوحة مباشرة تستدعي بيانات عامة من ناسا وNOAA وكوبرنيكوس، وتعرض وقت الاسترجاع وحالة كل مصدر. لا تحتاج هذه اللوحة مفاتيح سرية أو اشتراكًا مدفوعًا في واجهات البيانات العامة.</p>
+<div class="controls"><button id="refresh" class="btn" type="button">تحديث البيانات الآن</button><span id="overall" class="badge">جارٍ التحقق من المصادر…</span><span id="updated" class="small"></span></div>
+</section>
+<section class="grid" aria-live="polite">
+<article class="card"><h2>الأحداث الطبيعية والكوارث</h2><div class="provider">NASA EONET · ناسا</div><div id="events-kpi" class="kpi">—</div><div class="small">أحداث مفتوحة مسجلة لدى المصدر خلال آخر 30 يومًا</div><div id="events" class="items"><div class="empty">جارٍ تحميل البيانات…</div></div></article>
+<article class="card"><h2>الطقس الفضائي</h2><div class="provider">NOAA SWPC · مركز الطقس الفضائي</div><div id="weather-kpi" class="kpi">—</div><div class="small">سرعة الرياح الشمسية بالكيلومتر في الثانية عندما يوفر المصدر القياس</div><div id="weather" class="items"><div class="empty">جارٍ تحميل البيانات…</div></div></article>
+<article class="card"><h2>فهرس بيانات الأقمار</h2><div class="provider">Copernicus Data Space · STAC</div><div id="catalog-kpi" class="kpi">—</div><div class="small">سجلات فهرسة ومعلومات وصفية؛ ليست وعدًا بتنزيل كل صورة أو شراء بيانات تجارية</div><div id="catalog" class="items"><div class="empty">جارٍ تحميل البيانات…</div></div></article>
+</section>
+<section class="card wide"><h2>مصادر البيانات وحالتها</h2><p class="small">تُظهر الحالة ما أعاده الاتصال الأخير فقط، وليس ضمانًا لتوفر دائم.</p><div id="source-status" class="sources"><div class="empty">جارٍ فحص المصدر…</div></div></section>
+<div class="notice">مهم: هذا ربط برمجي عبر الإنترنت بواجهات بيانات عامة، وليس اتصالًا لاسلكيًا مباشرًا بقمر صناعي، ولا يشغّل أو يوجّه أقمارًا. قد تختلف تغطية البيانات وحداثتها وشروط إعادة استخدامها حسب المصدر. لم يتم تفعيل دفع أو بيع أو شراء بيانات من هذه اللوحة.</div>
+<footer class="footer">AION AUTONOMOUS GLOBAL NETWORK · Digital-first · Evidence-led · Global by design<br>الذكاء الأبدي لشبكة لا تنتهي</footer>
+</div>
+<script>
+const byId = id => document.getElementById(id);
+const escapeHtml = value => String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const fmtDate = value => { if (!value) return 'وقت القياس غير متوفر'; const d = new Date(value); return Number.isNaN(d.valueOf()) ? escapeHtml(value) : d.toLocaleString(); };
+function empty(text){return '<div class="empty">'+escapeHtml(text)+'</div>';}
+function sourceCard(key, result){
+  const labels={events:'NASA EONET',spaceWeather:'NOAA SWPC',satelliteCatalog:'Copernicus STAC'};
+  const good=result && result.status==='ok';
+  const details=result && result.status==='ok' ? 'استجابة ناجحة · '+fmtDate(result.retrievedAt) : 'غير متاح في الفحص الأخير · '+(result&&result.error?result.error:'لم تصل استجابة');
+  return '<div class="source"><b>'+labels[key]+'</b><span class="badge '+(good?'ok':'bad')+'">'+(good?'متصل في آخر طلب':'غير متاح')+'</span><div class="small" style="margin-top:8px">'+escapeHtml(details)+'</div></div>';
+}
+function renderOverview(data){
+  const sources=data.sources||{};
+  byId('overall').className='badge '+(data.status==='ok'?'ok':data.status==='partial'?'partial':'bad');
+  byId('overall').textContent=data.status==='ok'?'المصادر الثلاثة استجابت':data.status==='partial'?'اتصال جزئي':'تعذر الاتصال بالمصادر';
+  byId('updated').textContent='آخر فحص: '+fmtDate(data.generatedAt);
+  const ev=sources.events;
+  byId('events-kpi').textContent=ev&&ev.status==='ok'?String(ev.count):'—';
+  byId('events').innerHTML=ev&&ev.status==='ok'&&ev.events.length?ev.events.slice(0,8).map(item=>'<div class="item"><strong>'+escapeHtml(item.title)+'</strong><div class="meta">'+escapeHtml((item.categories||[]).join(' · ')||'حدث طبيعي')+' · '+escapeHtml(item.latestDate||'تاريخ غير متوفر')+'</div>'+(item.sourceUrl?'<a target="_blank" rel="noopener noreferrer" href="'+escapeHtml(item.sourceUrl)+'">المصدر الأصلي ↗</a>':'')+'</div>').join(''):empty(ev&&ev.error?'المصدر غير متاح: '+ev.error:'لا توجد أحداث في النتيجة الحالية.');
+  const w=sources.spaceWeather;
+  const measurement=w&&w.status==='ok'&&w.measurements?w.measurements[0]:null;
+  byId('weather-kpi').textContent=measurement&&measurement.proton_speed!=null?Number(measurement.proton_speed).toLocaleString()+' km/s':'—';
+  byId('weather').innerHTML=measurement?'<div class="item"><strong>قياس سرعة الرياح الشمسية</strong><div class="meta">'+escapeHtml(fmtDate(measurement.time_tag))+'</div><div class="small">المصدر: NOAA SWPC</div></div>':empty(w&&w.error?'المصدر غير متاح: '+w.error:'لا يوجد قياس متاح في الرد الحالي.');
+  const c=sources.satelliteCatalog;
+  byId('catalog-kpi').textContent=c&&c.status==='ok'?String(c.count):'—';
+  byId('catalog').innerHTML=c&&c.status==='ok'&&c.items.length?c.items.slice(0,8).map(item=>'<div class="item"><strong>'+escapeHtml(item.title||item.id)+'</strong><div class="meta">'+escapeHtml(item.platform||'المنصة غير مذكورة')+' · '+escapeHtml(item.acquiredAt||'التاريخ غير متوفر')+'</div>'+(item.itemUrl?'<a target="_blank" rel="noopener noreferrer" href="'+escapeHtml(item.itemUrl)+'">سجل الفهرس ↗</a>':'')+'</div>').join(''):empty(c&&c.error?'المصدر غير متاح: '+c.error:'لم تُرجع نتيجة فهرسة في نافذة التاريخ الحالية.');
+  byId('source-status').innerHTML=['events','spaceWeather','satelliteCatalog'].map(key=>sourceCard(key,sources[key]||{status:'unavailable',error:'لم يرد المصدر'})).join('');
+}
+async function refreshData(){
+  const button=byId('refresh');
+  button.disabled=true;button.textContent='جارٍ تحديث البيانات…';
+  byId('overall').className='badge';byId('overall').textContent='جارٍ الاتصال بالمصادر…';
+  try{
+    const response=await fetch('/api/earth-data?path=overview',{cache:'no-store',headers:{Accept:'application/json'}});
+    const data=await response.json();
+    if(!response.ok&&!data.sources)throw new Error(data.error||'تعذر استرجاع البيانات');
+    renderOverview(data);
+  }catch(error){
+    byId('overall').className='badge bad';byId('overall').textContent='تعذر الاتصال';
+    byId('updated').textContent=String(error&&error.message||error);
+    ['events','weather','catalog','source-status'].forEach(id=>byId(id).innerHTML=empty('لم تصل بيانات من الخادم. تحقق من نشر المسار /api/earth-data.'));
+  }finally{button.disabled=false;button.textContent='تحديث البيانات الآن';}
+}
+byId('refresh').addEventListener('click',refreshData);
+refreshData();
+</script>
+</body>
+</html>
