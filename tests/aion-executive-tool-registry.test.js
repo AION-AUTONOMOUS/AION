@@ -34,7 +34,8 @@ test('revenue dashboard exposes offer and confirmed-revenue metrics', async () =
   assert.equal(typeof result.output.metrics.totalOrders, 'number');
   assert.equal(typeof result.output.metrics.paidOrders, 'number');
   assert.equal(typeof result.output.metrics.recognizedRevenue, 'number');
-  assert.equal(result.output.health.revenueRecognition, 'payment-confirmed-only');
+  assert.equal(result.output.health.realRevenueOnly, true);
+  assert.equal(result.output.health.paymentConfirmationRequired, true);
   assert.equal(result.evidence.verified, true);
 });
 
