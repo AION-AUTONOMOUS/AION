@@ -10,6 +10,9 @@
 
 AION Coin is under development. This page is a public project-status notice, not a token listing, offer to sell, or investment solicitation.
 
+- The proposed fixed supply is 10,000,000,000 AION.
+- Proposed allocation: founder 60% (6,000,000,000 AION); a separately designated charitable/perpetual-giving treasury 25% (2,500,000,000 AION); and five operational pools sharing the remaining 15% proportionally.
+- The separate charity treasury address has not yet been supplied and verified. The source change is a proposal pending review; it does not establish charitable status, tax treatment, recipient eligibility, or legal restrictions on transfers.
 - No mainnet contract address is being announced here.
 - No exchange listing, trading market, liquidity, price, or return is claimed.
 - Do not send funds or cryptocurrency to anyone claiming to sell or distribute AION Coin on behalf of this project.
@@ -18,7 +21,7 @@ AION Coin is under development. This page is a public project-status notice, not
 
 ## Intended next milestone
 
-Complete the approved testnet deployment only after the six distinct treasury wallet addresses and required deployment settings are verified. Record the network, contract address, transaction hash, and verification links before announcing a testnet release.
+Review the proposed seven-treasury allocation, designate and independently verify a distinct charity treasury address, run contract compilation and tests, then complete the approved testnet deployment only after all seven distinct treasury wallet addresses and required deployment settings are verified. Record the network, contract address, transaction hash, and verification links before announcing a testnet release.
 
 ## Contact
 
