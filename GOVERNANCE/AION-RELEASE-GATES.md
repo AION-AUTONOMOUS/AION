@@ -6,7 +6,7 @@ These gates apply before any public AION Coin launch.
 2. Contract tests succeed.
 3. Token supply and ownership are independently verified.
 4. The approved allocation model is verified: founder 60%, charity/perpetual-giving treasury 25%, and remaining five operational allocations totaling 15%.
-5. The charity treasury is a distinct, controlled address; recipient identity, governance, custody, and applicable charity/legal requirements are reviewed. Do not describe tokens as legally restricted to charitable use unless enforceable controls exist.
+5. The candidate charity treasury address `0xc85206FE4687480E6C51a50C72e455d5D9c2ee79` is independently checked for valid network, control, and distinctness; recipient identity, governance, custody, and applicable charity/legal requirements are reviewed. Until then, it is not deployment-approved.
 6. Deployment occurs on the selected testnet first.
 7. Testnet contract address and transaction are recorded.
 8. Deployment configuration contains no repository secrets.
