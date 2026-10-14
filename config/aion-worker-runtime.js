@@ -2,7 +2,7 @@ import { dispatchTask } from './aion-workers.js';
 import { resetStore } from './aion-ops-engine.js';
 import { getTask, listTasks, updateTask } from './aion-ops-store.js';
 import { hasRailwayRedis, railwayRedisCommand } from './aion-redis.js';
-import { runOpenAI, selectOpenAIModel } from './aion-openai-gateway.js';
+import { runAIONExecutiveAI, selectOpenAIModel } from './aion-openai-gateway.js';
 import { executeRegisteredTool, listRegisteredTools } from './aion-executive-tool-registry.js';
 import { TOTAL_AGENTS, iterateAgents } from './aion-fleet.js';
 
@@ -34,7 +34,7 @@ let actionExecutor = executeTask;
 
 async function executeTask(task) {
   const mode = modeFor(task);
-  const result = await runOpenAI({
+  const result = await runAIONExecutiveAI({
     prompt: task.text,
     mode,
     model: selectOpenAIModel(mode),
@@ -45,8 +45,8 @@ async function executeTask(task) {
       'You are an AION production worker. Execute the assigned analytical/software task using the information available to you. Distinguish evidence from assumptions. Never claim an external action occurred unless an AION execution adapter confirms it. Return a concise result with findings, actions proposed or performed, evidence, and next step.'
   });
   const evidence = {
-    type: 'openai-response',
-    provider: 'OpenAI',
+    type: 'executive-model-response',
+    provider: result.provider || 'OpenAI',
     responseId: result.responseId,
     requestId: result.requestId,
     model: result.model,
