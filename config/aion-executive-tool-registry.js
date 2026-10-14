@@ -353,7 +353,7 @@ register({
       type: input.department,
       department: input.department,
       role: 'executive-follow-up',
-      priority,
+      priority: ({ low: 25, normal: 50, high: 75 })[priority],
       parentTaskId: parentTask.id,
       createdBy: 'aion-executive-ai',
       text: title + '\n' + taskText
