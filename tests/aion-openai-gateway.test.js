@@ -19,7 +19,13 @@ test('OpenAI gateway exposes bounded worker tool execution honestly', () => {
   assert.equal(health.toolExecution.registeredTools, null);
   assert.equal(health.toolExecution.registeredToolsSource, 'worker-supplied-approved-registry');
   assert.equal(health.toolExecution.maxToolCallsPerTask, 5);
-  assert.match(health.toolExecution.note, /approved read-only registry/);
+  assert.match(health.toolExecution.note, /approved registry at runtime/);
+  assert.deepEqual(health.toolExecution.internalActionPolicy, {
+    maxFollowUpsPerRootTask: 1,
+    maxFollowUpDepth: 1,
+    maxActiveTasks: 50,
+    externalActionsEnabled: false
+  });
   assert.equal(health.requestTimeoutMs, OPENAI_REQUEST_TIMEOUT_MS);
   assert.ok(Number.isInteger(health.requestTimeoutMs));
   assert.ok(health.requestTimeoutMs >= 1000 && health.requestTimeoutMs <= 120000);
