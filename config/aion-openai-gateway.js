@@ -108,6 +108,10 @@ export function openAIConfigured() {
   return Boolean(clean(process.env.OPENAI_API_KEY));
 }
 
+export function groqConfigured() {
+  return Boolean(clean(process.env.GROQ_API_KEY));
+}
+
 export function selectOpenAIModel(mode = 'frontier') {
   const key = MODES.includes(mode) ? mode : 'frontier';
   return MODEL_BY_MODE[key];
@@ -135,7 +139,12 @@ export function openAIGatewayHealth() {
     evaluation: 'AION Frontier Intelligence Lab',
     fakeCompletion: false,
     externalMoney: 'owner-approved only',
-    politicalTargeting: false
+    politicalTargeting: false,
+    executiveRuntime: {
+      provider: openAIConfigured() ? 'OpenAI' : groqConfigured() ? 'Groq' : 'unconfigured',
+      status: openAIConfigured() || groqConfigured() ? 'configured-not-probed' : 'awaiting-provider-key',
+      note: 'Worker execution prefers OpenAI when configured and falls back to the existing Groq provider when OpenAI credentials are absent.'
+    }
   };
 }
 
@@ -233,6 +242,166 @@ export async function runOpenAI(input = {}) {
     mode,
     status: 'completed',
     text: extractText(response),
+    responseId: response.id || null,
+    usage: response.usage || null,
+    measured: true,
+    toolExecution: {
+      enabled: toolCallingEnabled,
+      calls: toolEvidence,
+      callCount: toolEvidence.length,
+      maxCalls: MAX_TOOL_CALLS
+    }
+  };
+}
+
+
+async function fetchGroqResponse({ apiKey, requestId, model, messages, tools, timeoutMs }) {
+  const body = {
+    model,
+    messages,
+    max_tokens: 4096,
+    temperature: 0.2
+  };
+  if (tools?.length) {
+    body.tools = tools.map(tool => ({
+      type: 'function',
+      function: {
+        name: tool.name,
+        description: tool.description,
+        parameters: tool.inputSchema
+      }
+    }));
+    body.tool_choice = 'auto';
+  }
+
+  let response;
+  try {
+    response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        authorization: 'Bearer ' + apiKey,
+        'content-type': 'application/json',
+        'x-aion-request-id': requestId
+      },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(timeoutMs)
+    });
+  } catch (error) {
+    if (error?.name === 'TimeoutError' || error?.name === 'AbortError') {
+      throw new Error('Groq request timed out after ' + timeoutMs + 'ms', { cause: error });
+    }
+    throw error;
+  }
+
+  const result = await response.json();
+  if (!response.ok) {
+    throw new Error(result?.error?.message || ('Groq request failed with HTTP ' + response.status));
+  }
+  return result;
+}
+
+function groqToolCalls(response) {
+  return response?.choices?.[0]?.message?.tool_calls || [];
+}
+
+export async function runAIONExecutiveAI(input = {}) {
+  if (openAIConfigured()) {
+    const result = await runOpenAI(input);
+    return { ...result, provider: 'OpenAI' };
+  }
+
+  const apiKey = clean(process.env.GROQ_API_KEY);
+  if (!apiKey) throw new Error('No executive AI provider is configured: set OPENAI_API_KEY or GROQ_API_KEY');
+
+  const prompt = clean(input.prompt);
+  if (!prompt) throw new Error('prompt required');
+  const mode = MODES.includes(input.mode) ? input.mode : 'frontier';
+  const model = clean(
+    input.groqModel,
+    process.env.AION_GROQ_CHAT_MODEL || process.env.AION_GROQ_MODEL || 'openai/gpt-oss-120b'
+  );
+  const requestId = 'AION-GROQ-' + crypto.randomUUID();
+  const timeoutMs = boundedTimeout(input.timeoutMs);
+  const instructions = clean(input.instructions,
+    'You are the AION Intelligence Core. Distinguish evidence from assumptions and never claim an external action happened without confirmation.'
+  );
+  const toolCallingEnabled = input.enableTools === true &&
+    Array.isArray(input.tools) &&
+    input.tools.length > 0 &&
+    typeof input.toolExecutor === 'function';
+  const tools = toolCallingEnabled
+    ? input.tools.filter(tool => tool?.access === 'read-only' && typeof tool.name === 'string').slice(0, 20)
+    : [];
+  const messages = [
+    { role: 'system', content: instructions },
+    { role: 'user', content: prompt }
+  ];
+  const toolEvidence = [];
+  let response = await fetchGroqResponse({ apiKey, requestId, model, messages, tools, timeoutMs });
+  let toolCallsUsed = 0;
+
+  while (tools.length) {
+    const message = response?.choices?.[0]?.message;
+    const calls = groqToolCalls(response);
+    if (!calls.length) break;
+    if (toolCallsUsed + calls.length > MAX_TOOL_CALLS) {
+      throw new Error('Groq tool-call limit exceeded (' + MAX_TOOL_CALLS + ')');
+    }
+
+    messages.push({
+      role: 'assistant',
+      content: message?.content ?? null,
+      tool_calls: calls
+    });
+
+    for (const call of calls) {
+      const name = clean(call?.function?.name);
+      if (!tools.some(tool => tool.name === name)) {
+        throw new Error('Groq requested a tool outside the approved registry: ' + name);
+      }
+      let args;
+      try {
+        args = JSON.parse(call.function.arguments || '{}');
+      } catch {
+        throw new Error('Groq returned invalid JSON arguments for tool: ' + name);
+      }
+
+      const startedAt = new Date().toISOString();
+      const started = Date.now();
+      const result = await executeWithTimeout(input.toolExecutor, name, args, timeoutMs);
+      const serialized = JSON.stringify(result);
+      const boundedOutput = serialized.length > MAX_TOOL_OUTPUT_CHARS
+        ? serialized.slice(0, MAX_TOOL_OUTPUT_CHARS) + '…[truncated]'
+        : serialized;
+      toolEvidence.push({
+        tool: name,
+        callId: call.id || null,
+        startedAt,
+        completedAt: new Date().toISOString(),
+        durationMs: Date.now() - started,
+        outputDigest: crypto.createHash('sha256').update(boundedOutput).digest('hex'),
+        outputTruncated: serialized.length > MAX_TOOL_OUTPUT_CHARS,
+        status: 'completed'
+      });
+      messages.push({
+        role: 'tool',
+        tool_call_id: call.id,
+        content: boundedOutput
+      });
+      toolCallsUsed += 1;
+    }
+
+    response = await fetchGroqResponse({ apiKey, requestId, model, messages, tools, timeoutMs });
+  }
+
+  const finalMessage = response?.choices?.[0]?.message;
+  return {
+    requestId,
+    provider: 'Groq',
+    model,
+    mode,
+    status: 'completed',
+    text: typeof finalMessage?.content === 'string' ? finalMessage.content.trim() : '',
     responseId: response.id || null,
     usage: response.usage || null,
     measured: true,
