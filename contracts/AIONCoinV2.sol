@@ -5,77 +5,38 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 /**
  * AION COIN — V2
- *
  * Fixed supply: 10,000,000,000 AION
- * Decimals: 18
- * Transfer tax: 0%
- * Public minting: disabled
- *
- * Founder allocation is initially minted to a founder treasury
- * address and can later be transferred into the separate
- * founder vesting vault.
- *
- * The token does NOT claim to be backed by USD, gold, silver,
- * oil, GBP, ILS, or SAR. Reserve/oracle/basket systems are separate.
+ * Distribution: 60% founder, 25% charity, 15% operations and development.
+ * Decimals: 18; transfer tax: 0%; public minting: disabled.
+ * The token does not claim to be backed by fiat currency or commodities.
  */
 contract AIONCoinV2 is ERC20 {
-    uint256 public constant INITIAL_SUPPLY =
-        10_000_000_000 ether;
-
-    uint256 public constant FOUNDER_ALLOCATION =
-        6_000_000_000 ether;
-
-    uint256 public constant COMMUNITY_ALLOCATION =
-        1_500_000_000 ether;
-
-    uint256 public constant AI_REWARDS_ALLOCATION =
-        1_000_000_000 ether;
-
-    uint256 public constant DEVELOPMENT_ALLOCATION =
-        700_000_000 ether;
-
-    uint256 public constant DIGITAL_RESERVE_ALLOCATION =
-        500_000_000 ether;
-
-    uint256 public constant STRATEGIC_ALLOCATION =
-        300_000_000 ether;
+    uint256 public constant INITIAL_SUPPLY = 10_000_000_000 ether;
+    uint256 public constant FOUNDER_ALLOCATION = 6_000_000_000 ether;
+    uint256 public constant CHARITY_ALLOCATION = 2_500_000_000 ether;
+    uint256 public constant OPERATIONS_ALLOCATION = 1_500_000_000 ether;
 
     address public immutable founderTreasury;
-    address public immutable communityTreasury;
-    address public immutable aiRewardsTreasury;
-    address public immutable developmentTreasury;
-    address public immutable digitalReserve;
-    address public immutable strategicTreasury;
+    address public immutable charityTreasury;
+    address public immutable operationsTreasury;
 
-    constructor(
-        address _founderTreasury,
-        address _communityTreasury,
-        address _aiRewardsTreasury,
-        address _developmentTreasury,
-        address _digitalReserve,
-        address _strategicTreasury
-    ) ERC20("AION", "AION") {
+    constructor(address _founderTreasury, address _charityTreasury, address _operationsTreasury)
+        ERC20("AION", "AION")
+    {
         require(_founderTreasury != address(0), "AION: zero founder");
-        require(_communityTreasury != address(0), "AION: zero community");
-        require(_aiRewardsTreasury != address(0), "AION: zero AI rewards");
-        require(_developmentTreasury != address(0), "AION: zero development");
-        require(_digitalReserve != address(0), "AION: zero reserve");
-        require(_strategicTreasury != address(0), "AION: zero strategic");
+        require(_charityTreasury != address(0), "AION: zero charity");
+        require(_operationsTreasury != address(0), "AION: zero operations");
+        require(_founderTreasury != _charityTreasury, "AION: duplicate treasury");
+        require(_founderTreasury != _operationsTreasury, "AION: duplicate treasury");
+        require(_charityTreasury != _operationsTreasury, "AION: duplicate treasury");
 
         founderTreasury = _founderTreasury;
-        communityTreasury = _communityTreasury;
-        aiRewardsTreasury = _aiRewardsTreasury;
-        developmentTreasury = _developmentTreasury;
-        digitalReserve = _digitalReserve;
-        strategicTreasury = _strategicTreasury;
+        charityTreasury = _charityTreasury;
+        operationsTreasury = _operationsTreasury;
 
         _mint(_founderTreasury, FOUNDER_ALLOCATION);
-        _mint(_communityTreasury, COMMUNITY_ALLOCATION);
-        _mint(_aiRewardsTreasury, AI_REWARDS_ALLOCATION);
-        _mint(_developmentTreasury, DEVELOPMENT_ALLOCATION);
-        _mint(_digitalReserve, DIGITAL_RESERVE_ALLOCATION);
-        _mint(_strategicTreasury, STRATEGIC_ALLOCATION);
-
+        _mint(_charityTreasury, CHARITY_ALLOCATION);
+        _mint(_operationsTreasury, OPERATIONS_ALLOCATION);
         assert(totalSupply() == INITIAL_SUPPLY);
     }
 
