@@ -1,7 +1,12 @@
 import crypto from 'node:crypto';
 
-export const OPENAI_GATEWAY_VERSION = '1.0.1';
+export const OPENAI_GATEWAY_VERSION = '1.0.2';
 export const OPENAI_DEFAULT_MODEL = process.env.OPENAI_MODEL || 'gpt-5.6-sol';
+
+const configuredTimeout = Number.parseInt(process.env.OPENAI_REQUEST_TIMEOUT_MS || '30000', 10);
+export const OPENAI_REQUEST_TIMEOUT_MS = Number.isFinite(configuredTimeout)
+  ? Math.max(1000, Math.min(configuredTimeout, 120000))
+  : 30000;
 
 const MODEL_BY_MODE = Object.freeze({
   frontier: process.env.OPENAI_FRONTIER_MODEL || OPENAI_DEFAULT_MODEL,
@@ -34,6 +39,7 @@ export function openAIGatewayHealth() {
     provider: 'OpenAI',
     api: 'Responses API',
     defaultModel: OPENAI_DEFAULT_MODEL,
+    requestTimeoutMs: OPENAI_REQUEST_TIMEOUT_MS,
     modes: MODES,
     multimodal: true,
     // Do not advertise capabilities that are not wired to executable adapters.
@@ -71,22 +77,31 @@ export async function runOpenAI(input = {}) {
   const model = clean(input.model, selectOpenAIModel(mode));
   const requestId = 'AION-OAI-' + crypto.randomUUID();
 
-  const response = await fetch('https://api.openai.com/v1/responses', {
-    method: 'POST',
-    headers: {
-      authorization: 'Bearer ' + apiKey,
-      'content-type': 'application/json',
-      'x-aion-request-id': requestId
-    },
-    body: JSON.stringify({
-      model,
-      input: prompt,
-      instructions: clean(input.instructions,
-        'You are the AION Intelligence Core. Reason carefully, distinguish evidence from assumptions, use measurable criteria, and never claim an action happened unless a registered AION worker or adapter confirms it.'
-      ),
-      max_output_tokens: Number.isInteger(input.maxOutputTokens) ? input.maxOutputTokens : 4096
-    })
-  });
+  let response;
+  try {
+    response = await fetch('https://api.openai.com/v1/responses', {
+      method: 'POST',
+      headers: {
+        authorization: 'Bearer ' + apiKey,
+        'content-type': 'application/json',
+        'x-aion-request-id': requestId
+      },
+      body: JSON.stringify({
+        model,
+        input: prompt,
+        instructions: clean(input.instructions,
+          'You are the AION Intelligence Core. Reason carefully, distinguish evidence from assumptions, use measurable criteria, and never claim an action happened unless a registered AION worker or adapter confirms it.'
+        ),
+        max_output_tokens: Number.isInteger(input.maxOutputTokens) ? input.maxOutputTokens : 4096
+      }),
+      signal: AbortSignal.timeout(OPENAI_REQUEST_TIMEOUT_MS)
+    });
+  } catch (error) {
+    if (error?.name === 'TimeoutError' || error?.name === 'AbortError') {
+      throw new Error('OpenAI request timed out after ' + OPENAI_REQUEST_TIMEOUT_MS + ' ms');
+    }
+    throw error;
+  }
 
   const body = await response.json();
   if (!response.ok) {
