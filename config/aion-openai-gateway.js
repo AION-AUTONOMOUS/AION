@@ -126,9 +126,10 @@ export function openAIGatewayHealth() {
     multimodal: true,
     toolExecution: {
       status: 'worker-opt-in',
-      registeredTools: 3,
+      registeredTools: null,
+      registeredToolsSource: 'worker-supplied-approved-registry',
       maxToolCallsPerTask: MAX_TOOL_CALLS,
-      note: 'Tool calling is enabled only when a worker supplies the approved read-only registry and executor; it is not enabled for general chat requests.'
+      note: 'Tool calling is enabled only when a worker supplies the approved read-only registry and executor; the current registry is reported by the worker at runtime, not hard-coded here.'
     },
     durableMemory: 'AION stack store',
     evaluation: 'AION Frontier Intelligence Lab',
