@@ -3,6 +3,7 @@ import { resetStore } from './aion-ops-engine.js';
 import { getTask, listTasks, updateTask } from './aion-ops-store.js';
 import { hasRailwayRedis, railwayRedisCommand } from './aion-redis.js';
 import { runOpenAI, selectOpenAIModel } from './aion-openai-gateway.js';
+import { executeRegisteredTool, listRegisteredTools } from './aion-executive-tool-registry.js';
 import { TOTAL_AGENTS, iterateAgents } from './aion-fleet.js';
 
 export const RUNTIME_VERSION = '2.0.0';
@@ -37,6 +38,9 @@ async function executeTask(task) {
     prompt: task.text,
     mode,
     model: selectOpenAIModel(mode),
+    enableTools: true,
+    tools: listRegisteredTools(),
+    toolExecutor: executeRegisteredTool,
     instructions:
       'You are an AION production worker. Execute the assigned analytical/software task using the information available to you. Distinguish evidence from assumptions. Never claim an external action occurred unless an AION execution adapter confirms it. Return a concise result with findings, actions proposed or performed, evidence, and next step.'
   });
@@ -46,7 +50,9 @@ async function executeTask(task) {
     responseId: result.responseId,
     requestId: result.requestId,
     model: result.model,
-    measured: true
+    measured: true,
+    toolCalls: result.toolExecution?.calls || [],
+    toolCallCount: result.toolExecution?.callCount || 0
   };
   const verification = {
     status: result.responseId && result.text ? 'verified-output' : 'verification-failed',
