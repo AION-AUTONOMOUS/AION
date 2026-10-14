@@ -16,7 +16,8 @@ test('OpenAI gateway exposes bounded worker tool execution honestly', () => {
   assert.equal(health.politicalTargeting, false);
   assert.equal(health.externalMoney, 'owner-approved only');
   assert.equal(health.toolExecution.status, 'worker-opt-in');
-  assert.equal(health.toolExecution.registeredTools, 3);
+  assert.equal(health.toolExecution.registeredTools, null);
+  assert.equal(health.toolExecution.registeredToolsSource, 'worker-supplied-approved-registry');
   assert.equal(health.toolExecution.maxToolCallsPerTask, 5);
   assert.match(health.toolExecution.note, /approved read-only registry/);
   assert.equal(health.requestTimeoutMs, OPENAI_REQUEST_TIMEOUT_MS);
