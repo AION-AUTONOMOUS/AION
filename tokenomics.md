@@ -1,4 +1,3 @@
-
 # AION Tokenomics
 
 ## Token Information
@@ -8,51 +7,38 @@
 | Name | AION |
 | Symbol | AION |
 | Total Supply | 10,000,000,000 AION |
-| Smallest Unit | 1 Neuro = 0.00000001 AION |
-| Standard | ERC-20 |
-| Target Network | BNB Smart Chain |
-| Burn Mechanism | 1% smart burn per transfer |
+| Decimals | 18 |
+| Standard | ERC-20 compatible token contract |
+| Target Network | BNB Smart Chain (BEP-20 compatibility) |
+| Transfer Fee / Burn | 0%; no automatic transfer burn in AIONCoinV2 |
 
-## Distribution
+## Approved Distribution
 
-| Percentage | Party | Amount |
-|------------|-------|--------|
-| 40% | Community - Smart Mining | 4,000,000,000 |
-| 20% | Development & Research | 2,000,000,000 |
-| 15% | Founders | 1,500,000,000 |
-| 15% | Strategic Reserve | 1,500,000,000 |
-| 10% | AI Model Training Rewards | 1,000,000,000 |
-| **TOTAL** | | **10,000,000,000** |
+| Percentage | Allocation | Amount |
+|------------|------------|--------|
+| 60% | Founder treasury | 6,000,000,000 AION |
+| 25% | Ongoing charity treasury | 2,500,000,000 AION |
+| 15% | Operations and development treasury | 1,500,000,000 AION |
+| **100%** | **Total** | **10,000,000,000 AION** |
 
-## Founding Price
+The three treasury addresses must be distinct, valid addresses. The charity allocation is designated for ongoing charitable purposes; its governance, custody, spending controls, and public reporting should be documented before any mainnet launch.
 
-| Phase | Price | Market Cap |
-|-------|-------|------------|
-| Founding | 0.01 USD | 100M USD |
-| After 100 buyers | 0.05 USD | 500M USD |
-| After 500 buyers | 0.10 USD | 1B USD |
-| After listing | 0.50 USD | 5B USD |
+## Network and Launch Status
 
-## Burn Mechanism
+- Target network: BNB Smart Chain.
+- Contract source: contracts/AIONCoinV2.sol.
+- Testnet deployment: not confirmed by this document.
+- Mainnet deployment: not deployed.
+- Exchange listing, trading pair, liquidity, and market price: not established.
+- A source file or planned allocation does not itself mean the token is live or tradable.
 
-Every transaction burns 1% of the transferred amount.
-This reduces total supply over time.
+## Release Requirements
 
-## Network
-
-Primary: BNB Smart Chain (BEP20)
-Future: AION Chain (planned)
-
-## Status
-
-- Contract written: Yes
-- Contract deployed: No (pending funding)
-- Listed on exchanges: No
-- Token launched: No
+Before public launch, compile and run the contract tests, independently verify the treasury addresses and allocations, deploy to testnet, verify the deployed contract and transaction, complete a security review, and complete applicable legal/compliance review. Mainnet deployment requires an authorized signer and network gas funds.
 
 ## Contact
 
 - Email: aion.genesisss@gmail.com
-- GitHub: github.com/AION-AUTONOMOUS
+- GitHub: https://github.com/AION-AUTONOMOUS
 
 AION AUTONOMOUS 2026
