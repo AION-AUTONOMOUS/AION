@@ -9,11 +9,11 @@ test('executive registry exposes bounded read-only operational and business tool
   assert.deepEqual(tools.map(tool => tool.name).sort(), [
     'aion.leads.list',
     'aion.prospects.list',
-    'aion.tasks.create_followup',
     'aion.revenue.dashboard',
     'aion.revenue.orders.list',
     'aion.revenue.records.list',
     'aion.runtime.status',
+    'aion.tasks.create_followup',
     'aion.tasks.get',
     'aion.tasks.list'
   ]);
