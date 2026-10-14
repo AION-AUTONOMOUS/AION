@@ -1,6 +1,10 @@
 import crypto from 'node:crypto';
 import { getTask, listTasks } from './aion-ops-store.js';
 import { workerRuntimeStatus } from './aion-worker-runtime.js';
+import { listGlobalProspects, prospectingHealth } from './aion-global-prospecting.js';
+import { listCustomerOrders, listRevenue, listOffers } from './aion-customer-revenue.js';
+import { revenueDashboard } from './aion-revenue-engine.js';
+import { listIndexed } from './aion-stack-store.js';
 
 function requireObject(input) {
   if (input === undefined) return {};
@@ -108,6 +112,177 @@ register({
         error: task.error || null
       }
     };
+  }
+});
+
+
+register({
+  name: 'aion.revenue.dashboard',
+  description: 'Read offer catalog and payment-confirmed revenue metrics.',
+  access: 'read-only',
+  inputSchema: { type: 'object', additionalProperties: false, properties: {} },
+  execute: async raw => {
+    const input = requireObject(raw);
+    if (Object.keys(input).length) throw new Error('tool accepts no input fields');
+    const dashboard = await revenueDashboard();
+    return {
+      health: dashboard.health,
+      metrics: dashboard.metrics,
+      nextActions: dashboard.nextActions,
+      offers: dashboard.offers.map(offer => ({
+        id: offer.id,
+        name: offer.name,
+        priceUsd: offer.priceUsd,
+        currency: offer.currency,
+        status: offer.status
+      }))
+    };
+  }
+});
+
+register({
+  name: 'aion.revenue.orders.list',
+  description: 'Read bounded order summaries without customer identifiers.',
+  access: 'read-only',
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      paymentStatus: { type: 'string', maxLength: 40 },
+      limit: { type: 'integer', minimum: 1, maximum: 100 }
+    }
+  },
+  execute: async raw => {
+    const input = requireObject(raw);
+    for (const key of Object.keys(input)) {
+      if (!['paymentStatus', 'limit'].includes(key)) throw new Error('unsupported input field: ' + key);
+    }
+    if (input.paymentStatus !== undefined &&
+      (typeof input.paymentStatus !== 'string' || input.paymentStatus.length > 40)) {
+      throw new Error('paymentStatus must be a string of at most 40 characters');
+    }
+    const limit = input.limit === undefined ? 25 : input.limit;
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+      throw new Error('limit must be an integer from 1 to 100');
+    }
+    const orders = await listCustomerOrders();
+    return orders
+      .filter(order => !input.paymentStatus || order.paymentStatus === input.paymentStatus)
+      .slice(0, limit)
+      .map(order => ({
+        id: order.id,
+        offerId: order.offerId,
+        amountUsd: order.amountUsd,
+        paymentStatus: order.paymentStatus,
+        deliveryStatus: order.deliveryStatus,
+        revenueRecognized: Boolean(order.revenueRecognized),
+        createdAt: order.createdAt
+      }));
+  }
+});
+
+register({
+  name: 'aion.revenue.records.list',
+  description: 'Read bounded, already-recognized revenue records.',
+  access: 'read-only',
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: { limit: { type: 'integer', minimum: 1, maximum: 100 } }
+  },
+  execute: async raw => {
+    const input = requireObject(raw);
+    for (const key of Object.keys(input)) {
+      if (key !== 'limit') throw new Error('unsupported input field: ' + key);
+    }
+    const limit = input.limit === undefined ? 25 : input.limit;
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+      throw new Error('limit must be an integer from 1 to 100');
+    }
+    const records = await listRevenue();
+    return records.slice(0, limit).map(record => ({
+      id: record.id,
+      orderId: record.orderId,
+      amountUsd: record.amountUsd,
+      currency: record.currency,
+      recognizedAt: record.recognizedAt,
+      source: record.source
+    }));
+  }
+});
+
+register({
+  name: 'aion.prospects.list',
+  description: 'Read ranked public-business prospect targets with evidence URLs.',
+  access: 'read-only',
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      sector: { type: 'string', maxLength: 80 },
+      minScore: { type: 'integer', minimum: 0, maximum: 100 },
+      limit: { type: 'integer', minimum: 1, maximum: 100 }
+    }
+  },
+  execute: async raw => {
+    const input = requireObject(raw);
+    for (const key of Object.keys(input)) {
+      if (!['sector', 'minScore', 'limit'].includes(key)) throw new Error('unsupported input field: ' + key);
+    }
+    if (input.sector !== undefined && (typeof input.sector !== 'string' || input.sector.length > 80)) {
+      throw new Error('sector must be a string of at most 80 characters');
+    }
+    const minScore = input.minScore === undefined ? 0 : input.minScore;
+    const limit = input.limit === undefined ? 25 : input.limit;
+    if (!Number.isInteger(minScore) || minScore < 0 || minScore > 100) {
+      throw new Error('minScore must be an integer from 0 to 100');
+    }
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+      throw new Error('limit must be an integer from 1 to 100');
+    }
+    return {
+      health: prospectingHealth(),
+      prospects: listGlobalProspects({ sector: input.sector || null, minScore }).slice(0, limit)
+    };
+  }
+});
+
+register({
+  name: 'aion.leads.list',
+  description: 'Read lead pipeline status without exposing names, emails, or request text.',
+  access: 'read-only',
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      status: { type: 'string', maxLength: 40 },
+      limit: { type: 'integer', minimum: 1, maximum: 100 }
+    }
+  },
+  execute: async raw => {
+    const input = requireObject(raw);
+    for (const key of Object.keys(input)) {
+      if (!['status', 'limit'].includes(key)) throw new Error('unsupported input field: ' + key);
+    }
+    if (input.status !== undefined && (typeof input.status !== 'string' || input.status.length > 40)) {
+      throw new Error('status must be a string of at most 40 characters');
+    }
+    const limit = input.limit === undefined ? 25 : input.limit;
+    if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+      throw new Error('limit must be an integer from 1 to 100');
+    }
+    const leads = await listIndexed('customer-leads');
+    return leads
+      .filter(lead => !input.status || lead.status === input.status)
+      .slice(0, limit)
+      .map(lead => ({
+        id: lead.id,
+        company: lead.company || null,
+        offerId: lead.offerId || null,
+        status: lead.status,
+        createdAt: lead.createdAt,
+        nextAction: lead.nextAction || null
+      }));
   }
 });
 
