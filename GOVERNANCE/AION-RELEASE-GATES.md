@@ -5,12 +5,14 @@ These gates apply before any public AION Coin launch.
 1. Contract compilation succeeds.
 2. Contract tests succeed.
 3. Token supply and ownership are independently verified.
-4. Deployment occurs on the selected testnet first.
-5. Testnet contract address and transaction are recorded.
-6. Deployment configuration contains no repository secrets.
-7. Mainnet deployment requires an authorized, funded signing account.
-8. Mainnet address and deployment transaction are recorded after confirmation.
-9. Tokenomics and vesting allocations are verified against the approved governance model.
-10. Public claims about launch, price, liquidity, or market status are made only after independently verifiable evidence exists.
+4. The approved allocation model is verified: founder 60%, charity/perpetual-giving treasury 25%, and remaining five operational allocations totaling 15%.
+5. The candidate charity treasury address `0xc85206FE4687480E6C51a50C72e455d5D9c2ee79` is independently checked for valid network, control, and distinctness; recipient identity, governance, custody, and applicable charity/legal requirements are reviewed. Until then, it is not deployment-approved.
+6. Deployment occurs on the selected testnet first.
+7. Testnet contract address and transaction are recorded.
+8. Deployment configuration contains no repository secrets.
+9. Mainnet deployment requires an authorized, funded signing account.
+10. Mainnet address and deployment transaction are recorded after confirmation.
+11. Tokenomics and any vesting allocations are verified against the approved governance model.
+12. Public claims about launch, price, liquidity, charity status, or market status are made only after independently verifiable evidence exists.
 
 No release gate should be marked complete merely because source code exists.

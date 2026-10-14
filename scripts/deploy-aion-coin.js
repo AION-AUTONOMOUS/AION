@@ -2,6 +2,7 @@ import { network } from "hardhat";
 
 const treasuryNames = [
   "AION_FOUNDER_TREASURY",
+  "AION_CHARITY_TREASURY",
   "AION_COMMUNITY_TREASURY",
   "AION_AI_REWARDS_TREASURY",
   "AION_DEVELOPMENT_TREASURY",
@@ -22,7 +23,7 @@ for (let i = 0; i < treasuries.length; i += 1) {
   }
 }
 if (new Set(treasuries.map((address) => address.toLowerCase())).size !== treasuries.length) {
-  throw new Error("All six AION treasury addresses must be distinct");
+  throw new Error("All seven AION treasury addresses must be distinct");
 }
 
 const chain = await ethers.provider.getNetwork();
@@ -38,6 +39,9 @@ const totalSupply = await token.totalSupply();
 if (totalSupply !== ethers.parseUnits("10000000000", 18)) {
   throw new Error(`Unexpected AION total supply: ${totalSupply}`);
 }
+if (await token.balanceOf(treasuries[1]) !== ethers.parseUnits("2500000000", 18)) {
+  throw new Error("Unexpected charity allocation");
+}
 
 console.log(JSON.stringify({
   contract: "AIONCoinV2",
@@ -46,6 +50,15 @@ console.log(JSON.stringify({
   chainId: chain.chainId.toString(),
   symbol: await token.symbol(),
   totalSupply: ethers.formatUnits(totalSupply, 18),
+  allocations: {
+    founder: "6000000000",
+    charity: "2500000000",
+    community: "562500000",
+    aiRewards: "375000000",
+    development: "262500000",
+    digitalReserve: "187500000",
+    strategic: "112500000",
+  },
   treasuries: Object.fromEntries(
     treasuryNames.map((name, index) => [name, treasuries[index]])
   ),
