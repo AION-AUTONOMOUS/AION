@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import { getTask, listTasks } from './aion-ops-store.js';
 import { workerRuntimeStatus } from './aion-worker-runtime.js';
 
@@ -127,6 +128,8 @@ export async function executeRegisteredTool(name, rawInput = {}) {
   const startedAt = new Date().toISOString();
   const started = Date.now();
   const output = await tool.execute(input);
+  const completedAt = new Date().toISOString();
+  const outputDigest = crypto.createHash('sha256').update(JSON.stringify(output)).digest('hex');
   return {
     tool: tool.name,
     access: tool.access,
@@ -136,9 +139,9 @@ export async function executeRegisteredTool(name, rawInput = {}) {
       type: 'aion-local-tool-execution',
       tool: tool.name,
       startedAt,
-      completedAt: new Date().toISOString(),
+      completedAt,
       durationMs: Date.now() - started,
-      outputDigest: null,
+      outputDigest,
       verified: true
     }
   };
