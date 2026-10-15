@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 
-const ENV = String(process.env.PAYPAL_ENVIRONMENT || 'live').toLowerCase();
+const ENV = String(process.env.PAYPAL_ENVIRONMENT || 'sandbox').toLowerCase();
 const BASE = ENV === 'sandbox' ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com';
 let cachedToken = null;
 let tokenExpiresAt = 0;
