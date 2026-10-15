@@ -2,20 +2,22 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AION Order — الدفع والتسليم</title>
-<meta name="description" content="اطلب خدمات AION الرقمية والفضائية عبر بوابة الدفع الموحدة.">
+<title>AION Order — الوصول المبكر والطلبات</title>
+<meta name="description" content="أرسل طلبك إلى AION للخدمات الرقمية. يتم تأكيد نطاق الخدمة والمدة والتكلفة قبل البدء.">
 <style>
 body{margin:0;background:#020817;color:#fff;font-family:Segoe UI,Arial,sans-serif}
 .wrap{max-width:1100px;margin:auto;padding:18px}.nav{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 18px;background:#06152a;border:1px solid #17466d;border-radius:16px}.nav a{color:#c8d5e7;text-decoration:none;font-size:12px;font-weight:800}.brand{font-size:22px;letter-spacing:4px;color:#00c8ff}
 h1{text-align:center;margin:35px 0 10px;color:#f5c542}.lead{text-align:center;color:#aebbd0;margin-bottom:25px}
+.early{margin:22px 0;padding:20px;border:1px solid #19a974;border-radius:15px;background:#05251f;text-align:center;line-height:1.9}.early strong{display:block;color:#6ee7b7;font-size:20px;margin-bottom:5px}.early p{margin:0;color:#d1fae5}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.card{padding:20px;background:linear-gradient(145deg,#061a34,#030b1d);border:1px solid #16466d;border-radius:16px}.card h2{font-size:16px;margin:0 0 8px}.card p{color:#aebbd0;font-size:12px;line-height:1.7;min-height:42px}.price{color:#f5c542;font-size:22px;font-weight:900}.btn{width:100%;margin-top:12px;padding:12px;border:0;border-radius:11px;background:linear-gradient(135deg,#f5c542,#e6a800);font-weight:900;cursor:pointer}.note{margin-top:24px;padding:18px;border:1px solid #28577d;border-radius:15px;color:#aebbd0;line-height:1.8}
 </style>
 </head>
 <body><div class="wrap">
 <nav class="nav"><a class="brand" href="/">AION</a><div><a href="/teacher.html">المعلم</a>　<a href="/space.html">Space</a>　<a href="/coin.html">AION Coin</a></div></nav>
-<h1>اطلب خدمة AION</h1><p class="lead">دفع موحّد عبر PayPal ثم تسجيل الطلب في محرك الإيرادات والتسليم.</p>
+<h1>اطلب خدمة AION</h1><p class="lead">بوابة استقبال طلبات الخدمات الرقمية والاستفسارات المهنية.</p>
+<section class="early"><strong>✅ AION تستقبل الآن طلبات الوصول المبكر</strong><p>أرسل طلبك وسنراجع نطاق الخدمة والتوفر والمدة والتكلفة قبل تأكيد التنفيذ. مدة الرد المستهدفة 24–48 ساعة، وليست ضمانًا آليًا.</p></section>
 <div id="grid" class="grid"><div class="note">جاري تحميل الخدمات…</div></div>
-<div class="note">لن يتم احتساب الإيراد إلا بعد تأكيد الدفع من الخادم. إذا كان PayPal غير مهيأ، سيظهر الخطأ بدل إنشاء طلب وهمي.</div>
+<div class="note">لن يتم احتساب الإيراد إلا بعد تأكيد الدفع من الخادم. لا يُعد إرسال الطلب تأكيدًا لقبوله، وإذا تعذر تحميل العروض أو لم تكن بوابة الدفع مهيأة فسيظهر الخطأ بدل إنشاء طلب أو دفع وهمي. تواصل: aion.genesisss@gmail.com</div>
 </div>
 <script>
 async function load(){
@@ -23,8 +25,8 @@ async function load(){
  try{
   const r=await fetch('/api/customer-revenue?path=offers'); const j=await r.json();
   if(!r.ok||!j.success) throw new Error(j.error||'تعذر تحميل الخدمات');
-  grid.innerHTML=j.offers.map(o=>'<article class="card"><h2>'+esc(o.name)+'</h2><p>'+esc(o.delivery)+' — '+esc(o.evidence)+'</p><div class="price">$'+Number(o.priceUsd).toFixed(2)+'</div><button class="btn" onclick="go(\''+encodeURIComponent(o.id)+'\')">اطلب وادفع</button></article>').join('');
- }catch(e){grid.innerHTML='<div class="note">تعذر تحميل الخدمات: '+esc(e.message)+'</div>';}
+  grid.innerHTML=j.offers.map(o=>'<article class="card"><h2>'+esc(o.name)+'</h2><p>'+esc(o.delivery)+' — '+esc(o.evidence)+'</p><div class="price">$'+Number(o.priceUsd).toFixed(2)+'</div><button class="btn" onclick="go(\''+encodeURIComponent(o.id)+'\')">اطلب الخدمة</button></article>').join('');
+ }catch(e){grid.innerHTML='<div class="note">نستقبل استفسارك حتى عند تعذر تحميل قائمة الخدمات. يرجى مراسلتنا على aion.genesisss@gmail.com. ('+esc(e.message)+')</div>';}
 }
 function go(id){location.href='/checkout.html?offer='+id}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
