@@ -37,6 +37,8 @@ AION follows these safeguards:
 - No task is considered complete merely because it was queued.
 - Do not invent customers, partners, contracts, licensing, capabilities, results, or revenue.
 - Count a payment only after authoritative payment-provider confirmation and matching order evidence.
+- The customer-revenue API does not accept a client-supplied payment-success flag; PayPal orders must be confirmed through server-side capture verification.
+- Revenue, order, delivery, and outcome records require the `AION_REVENUE_ADMIN_TOKEN` bearer authorization; never expose this secret in client-side code or logs.
 - Do not enable live financial collection, custody, deposits, or token sales without the required legal, licensing, provider, security, and refund readiness.
 - No paid advertising or third-party spending without explicit approval.
 - Use public information responsibly; no bulk or unsolicited mass outreach.
