@@ -26,8 +26,24 @@ if (new Set(treasuries.map((address) => address.toLowerCase())).size !== treasur
 }
 
 const chain = await ethers.provider.getNetwork();
-if (chain.chainId !== 97n) {
-  throw new Error(`Refusing deployment: expected BNB Smart Chain Testnet (chain ID 97), got ${chain.chainId}`);
+const networkDetails = {
+  97: { name: "BNB Smart Chain Testnet", environment: "testnet" },
+  56: { name: "BNB Smart Chain Mainnet", environment: "mainnet" },
+};
+const selectedNetwork = networkDetails[Number(chain.chainId)];
+
+if (!selectedNetwork) {
+  throw new Error(
+    `Refusing deployment: unsupported chain ID ${chain.chainId}; expected 97 (testnet) or 56 (mainnet)`
+  );
+}
+if (
+  selectedNetwork.environment === "mainnet" &&
+  process.env.AION_ALLOW_MAINNET_DEPLOYMENT !== "true"
+) {
+  throw new Error(
+    "Mainnet deployment is disabled by default. Set AION_ALLOW_MAINNET_DEPLOYMENT=true only after reviewing treasury addresses and funding the deployer wallet for gas."
+  );
 }
 
 const token = await ethers.deployContract("AIONCoinV2", treasuries);
@@ -42,7 +58,7 @@ if (totalSupply !== ethers.parseUnits("10000000000", 18)) {
 console.log(JSON.stringify({
   contract: "AIONCoinV2",
   address,
-  network: "BNB Smart Chain Testnet",
+  network: selectedNetwork.name,
   chainId: chain.chainId.toString(),
   symbol: await token.symbol(),
   totalSupply: ethers.formatUnits(totalSupply, 18),
