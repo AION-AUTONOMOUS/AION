@@ -79,16 +79,44 @@ button.send:disabled{opacity:.5;cursor:not-allowed;transform:none}
 </div>
 
 <script>
+async function loadAgents() {
+  const roleSelect = document.getElementById('role');
+  try {
+    const response = await fetch('/api/fleet', { headers: { 'Accept': 'application/json' } });
+    if (!response.ok) throw new Error('تعذر تحميل الأقسام (' + response.status + ')');
+    const data = await response.json();
+    const departments = data?.fleet?.department_details;
+    if (!Array.isArray(departments) || departments.length === 0) throw new Error('قائمة الأقسام غير متاحة');
+    roleSelect.replaceChildren(new Option('اختر قسم AION', ''));
+    for (const department of departments) {
+      if (!department?.id || !department?.name) continue;
+      roleSelect.add(new Option(department.name + ' — ' + department.id, department.id));
+    }
+    roleSelect.value = 'research';
+  } catch (error) {
+    roleSelect.replaceChildren(new Option('البحث (اختيار احتياطي)', 'research'));
+    roleSelect.value = 'research';
+    console.error('AION departments could not be loaded:', error);
+  }
+}
+
 async function sendMessage() {
   const input = document.getElementById('input');
-  const role = document.getElementById('role').value;
+  const roleSelect = document.getElementById('role');
+  const role = roleSelect.value || 'research';
   const chatBox = document.getElementById('chatBox');
   const loading = document.getElementById('loading');
   const sendBtn = document.getElementById('sendBtn');
   const message = input.value.trim();
-  if (!message) return;
+  if (!message || sendBtn.disabled) return;
 
-  chatBox.innerHTML += '<div class="msg user"><span class="role">أنت</span>' + escapeHtml(message) + '</div>';
+  const userMessage = document.createElement('div');
+  userMessage.className = 'msg user';
+  const userLabel = document.createElement('span');
+  userLabel.className = 'role';
+  userLabel.textContent = 'أنت';
+  userMessage.append(userLabel, document.createTextNode(message));
+  chatBox.appendChild(userMessage);
   input.value = '';
   chatBox.scrollTop = chatBox.scrollHeight;
   loading.classList.add('active');
@@ -97,25 +125,45 @@ async function sendMessage() {
   try {
     const response = await fetch('/api/chat', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({message: message, role: role})
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify({message, role}),
+      signal: AbortSignal.timeout(50000)
     });
-    const data = await response.json();
-    loading.classList.remove('active');
-    sendBtn.disabled = false;
-    if (data.success) {
-      const agentLabel = data.agent ? (data.agent.name + ' • ' + data.agent.id) : role.toUpperCase();
-      chatBox.innerHTML += '<div class="msg ai"><span class="role">' + escapeHtml(agentLabel) + '</span>' + escapeHtml(data.reply) + '</div>';
-    } else {
-      chatBox.innerHTML += '<div class="msg ai"><span class="role">خطأ</span>' + escapeHtml(data.error || 'Unknown') + '</div>';
+    const raw = await response.text();
+    let data;
+    try { data = JSON.parse(raw); }
+    catch { throw new Error('استجابة غير صالحة من الخادم (' + response.status + ')'); }
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || 'تعذر إرسال الرسالة (' + response.status + ')');
     }
+    const agentLabel = data.agent ? (data.agent.name + ' • ' + data.agent.id) : role.toUpperCase();
+    const answer = document.createElement('div');
+    answer.className = 'msg ai';
+    const answerLabel = document.createElement('span');
+    answerLabel.className = 'role';
+    answerLabel.textContent = agentLabel;
+    answer.append(answerLabel, document.createTextNode(data.reply || 'لم يصل رد من الوكيل.'));
+    chatBox.appendChild(answer);
   } catch (error) {
+    const errorMessage = document.createElement('div');
+    errorMessage.className = 'msg ai';
+    const errorLabel = document.createElement('span');
+    errorLabel.className = 'role';
+    errorLabel.textContent = 'تعذر الإرسال';
+    errorMessage.append(errorLabel, document.createTextNode(error?.name === 'TimeoutError'
+      ? 'انتهت مهلة الرد. حاول مرة أخرى.'
+      : (error?.message || 'حدث خطأ غير متوقع.')));
+    chatBox.appendChild(errorMessage);
+    input.value = message;
+  } finally {
     loading.classList.remove('active');
     sendBtn.disabled = false;
-    chatBox.innerHTML += '<div class="msg ai"><span class="role">خطأ</span>تعذر الاتصال: ' + escapeHtml(error.message) + '</div>';
+    chatBox.scrollTop = chatBox.scrollHeight;
+    input.focus();
   }
-  chatBox.scrollTop = chatBox.scrollHeight;
 }
+
+loadAgents();
 
 function escapeHtml(text) {
   const div = document.createElement('div');
