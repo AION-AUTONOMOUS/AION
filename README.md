@@ -55,3 +55,16 @@ Organizations interested in discussing a potential research collaboration, digit
 
 **AION AUTONOMOUS GLOBAL NETWORK**  
 Digital-first. Evidence-led. Global by design.
+
+## AION Coin & Digital Treasury — readiness tracker
+
+Track the verified steps for token readiness and treasury controls in [Issue #2146](https://github.com/AION-AUTONOMOUS/AION/issues/2146). Until contract address, network, supply, administrative permissions, and explorer evidence are published and independently checked, AION Coin must be described as under development and not verified for public trading.
+
+Treasury operating principles:
+- Keep treasury reserves separate from operating funds.
+- Never publish or request seed phrases, private keys, recovery phrases, or signing credentials.
+- Record each incoming or outgoing transaction with network, transaction hash, asset, amount, timestamp, and purpose; reconcile balances against a public explorer or authoritative wallet source.
+- Do not describe wallet addresses as treasury-controlled until ownership/control is confirmed.
+- Do not solicit deposits, promise returns, claim exchange listings, or imply backing/liquidity without independently verifiable evidence.
+- Do not deploy to mainnet, pay for listings/audits, or seed liquidity without explicit owner approval and a confirmed budget.
+
