@@ -157,7 +157,24 @@ async function serveStatic(req, res, pathname) {
   if (!target.startsWith(ROOT + path.sep) && target !== ROOT) return false;
   try {
     let data = await fs.readFile(target);
-    if (path.extname(target).toLowerCase() === ".html" && requested !== "/payment-success.html" && !data.toString("utf8").includes('src="/print-all.js"')) {
+    if (path.extname(target).toLowerCase() === ".html" && requested !== "/payment-success.html") {
+      let html = data.toString("utf8");
+      if (!html.includes('src="/si-entry.js"')) {
+        const bodyClose = html.toLowerCase().lastIndexOf("</body>");
+        html = bodyClose >= 0
+          ? html.slice(0, bodyClose) + '<script src="/si-entry.js"></script>' + html.slice(bodyClose)
+          : html;
+      }
+      if (!html.includes('src="/print-all.js"')) {
+        const bodyClose = html.toLowerCase().lastIndexOf("</body>");
+        html = bodyClose >= 0
+          ? html.slice(0, bodyClose) + '<script src="/print-all.js"></script>' + html.slice(bodyClose)
+          : html;
+      }
+      data = Buffer.from(html, "utf8");
+    }
+    /* SI portal entry is injected into every HTML page except payment confirmation. */
+    if (false && path.extname(target).toLowerCase() === ".html" && requested !== "/payment-success.html" && !data.toString("utf8").includes('src="/print-all.js"')) {
       const html = data.toString("utf8");
       const bodyCloseIndex = html.toLowerCase().lastIndexOf("</body>");
       const htmlWithPrintScript = bodyCloseIndex >= 0
