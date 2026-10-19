@@ -1,0 +1,89 @@
+name: AION Autonomy Readiness
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 6 * * *"
+  push:
+    branches: [main]
+    paths:
+      - "package.json"
+      - "hardhat.config.js"
+      - "contracts/**"
+      - "scripts/**"
+      - "test/**"
+      - "tests/**"
+      - ".github/workflows/aion-autonomy-readiness.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aion-autonomy-readiness
+  cancel-in-progress: false
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+
+      - name: Compile contracts
+        id: compile
+        continue-on-error: true
+        run: npm run compile:coin
+
+      - name: Run core tests
+        id: core
+        continue-on-error: true
+        run: npm run test:core
+
+      - name: Run coin tests
+        id: coin
+        continue-on-error: true
+        run: npm run test:coin
+
+      - name: Generate readiness report
+        if: always()
+        env:
+          COMPILE_RESULT: ${{ steps.compile.outcome }}
+          CORE_RESULT: ${{ steps.core.outcome }}
+          COIN_RESULT: ${{ steps.coin.outcome }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          {
+            echo "# AION autonomy readiness report"
+            echo
+            echo "- UTC time: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            echo "- Commit: ${COMMIT_SHA}"
+            echo "- Workflow run: ${RUN_URL}"
+            echo "- Contract compilation: ${COMPILE_RESULT:-not_run}"
+            echo "- Core tests: ${CORE_RESULT:-not_run}"
+            echo "- Coin tests: ${COIN_RESULT:-not_run}"
+            echo
+            echo "This report is diagnostic only. It does not deploy contracts, submit transactions, move funds, or claim SI provider integration."
+          } > aion-readiness-report.md
+
+      - name: Upload readiness report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aion-readiness-report-${{ github.run_id }}
+          path: aion-readiness-report.md
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Fail if any check failed
+        if: steps.compile.outcome == 'failure' || steps.core.outcome == 'failure' || steps.coin.outcome == 'failure'
+        run: exit 1
