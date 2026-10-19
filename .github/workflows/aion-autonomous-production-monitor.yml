@@ -1,0 +1,44 @@
+name: AION Autonomous Production Monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aion-production-monitor
+  cancel-in-progress: true
+
+jobs:
+  smoke-check:
+    name: Production endpoint smoke checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check public AION endpoints
+        shell: bash
+        run: |
+          set -uo pipefail
+          failed=0
+          check_url() {
+            local label="$1"
+            local url="$2"
+            local code
+            code="$(curl --silent --show-error --location --max-time 20 --output /tmp/aion-response.txt --write-out '%{http_code}' "$url" 2>/tmp/aion-curl-error.txt)" || code="000"
+            if [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
+              printf 'PASS %s HTTP %s\n' "$label" "$code"
+            else
+              printf 'FAIL %s HTTP %s\n' "$label" "$code"
+              if [[ -s /tmp/aion-curl-error.txt ]]; then cat /tmp/aion-curl-error.txt; fi
+              if [[ -s /tmp/aion-response.txt ]]; then head -c 500 /tmp/aion-response.txt; printf '\n'; fi
+              failed=1
+            fi
+          }
+          check_url "AION homepage" "https://aion-production-fbf3.up.railway.app/"
+          check_url "Order page" "https://aion-production-fbf3.up.railway.app/order.html"
+          check_url "Earth intelligence dashboard" "https://aion-production-fbf3.up.railway.app/earth-intelligence.html"
+          check_url "Earth overview API" "https://aion-production-fbf3.up.railway.app/api/earth-data?path=overview"
+          exit "$failed"
