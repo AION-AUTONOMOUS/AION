@@ -173,15 +173,6 @@ async function serveStatic(req, res, pathname) {
       }
       data = Buffer.from(html, "utf8");
     }
-    /* SI portal entry is injected into every HTML page except payment confirmation. */
-    if (false && path.extname(target).toLowerCase() === ".html" && requested !== "/payment-success.html" && !data.toString("utf8").includes('src="/print-all.js"')) {
-      const html = data.toString("utf8");
-      const bodyCloseIndex = html.toLowerCase().lastIndexOf("</body>");
-      const htmlWithPrintScript = bodyCloseIndex >= 0
-        ? html.slice(0, bodyCloseIndex) + '<script src="/print-all.js"></script>' + html.slice(bodyCloseIndex)
-        : html;
-      data = Buffer.from(htmlWithPrintScript, "utf8");
-    }
     res.writeHead(200, {
       "Content-Type": mime[path.extname(target).toLowerCase()] || "application/octet-stream",
       "Cache-Control": requested === "/index.html" ? "no-store" : "public, max-age=300"
