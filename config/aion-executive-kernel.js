@@ -2,8 +2,8 @@
  * AION Executive Kernel — policy-first decision boundary.
  *
  * This module makes no network calls and executes no external actions.
- * It classifies proposed work and emits an auditable decision record.
- */
+ * It classifies proposed work and emits an audit event.
+ */ 
 export const KERNEL_VERSION = '0.1.0';
 
 const HIGH_IMPACT = new Set([
@@ -82,7 +82,9 @@ export function decideAction(input) {
 }
 
 /**
- * Build a redacted audit event. Callers must not pass secrets as evidence.
+ * Build an audit event from a policy decision.
+ * Evidence references are copied as supplied; callers must redact secrets
+ * before calling this function. This function does not execute actions.
  */
 export function createAuditRecord(input) {
   if (!input || typeof input !== 'object') {
