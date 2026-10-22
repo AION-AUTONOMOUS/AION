@@ -2,6 +2,8 @@ import { TOTAL_AGENTS, findAgent } from '../config/aion-fleet.js';
 
 const ALLOWED_ORIGIN =
   process.env.AION_PUBLIC_ORIGIN || 'https://aion-theta-eight.vercel.app';
+const CHAT_MODEL = process.env.AION_GROQ_CHAT_MODEL || process.env.AION_GROQ_MODEL || 'openai/gpt-oss-120b';
+const CHAT_TIMEOUT_MS = Math.min(60000, Math.max(5000, Number(process.env.AION_CHAT_TIMEOUT_MS || 45000)));
 
 function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
@@ -41,13 +43,13 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'openai/gpt-oss-120b',
+        model: CHAT_MODEL,
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: message }
         ],
         temperature: isTeacher ? 0.2 : 0.7,
-        signal: AbortSignal.timeout(45000)
+        signal: AbortSignal.timeout(CHAT_TIMEOUT_MS)
       })
     });
 
@@ -57,7 +59,7 @@ export default async function handler(req, res) {
     catch { return res.status(502).json({ success: false, error: 'AI provider returned invalid JSON' }); }
 
     if (!groqRes.ok) {
-      console.error('AION Groq error:', data);
+      console.error('AION Groq request failed with HTTP status:', groqRes.status);
       return res.status(502).json({ success: false, error: 'AI provider error' });
     }
 
@@ -78,7 +80,10 @@ export default async function handler(req, res) {
       total_agents: TOTAL_AGENTS
     });
   } catch (error) {
-    console.error('AION chat error:', error);
+    if (error?.name === 'TimeoutError' || error?.name === 'AbortError') {
+      return res.status(504).json({ success: false, error: 'AI provider timed out' });
+    }
+    console.error('AION chat request failed:', error?.name || 'UnknownError');
     return res.status(500).json({ success: false, error: 'Internal server error' });
   }
 }
