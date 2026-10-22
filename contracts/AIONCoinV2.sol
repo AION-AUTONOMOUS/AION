@@ -6,75 +6,70 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 /**
  * AION COIN — V2
  *
- * Fixed supply: 10,000,000,000 AION
- * Decimals: 18
- * Transfer tax: 0%
- * Public minting: disabled
+ * Approved planned tokenomics (fixed supply: 10,000,000,000 AION):
+ * - Charity: 25%
+ * - Founder: 60%
+ * - Development: 5%
+ * - Community: 5%
+ * - Digital reserve: 5%
  *
- * Founder allocation is initially minted to a founder treasury
- * address and can later be transferred into the separate
- * founder vesting vault.
+ * Transfer tax: 0%. Public minting: disabled.
+ * This contract does not itself verify charitable spending or impose
+ * vesting on the founder allocation; those require separate controls.
  *
- * The token does NOT claim to be backed by USD, gold, silver,
- * oil, GBP, ILS, or SAR. Reserve/oracle/basket systems are separate.
+ * The token is not represented as backed by fiat, commodities, or any
+ * other asset. A source-code change is not proof of deployment.
  */
 contract AIONCoinV2 is ERC20 {
-    uint256 public constant INITIAL_SUPPLY =
-        10_000_000_000 ether;
+    uint256 public constant INITIAL_SUPPLY = 10_000_000_000 ether;
 
-    uint256 public constant FOUNDER_ALLOCATION =
-        6_000_000_000 ether;
+    uint256 public constant CHARITY_ALLOCATION = 2_500_000_000 ether;
+    uint256 public constant FOUNDER_ALLOCATION = 6_000_000_000 ether;
+    uint256 public constant DEVELOPMENT_ALLOCATION = 500_000_000 ether;
+    uint256 public constant COMMUNITY_ALLOCATION = 500_000_000 ether;
+    uint256 public constant DIGITAL_RESERVE_ALLOCATION = 500_000_000 ether;
 
-    uint256 public constant COMMUNITY_ALLOCATION =
-        1_500_000_000 ether;
-
-    uint256 public constant AI_REWARDS_ALLOCATION =
-        1_000_000_000 ether;
-
-    uint256 public constant DEVELOPMENT_ALLOCATION =
-        700_000_000 ether;
-
-    uint256 public constant DIGITAL_RESERVE_ALLOCATION =
-        500_000_000 ether;
-
-    uint256 public constant STRATEGIC_ALLOCATION =
-        300_000_000 ether;
-
+    address public immutable charityTreasury;
     address public immutable founderTreasury;
-    address public immutable communityTreasury;
-    address public immutable aiRewardsTreasury;
     address public immutable developmentTreasury;
+    address public immutable communityTreasury;
     address public immutable digitalReserve;
-    address public immutable strategicTreasury;
 
     constructor(
+        address _charityTreasury,
         address _founderTreasury,
-        address _communityTreasury,
-        address _aiRewardsTreasury,
         address _developmentTreasury,
-        address _digitalReserve,
-        address _strategicTreasury
+        address _communityTreasury,
+        address _digitalReserve
     ) ERC20("AION", "AION") {
+        require(_charityTreasury != address(0), "AION: zero charity");
         require(_founderTreasury != address(0), "AION: zero founder");
-        require(_communityTreasury != address(0), "AION: zero community");
-        require(_aiRewardsTreasury != address(0), "AION: zero AI rewards");
         require(_developmentTreasury != address(0), "AION: zero development");
+        require(_communityTreasury != address(0), "AION: zero community");
         require(_digitalReserve != address(0), "AION: zero reserve");
-        require(_strategicTreasury != address(0), "AION: zero strategic");
 
+        require(_charityTreasury != _founderTreasury, "AION: duplicate treasury");
+        require(_charityTreasury != _developmentTreasury, "AION: duplicate treasury");
+        require(_charityTreasury != _communityTreasury, "AION: duplicate treasury");
+        require(_charityTreasury != _digitalReserve, "AION: duplicate treasury");
+        require(_founderTreasury != _developmentTreasury, "AION: duplicate treasury");
+        require(_founderTreasury != _communityTreasury, "AION: duplicate treasury");
+        require(_founderTreasury != _digitalReserve, "AION: duplicate treasury");
+        require(_developmentTreasury != _communityTreasury, "AION: duplicate treasury");
+        require(_developmentTreasury != _digitalReserve, "AION: duplicate treasury");
+        require(_communityTreasury != _digitalReserve, "AION: duplicate treasury");
+
+        charityTreasury = _charityTreasury;
         founderTreasury = _founderTreasury;
-        communityTreasury = _communityTreasury;
-        aiRewardsTreasury = _aiRewardsTreasury;
         developmentTreasury = _developmentTreasury;
+        communityTreasury = _communityTreasury;
         digitalReserve = _digitalReserve;
-        strategicTreasury = _strategicTreasury;
 
+        _mint(_charityTreasury, CHARITY_ALLOCATION);
         _mint(_founderTreasury, FOUNDER_ALLOCATION);
-        _mint(_communityTreasury, COMMUNITY_ALLOCATION);
-        _mint(_aiRewardsTreasury, AI_REWARDS_ALLOCATION);
         _mint(_developmentTreasury, DEVELOPMENT_ALLOCATION);
+        _mint(_communityTreasury, COMMUNITY_ALLOCATION);
         _mint(_digitalReserve, DIGITAL_RESERVE_ALLOCATION);
-        _mint(_strategicTreasury, STRATEGIC_ALLOCATION);
 
         assert(totalSupply() == INITIAL_SUPPLY);
     }
