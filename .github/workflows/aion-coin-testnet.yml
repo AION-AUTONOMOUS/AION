@@ -11,8 +11,7 @@ permissions:
 
 jobs:
   deploy:
-    # Automatic one-shot deployment is enabled only for an explicitly marked main-branch commit.
-    # This lets the project operators trigger testnet from the merge itself without manual UI steps.
+    # Only manually dispatched runs or explicitly marked main commits may deploy to testnet.
     if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[run-aion-coin-testnet]')
     runs-on: ubuntu-latest
     environment: aion-coin-testnet
@@ -29,15 +28,14 @@ jobs:
       - name: Validate testnet configuration
         env:
           DEPLOYER_PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+          AION_CHARITY_TREASURY: ${{ secrets.AION_CHARITY_TREASURY }}
           AION_FOUNDER_TREASURY: ${{ secrets.AION_FOUNDER_TREASURY }}
-          AION_COMMUNITY_TREASURY: ${{ secrets.AION_COMMUNITY_TREASURY }}
-          AION_AI_REWARDS_TREASURY: ${{ secrets.AION_AI_REWARDS_TREASURY }}
           AION_DEVELOPMENT_TREASURY: ${{ secrets.AION_DEVELOPMENT_TREASURY }}
+          AION_COMMUNITY_TREASURY: ${{ secrets.AION_COMMUNITY_TREASURY }}
           AION_DIGITAL_RESERVE: ${{ secrets.AION_DIGITAL_RESERVE }}
-          AION_STRATEGIC_TREASURY: ${{ secrets.AION_STRATEGIC_TREASURY }}
         run: |
           set -euo pipefail
-          for name in DEPLOYER_PRIVATE_KEY AION_FOUNDER_TREASURY AION_COMMUNITY_TREASURY AION_AI_REWARDS_TREASURY AION_DEVELOPMENT_TREASURY AION_DIGITAL_RESERVE AION_STRATEGIC_TREASURY; do
+          for name in DEPLOYER_PRIVATE_KEY AION_CHARITY_TREASURY AION_FOUNDER_TREASURY AION_DEVELOPMENT_TREASURY AION_COMMUNITY_TREASURY AION_DIGITAL_RESERVE; do
             if [ -z "${!name:-}" ]; then
               echo "::error::Required GitHub secret is missing: $name"
               exit 1
@@ -48,10 +46,9 @@ jobs:
       - name: Deploy AION Coin to BNB Testnet
         env:
           DEPLOYER_PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+          AION_CHARITY_TREASURY: ${{ secrets.AION_CHARITY_TREASURY }}
           AION_FOUNDER_TREASURY: ${{ secrets.AION_FOUNDER_TREASURY }}
-          AION_COMMUNITY_TREASURY: ${{ secrets.AION_COMMUNITY_TREASURY }}
-          AION_AI_REWARDS_TREASURY: ${{ secrets.AION_AI_REWARDS_TREASURY }}
           AION_DEVELOPMENT_TREASURY: ${{ secrets.AION_DEVELOPMENT_TREASURY }}
+          AION_COMMUNITY_TREASURY: ${{ secrets.AION_COMMUNITY_TREASURY }}
           AION_DIGITAL_RESERVE: ${{ secrets.AION_DIGITAL_RESERVE }}
-          AION_STRATEGIC_TREASURY: ${{ secrets.AION_STRATEGIC_TREASURY }}
         run: npm run deploy:coin:testnet
