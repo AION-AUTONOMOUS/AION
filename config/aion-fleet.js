@@ -27,6 +27,8 @@ const DEPARTMENT_NAMES = [
 
 export const AGENTS_PER_DEPARTMENT = 50_000;
 export const TOTAL_AGENTS = DEPARTMENT_NAMES.length * AGENTS_PER_DEPARTMENT;
+// Backward-compatible alias used by older worker/runtime modules.
+export const AGENTS = TOTAL_AGENTS;
 
 export const DEPARTMENTS = Object.fromEntries(
   DEPARTMENT_NAMES.map(([id, name, mission]) => [
