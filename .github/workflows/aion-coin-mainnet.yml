@@ -1,0 +1,59 @@
+name: AION Coin Mainnet Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_mainnet_deployment:
+        description: "Confirm that treasury addresses, allocation, audit status, and gas funding were reviewed"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: inputs.confirm_mainnet_deployment == true
+    runs-on: ubuntu-latest
+    environment: aion-coin-mainnet
+    env:
+      BSC_RPC_URL: ${{ secrets.BSC_RPC_URL || 'https://bsc-dataseed.bnbchain.org' }}
+      AION_ALLOW_MAINNET_DEPLOYMENT: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install
+      - name: Compile and test token
+        run: |
+          npm run compile:coin
+          npm run test:coin
+      - name: Validate mainnet configuration
+        env:
+          DEPLOYER_PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+          AION_CHARITY_TREASURY: ${{ secrets.AION_CHARITY_TREASURY }}
+          AION_FOUNDER_TREASURY: ${{ secrets.AION_FOUNDER_TREASURY }}
+          AION_DEVELOPMENT_TREASURY: ${{ secrets.AION_DEVELOPMENT_TREASURY }}
+          AION_COMMUNITY_TREASURY: ${{ secrets.AION_COMMUNITY_TREASURY }}
+          AION_DIGITAL_RESERVE: ${{ secrets.AION_DIGITAL_RESERVE }}
+        run: |
+          set -euo pipefail
+          for name in DEPLOYER_PRIVATE_KEY AION_CHARITY_TREASURY AION_FOUNDER_TREASURY AION_DEVELOPMENT_TREASURY AION_COMMUNITY_TREASURY AION_DIGITAL_RESERVE; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::Required GitHub environment secret is missing: $name"
+              exit 1
+            fi
+          done
+          test -n "${BSC_RPC_URL:-}" || (echo "::error::Mainnet RPC URL is empty" && exit 1)
+          echo "Required mainnet secrets are present; deployment script will validate chain ID and all treasury addresses."
+      - name: Deploy AION Coin to BNB Smart Chain Mainnet
+        env:
+          DEPLOYER_PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+          AION_CHARITY_TREASURY: ${{ secrets.AION_CHARITY_TREASURY }}
+          AION_FOUNDER_TREASURY: ${{ secrets.AION_FOUNDER_TREASURY }}
+          AION_DEVELOPMENT_TREASURY: ${{ secrets.AION_DEVELOPMENT_TREASURY }}
+          AION_COMMUNITY_TREASURY: ${{ secrets.AION_COMMUNITY_TREASURY }}
+          AION_DIGITAL_RESERVE: ${{ secrets.AION_DIGITAL_RESERVE }}
+        run: npm run deploy:coin:mainnet
