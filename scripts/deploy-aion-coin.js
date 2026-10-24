@@ -1,12 +1,11 @@
 import { network } from "hardhat";
 
 const treasuryNames = [
+  "AION_CHARITY_TREASURY",
   "AION_FOUNDER_TREASURY",
-  "AION_COMMUNITY_TREASURY",
-  "AION_AI_REWARDS_TREASURY",
   "AION_DEVELOPMENT_TREASURY",
+  "AION_COMMUNITY_TREASURY",
   "AION_DIGITAL_RESERVE",
-  "AION_STRATEGIC_TREASURY",
 ];
 
 const treasuries = treasuryNames.map((name) => {
@@ -22,7 +21,7 @@ for (let i = 0; i < treasuries.length; i += 1) {
   }
 }
 if (new Set(treasuries.map((address) => address.toLowerCase())).size !== treasuries.length) {
-  throw new Error("All six AION treasury addresses must be distinct");
+  throw new Error("All five AION treasury addresses must be distinct");
 }
 
 const chain = await ethers.provider.getNetwork();
@@ -39,6 +38,19 @@ if (totalSupply !== ethers.parseUnits("10000000000", 18)) {
   throw new Error(`Unexpected AION total supply: ${totalSupply}`);
 }
 
+const expected = [
+  ["charity", "2500000000", await token.CHARITY_ALLOCATION()],
+  ["founder", "6000000000", await token.FOUNDER_ALLOCATION()],
+  ["development", "500000000", await token.DEVELOPMENT_ALLOCATION()],
+  ["community", "500000000", await token.COMMUNITY_ALLOCATION()],
+  ["digitalReserve", "500000000", await token.DIGITAL_RESERVE_ALLOCATION()],
+];
+for (const [name, amount, actual] of expected) {
+  if (actual !== ethers.parseUnits(amount, 18)) {
+    throw new Error(`Unexpected ${name} allocation: ${actual}`);
+  }
+}
+
 console.log(JSON.stringify({
   contract: "AIONCoinV2",
   address,
@@ -46,7 +58,6 @@ console.log(JSON.stringify({
   chainId: chain.chainId.toString(),
   symbol: await token.symbol(),
   totalSupply: ethers.formatUnits(totalSupply, 18),
-  treasuries: Object.fromEntries(
-    treasuryNames.map((name, index) => [name, treasuries[index]])
-  ),
+  allocations: Object.fromEntries(expected.map(([name, amount]) => [name, amount])),
+  treasuries: Object.fromEntries(treasuryNames.map((name, index) => [name, treasuries[index]])),
 }, null, 2));

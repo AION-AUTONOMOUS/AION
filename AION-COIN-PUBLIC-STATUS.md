@@ -1,24 +1,43 @@
 # AION Coin — Public Project Status
 
 **Project:** AION AUTONOMOUS GLOBAL NETWORK  
-**Asset name:** AION Coin (planned)  
+**Asset name:** AION Coin (planned; not represented as live or purchasable)  
 **Official project site:** https://aion-production-fbf3.up.railway.app/  
 **Repository:** https://github.com/AION-AUTONOMOUS/AION  
 **Contact:** aion.genesisss@gmail.com
 
+## Approved planned tokenomics
+
+Total fixed supply: **10,000,000,000 AION**.
+
+| Allocation | Share | Tokens |
+|---|---:|---:|
+| Charity, for charitable purposes | 25% | 2,500,000,000 |
+| Founder | 60% | 6,000,000,000 |
+| Development | 5% | 500,000,000 |
+| Community | 5% | 500,000,000 |
+| Digital reserve | 5% | 500,000,000 |
+| **Total** | **100%** | **10,000,000,000** |
+
+The charity allocation is a project allocation, not proof of a registered charity, tax-deductible donation, or completed charitable transfer. Wallet control, governance, reporting, and applicable legal/compliance requirements must be verified before any public launch.
+
 ## Current status
 
-AION Coin is under development. This page is a public project-status notice, not a token listing, offer to sell, or investment solicitation.
+AION Coin remains under development. This status notice is not a token listing, offer to sell, or investment solicitation.
 
 - No mainnet contract address is being announced here.
 - No exchange listing, trading market, liquidity, price, or return is claimed.
 - Do not send funds or cryptocurrency to anyone claiming to sell or distribute AION Coin on behalf of this project.
-- Any testnet deployment will be explicitly labeled as a test network and is not real-money value.
-- A public launch would require verified contract tests, independently checked token supply and treasury configuration, documented deployment evidence, security review, and applicable legal/compliance review.
+- Any testnet deployment must be explicitly labeled as a test network and has no real-money value.
+- A public launch requires verified contract tests, independently checked token supply and treasury configuration, deployment evidence, security review, and applicable legal/compliance review.
 
-## Intended next milestone
+## Deployment evidence required
 
-Complete the approved testnet deployment only after the six distinct treasury wallet addresses and required deployment settings are verified. Record the network, contract address, transaction hash, and verification links before announcing a testnet release.
+Before announcing any testnet or mainnet release, record the network and chain ID, deployed contract address, transaction hash, bytecode verification status, total supply, and the five distinct treasury addresses. Never infer a mainnet deployment from testnet activity.
+
+## Security
+
+Private keys and recovery phrases must never be committed to the repository, printed in workflow logs, or shared in chat. Mainnet deployment and any movement of real funds require explicit approval.
 
 ## Contact
 
