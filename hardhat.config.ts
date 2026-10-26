@@ -27,7 +27,7 @@ export default defineConfig({
     bsc: {
       type: "http",
       chainType: "l1",
-      url: process.env.BSC_RPC_URL || "",
+      url: process.env.BSC_RPC_URL || "https://bsc-dataseed.binance.org",
       accounts: process.env.DEPLOYER_PRIVATE_KEY ? [process.env.DEPLOYER_PRIVATE_KEY] : [],
       chainId: 56,
     },
