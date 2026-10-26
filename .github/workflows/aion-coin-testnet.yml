@@ -23,6 +23,8 @@ jobs:
         with:
           node-version: 24
       - run: npm install
+      - name: Diagnose Hardhat dependency versions
+        run: npm ls hardhat @nomicfoundation/hardhat-zod-utils zod
       - run: npm run compile:coin
       - run: npm run test:coin
       - name: Validate testnet configuration
