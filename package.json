@@ -26,6 +26,7 @@
     "redis": "^6.2.1"
   },
   "overrides": {
+    "@nomicfoundation/hardhat-zod-utils": "^3.0.6",
     "diff": "^8.0.3",
     "serialize-javascript": "^7.0.5",
     "zod": "^4.6.6"
