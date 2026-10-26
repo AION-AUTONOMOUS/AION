@@ -15,7 +15,7 @@
     "deploy:coin:mainnet": "hardhat run scripts/deploy-aion-coin.js --network bsc"
   },
   "devDependencies": {
-    "hardhat": "^3.18.0",
+    "hardhat": "^3.21.0",
     "@openzeppelin/contracts": "^5.6.1",
     "chai": "^5.3.3",
     "@nomicfoundation/hardhat-ethers-chai-matchers": "^3.0.11",
@@ -28,6 +28,6 @@
   "overrides": {
     "diff": "^8.0.3",
     "serialize-javascript": "^7.0.5",
-    "zod": "^3.25.76"
+    "zod": "^4.6.6"
   }
 }
