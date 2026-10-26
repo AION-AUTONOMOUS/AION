@@ -49,6 +49,10 @@ const token = await ethers.deployContract("AIONCoinV2", treasuries);
 await token.waitForDeployment();
 
 const address = await token.getAddress();
+const deploymentTransaction = token.deploymentTransaction();
+if (!deploymentTransaction?.hash) {
+  throw new Error("Deployment transaction hash is unavailable; refusing to report deployment as complete");
+}
 const totalSupply = await token.totalSupply();
 if (totalSupply !== ethers.parseUnits("10000000000", 18)) {
   throw new Error(`Unexpected AION total supply: ${totalSupply}`);
@@ -70,6 +74,8 @@ for (const [name, amount, actual] of expected) {
 console.log(JSON.stringify({
   contract: "AIONCoinV2",
   address,
+  transactionHash: deploymentTransaction.hash,
+  explorerUrl: `https://testnet.bscscan.com/tx/${deploymentTransaction.hash}`,
   network: selectedNetwork.name,
   chainId: chain.chainId.toString(),
   symbol: await token.symbol(),
