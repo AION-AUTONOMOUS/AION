@@ -4,6 +4,7 @@ This record triggers the existing guarded GitHub Actions workflow for a **testne
 
 - Contract: `AIONCoinV2`
 - Target network: BNB Smart Chain Testnet (chain ID `97`)
+- Trigger policy: the repository workflow requires a main-branch commit message containing `[run-aion-coin-testnet]` or a manual workflow dispatch.
 - Required secrets remain in GitHub Actions; never commit or share deployer private keys.
 - The workflow validates the deployer key and five distinct treasury addresses before deployment.
 - This record is not proof of deployment. Record the contract address and transaction details only from a successful workflow log and a verified testnet explorer transaction.
