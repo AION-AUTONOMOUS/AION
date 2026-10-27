@@ -44,6 +44,15 @@ jobs:
             fi
           done
           test -n "${BSC_TESTNET_RPC_URL:-}" || (echo "::error::Testnet RPC URL is empty" && exit 1)
+          node <<'NODE'
+          const raw = process.env.DEPLOYER_PRIVATE_KEY?.trim().replace(/^["']|["']$/g, "");
+          const key = raw ? (raw.startsWith("0x") ? raw : `0x${raw}`) : "";
+          if (!/^0x[0-9a-fA-F]{64}$/.test(key)) {
+            console.error("::error::DEPLOYER_PRIVATE_KEY format is invalid: expected 64 hexadecimal characters, optionally prefixed with 0x. Secret value was not displayed.");
+            process.exit(1);
+          }
+          console.log("Deployer private-key format validated; secret value was not displayed.");
+          NODE
           echo "Testnet configuration validated."
       - name: Deploy AION Coin to BNB Testnet
         env:
