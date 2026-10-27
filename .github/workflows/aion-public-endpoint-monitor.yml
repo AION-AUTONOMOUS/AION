@@ -1,0 +1,63 @@
+name: AION Public Endpoint Monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aion-public-endpoint-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    name: Check public AION and SI endpoints
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check public HTTPS endpoints
+        id: checks
+        shell: bash
+        run: |
+          set +e
+          failures=0
+          check_url() {
+            label="$1"
+            url="$2"
+            tmp="$(mktemp)"
+            code="$(curl --location --silent --show-error --output "$tmp" --write-out '%{http_code}' --connect-timeout 10 --max-time 25 "$url" 2>/dev/null)"
+            rc=$?
+            if [ "$rc" -eq 0 ] && [[ "$code" =~ ^2[0-9][0-9]$ ]]; then
+              printf 'PASS | %s | HTTP %s | %s\n' "$label" "$code" "$url" | tee -a "$GITHUB_STEP_SUMMARY"
+            else
+              printf 'FAIL | %s | HTTP %s | curl_exit=%s | %s\n' "$label" "${code:-000}" "$rc" "$url" | tee -a "$GITHUB_STEP_SUMMARY"
+              failures=$((failures + 1))
+            fi
+            rm -f "$tmp"
+          }
+          {
+            echo "# AION public endpoint monitor"
+            echo
+            echo "Checked at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            echo
+            echo "This workflow checks reachability only. HTTP success does not prove product, payment, wallet, token, or blockchain readiness."
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
+          check_url "AION production health" "https://aion-production-fbf3.up.railway.app/health"
+          check_url "SI Exchange health" "https://si-exchange-1vq1.vercel.app/health"
+          check_url "SI Exchange public online manifest" "https://si-exchange-1vq1.vercel.app/online-manifest"
+          echo "failures=$failures" >> "$GITHUB_OUTPUT"
+          exit "$failures"
+      - name: Record monitoring boundary
+        if: always()
+        run: |
+          {
+            echo
+            echo "## Monitoring limits"
+            echo "- This job does not access secrets, sign transactions, move funds, or change production services."
+            echo "- A failed check requires reviewing the endpoint response and deployment logs."
+            echo "- This job does not verify the existence of AION Nova/Orbit public chains or a live digital vault."
+          } >> "$GITHUB_STEP_SUMMARY"
