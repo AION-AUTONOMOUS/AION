@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "project": "AION AUTONOMOUS",
+  "status": "specification-only",
+  "productionReady": false,
+  "networks": [
+    {
+      "name": "AION Nova",
+      "chainId": 71101,
+      "role": "development",
+      "status": "not-running",
+      "rpcUrlEnv": "AION_NOVA_RPC_URL",
+      "explorerUrlEnv": "AION_NOVA_EXPLORER_URL",
+      "nativeCurrency": { "name": "AION Nova Gas", "symbol": "ANOVA", "decimals": 18 }
+    },
+    {
+      "name": "AION Orbit",
+      "chainId": 71102,
+      "role": "staging",
+      "status": "not-running",
+      "rpcUrlEnv": "AION_ORBIT_RPC_URL",
+      "explorerUrlEnv": "AION_ORBIT_EXPLORER_URL",
+      "nativeCurrency": { "name": "AION Orbit Gas", "symbol": "AORB", "decimals": 18 }
+    }
+  ],
+  "launchGates": {
+    "chainIdUniquenessChecked": false,
+    "publicRpcVerified": false,
+    "consensusAndValidatorsRunning": false,
+    "explorerAvailable": false,
+    "monitoringConfigured": false,
+    "freeDeploymentsSponsorFunded": false,
+    "securityReviewComplete": false,
+    "aionTokenDeployed": false
+  },
+  "freeDeploymentPromotion": {
+    "enabled": false,
+    "limit": 50,
+    "countingRule": "first-50-successful-deployments-per-network",
+    "requiresGasSponsor": true,
+    "requiresAbuseProtection": true
+  }
+}
