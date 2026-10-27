@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-27",
+  "policy": {
+    "evidence_first": true,
+    "paid_spend_requires_explicit_approval": true,
+    "never_store_secrets": true,
+    "real_money_exchange_enabled": false,
+    "mainnet_deployment_authorized": false
+  },
+  "services": [
+    {
+      "id": "aion-source",
+      "name": "AION AUTONOMOUS source repository",
+      "owner_control": "GitHub repository accessible through connected integration; legal/account ownership not independently verified here",
+      "environment": "production-source",
+      "url": "https://github.com/AION-AUTONOMOUS/AION",
+      "status": "verified-repository",
+      "evidence": [
+        "https://github.com/AION-AUTONOMOUS/AION/blob/main/docs/AION-ONLINE-OWNERSHIP-ROADMAP.md",
+        "https://github.com/AION-AUTONOMOUS/AION/issues/2180"
+      ],
+      "health_check": "Repository access verified via GitHub integration; this is not an application health check",
+      "cost": "Provider plan and billing not independently verified",
+      "next_action": "Verify repository owner/access, branch protection, CI and recovery process"
+    },
+    {
+      "id": "si-exchange",
+      "name": "SI Exchange Arabic RTL simulated exchange",
+      "owner_control": "Separate GitHub repository and separate Vercel project observed; legal/account ownership not independently verified",
+      "environment": "production-demo",
+      "repository": "https://github.com/aiongenesisss-commits/si-exchange",
+      "url": "https://si-exchange-1vq1.vercel.app",
+      "latest_observed_deployment": {
+        "deployment_id": "dpl_G1hLeD4EYtjdS9jGmpn9hJSEJHHm",
+        "state": "READY",
+        "source_commit": "62617f6ba2d293fa48603746a572eb8ff9ce735e",
+        "source_branch": "main",
+        "deployment_inspector": "https://vercel.com/aiongenesisss-8801/si-exchange-1vq1/G1hLeD4EYtjdS9jGmpn9hJSEJHHm"
+      },
+      "status": "deployed-unverified",
+      "health_check": "Vercel reports deployment READY; public end-to-end health check not independently confirmed in this run",
+      "financial_mode": "simulation-only; no live trading, deposits, withdrawals or custody",
+      "cost": "Vercel team plan observed as Hobby; current billing/usage limits not independently verified",
+      "next_action": "Verify /health or readiness route, dashboard, order flow, audit endpoint and persistent database configuration"
+    },
+    {
+      "id": "aion-coin-bsc-testnet",
+      "name": "AION Coin on BNB Smart Chain Testnet",
+      "repository": "https://github.com/AION-AUTONOMOUS/AION",
+      "chain_id": 97,
+      "status": "blocked",
+      "evidence": [
+        "https://github.com/AION-AUTONOMOUS/AION/issues/2170",
+        "https://testnet.bscscan.com/"
+      ],
+      "blocker": "GitHub Actions deployer private-key secret previously failed validation as malformed; no verified contract address or transaction hash",
+      "next_action": "Owner corrects DEPLOYER_PRIVATE_KEY privately in the protected GitHub environment, then reruns testnet deployment and independently verifies transaction and contract"
+    },
+    {
+      "id": "aion-nova",
+      "name": "AION Nova EVM network",
+      "chain_id": 71101,
+      "status": "proposed",
+      "public_rpc": null,
+      "explorer": null,
+      "token_contract": null,
+      "next_action": "Complete isolated multi-node local devnet tests, then define consensus, validator operations, RPC security, monitoring and recovery before public provisioning"
+    },
+    {
+      "id": "aion-orbit",
+      "name": "AION Orbit EVM network",
+      "chain_id": 71102,
+      "status": "proposed",
+      "public_rpc": null,
+      "explorer": null,
+      "token_contract": null,
+      "next_action": "Complete isolated multi-node local devnet tests, then define consensus, validator operations, RPC security, monitoring and recovery before public provisioning"
+    },
+    {
+      "id": "digital-vault",
+      "name": "AION digital vault and treasury",
+      "status": "not-verified",
+      "public_wallet_addresses_published": false,
+      "private_keys_or_seed_phrases_stored": false,
+      "next_action": "Inventory owner-designated public addresses and verify balances from explorers; keep signing material offline and use independent approvals"
+    },
+    {
+      "id": "si-integration",
+      "name": "TheSuperIntelligence.SI integration",
+      "url": "https://www.thesuperintelligence.si/",
+      "status": "not-verified",
+      "next_action": "Locate official supported API/authentication documentation or retain handover-only operation; do not assume an API exists"
+    },
+    {
+      "id": "aion-company-web",
+      "name": "AION public company website and API",
+      "url": "https://aion-production-fbf3.up.railway.app/",
+      "status": "deployed-unverified",
+      "health_check": "Previously reported reachable API endpoints are not rechecked in this registry update",
+      "cost": "Railway billing/usage not independently verified",
+      "next_action": "Recheck public health endpoints, latest deployment commit, domain TLS and current usage/cost"
+    }
+  ]
+}
