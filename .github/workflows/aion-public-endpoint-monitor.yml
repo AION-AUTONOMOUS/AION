@@ -1,6 +1,9 @@
 name: AION Public Endpoint Monitor
 
 on:
+  pull_request:
+    paths:
+      - ".github/workflows/aion-public-endpoint-monitor.yml"
   workflow_dispatch:
   schedule:
     - cron: "17 */6 * * *"
@@ -19,7 +22,6 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Check public HTTPS endpoints
-        id: checks
         shell: bash
         run: |
           set +e
