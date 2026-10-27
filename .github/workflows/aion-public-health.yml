@@ -1,0 +1,60 @@
+name: AION Public Health Check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aion-public-health
+  cancel-in-progress: true
+
+jobs:
+  check-public-endpoints:
+    name: Check public endpoints
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check AION website
+        env:
+          URL: https://aion-production-fbf3.up.railway.app/
+        run: |
+          set -euo pipefail
+          code="$(curl --location --silent --show-error --max-time 25 --output /tmp/aion-home.html --write-out '%{http_code}' "$URL")"
+          echo "AION website HTTP status: $code"
+          test "$code" -ge 200 && test "$code" -lt 300
+          test -s /tmp/aion-home.html
+
+      - name: Check AION Earth data API
+        env:
+          URL: "https://aion-production-fbf3.up.railway.app/api/earth-data?path=overview"
+        run: |
+          set -euo pipefail
+          code="$(curl --location --silent --show-error --max-time 25 --output /tmp/aion-earth.json --write-out '%{http_code}' "$URL")"
+          echo "AION Earth API HTTP status: $code"
+          test "$code" -ge 200 && test "$code" -lt 300
+          test -s /tmp/aion-earth.json
+
+      - name: Check SI Exchange website
+        env:
+          URL: https://si-exchange-1vq1.vercel.app/
+        run: |
+          set -euo pipefail
+          code="$(curl --location --silent --show-error --max-time 25 --output /tmp/si-exchange.html --write-out '%{http_code}' "$URL")"
+          echo "SI Exchange HTTP status: $code"
+          test "$code" -ge 200 && test "$code" -lt 300
+          test -s /tmp/si-exchange.html
+
+      - name: Record safe summary
+        if: always()
+        run: |
+          {
+            echo "## AION public endpoint checks"
+            echo "- This workflow checks HTTP reachability only; it does not prove full product readiness, security, uptime SLA, or blockchain deployment."
+            echo "- AION website: https://aion-production-fbf3.up.railway.app/"
+            echo "- Earth API: https://aion-production-fbf3.up.railway.app/api/earth-data?path=overview"
+            echo "- SI Exchange: https://si-exchange-1vq1.vercel.app/"
+          } >> "$GITHUB_STEP_SUMMARY"
