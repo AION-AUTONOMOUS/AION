@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-27",
+  "company": "AION AUTONOMOUS GLOBAL NETWORK",
+  "contact": "aion.genesisss@gmail.com",
+  "policy": {
+    "paid_spend_requires_explicit_approval": true,
+    "never_store_secrets_in_registry": true,
+    "never_mark_live_without_evidence": true
+  },
+  "services": [
+    {
+      "id": "aion-primary-web",
+      "name": "AION primary web application",
+      "purpose": "Public company/application presence",
+      "control": "Hosting provider is external; account/domain ownership requires separate verification",
+      "environment": "production",
+      "url": "https://aion-production-fbf3.up.railway.app/",
+      "status": "deployed-unverified",
+      "health_evidence": null,
+      "cost": "Not verified in this registry; no new resources authorized",
+      "data_and_recovery": "Backup and restore test not yet evidenced",
+      "next_action": "Run a fresh public health check and verify provider account ownership, domain/TLS, backups, and costs"
+    },
+    {
+      "id": "si-exchange-demo",
+      "name": "SI Exchange",
+      "purpose": "Arabic RTL simulated exchange demo",
+      "control": "GitHub source repository known; hosting account ownership requires verification",
+      "environment": "production-demo",
+      "repository": "https://github.com/aiongenesisss-commits/si-exchange",
+      "url": "https://si-exchange-1vq1.vercel.app",
+      "status": "deployed-unverified",
+      "health_evidence": null,
+      "financial_mode": "simulation-only; no live trading, deposits, withdrawals, or custody",
+      "cost": "Not verified in this registry; no new resources authorized",
+      "next_action": "Run a fresh public health check and verify hosting access, build provenance, costs, and backup/export procedure"
+    },
+    {
+      "id": "aion-coin-bsc-testnet",
+      "name": "AION Coin on BNB Smart Chain testnet",
+      "purpose": "Token test deployment",
+      "control": "Contract deployment not verified",
+      "environment": "testnet",
+      "chain_id": 97,
+      "explorer": "https://testnet.bscscan.com/",
+      "status": "blocked-not-deployed",
+      "contract_address": null,
+      "transaction_hash": null,
+      "evidence": "GitHub Actions run 40482082891 failed because DEPLOYER_PRIVATE_KEY was malformed; secret must be corrected privately in GitHub Actions",
+      "next_action": "Correct secret privately, rerun testnet workflow, and record explorer-verifiable contract address and transaction hash"
+    },
+    {
+      "id": "aion-nova",
+      "name": "AION Nova",
+      "purpose": "Proposed EVM-compatible development/application network",
+      "control": "Proposed only",
+      "environment": "not-provisioned",
+      "proposed_chain_id": 71101,
+      "rpc_url": null,
+      "explorer_url": null,
+      "status": "proposed",
+      "contract_address": null,
+      "next_action": "Select client/consensus, verify chain ID uniqueness, budget and security requirements, then provision nodes only after explicit approval"
+    },
+    {
+      "id": "aion-orbit",
+      "name": "AION Orbit",
+      "purpose": "Proposed EVM-compatible staging network",
+      "control": "Proposed only",
+      "environment": "not-provisioned",
+      "proposed_chain_id": 71102,
+      "rpc_url": null,
+      "explorer_url": null,
+      "status": "proposed",
+      "contract_address": null,
+      "next_action": "Select client/consensus, verify chain ID uniqueness, budget and security requirements, then provision nodes only after explicit approval"
+    },
+    {
+      "id": "aion-digital-vault",
+      "name": "AION digital vault and treasury controls",
+      "purpose": "Secure key custody architecture and auditable asset register",
+      "control": "Company control over any listed wallet must be independently verified; no secrets stored here",
+      "environment": "design",
+      "status": "design-not-verified",
+      "secret_storage": "No seed phrases, private keys, passwords, or API secret values may be stored in this repository",
+      "next_action": "Define multisignature/hardware-wallet model, signer roles, recovery process, and transaction reconciliation without exposing credentials"
+    },
+    {
+      "id": "aion-si-integration",
+      "name": "AION ↔ TheSuperIntelligence.SI integration",
+      "purpose": "Potential developer/API integration",
+      "control": "External service; official API/authentication and successful integration test not verified",
+      "environment": "not-verified",
+      "status": "blocked-unverified",
+      "next_action": "Confirm official API documentation, authentication, scopes, endpoint, terms, and perform a least-privilege read-only test"
+    }
+  ]
+}
