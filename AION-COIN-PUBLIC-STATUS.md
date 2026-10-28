@@ -2,7 +2,7 @@
 
 **Project:** AION AUTONOMOUS GLOBAL NETWORK  
 **Asset name:** AION Coin (planned; not represented as live or purchasable)  
-**Official project site:** https://aion-production-fbf3.up.railway.app/  
+**Current public project site (Vercel production alias):** https://aion-theta-eight.vercel.app/ (temporary while Railway is restored; custom-domain TLS remains pending)  
 **Repository:** https://github.com/AION-AUTONOMOUS/AION  
 **Contact:** aion.genesisss@gmail.com
 

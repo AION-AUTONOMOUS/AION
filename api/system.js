@@ -6,6 +6,7 @@ const HANDLERS = {
   'verify': () => import('../server-api/verify.js'),
   'webhook': () => import('../server-api/webhook.js'),
   'daily-report': () => import('../server-api/daily-report.js'),
+  'earth-data': () => import('../server-api/earth-data.js'),
   'ops-health': () => import('../server-api/ops-health.js'),
   'orchestrator': () => import('../server-api/orchestrator.js'),
   'runtime-dispatch': () => import('../server-api/runtime-dispatch.js'),

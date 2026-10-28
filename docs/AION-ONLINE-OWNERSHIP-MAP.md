@@ -1,6 +1,6 @@
 # AION Online Systems & Ownership Map
 
-Last verified against repository and deployment metadata: 2026-10-27 (UTC).
+Last verified against repository and deployment metadata: 2026-10-28 (UTC).
 Owner contact: aion.genesisss@gmail.com
 Operating model: global, digital-first, cloud-based.
 
@@ -12,9 +12,9 @@ Keep AION's software, public entry points, token work, treasury controls, and SI
 
 | System | Current evidence | Accurate status | Next gate |
 |---|---|---|---|
-| AION main website/API | https://aion-production-fbf3.up.railway.app/ | Railway project has a successful production deployment recorded on 2026-10-25; re-check the public URL and critical routes before claiming current uptime. | Automated health checks, uptime alerting, and deployment rollback procedure. |
+| AION main website/API | https://aion-theta-eight.vercel.app/ (current Vercel public alias); Railway URL https://aion-production-fbf3.up.railway.app/ | Vercel returned HTTP 200 for the homepage, order page, products, marketplace and customer-revenue offers on 2026-10-28. The connected Railway project reports the AION service offline; custom-domain TLS is still issuing. The missing Earth-data route is added in this release and must be re-tested after deployment. | Verify the Earth-data API after release; restore Railway or migrate the custom domain only with no-spend controls and verified ownership. |
 | AION source and operations | https://github.com/AION-AUTONOMOUS/AION | Main engineering repository exists; deployment and feature readiness must be checked per service. | Maintain tests, security scans, release evidence, and documented owners. |
-| SI Exchange | https://github.com/aiongenesisss-commits/si-exchange | Independent codebase; the trading dashboard is a simulation unless separately proven otherwise. | Keep it separate from AION's core repo; test build and deployment; clearly label demo balances/markets. |
+| SI Exchange | https://si-exchange-1vq1.vercel.app/ and https://github.com/aiongenesisss-commits/si-exchange | Vercel production returned HTTP 200 for `/`, `/health`, and `/networks` on 2026-10-28. `/audit` returns 503 because private demo APIs remain intentionally locked. Balances, orders and fills are simulation-only. | Keep private routes locked until authentication and account isolation are verified; no real trading, deposits, withdrawals or custody. |
 | SI provider | https://www.thesuperintelligence.si/ | External website link only. No public API/authentication documentation was verified in the SI integration review. | Obtain official API documentation and credentials from the provider before server-to-server integration. |
 | AION Coin on BNB Smart Chain testnet | https://testnet.bscscan.com/ | No verified contract address or transaction hash; the latest recorded workflow failure was caused by malformed `DEPLOYER_PRIVATE_KEY` secret formatting. | Correct the secret privately in GitHub Actions, rerun tests/deployment, then independently verify address, source, supply, and transaction. |
 | AION Nova | Proposed chain ID 71101 | Specification only; not running publicly. | Select client, build genesis/consensus, provision nodes, RPC, monitoring, explorer and security tests. |

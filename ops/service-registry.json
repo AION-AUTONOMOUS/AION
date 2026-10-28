@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-27",
+  "updated_at": "2026-10-28",
   "company": "AION AUTONOMOUS GLOBAL NETWORK",
   "contact": "aion.genesisss@gmail.com",
   "policy": {
@@ -15,12 +15,13 @@
       "purpose": "Public company/application presence",
       "control": "Hosting provider is external; account/domain ownership requires separate verification",
       "environment": "production",
-      "url": "https://aion-production-fbf3.up.railway.app/",
-      "status": "deployed-unverified",
-      "health_evidence": null,
+      "url": "https://aion-theta-eight.vercel.app/",
+      "status": "partial",
+      "health_evidence": "2026-10-28: Vercel production alias returned HTTP 200 for homepage, order page, products, marketplace, and customer-revenue offers. Connected Railway project reports the AION service offline; custom-domain TLS is still issuing. Earth-data route is added in this release and requires a post-deploy check.",
       "cost": "Not verified in this registry; no new resources authorized",
       "data_and_recovery": "Backup and restore test not yet evidenced",
-      "next_action": "Run a fresh public health check and verify provider account ownership, domain/TLS, backups, and costs"
+      "next_action": "Verify /api/earth-data after deployment; restore Railway or migrate the custom domain only after ownership, costs and rollback are verified.",
+      "alternate_url": "https://aion-production-fbf3.up.railway.app/"
     },
     {
       "id": "si-exchange-demo",
@@ -30,11 +31,11 @@
       "environment": "production-demo",
       "repository": "https://github.com/aiongenesisss-commits/si-exchange",
       "url": "https://si-exchange-1vq1.vercel.app",
-      "status": "deployed-unverified",
-      "health_evidence": null,
+      "status": "verified-demo",
+      "health_evidence": "2026-10-28: Vercel production returned HTTP 200 for /, /health and /networks. /audit returns 503 because private demo APIs are intentionally locked until authentication/account isolation are implemented.",
       "financial_mode": "simulation-only; no live trading, deposits, withdrawals, or custody",
       "cost": "Not verified in this registry; no new resources authorized",
-      "next_action": "Run a fresh public health check and verify hosting access, build provenance, costs, and backup/export procedure"
+      "next_action": "Keep simulation-only mode and private APIs locked until authentication, account isolation and security review pass."
     },
     {
       "id": "aion-coin-bsc-testnet",

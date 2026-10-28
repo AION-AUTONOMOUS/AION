@@ -1,6 +1,6 @@
 # AION Online Ownership Register
 
-Last reviewed: 2026-10-27
+Last reviewed: 2026-10-28
 
 This register separates resources that are reachable online from systems whose ownership, production readiness, or financial controls have not yet been verified. A URL being reachable is not proof that AION owns every underlying account or that a financial service is production-ready.
 
@@ -9,16 +9,18 @@ This register separates resources that are reachable online from systems whose o
 - Name: AION AUTONOMOUS GLOBAL NETWORK
 - Official contact: aion.genesisss@gmail.com
 - Source-of-truth repository: https://github.com/AION-AUTONOMOUS/AION
-- Current public web app: https://aion-production-fbf3.up.railway.app/
+- Current public web app (Vercel production alias): https://aion-theta-eight.vercel.app/
+- Railway service URL: https://aion-production-fbf3.up.railway.app/ (connected project reports the service offline; do not treat as current production host)
+- Custom domain: https://aionautonomous.devs.surf/ (TLS certificate still issuing as of 2026-10-28).
 - Operating rule: no paid service, advertising, cloud upgrade, audit, liquidity, or listing spend without explicit owner approval.
 
 ## Online resource inventory
 
 | Resource | Current evidence | Status and next gate |
 |---|---|---|
-| AION website/API | Railway URL is recorded in the repository. | Verify current deployment, health endpoints, domain/TLS, logs, and rollback before calling it production-ready. |
+| AION website/API | https://aion-theta-eight.vercel.app/ serves the current static/public pages and customer-revenue offers; Railway URL https://aion-production-fbf3.up.railway.app/ remains recorded but its service is offline in the connected project. | Partial public availability verified on 2026-10-28; Earth-data route is being added; custom-domain TLS remains pending. Re-test critical routes and restore Railway or migrate the domain without unapproved spend. |
 | AION source and workflows | GitHub repository is accessible to the linked GitHub integration. | Use protected branches, least-privilege secrets, CI, and reviewed changes. Never place secrets in commits or issue comments. |
-| SI Exchange | https://si-exchange-1vq1.vercel.app/ | The recorded site is a simulated exchange. Demo balances and indicative prices are not real funds, live prices, or proof of a deployed AION token. Confirm Vercel project/account ownership and production deployment from the provider dashboard. |
+| SI Exchange | https://si-exchange-1vq1.vercel.app/ | Production `/`, `/health`, and `/networks` returned HTTP 200 on 2026-10-28. `/audit` returns 503 by design while private demo APIs remain locked. All balances, orders, and fills are simulation-only. |
 | AION Coin | Intended contract: AIONCoinV2; BNB Smart Chain testnet chain ID 97. | No verified contract address or transaction hash is recorded. A prior testnet workflow failed because DEPLOYER_PRIVATE_KEY was malformed. Correct the secret only in GitHub Actions secrets; never share it in chat. Re-run tests and verify the deployed address on the explorer before reporting a deployment. |
 | AION Nova | Proposed EVM chain ID 71101. | Design proposal only; no public RPC, validators, explorer, or production network verified. Confirm chain-ID uniqueness before public use. |
 | AION Orbit | Proposed EVM chain ID 71102. | Design proposal only; no public RPC, validators, explorer, or production network verified. Confirm chain-ID uniqueness before public use. |

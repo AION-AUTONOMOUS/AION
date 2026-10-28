@@ -5,7 +5,7 @@
 
 AION is an online-first, cloud-based initiative developing AI-assisted digital products, research workflows, and autonomous software infrastructure for a global audience. AION operates digitally; this repository is the public engineering and project record.
 
-- **Website:** https://aion-production-fbf3.up.railway.app/
+- **Current public website (Vercel production alias; temporary while Railway is restored):** https://aion-theta-eight.vercel.app/
 - **GitHub:** https://github.com/AION-AUTONOMOUS/AION
 - **Contact:** aion.genesisss@gmail.com
 - **Operating principle:** لا نطارد الضجيج؛ نطارد القيمة المثبتة.  

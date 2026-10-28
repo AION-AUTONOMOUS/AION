@@ -3,8 +3,8 @@
 > AION Network (AION AUTONOMOUS) is a digital-first AI platform operated online and designed to provide AI-powered software, analytics, education, research and automation services.
 
 ## Primary website
-- Production: https://aion-production-fbf3.up.railway.app/
-- Official domain: https://aion-production-fbf3.up.railway.app/
+- Current public site (Vercel production alias): https://aion-theta-eight.vercel.app/
+- Custom domain status: https://aionautonomous.devs.surf/ (DNS currently routes to Railway; TLS was still issuing on 2026-10-28, so this host is not yet verified as the active canonical site.)
 
 ## Core public services
 - AION Intelligence — Arabic-first business intelligence and analysis.
@@ -18,13 +18,13 @@
 - AION Autonomous Stack — orchestration, worker runtime and autonomous software operations.
 
 ## Public documentation and trust
-- About: https://aion-production-fbf3.up.railway.app/about.html
-- Services: https://aion-production-fbf3.up.railway.app/services.html
-- Privacy: https://aion-production-fbf3.up.railway.app/privacy.html
-- Terms: https://aion-production-fbf3.up.railway.app/terms.html
-- Whitepaper: https://aion-production-fbf3.up.railway.app/whitepaper.html
-- Sitemap: https://aion-production-fbf3.up.railway.app/sitemap.xml
-- Robots: https://aion-production-fbf3.up.railway.app/robots.txt
+- About: https://aion-theta-eight.vercel.app/about.html
+- Services: https://aion-theta-eight.vercel.app/services.html
+- Privacy: https://aion-theta-eight.vercel.app/privacy.html
+- Terms: https://aion-theta-eight.vercel.app/terms.html
+- Whitepaper: https://aion-theta-eight.vercel.app/whitepaper.html
+- Sitemap: https://aion-theta-eight.vercel.app/sitemap.xml
+- Robots: https://aion-theta-eight.vercel.app/robots.txt
 - GitHub: https://github.com/AION-AUTONOMOUS/AION
 
 ## Important distinction
@@ -32,5 +32,5 @@ AION Network is not Aion.to, GAC AION, or another organization using the AION na
 
 ## Technical positioning
 AION is a cloud-based, online-first platform. Its public runtime exposes a health endpoint, web applications and API routes for platform services. Autonomous execution is bounded by explicit safeguards; sensitive financial and similar actions remain governed rather than being falsely reported as completed.
-- AION Earth & Space Intelligence dashboard: https://aion-production-fbf3.up.railway.app/earth-intelligence.html
-- Free public-data API: GET https://aion-production-fbf3.up.railway.app/api/earth-data?path=overview (NASA EONET, NOAA SWPC, Copernicus STAC; status is reported per source).
+- AION Earth & Space Intelligence dashboard: https://aion-theta-eight.vercel.app/earth-intelligence.html
+- Free public-data API: GET https://aion-theta-eight.vercel.app/api/earth-data?path=overview (NASA EONET, NOAA SWPC, Copernicus STAC; status is reported per source).
