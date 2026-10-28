@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-27",
+  "updated_at": "2026-10-28",
   "policy": {
     "evidence_first": true,
     "paid_spend_requires_explicit_approval": true,
@@ -30,16 +30,16 @@
       "owner_control": "Separate GitHub repository and separate Vercel project observed; legal/account ownership not independently verified",
       "environment": "production-demo",
       "repository": "https://github.com/aiongenesisss-commits/si-exchange",
-      "url": "https://si-exchange-1vq1.vercel.app",
+      "url": "https://si-exchange-1vq1.vercel.app/",
       "latest_observed_deployment": {
-        "deployment_id": "dpl_G1hLeD4EYtjdS9jGmpn9hJSEJHHm",
+        "deployment_id": "dpl_ATQ49pq1oU5mwMUTsNJ2T9X4fYaR",
         "state": "READY",
-        "source_commit": "62617f6ba2d293fa48603746a572eb8ff9ce735e",
+        "source_commit": "603d60ebbc5c6ca302a046e5f92b52034ee117f0",
         "source_branch": "main",
-        "deployment_inspector": "https://vercel.com/aiongenesisss-8801/si-exchange-1vq1/G1hLeD4EYtjdS9jGmpn9hJSEJHHm"
+        "deployment_inspector": "https://vercel.com/aiongenesisss-8801/si-exchange-1vq1/ATQ49pq1oU5mwMUTsNJ2T9X4fYaR"
       },
-      "status": "deployed-unverified",
-      "health_check": "Vercel reports deployment READY; public end-to-end health check not independently confirmed in this run",
+      "status": "verified-demo",
+      "health_check": "2026-10-28: Vercel production returned HTTP 200 for /, /health and /networks. /audit returns 503 by design because private demo APIs are locked pending authentication/account isolation. Simulation-only; no real funds.",
       "financial_mode": "simulation-only; no live trading, deposits, withdrawals or custody",
       "cost": "Vercel team plan observed as Hobby; current billing/usage limits not independently verified",
       "next_action": "Verify /health or readiness route, dashboard, order flow, audit endpoint and persistent database configuration"
@@ -95,11 +95,12 @@
     {
       "id": "aion-company-web",
       "name": "AION public company website and API",
-      "url": "https://aion-production-fbf3.up.railway.app/",
-      "status": "deployed-unverified",
-      "health_check": "Previously reported reachable API endpoints are not rechecked in this registry update",
+      "url": "https://aion-theta-eight.vercel.app/",
+      "status": "partial",
+      "health_check": "2026-10-28: Vercel production alias returned HTTP 200 for homepage, order page, products, marketplace and customer-revenue offers. Connected Railway project reports AION service offline; custom-domain TLS is still issuing. Earth-data route is added in this release and needs post-deploy verification.",
       "cost": "Railway billing/usage not independently verified",
-      "next_action": "Recheck public health endpoints, latest deployment commit, domain TLS and current usage/cost"
+      "next_action": "Recheck Earth-data API and critical routes; restore Railway or migrate custom domain only with verified ownership, no unapproved spend and rollback.",
+      "alternate_url": "https://aion-production-fbf3.up.railway.app/"
     }
   ]
 }
