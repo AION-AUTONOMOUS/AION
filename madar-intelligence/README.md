@@ -21,7 +21,7 @@ A bilingual Arabic/English web-search prototype built with Next.js App Router an
 
 ## Verification
 
-Run `npm test`, `npm run typecheck`, `npm run lint`, and `npm run build`. These commands are defined but have not been executed by the GitHub file-writing connector. Do not interpret their presence as passing checks.
+GitHub Actions run [40829341132](https://github.com/AION-AUTONOMOUS/AION/actions/runs/40829341132) passed `npm test`, `npm run typecheck`, `npm run lint`, and `npm run build` for commit `e3b102fd9fdf2bb94d80d83ed673c0bf6b7ecd64`. The workflow currently generates `package-lock.json` during CI because the lockfile is not committed; reproducible dependency locking remains a follow-up before production.
 
 ## API
 
