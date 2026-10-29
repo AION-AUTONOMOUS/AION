@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#12243a">
+<title>AION Jazan — Evidence Desk Demo</title>
+<style>
+:root{color-scheme:light;--ink:#14253b;--muted:#64748b;--line:#dbe3ec;--paper:#f5f7fa;--card:#fff;--blue:#244f78;--gold:#d6a84f;--green:#176b50;--red:#a33a3a}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif}header{background:var(--ink);color:white;padding:26px max(20px,calc((100% - 1080px)/2)) 24px;border-bottom:4px solid var(--gold)}header small{color:#d8e4f0}h1{font-size:clamp(1.5rem,3vw,2.1rem);margin:.25rem 0}header p{margin:.3rem 0;color:#e5edf5}.wrap{max-width:1080px;margin:24px auto;padding:0 18px}.notice{border:1px solid #e6cc8a;background:#fff8e6;border-radius:12px;padding:14px 16px;margin-bottom:18px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px;box-shadow:0 2px 7px #13253b08}.metric{font-size:1.7rem;font-weight:750}.muted{color:var(--muted);font-size:.92rem}.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:22px 0 12px}.toolbar label{font-weight:650}select,button{font:inherit;border-radius:9px;padding:9px 12px;border:1px solid #b8c7d8;background:white;color:var(--ink)}button{cursor:pointer;font-weight:650}button.primary{background:var(--blue);color:white;border-color:var(--blue)}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #d6a84f;outline-offset:2px}.task{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;border-bottom:1px solid var(--line);padding:14px 0}.task:last-child{border-bottom:0}.status{white-space:nowrap;border-radius:99px;padding:3px 10px;font-size:.82rem;font-weight:700;background:#edf1f5}.status.done{background:#e2f4ec;color:#145c43}.status.pending{background:#fff0cf;color:#7b4e05}.status.blocked{background:#fbe7e7;color:#8a2b2b}.links{display:flex;flex-wrap:wrap;gap:12px}.links a{color:#1d527f;text-underline-offset:3px}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:24px 0 10px}.section-title h2{margin:0;font-size:1.25rem}.foot{padding:20px 0 34px;color:var(--muted);font-size:.88rem}.tag{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-size:.78rem;margin-inline-start:4px}#empty{display:none;padding:20px;text-align:center;color:var(--muted)}@media(max-width:700px){.grid{grid-template-columns:1fr}.task{grid-template-columns:1fr}.status{justify-self:start}.section-title{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header>
+  <small>AION AUTONOMOUS GLOBAL NETWORK · JAZAN WORKSTREAM</small>
+  <h1>مكتب الأدلة التنفيذي — جازان</h1>
+  <p>لوحة تحضيرية لمتابعة التأسيس والمهام والأدلة الرسمية.</p>
+</header>
+<main class="wrap">
+  <div class="notice"><strong>تنبيه مهم:</strong> هذه نسخة تجريبية مستقلة ببيانات توضيحية. لا تعني أن الشركة تأسست أو أن الدعم المالي اعتُمد. لا توجد هنا مدفوعات أو اتصالات شبكية أو حفظ دائم للبيانات.</div>
+  <section class="grid" aria-label="ملخص الحالة">
+    <article class="card"><div class="muted">المهام الموثقة</div><div class="metric" id="total">5</div><div class="muted">مهام في قائمة التأسيس الحالية</div></article>
+    <article class="card"><div class="muted">المنجز بالأدلة</div><div class="metric" id="done">3</div><div class="muted">بحث وتوثيق فقط؛ ليس تأسيساً قانونياً</div></article>
+    <article class="card"><div class="muted">قرار التأسيس</div><div class="metric">معلّق</div><div class="muted">بانتظار جواب التمويل المباشر وموافقة المؤسس</div></article>
+  </section>
+  <div class="section-title"><h2>سجل المهام</h2><span class="muted">الحالة قابلة للتصفية — لا يتم حفظ التغييرات</span></div>
+  <div class="toolbar">
+    <label for="filter">عرض المهام:</label>
+    <select id="filter"><option value="all">الكل</option><option value="done">منجز بالأدلة</option><option value="pending">قيد المتابعة</option><option value="blocked">متوقف بانتظار قرار/رد</option></select>
+    <button class="primary" id="download">تنزيل تقرير الحالة (.md)</button>
+  </div>
+  <section class="card" id="tasks" aria-live="polite">
+    <article class="task" data-status="done"><div><strong>فحص مستودع المشروع والخطة</strong><div class="muted">مراجعة المستودع والفرع والوثيقة التحضيرية. لا تغيير في main.</div><div class="links"><a href="https://github.com/AION-AUTONOMOUS/AION/pull/2188" target="_blank" rel="noopener noreferrer">طلب مراجعة الخطة #2188</a></div></div><span class="status done">منجز بالأدلة</span></article>
+    <article class="task" data-status="done"><div><strong>التحقق من رسوم التأسيس المنشورة</strong><div class="muted">وزارة التجارة: 1,200 ريال للسجل + 500 ريال للنشر + 15% ضريبة؛ التقدير الحسابي 1,955 ريالاً للبنود المذكورة.</div><div class="links"><a href="https://mc.gov.sa/ar/eservices/Pages/ServiceDetails.aspx?sID=99" target="_blank" rel="noopener noreferrer">المصدر الرسمي</a></div></div><span class="status done">منجز بالأدلة</span></article>
+    <article class="task" data-status="done"><div><strong>توثيق رسالة الاستفسار إلى منشآت</strong><div class="muted">عُثر على رسالة مرسلة بتاريخ 29 أكتوبر 2026؛ لم يظهر رد في نتائج البحث المتاحة.</div><div class="links"><a href="https://monshaat.gov.sa/ar/node/404565" target="_blank" rel="noopener noreferrer">مكتب منشآت في جازان</a></div></div><span class="status done">منجز بالأدلة</span></article>
+    <article class="task" data-status="pending"><div><strong>الحصول على جواب مكتوب حول الدفع المباشر</strong><div class="muted">يجب تأكيد الجهة التي تدفع الرسوم مقدماً، والمبلغ، وشروط أهلية المشروع. الاستشارات المجانية ليست تمويلاً.</div><div class="links"><a href="https://estrdad.monshaat.gov.sa/home" target="_blank" rel="noopener noreferrer">بوابة استرداد</a><a href="https://monshaat.gov.sa/ar/acc" target="_blank" rel="noopener noreferrer">مسرعات الأعمال</a></div></div><span class="status pending">قيد المتابعة</span></article>
+    <article class="task" data-status="blocked"><div><strong>تقديم طلب تأسيس الشركة</strong><div class="muted">موقوف عمداً حتى تتضح التغطية المالية ويوافق المؤسس صراحة على الشكل القانوني والنشاط والرسوم النهائية.</div></div><span class="status blocked">يتطلب موافقة</span></article>
+    <div id="empty">لا توجد مهام في هذه الفئة.</div>
+  </section>
+  <div class="section-title"><h2>المصادر الحكومية المباشرة</h2></div>
+  <section class="card">
+    <div class="links">
+      <a href="https://mc.gov.sa/ar/eservices/Pages/ServiceDetails.aspx?sID=99" target="_blank" rel="noopener noreferrer">وزارة التجارة — تأسيس شركة ذات مسؤولية محدودة</a>
+      <a href="https://mc.gov.sa/ar/FAQ/pages/default.aspx?sid=300" target="_blank" rel="noopener noreferrer">وزارة التجارة — أسئلة التأسيس والرسوم</a>
+      <a href="https://monshaat.gov.sa/ar/node/360739" target="_blank" rel="noopener noreferrer">منشآت — مبادرة استرداد</a>
+      <a href="https://www.monshaat.gov.sa/ar/node/404565" target="_blank" rel="noopener noreferrer">منشآت — مكتب خدمات جازان</a>
+      <a href="https://monshaat.gov.sa/ar/ssc" target="_blank" rel="noopener noreferrer">منشآت — خدمات الدعم المجانية</a>
+    </div>
+    <p class="muted">«استرداد» تعني استرداد رسوم مدفوعة للمنشآت المؤهلة وفق الضوابط؛ لا تُعد وعداً بدفع رسوم التأسيس مقدماً.</p>
+  </section>
+  <footer class="foot">نسخة ثابتة للتجربة المحلية · لا تستخدم بيانات شخصية أو أسراراً · لا يوجد تسجيل دخول أو إرسال بيانات أو تخزين دائم · آخر تحديث للمحتوى: 29 أكتوبر 2026.</footer>
+</main>
+<script>
+const filter=document.getElementById('filter'), tasks=[...document.querySelectorAll('.task')], empty=document.getElementById('empty');
+function applyFilter(){let visible=0;tasks.forEach(t=>{const show=filter.value==='all'||t.dataset.status===filter.value;t.hidden=!show;if(show)visible++});empty.style.display=visible?'none':'block'}
+filter.addEventListener('change',applyFilter);
+document.getElementById('download').addEventListener('click',()=>{const lines=['# تقرير حالة مكتب الأدلة التنفيذي — جازان','','التاريخ: 2026-10-29','الحالة: نموذج توضيحي؛ لا يثبت تأسيس الشركة أو اعتماد تمويل.','',...tasks.map(t=>'- ['+(t.dataset.status==='done'?'x':' ')+'] '+t.querySelector('strong').textContent+' — '+t.querySelector('.muted').textContent),'','## الروابط الرسمية','- وزارة التجارة: https://mc.gov.sa/ar/eservices/Pages/ServiceDetails.aspx?sID=99','- أسئلة التأسيس: https://mc.gov.sa/ar/FAQ/pages/default.aspx?sid=300','- مبادرة استرداد: https://monshaat.gov.sa/ar/node/360739','- مكتب منشآت في جازان: https://www.monshaat.gov.sa/ar/node/404565','','لا توجد مدفوعات أو طلبات حكومية مقدمة من خلال هذه الصفحة.'];const blob=new Blob([lines.join('\n')],{type:'text/markdown;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='jazan-execution-status.md';a.click();URL.revokeObjectURL(url)});
+applyFilter();
+</script>
+</body>
+</html>
