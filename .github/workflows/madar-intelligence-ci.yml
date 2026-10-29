@@ -1,0 +1,37 @@
+name: MADAR Intelligence CI
+on:
+  pull_request:
+    paths:
+      - "madar-intelligence/**"
+      - ".github/workflows/madar-intelligence-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "madar-intelligence/**"
+      - ".github/workflows/madar-intelligence-ci.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: madar-intelligence
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: madar-intelligence/package-lock.json
+      - run: npm install --package-lock-only --ignore-scripts
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run build
+        env:
+          TAVILY_API_KEY: ci-placeholder
+          OPENAI_API_KEY: ci-placeholder
+          OPENAI_MODEL: gpt-4.1-mini
