@@ -3,7 +3,7 @@
 > **Document:** `docs/AION_MASTER_REFERENCE.md`  
 > **Version:** 1.0 — Phase 1  
 > **Prepared:** 2026-11-03  
-> **Primary source:** Founder-supplied “الملف الشامل لشركة AION AUTONOMOUS GLOBAL NETWORK” provided in the project conversation.  
+> **Founder reference basis:** `AION_MASTER_RECORD_2026-10-11.md` (historical master record) and `AION-AUTONOMOUS-MASTER-ASSET-RECONCILIATION.md` (31 October 2026 reconciliation), cross-checked against current repository files. The exact 32-name source list was not present in the accessible canonical records; two slots remain UNKNOWN rather than guessed.  
 > **Repository baseline reviewed:** `main` at `622547c7b9cfa83d9f19a8da6f363330e6bff624`.  
 > **Document branch:** `docs/aion-master-reference-phase1`  
 > **Purpose:** Consolidate the founder's institutional reference while preserving evidence status. This document is descriptive and governance-oriented; it does not activate products, services, payments, integrations, deployments, or legal entities.
@@ -50,56 +50,66 @@ Priority order supplied by the founder:
 
 No spending, paid service, advertising, cloud upgrade, audit, liquidity provision, token listing, or other financial commitment without explicit founder approval.
 
-## 3. Organizational map
+## 3. Organizational map and the 32-section reconciliation
 
-The following is the intended organizational model. Names in this list do not imply that each department exists as a separate legal entity, staffed team, deployed service, or continuously running agent.
+The founder requested documentation of 32 organizational sections. The repository evidence reviewed does **not** currently establish a canonical 32-name list. To avoid inventing departments, this document records the 30 exact division entries exported by `config/aion-autonomous-company-charter.js`, followed by two explicitly unresolved slots.
 
-### 3.1 Governance and executive control
+The division array in that source file is the strongest current machine-readable repository evidence for the detailed division names. It contains **30 entries**. The older master record dated 11 October 2026 also lists 30 divisions. Other repository records conflict: the README describes 20 organizational departments, while the 31 October asset reconciliation lists 19 architecture terms. These counts describe different or unreconciled taxonomies and must not be silently combined.
 
-1. Executive Management & Strategy — goals, priorities, portfolio decisions, and accountability.
-2. AION Executive Intelligence — decision support, opportunity analysis, and evidence-based recommendations.
-3. AION Control Plane — task routing, policy enforcement, permission boundaries, and operational coordination.
-4. AION Agent Mesh — specialized agent roles for research, engineering, sales, growth, and operations.
-5. AION Evidence Layer — provenance, verification, audit records, and links between claims and evidence.
+### 3.1 Repository-defined divisions — 30 entries
 
-### 3.2 Engineering and technology
+| # | Exact division name in source | Role stated in source | Status |
+|---:|---|---|---|
+| 1 | AION Executive Intelligence | company-wide orchestration | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 2 | AION Research & Intelligence | research, intelligence, competitive analysis | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 3 | AION Engineering | software, APIs, platform and product engineering | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 4 | AION Security | security, secrets, threat detection and incident response | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 5 | AION Quality & Reliability | QA, regression, reliability and release assurance | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 6 | AION DevOps & Infrastructure | deployment, infrastructure and observability | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 7 | AION Product | product strategy, requirements and roadmaps | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 8 | AION Data & Analytics | data pipelines, metrics and intelligence | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 9 | AION Treasury Intelligence | internal treasury intelligence and accounting controls | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 10 | AION Legal & Contracts | contract drafting, review and trust-service routing | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 11 | AION Compliance | regulatory and policy controls | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 12 | AION Marketing & SEO/GEO | global discovery, SEO/GEO and content distribution | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 13 | AION Growth | experiments, conversion and optimization | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 14 | AION Sales & Customer Operations | customers, leads, proposals and commercial workflows | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 15 | AION Partnerships | ecosystem and provider relationships | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 16 | AION Support | customer support and onboarding | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 17 | AION Content & Academy | documentation, education and localization | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 18 | AION Operations | workflow, scheduling and process automation | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 19 | AION Strategy | planning, scenarios, KPIs and corporate strategy | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 20 | AION Communications | public communications and outreach | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 21 | AION Agent Mesh | global logical agent coordination | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 22 | AION Digital Vault | digital rights, records and asset custody controls | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 23 | AION Intelligence Exchange | AI services marketplace | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 24 | AION AI Economy | agent economy and autonomous service markets | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 25 | AION Digital Asset Network | digital asset infrastructure and controls | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 26 | AION Autonomous Commerce | digital commerce and transaction workflows | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 27 | AION Space / Orbital Exchange | space capacity marketplace and orbital services | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 28 | AION Future Labs | new products, R&D and emerging technology | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 29 | AION Treasury | append-only internal treasury ledger and reporting | CONFIRMED as a source-code definition; execution UNKNOWN |
+| 30 | AION Global Customer Network | global customer pipeline and deal room | CONFIRMED as a source-code definition; execution UNKNOWN |
 
-6. Engineering — software, interfaces, APIs, and platform development.
-7. Product — product definition, usability, and customer experience.
-8. DevOps & Cloud — build, deployment, hosting, monitoring, and recovery.
-9. Security — identity, access, secrets, vulnerability management, and threat controls.
-10. Quality Assurance — functional, security, payment, and regression testing.
-11. Data & Intelligence — data sourcing, validation, analysis, and reporting.
-12. Auto-Healing & Reliability — incident detection, diagnosis, guarded recovery, and post-recovery verification.
-13. Integrations — controlled connections to external providers and data sources.
+### 3.2 Founder-requested slots pending reconciliation
 
-### 3.3 Commerce, revenue, and growth
+| # | Name | Status | Required resolution |
+|---:|---|---|---|
+| 31 | Not supplied in the canonical machine-readable list reviewed | UNKNOWN | Founder to confirm exact name and remit |
+| 32 | Not supplied in the canonical machine-readable list reviewed | UNKNOWN | Founder to confirm exact name and remit |
 
-14. AION Revenue Engine — demand, offer, order, payment verification, delivery, and revenue evidence.
-15. Sales & Global Prospecting — prospect discovery and opportunity follow-up.
-16. Growth — conversion, retention, and organic growth.
-17. Marketing — content and distribution; no assumed advertising budget.
-18. SEO / GEO — search and answer-engine discoverability.
-19. Partnerships — partner discovery and approved integrations.
-20. Customer Support — customer questions, complaints, refunds, and service.
-21. Pricing & Offers — pricing, packages, and scope definition.
-22. Treasury & Finance — cash-flow oversight, expense control, and reconciliation.
-23. Revenue Ledger — verified revenue separated from pending, failed, disputed, and refunded payments.
+These are placeholders, not proposed department names. Do not rename, merge, or expand the 30 source-defined divisions to reach 32 without founder confirmation.
 
-### 3.4 Knowledge, governance, and customer network
+### 3.3 Count conflict register
 
-24. Research.
-25. Legal & Compliance.
-26. Communications.
-27. Content.
-28. AION Academy.
-29. AION Learning Graph.
-30. Digital Vault.
-31. Intelligence Exchange.
-32. Global Customer Network.
+- **CONFIRMED:** `config/aion-autonomous-company-charter.js` exports an `AION_DIVISIONS` array with 30 entries.
+- **HISTORICAL:** `AION_MASTER_RECORD_2026-10-11.md` lists 30 organizational divisions.
+- **CONFIRMED:** The current repository README states that the architecture refers to 20 organizational departments and 10,000 deterministic software-agent roles; it cautions that these are not proof of continuously running agents.
+- **HISTORICAL:** `AION-AUTONOMOUS-MASTER-ASSET-RECONCILIATION.md` records 19 department/architecture vocabulary terms and says the canonical full list still needs reconciliation.
+- **UNKNOWN:** Whether the founder's intended total is 30, 32, or a different taxonomy, and the exact names of the two additional requested sections.
 
-**Status:** All 32 entries are **PLANNED organizational capabilities** unless a separate repository artifact or operational evidence proves a narrower implementation. The repository README describes an intended autonomous stack and deterministic agent-role definitions; it explicitly warns that role definitions do not prove that all roles or departments are continuously running.
-
+A division entry in configuration is evidence of a defined role label, not evidence of a staffed department, independent service, active worker, or operational capability.
+ 
 ## 4. Product and project portfolio
 
 ### 4.1 AION Autonomous Core
@@ -173,6 +183,33 @@ No mainnet deployment, public token sale, customer deposit, custody, or live tra
 
 **PLANNED:** Future Labs, Digital Services, Intelligence Exchange, AI Economy, Global Research, Enterprise Intelligence, Global Customer Network, and related product lines.  
 These are portfolio concepts, not proof of separate public products, deployed services, contracts, or revenue.
+
+### 4.11 MADAR Intelligence
+
+**HISTORICAL:** Earlier project records identify `madar-intelligence/` and PR #2190 as a separate development workstream. This phase did not verify that PR's current status, branch contents, live deployment, provider credentials, search index, or user-facing availability.  
+**UNKNOWN:** Current main-branch inclusion, deployment, operational search quality, and production data-provider readiness.
+
+### 4.12 AION Marketplace
+
+**HISTORICAL:** PR #2150 is recorded as marketplace catalog work. A catalog or product listing is not proof of a functioning marketplace, live orders, settlement, or trading.  
+**UNKNOWN:** Current checkout, supplier onboarding, transaction execution, settlement, refunds, and customer activity.
+
+### 4.13 Digital Contracts & Documents
+
+**PLANNED:** Drafting, versioning, evidence hashes, approval, signature-provider routing, and contract lifecycle records.  
+**HISTORICAL:** Earlier project records describe lifecycle and provider-configuration work.  
+**UNKNOWN:** Current production integration with a qualified trust service provider, legal effect in any jurisdiction, customer execution, and completed signed contracts.
+
+### 4.14 Demand Intelligence & Global Prospecting
+
+**CONFIRMED:** The repository contains `docs/AION_GLOBAL_CUSTOMER_PIPELINE.md`, which describes verticals, potential targets, and a proposed customer-acquisition workflow. The document explicitly identifies listed organizations as targets, not customers or partners.  
+**PLANNED:** Discover → verify → score → route → qualify → quote → paid → deliver.  
+**UNKNOWN:** Current active prospects, consent/eligibility to contact, signed contracts, and revenue.
+
+### 4.15 Space data integration
+
+**CONFIRMED:** `docs/AION_SENTINEL_HUB_INTEGRATION.md` documents a Copernicus Data Space / Sentinel Hub adapter contract, including an authorization-gated behavior when credentials are absent.  
+**UNKNOWN:** Whether valid provider credentials are currently configured, live requests succeed, coverage and freshness meet any service commitment, or customer delivery is active.
 
 ## 5. Architecture and technical environment
 
@@ -328,13 +365,13 @@ No existing document was deleted or replaced. Where a current operational statem
 - **Reviewed default branch:** `main`.
 - **Baseline commit:** `622547c7b9cfa83d9f19a8da6f363330e6bff624`.
 - **Review date:** 2026-11-03.
-- **Source document:** Founder-supplied master reference in the project conversation.
-- **Repository documents inspected:** `README.md`, `package.json`, `docs/SI-INTEGRATION.md`, `docs/SI-AION-HANDOVER.md`, and the added-file history for `docs/AION-ONLINE-OWNERSHIP-REGISTER.md`.
+- **Founder reference sources:** `AION_MASTER_RECORD_2026-10-11.md` (30 divisions; historical) and `AION-AUTONOMOUS-MASTER-ASSET-RECONCILIATION.md` (19 architecture terms; dated 31 October 2026). The separately referenced current 32-name master list was not independently located in the available attachments/library for this phase.
+- **Repository documents and code inspected:** `README.md`, `package.json`, `config/aion-autonomous-company-charter.js`, `config/aion-agent-mesh.js`, `config/aion-customer-revenue.js`, `docs/SI-INTEGRATION.md`, `docs/SI-AION-HANDOVER.md`, `docs/AION-ONLINE-OWNERSHIP-REGISTER.md`, `docs/AION-ONLINE-OWNERSHIP-ROADMAP.md`, `docs/AION_SPACE_COMMERCE_STRATEGY.md`, `docs/AION_SENTINEL_HUB_INTEGRATION.md`, `docs/AION_GLOBAL_CUSTOMER_PIPELINE.md`, `docs/AION-AI-VAULT-VALUE-PORTFOLIO.md`, `GOVERNANCE/AION-RELEASE-GATES.md`, and `GOVERNANCE/AION-COIN-TESTNET-DEPLOYMENT.md`.
 - **Target path check:** `docs/AION_MASTER_REFERENCE.md` returned not found on the reviewed baseline.
 - **Branch:** `docs/aion-master-reference-phase1`, created from the reviewed baseline.
 - **Secrets:** No credentials or secret values are intentionally included. This phase did not perform a repository-wide secret-history audit.
-- **Tests:** No application code, runtime configuration, database, or production environment was changed. Documentation validation is limited to structural/manual review unless a dedicated Markdown lint tool is available in the repository. The package manifest exposes JavaScript/Hardhat scripts but no dedicated Markdown lint script.
-- **Not performed:** no deployment, production setting change, database operation, paid service activation, payment test, live endpoint verification, or application test run.
+- **Documentation checks:** Structural validation confirmed the 32 requested slots are represented as 30 source-defined entries plus 2 UNKNOWN placeholders; all four status labels are present; key section headings are present; no code/runtime/database/hosting files were changed. The inspected `package.json` exposes JavaScript and Hardhat test scripts but no dedicated Markdown lint script. Application tests were not run because this phase changes documentation only.
+- **Not performed:** no deployment, production setting change, database operation, paid service activation, payment test, live endpoint verification, application test run, PR creation, or merge.
 
 ## 13. Maintenance rules
 
