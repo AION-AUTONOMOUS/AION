@@ -1,0 +1,54 @@
+name: Validate AION network manifest
+
+on:
+  pull_request:
+    paths:
+      - "config/aion-networks.json"
+      - ".github/workflows/validate-aion-network-manifest.yml"
+  push:
+    branches: [main]
+    paths:
+      - "config/aion-networks.json"
+      - ".github/workflows/validate-aion-network-manifest.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Validate JSON and network launch safety gates
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const config = JSON.parse(fs.readFileSync('config/aion-networks.json', 'utf8'));
+          const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+          };
+          assert(config.schemaVersion === 1, 'Unsupported schemaVersion');
+          assert(config.status === 'specification-only', 'Manifest status must remain explicit until launch evidence exists');
+          assert(config.productionReady === false, 'Production readiness cannot be asserted by this manifest');
+          assert(Array.isArray(config.networks) && config.networks.length === 2, 'Exactly two proposed networks are required');
+          const [nova, orbit] = config.networks;
+          assert(nova.name === 'AION Nova' && nova.chainId === 71101, 'Unexpected Nova identity or chain ID');
+          assert(orbit.name === 'AION Orbit' && orbit.chainId === 71102, 'Unexpected Orbit identity or chain ID');
+          assert(nova.chainId !== orbit.chainId, 'Network chain IDs must differ');
+          for (const network of config.networks) {
+            assert(network.status === 'not-running', 'Do not claim a network is live without verified launch evidence');
+            assert(Number.isInteger(network.chainId) && network.chainId > 0, 'Invalid chain ID');
+            assert(network.nativeCurrency.decimals === 18, 'Unexpected native currency decimals');
+          }
+          for (const [gate, value] of Object.entries(config.launchGates)) {
+            assert(value === false, `Launch gate ${gate} must remain false until independently verified`);
+          }
+          assert(config.freeDeploymentPromotion.enabled === false, 'Do not enable the free-deployment offer before gas sponsorship is ready');
+          assert(config.freeDeploymentPromotion.limit === 50, 'Free deployment cap must be 50');
+          assert(config.freeDeploymentPromotion.requiresGasSponsor === true, 'Gas sponsorship requirement missing');
+          console.log('PASS: proposed network manifest is internally consistent and all unverified launch gates remain closed.');
+          NODE
