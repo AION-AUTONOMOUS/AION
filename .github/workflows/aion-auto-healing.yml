@@ -23,8 +23,9 @@ concurrency:
 
 jobs:
   diagnose:
-    # Diagnose every watched workflow completion, whether it passed or failed.
-    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != '' }}
+    # Run on explicit/manual workflow edits, or when a watched workflow fails.
+    # Successful upstream runs should not consume another full install/audit/test runner.
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
@@ -90,7 +91,7 @@ jobs:
             fi
             printf 'Diagnostic run: %s/%s/actions/runs/%s\n' "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
             echo
-            echo "This workflow diagnoses every watched completion. It does not silently modify dependency files or merge repairs into main."
+            echo "This workflow diagnoses failed watched completions and explicit/manual runs. It does not silently modify dependency files or merge repairs into main."
           } > "$body_file"
 
           if [[ "$INSTALL_OUTCOME" == "failure" || "$AUDIT_OUTCOME" == "failure" || "$COMPILE_OUTCOME" == "failure" || "$TESTS_OUTCOME" == "failure" || "$SOURCE_CONCLUSION" == "failure" ]]; then
