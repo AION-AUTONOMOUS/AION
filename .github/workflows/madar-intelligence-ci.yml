@@ -1,0 +1,41 @@
+name: MADAR Intelligence CI
+on:
+  pull_request:
+    paths:
+      - "madar-intelligence/**"
+      - ".github/workflows/madar-intelligence-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "madar-intelligence/**"
+      - ".github/workflows/madar-intelligence-ci.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: madar-intelligence
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - name: Report dependency audit findings
+        run: |
+          npm audit --json > /tmp/madar-npm-audit.json || true
+          node -e 'const a=require("/tmp/madar-npm-audit.json"); for (const [name,v] of Object.entries(a.vulnerabilities || {})) console.log(JSON.stringify({name,severity:v.severity,range:v.range,fixAvailable:v.fixAvailable,via:(v.via||[]).map(x=>typeof x === "string" ? x : {title:x.title,url:x.url,range:x.range})})); console.log("AUDIT_COUNTS", JSON.stringify(a.metadata?.vulnerabilities || {}))'
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run build
+        env:
+          TAVILY_API_KEY: ci-placeholder
+          OPENAI_API_KEY: ci-placeholder
+          OPENAI_MODEL: gpt-4.1-mini
