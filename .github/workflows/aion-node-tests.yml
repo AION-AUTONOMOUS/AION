@@ -1,0 +1,35 @@
+name: AION Node and Coin Test Suite
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, "ci/**", "fix/**", "feat/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aion-node-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  node-and-contract-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install dependencies without paid services
+        run: npm install --no-audit --no-fund
+      - name: Run AION application tests
+        run: npm test
+      - name: Compile AION Coin contract (local only)
+        run: npm run compile:coin
+      - name: Run AION Coin contract tests (local EVM only)
+        run: npm run test:coin
